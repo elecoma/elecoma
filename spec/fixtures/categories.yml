@@ -1,0 +1,30 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+dai_category:
+  id: 1
+  name: 大カテゴリ
+  position: 1
+
+chu_category:
+  id: 2
+  name: 中カテゴリ
+  parent_id: 1
+  position: 2
+
+chu_category_two:
+  id: 4
+  name: 中カテゴリ2
+  parent_id: 1
+  position: 3
+
+sho_category:
+  id: 3
+  name: 小カテゴリ
+  parent_id: 2
+  position: 4
+
+valid_category:
+  id: 16
+  name: valid_category
+  parent_id: 1
+  position: 5

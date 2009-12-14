@@ -1,0 +1,144 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "front/cart" %>
+  <%= javascript_include_tag :defaults %>
+<% end %>
+
+<p class="tb_t">お客様情報入力</p>
+
+<p class="m_top">下記項目にご入力ください。入力後、一番下の「次へ」ボタンをクリックしてください。</p>
+<p class="notice"><span class="must">※</span>は必ずご入力ください。</p>
+
+<noscript>
+  <p>JavaScriptが利用できない状態です。<br />一部のコンテンツが正常に動作しない可能性があります</p>
+</noscript>
+
+<%= flash[:notice] %>
+<%= @temporary_customer && error_messages_for(:temporary_customer) %>
+<%= @optional_address && error_messages_for(:optional_address) %>
+
+<% form_tag({:action => 'purchase'}, {:name=>'form1'}) do %>
+  <% fields_for :temporary_customer do |f| %>
+    <table class="tb2">
+      <tr>
+        <th width="130">お名前<span class="must">※</span></th>
+        <td>
+          姓<%= f.text_field :family_name, {:class=>"form_m m_left",:style=>"ime-mode:active"} %>
+          名<%= f.text_field :first_name, {:class=>"form_m m_left",:style=>"ime-mode:active"} %>
+        </td>
+      </tr>
+      <tr>
+        <th>お名前（フリガナ）<span class="must">※</span></th>
+        <td>
+          セイ<%= f.text_field :family_name_kana, {:class=>"form_m m_left",:style=>"ime-mode:active"} %>
+          メイ<%= f.text_field :first_name_kana, {:class=>"form_m m_left",:style=>"ime-mode:active"} %>
+        </td>
+      </tr>
+      <tr>
+        <th>郵便番号<span class="must">※</span></th>
+        <td>
+          〒<%= f.text_field :zipcode01, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} -%>-<%= f.text_field :zipcode02, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} %>
+          <a href="http://search.post.japanpost.jp/zipcode/" target="_blank">郵便番号を調べる</a><br />
+          <input name="zipcode_input" value="住所自動入力" onclick="address_by_zip('temporary_customer_zipcode01','temporary_customer_zipcode02', null, 'temporary_customer_address_city', 'temporary_customer_address_detail', 'temporary_customer_prefecture_id', 'cart');" type="button" class="btn_s">
+          ※郵便番号を入力後、クリックしてください。
+        </td>
+      </tr>
+      <tr>
+        <th>住所：都道府県<span class="must">※</span></th>
+        <td><%= f.collection_select :prefecture_id, Prefecture.find(:all, :order=>:position), :id, :name, :class=>"form_s" %></td>
+      </tr>
+      <tr>
+        <th>住所：市区町村<span class="must">※</span></th>
+        <td><%= f.text_field :address_city, {:class=>"form_l",:style=>"ime-mode:active"} %><p>(例：千代田区神田神保町)</p></td>
+      </tr>
+      <tr>
+        <th>住所：番地・ビル名<span class="must">※</span></th>
+        <td><%= f.text_field :address_detail, {:class=>"form_l",:style=>"ime-mode:active"} %><p>(例：1-2-3○○○ビル)</p></td>
+      </tr>
+      <tr>
+        <th>電話番号<span class="must">※</span></th>
+        <td><%= f.text_field :tel01, {:class=>"form_s",:style=>"ime-mode:inactive"} %>-<%= f.text_field :tel02, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} %>-<%= f.text_field :tel03, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} %></td>
+      </tr>
+      <tr>
+        <th>FAX番号</th>
+        <td><%= f.text_field :fax01, {:class=>"form_s",:style=>"ime-mode:inactive"} %>-<%= f.text_field :fax02, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} %>-<%= f.text_field :fax03, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} %></td>
+      </tr>
+      <tr>
+        <th>メールアドレス<span class="must">※</span></th>
+        <td><%= f.text_field :email, {:class=>"form_m",:style=>"ime-mode:inactive"} %></td>
+      </tr>
+      <tr>
+        <th>メールアドレス(確認)<span class="must">※</span></th>
+        <td><%= f.text_field :email_confirm, {:class=>"form_m",:style=>"ime-mode:inactive"} %></td>
+      </tr>
+      <tr>
+        <th>性別<span class="must">※</span></th>
+        <td>
+          <% [System::MALE, System::FEMALE].each do | value | %>
+            <%= f.radio_button :sex, value %>
+            <%= content_tag :label, System::SEX_NAMES[value], :for => "customer_sex_%d" % value %>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th>職業</th>
+        <td><%= f.collection_select :occupation_id, Occupation.find(:all, :order=>:position), :id, :name, :class=>"form_m" ,:prompt => "-"%></td>
+      </tr>
+      <tr>
+        <th>生年月日</th>
+        <td><%= f.birthday_select :birthday, :use_month_numbers => true,:start_year =>Time.now.year-70,:end_year=>Time.now.year-10,:default=>{:year=>1980,:month=>1,:day=>1} %></td>
+      </tr>
+    </table>
+      <%= hidden_field_tag "temporary_customer_flag","1"%>
+  <% end %>
+
+  <p id="delivary"><span id="bold" class="tb_t">配送先を指定 </span><br/>
+  <p class="m_top m_btm"><%= check_box_tag 'address_enable', "1", ((params[:back] == "1" or @error_back)&& params[:address_enable].nil?)?false:true %>
+  <em class="required"> ※</em>上記に入力されたご住所と同一の場合は省略可能です。</p></p>
+  <% fields_for :optional_address do |f| %>
+    <table class="tb2">
+      <tr>
+        <th width="130">お名前<span class="must">※</span></th>
+        <td>
+          姓<%= f.text_field :family_name, {:class=>"form_m m_left",:style=>"ime-mode:active"} %>
+          名<%= f.text_field :first_name, {:class=>"form_m m_left",:style=>"ime-mode:active"} %>
+        </td>
+      </tr>
+      <tr>
+        <th>お名前（フリガナ）<span class="must">※</span></th>
+        <td>
+          セイ<%= f.text_field :family_name_kana, {:class=>"form_m m_left",:style=>"ime-mode:active"} %>
+          メイ<%= f.text_field :first_name_kana, {:class=>"form_m m_left",:style=>"ime-mode:active"} %>
+        </td>
+      </tr>
+      <tr>
+        <th>郵便番号<span class="must">※</span></th>
+        <td>
+          〒<%= f.text_field :zipcode01, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} -%>-<%= f.text_field :zipcode02, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} %>
+          <a href="http://search.post.japanpost.jp/zipcode/" target="_blank">郵便番号を調べる</a><br />
+          <input name="zipcode_input" value="住所自動入力" onclick="address_by_zip('optional_address_zipcode01','optional_address_zipcode02', null, 'optional_address_address_city', 'optional_address_address_detail', 'optional_address_prefecture_id', 'cart');" type="button" class="btn_s">
+          ※郵便番号を入力後、クリックしてください。
+        </td>
+      </tr>
+      <tr>
+        <th>住所：都道府県<span class="must">※</span></th>
+        <td><%= f.collection_select :prefecture_id, Prefecture.find(:all, :order=>:position), :id, :name, :class=>"form_s" %></td>
+      </tr>
+      <tr>
+        <th>住所：市区町村<span class="must">※</span></th>
+        <td><%= f.text_field :address_city, {:class=>"form_l",:style=>"ime-mode:active"} %><p>(例：千代田区神田神保町)</p></td>
+      </tr>
+      <tr>
+        <th>住所：番地・ビル名<span class="must">※</span></th>
+        <td><%= f.text_field :address_detail, {:class=>"form_l",:style=>"ime-mode:active"} %><p>(例：1-2-3○○○ビル)</p></td>
+      </tr>
+      <tr>
+        <th>電話番号<span class="must">※</span></th>
+        <td><%= f.text_field :tel01, {:class=>"form_s",:style=>"ime-mode:inactive"} %>-<%= f.text_field :tel02, {:class=>"form_s m_left" ,:style=>"ime-mode:inactive"}%>-<%= f.text_field :tel03, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} %></td>
+      </tr>
+    </table>
+  <% end %>
+    <div class="my_btn2">
+      <%= link_to(image_tag('/images/cart/cart_btn05.gif', :width=>'101', :height=>'28', :alt=>'戻る', :class=>'hoverImg'), :action => 'show') %>
+      <%= image_submit_tag '/images/entry/entry_btn3.gif', :width=>'101', :height=>'28', :alt=>'次へ', :class=>'hoverImg', :action => 'purchase' %>
+    </div>
+<% end %>

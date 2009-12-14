@@ -1,0 +1,22 @@
+<% if @have_style %>
+<table>
+ <tr>
+  <th><%=h @style_name1 %></th>
+  <%- if @have_style2 -%>
+  <th><%=h @style_name2 %></th>
+  <%- end -%>
+  <th>単価(税込)</th>
+  <th>在庫</th>
+ </tr>
+<%- @product_styles.each do |ps| -%>
+ <tr>
+  <td><%=h ps.style_category_name1 %></td>
+  <%- if @have_style2 -%>
+  <td><%=h ps.style_category_name2 %></td>
+  <%- end -%>
+  <td><%= number_with_delimiter ps.sell_price.to_i %></td>
+  <td><%=h stock_mark(ps.actual_count) %></td>
+ </tr>
+<%- end -%>
+</table>  
+<% end %>

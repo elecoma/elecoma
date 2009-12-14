@@ -1,0 +1,27 @@
+<%= render :partial => "base/title", :locals => {:title => "会員情報確認"} %>
+<%= @customer && error_messages_for(:customer) %>
+<div style="background-color:#F3F3EC;">
+    <%= image_tag_mobile "spacer", :width => "1", :height => "2" %>
+    <br/>
+</div>
+以下の内容で登録します。よろしいですか？
+<br/>
+<br/>
+<%= render :partial => 'confirm' %>
+<% form_for :customer, :url => {:action => 'signup_complete'} do |f| %>
+<p>
+    <% [:zipcode01, :zipcode02, :tel01, :tel02, :tel03,
+    :fax01, :fax02, :fax03, :sex, :occupation_id,
+    :family_name, :first_name, :family_name_kana, :first_name_kana,
+    :email_user, :email_user_confirm, :email_domain, :address_city, :address_detail,
+    :birthday, :raw_password, :password_confirm, :receive_mailmagazine, :prefecture_id].each do | column | %>
+    <%= f.hidden_field column -%>
+    <% end %>
+    <%= hidden_field_tag 'password', @customer.raw_password -%>
+</p>
+<div style="text-align:center;">
+    <%= hidden_field_tag 'stage', 3 %>
+    <%= submit_tag '戻る', :name=>'back' %>
+    <%= submit_tag '登録' %>
+</div>
+<% end %>

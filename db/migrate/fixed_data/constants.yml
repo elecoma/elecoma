@@ -1,0 +1,92 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+item0001:
+  id: 1
+  key: <%= Constant::DOMAIN_SOFTBANK %>
+  value: softbank.ne.jp
+  position: 1
+item0002:
+  id: 2
+  key: <%= Constant::DOMAIN_SOFTBANK %>
+  value: d.vodafone.ne.jp
+  position: 2
+item0003:
+  id: 3
+  key: <%= Constant::DOMAIN_SOFTBANK %>
+  value: h.vodafone.ne.jp
+  position: 3
+# ソフトバンクドメインの続きは下のほうへ
+site_url_develop:
+  id: 4
+  key: <%= Constant::SITE_URL_DEVELOP %>
+  value: 'http://localhost:3000/'
+  position: 4
+movement_reason0001:
+  id: 7
+  key: <%= Constant::MOVEMENT_REASON %>
+  value: 棚卸調整
+  position: 1
+movement_reason0002:
+  id: 8
+  key: <%= Constant::MOVEMENT_REASON %>
+  value: メーカー返品
+  position: 2
+movement_reason0003:
+  id: 9
+  key: <%= Constant::MOVEMENT_REASON %>
+  value: 受注可能数調整
+  position: 3
+movement_reason0004:
+  id: 10
+  key: <%= Constant::MOVEMENT_REASON %>
+  value: 発注数調整
+  position: 4
+movement_reason0005:
+  id: 11
+  key: <%= Constant::MOVEMENT_REASON %>
+  value: その他
+  position: 5
+
+  
+item0004:
+  id: 20
+  key: <%= Constant::DOMAIN_SOFTBANK %>
+  value: t.vodafone.ne.jp
+  position: 4
+
+item0005:
+  id: 21
+  key: <%= Constant::DOMAIN_SOFTBANK %>
+  value: c.vodafone.ne.jp
+  position: 5
+
+item0006:
+  id: 22
+  key: <%= Constant::DOMAIN_SOFTBANK %>
+  value: k.vodafone.ne.jp
+  position: 6
+
+item0007:
+  id: 23
+  key: <%= Constant::DOMAIN_SOFTBANK %>
+  value: r.vodafone.ne.jp
+  position: 7
+
+item0008:
+  id: 24
+  key: <%= Constant::DOMAIN_SOFTBANK %>
+  value: n.vodafone.ne.jp
+  position: 8
+
+item0009:
+  id: 25
+  key: <%= Constant::DOMAIN_SOFTBANK %>
+  value: s.vodafone.ne.jp
+  position: 9
+
+item0010:
+  id: 26
+  key: <%= Constant::DOMAIN_SOFTBANK %>
+  value: q.vodafone.ne.jp
+  position: 10
+

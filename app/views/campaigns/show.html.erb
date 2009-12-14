@@ -1,0 +1,94 @@
+<% content_for :head do %>
+    <%= stylesheet_link_tag "front/campaign" %>
+    <%= stylesheet_link_tag "thickbox" %>
+    <%= javascript_include_tag :defaults %>
+    <%= javascript_include_tag "jquery" %>
+    <%= javascript_include_tag "no_confrict" %>
+    <%= javascript_include_tag "thickbox" %>
+<% end %>
+<h2 class="main_t"><%= (@campaign ? h(@campaign.name) : "キャンペーン") %></h2>
+<%= flash[:notice] %>
+<%= flash[:error] %>
+<div id="container" class="clearfix">
+    <% if @campaign %>
+    <div class="m_btm"><%= @free_spaces[@free_space_names[0]] %></div>
+
+    <div class="campaign_box">
+        <% if !@campaign.product_id.blank? && @status == "open" %>
+        <div><img src="/images/common/box_bg_top.gif" width="530" height="5" alt="" /></div>
+        <div id="item_box" class="main_box">
+            <div class="clearfix">
+                <div class="item_pic">
+                    <%= link_to((product_image_tag(@product, :medium, :width=>250)), { :controller => "/image_resource", :action => "show", :id => (@product.large_resource_id || @product.medium_resource_id),:format => "png", :height => 640, :width => 480 }, {:title => "#{@product.name}", :class => "thickbox"} ) %>
+                    <br/>
+                </div>
+                <div class="item_data">
+                    <dl>
+                        <% @product.product_statuses.each do | product_status | %>
+                            <span id="appeal"><%= h_br product_status.status && product_status.status.name %></span>
+                        <% end %>
+                        <dt><%=@product.url.blank? ? h( @product.name ) : link_to(@product.name, @product.url) %></dt>
+                        <dd>価格：<%=h @product.price_label %>円</dd>
+                        <dd>販売期間：<%=h print_date(@product.sale_start_at) %> ～ <%=h print_date(@product.sale_end_at) %></dd>
+                        <% if @product.arrival_expected_date && @product.arrival_expected_date < Date.today %>
+                            <% if @product.product_styles && @product.product_styles.detect(nil){ |p_s| !p_s.actual_count.blank? && p_s.actual_count > 0} -%>
+                        <dd>お届け：<%= @product.delivery_dates_label %></dd>
+                            <% else %>
+                        <dd>入荷未定</dd>
+                            <% end %>
+                            <br/>
+                        <% else %>
+                        <dd>入荷予定日：<%= @product.arrival_date.blank? ? date_jp(@product.arrival_expected_date) : @product.arrival_date %></dd>
+                        <% end %>
+                    </dl>
+                    <%= render :partial  => "base/add_cart", :locals => {:product => @campaign.product, :campaign_id => @campaign.id} %>
+                    <% if @campaign.repeat_application %>
+                        <div id="campaign_caption">
+                            当キャンペーンはお一人様につき１回のみご応募いただくことが出来ます。
+                            <br/>
+                            追加のご購入は可能ですが、ご応募についてはお一人様１回のみの扱いとなりますので、予めご了承ください。
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+            <div class="main_hr"><hr/></div>
+            <p class="description">
+                <%=h_br @product.description %>
+                <br/>
+                <%= ("【サイズ】<br />" + h_br(@product.size_txt) + "<br />" ) unless @product.size_txt.blank? %>
+                <%= ("【素材】<br />" + h_br(@product.material) + "<br />" ) unless @product.material.blank? %>
+                <%= ("【原産国】<br />" + h_br(@product.origin_country) + "<br />" ) unless @product.origin_country.blank? %>
+                <%= ("【重さ】<br />" + h_br(@product.weight) + "<br />" ) unless @product.weight.blank? %>
+                <%= ("【その他、仕様】<br />" + h_br(@product.other) + "<br />" ) unless @product.other.blank? %>
+                <%= ("【入荷日】<br />" + h_br(@product.arrival_date) + "<br />" ) unless @product.arrival_date.blank? %>
+            </p>
+        </div>
+        <!-- /item_box -->
+        <div class="m_btm"><img src="/images/common/box_bg_btm.gif" width="530" height="5" alt="" /></div>
+        <% else %>
+            <%= @free_spaces[@free_space_names[3]] %>
+        <% end %>
+    </div>
+
+    <div class="m_btm"><%= @free_spaces[@free_space_names[1]] %></div>
+
+    <% if @campaign.available? && @status == "open" && @campaign.product_id.blank? %>
+        <br/>
+        <div style="text-align:center;">
+            <% if @admin_preview %>
+                <input type="button" value="応募する" />
+                <br/>
+            <% else %>
+                <%= button_to "応募する", {:action=>"complete", :id=>@campaign.id} %>
+                <br/>
+            <% end %>
+            <% if @campaign.repeat_application %>
+                当キャンペーンはお一人様につき１回のみご応募いただくことが出来ます。
+                <br/>
+                重複してご応募いただくことは出来ませんので、予めご了承ください。
+            <% end %>
+        </div>
+    <% end %>
+    <div class="m_btm"><%= @free_spaces[@free_space_names[2]] %></div>
+    <% end %>
+</div>

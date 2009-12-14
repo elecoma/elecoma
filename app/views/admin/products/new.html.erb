@@ -1,0 +1,16 @@
+<%= stylesheet_link_tag "product/product" %>
+<% @record = @product %>
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>商品登録</h2>
+<% form_for :product, :url => {:action => "confirm"}, :html => {:multipart => true } do |f| %>
+  <%= render :partial => "form", :locals => {:f => f} %>
+  <div class="btn_box">
+    <%= submit_tag "確認する", :class=>"btn" %>
+    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+  </div>
+<% end %>
+
+</div><!-- /メイン -->

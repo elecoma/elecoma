@@ -1,0 +1,175 @@
+<%=h flash[:notice] %>
+<%=h flash[:error] %>
+<% fields_for "order_delivery" do |f| %>
+ <%= f.error_messages %>
+ <table cellspacing="1" class="data">
+  <tr>
+   <th>対応状況</th>
+   <td><%= select_tag "order_delivery[status]", options_for_select(OrderDelivery::STATUS_NAMES.map{|a,b|[b,a]}, @order_delivery.status) %>
+   </td>
+  </tr>
+  <tr>
+   <th>発送日</th>
+   <td>
+     <%= date_select "order_delivery", "shipped_at", :use_month_numbers => true, :include_blank => true %>
+   </td>
+  </tr>
+  <tr>
+   <th>到着日</th>
+   <td>
+     <%= date_select "order_delivery", "delivery_completed_at", :use_month_numbers => true, :include_blank => true %>
+   </td>
+  </tr>
+  <tr>
+   <th>発送伝票番号</th>
+   <td>
+     <%= text_field_tag "order_delivery_ticket", @order_delivery_ticket, :class => "data_m" %>
+   </td>
+  </tr>
+ </table>
+
+ <h3>お客様情報</h3>
+ <br />
+ <table cellspacing="1" class="data">
+  <tr>
+   <th>受注コード</th><td><%=h @order_delivery.order_code %></td>
+   <th>顧客ID</th><td><%=h (@order_delivery.customer_id) %></td>
+  </tr>
+  <tr>
+   <th>受注日</th><td colspan="3"><%= date @order_delivery.received_at %></td>
+  </tr>
+  <tr>
+   <th>顧客名</th><td><%=h @order_delivery.family_name %> <%=h @order_delivery.first_name %></td>
+   <th>顧客名（カナ）</th><td><%=h @order_delivery.family_name_kana %> <%=h @order_delivery.first_name_kana %></td>
+  </tr>
+  <tr>
+   <th>メールアドレス</th><td><%=h @order_delivery.email %></td>
+   <th>TEL</th><td><%=h @order_delivery.tel01 %>-<%=h @order_delivery.tel02 %>-<%=h @order_delivery.tel03%></td>
+  </tr>
+  <tr>
+   <th>住所</th>
+   <td colspan="3">
+     〒<%=h @order_delivery.zipcode01 %>-<%=h @order_delivery.zipcode02 %><br />
+     <%=h @order_delivery.prefecture_name %> <%=h @order_delivery.address_city %> <%=h @order_delivery.address_detail %>
+   </td>
+  </tr>
+  <tr>
+   <th>備考(その他お問い合わせ)</th>
+   <td colspan="3"><%=h_br @order_delivery.message %></td>
+  </tr>
+ </table><br />
+
+ <h3>配送先情報</h3>
+ <br />
+ <table cellspacing="1" class="data">
+  <tr>
+   <th>お名前</th>
+   <td><%= f.text_field "deliv_family_name", :class=>"data_m" %><br /><br /><%= f.text_field "deliv_first_name", :class=>"data_m" %></td>
+   <th>お名前（カナ）</th>
+   <td><%= f.text_field "deliv_family_name_kana", :class=>"data_m" %><br /><br /><%= f.text_field "deliv_first_name_kana", :class=>"data_m" %></td>
+  </tr>
+  <tr>
+   <th>FAX</th>
+   <td colspan="3"><%= f.text_field :deliv_fax01, :class=>"data_s" -%>
+    - <%= f.text_field :deliv_fax02, :class=>"data_s" -%>
+    - <%= f.text_field :deliv_fax03, :class=>"data_s" -%></td>
+  </tr>
+  <tr>
+   <th>郵便番号</th>
+   <td>
+     〒<%= f.text_field "deliv_zipcode01", :class=>"data_s" %>-<%= f.text_field "deliv_zipcode02", :class=>"data_s" %>
+     <input name="zipcode_input" value="住所入力" onclick="address_by_zip('order_delivery_deliv_zipcode01','order_delivery_deliv_zipcode02', 'order_delivery_deliv_pref_name', 'order_delivery_deliv_address_city', 'order_delivery_deliv_address_detail', 'order_delivery_deliv_pref_id', 'admin/orders');" type="button" class="btn_s">
+   </td>
+   <th>TEL</th>
+   <td><%= f.text_field :deliv_tel01, :class=>"data_s" -%>
+    - <%= f.text_field :deliv_tel02, :class=>"data_s" -%>
+    - <%= f.text_field :deliv_tel03, :class=>"data_s" -%></td>
+  </tr>
+  <tr>
+   <th>住所</th>
+   <td colspan="3"><%= f.collection_select "deliv_pref_id", Prefecture.find(:all, :order=>"position"), 'id', 'name' %><br /> <br />
+     <%= f.text_field :deliv_address_city, :class=>"data_l" %><br /><br />
+     <%= f.text_field :deliv_address_detail, :class=>"data_l" %>
+   </td>
+  </tr>
+ </table><br />
+
+ <h3>受注商品情報</h3>
+ <br />
+ <table cellspacing="1" class="data2">
+  <tr>
+   <th class="center">商品コード</th><th class="center">商品名/<br />規格1/<br />規格2</th><th class="center">単価</th><th class="center">数量</th><th class="center">税込み価格</th><th class="center">小計</th>
+  </tr>
+  <% @order_delivery.order_details.each do | detail | %>
+   <tr>
+    <td><%=h detail.product_code %></td>
+    <td><%=h detail.product_name %>/<br /><%=h detail.style_category_name1 %>/<br /><%=h detail.style_category_name2 %></td>
+    <td><%=h detail.price %>円</td>
+    <td><%=h detail.quantity %></td>
+    <td><%= number_with_delimiter(detail.price_with_tax) %>円</td>
+    <td><%= number_with_delimiter(detail.subtotal) %>円</td>
+   </tr>
+  <% end %>
+  <tr>
+   <th colspan="5">小計</th>
+   <td><%=h number_with_delimiter(@order_delivery.subtotal) %>円</td>
+  </tr>
+  <tr>
+   <th colspan="5">値引</th>
+   <td><%=h @order_delivery.discount %>円</td>
+  </tr>
+  <tr>
+   <th colspan="5">送料</th>
+   <td><%=h @order_delivery.deliv_fee %>円</td>
+  </tr>
+  <tr>
+   <th colspan="5">手数料</th>
+   <td><%=h @order_delivery.charge %>円</td>
+  </tr>
+  <tr>
+   <th colspan="5">合計</th>
+   <td><%=h number_with_delimiter(@order_delivery.total) %>円</td>
+  </tr>
+  <tr>
+   <th colspan="5">お支払い合計（合計-使用ポイント）</th>
+   <td><%=h number_with_delimiter(@order_delivery.payment_total) %>円</td>
+  </tr>
+  <tr>
+   <th colspan="6">お支払方法</th>
+  </tr>
+  <tr>
+   <td colspan="6">
+     <%=h @order_delivery.payment_name %>
+   </td>
+  </tr>
+  <tr>
+   <th colspan="5">使用ポイント</th>
+   <td><%=h number_with_delimiter(@order_delivery.use_point) %>ポイント</td>
+  </tr>
+  <tr>
+   <th colspan="5">追加ポイント</th>
+   <td><%=h number_with_delimiter(@order_delivery.add_point) %>ポイント</td>
+  </tr>
+  <tr>
+   <th colspan="6">時間指定</th>
+  </tr>
+  <tr>
+   <td colspan="6">
+    <select id="delivery_time" name="order_delivery[delivery_time_id]">
+      <%= options_for_select @options, @selected %>
+    </select>
+  </tr>
+  <tr>
+   <th colspan="6">SHOPメモ</th>
+  </tr>
+  <tr>
+   <td colspan="6"><%= f.text_area :note, :cols => 100, :rows => 8 %></td>
+  </tr>
+ </table>
+<% end %>
+
+<div class="btn_box">
+  <%= submit_tag "この内容で登録", :confirm => 'この内容で登録してもよろしいでしょうか？', :class => "btn" %>
+  <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+</div>
+

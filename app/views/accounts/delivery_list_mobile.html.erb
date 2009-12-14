@@ -1,0 +1,28 @@
+<%= render :partial => "base/title", :locals => {:title => "お届け先の追加・変更"} %>
+
+   <div><%= flash[:notice] %></div>
+   <div><%= flash[:error] %></div>
+   <%= error_messages_for :delivery_address if @delivery_address %>
+   <% if @delivery_addresses.count < 20 %>
+   <p>
+    <%= link_to @delivery_addresses.count == 0 ? '新しいお届け先の追加・変更' : '新しいお届け先を追加する', :action => :delivery_new %>
+   </p>
+   <% end %>
+   <% if @delivery_addresses.count == 0 %>
+   <div>新しいお届け先はありません</div>
+   <% else %>
+▼お届け先<br />
+    <% @delivery_addresses.each_with_index do | address, i | %>
+<%= i+1 %><br />
+お届け先住所<br />
+      〒<%= address.zipcode01 %>-<%= address.zipcode02 %><br />
+      <%= address.prefecture.name %><%= address.address_city %><br /><%= address.address_detail %><br />
+      <%= address.family_name %> <%= address.first_name %><br />
+<br />
+<div style="text-align:center;">
+      <%= link_to '変更', :action => :delivery_edit, :id => address.id %>
+      <%= link_to '削除', {:action => :delivery_destroy, :id => address.id}, :confirm => '本当に削除しますか？' %>
+</div>
+
+    <% end %>
+   <% end %>

@@ -1,0 +1,25 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+# one:
+#   column: value
+#
+# two:
+#   column: value
+
+valid_success:
+  id: 1
+  form: 1
+  subject: valid_success
+  body: valid_success
+
+form_text:
+  id: 2
+  form: 1
+  subject: form_text
+  body: form_text
+
+form_html:
+  id: 3
+  form: 2
+  subject: form_html
+  body: form_html<br />form_html<font color="red">form_html</font>

@@ -1,0 +1,26 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>顧客管理</h2>
+<%= flash[:notice] %>
+<%= flash[:error] %>
+<% form_for :condition, :url => {:action => 'search'}, :html => {:method => :get} do |f| %>
+  <%= render :partial => "search", :locals=>{:f => f}%>
+<% end %>
+
+<br />
+<% form_tag({:action => 'csv_upload'}, {:multipart => true}) do %>
+<h3>CSVアップロード</h3>
+<br />
+<p>
+  アップロードファイル<br/>
+  <%= file_field_tag(:upload_file) %>
+</p>
+<br />
+<div class="btn_t">
+  <%= submit_tag "アップロード", :class=>"btn_s" %>
+</div>
+<% end %>
+
+</div><!-- /メイン -->

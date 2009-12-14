@@ -1,0 +1,49 @@
+<!--件数・ソート-->
+<div style="text-align:right;background-color:#ffffff;">
+<% if @products.total_entries > 0%>
+  <%=h ((@products.current_page-1)*@products.per_page)+1 %>～<%=h paginate_item_count(@products.current_page, @products.per_page, @products.total_entries) %>&nbsp;(<%=h @products.total_entries %>件中)
+<% end %>
+</div>
+<div style="text-align:center;background-color:#ffffff;"><%= link_order "price" %>│<%= link_order "update" %></div>
+<div style="background-color:#ffffff;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+
+<%- unless @category.blank? %>
+  <%= render :partial => "base/title", :locals => {:title => @category.name} %>
+<% else %>
+  <%= render :partial => "base/title", :locals => {:title => "商品一覧"} %>
+<% end -%>
+
+<%- unless @products.blank? %>
+  <% @products.each do | product | %>
+    <%= product_image_tag(product, :small ,{:width=>"70",:height=>"70",:align=>"left",:style=>"vertical-align:middle; float:left; margin:4px; border:1px solid #666666"}) %>
+    <%= link_to_product product %><br />
+	&yen;<%= product.price_label %><br />
+	<%=h_br product.introduction %><br clear="all" />
+	<div style="clear:both; background-color:#F3F3EC; text-align:center;"><%= image_tag_mobile "border", :width => "226", :height => "2" %><br /></div>
+  <% end %>
+  <div style="clear:both; background-color:#F3F3EC; text-align:center;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+  <div style="background-color:#998A83;"><%= image_tag_mobile "spacer", :width => "100%", :height => "1" %><br /></div>
+
+  <!-- ページング -->
+  <div style="background-color:#ffffff;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
+  <div style="text-align:center;">  <%= will_paginate @products %></div>
+  <div style="text-align:center;"><%= link_order "price" %>│<%= link_order "update" %></div>
+  <div style="background-color:#ffffff;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
+
+<% else %>
+<div>該当商品が見つかりませんでした</div>
+<% end %>
+<!-- ｱｲﾃﾑから探す -->
+<%= render :partial => '/base/category' %>
+
+<!-- 検索 -->
+<div style="text-align:center; color:#96704B; background-color:#fafabe;">
+  <div style="background-color:#fafabe;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
+  <% form_tag( {:controller => "products", :action => "search", :model => @model_name, :only_path=>false}, {:method => "get"}) do %>
+    <span style="color:#666666">&#xE6DC;</span><%= text_field_tag "search", {}, {:size => "15", :maxlength => "20", :style => "width:100px; height:20px;"} %>
+    <%= submit_tag "検索" %>
+  <% end %>
+  <div style="background-color:#fafabe;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+</div>
+
+

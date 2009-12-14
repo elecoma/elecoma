@@ -1,0 +1,43 @@
+<% @list_view.each do | column | %>
+  <% case @model.columns_hash[column].type.to_s 
+  when "integer"
+      if @model.set_field_names[column] %>
+  	<%= @model.set_field_names[column] %> :
+      <% else %>
+        <%= column.to_s %> :
+      <% end %>
+      <%= text_field ("search", column.to_s) %>
+   <% when "string"
+    if @model.set_field_names[column] %>
+      <%= @model.set_field_names[column] %> :
+    <% else %>
+      <%= column.to_s %> :
+    <% end %>
+    <%= text_field ("search", column.to_s) %>
+   <% when "text"
+     if @model.set_field_names[column] %>
+    <%= @model.set_field_names[column] %> :
+    <% else %>
+     <%= column.to_s %>
+      <% end %>
+      <%= text_area ("search", column.to_s) %>
+   <% when "datetime"
+       if @model.set_field_names[column] %>    
+       <%= @model.set_field_names[column] %> :
+    <% else %>     
+       <%= column.to_s %> :
+    <% end %>
+    <%= date_select ("search", "search_"+column.to_s+"_from") %>?<%= date_select ("search", "search_"+column.to_s+"_to") %>
+   <% when "boolean"
+       if @model.set_field_names[column] %>
+       <%= @model.set_field_names[column] %> :
+       <% else %>
+       <%= column.to_s %> :				
+       <% end %>									
+       <%= check_box ("search", column.to_s) %>
+   <% else
+      end %>
+  <br />
+<% end %>
+<br />
+<%= submit_tag "検索" %>

@@ -1,0 +1,40 @@
+<body onload="fn_display_check_table();">
+<style type="text/css">
+
+textarea {
+  width: 500px;
+  height: 150px;
+}
+
+<% 6.times do | idx | %>
+#question<%= idx %>_name {
+  width: 300px;
+}
+
+#td<%= idx %> td {
+  border: none;
+}
+<% end %>
+
+<% 8.times do | idx | %>
+#question_choice<%= idx %>_content {
+  width: 300px;
+}
+<% end %>
+
+</style>
+
+<%= javascript_include_tag "admin/questionnaire" %>
+
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>アンケート登録</h2>
+<% form_tag({:action => "create"}, {:method => "post", :multiple => true}) do %>
+  <%= render :partial => "form" %>
+<% end %>
+
+</div><!-- /メイン -->
+
+</body>

@@ -1,0 +1,2 @@
+module Admin::TotalHelper
+end

@@ -1,0 +1,27 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+# one:
+#   column: value
+#
+# two:
+#   column: value
+
+permit:
+  id: 1
+  name: permit
+  dir_name: permit
+  permit: true
+  feature_type: 2
+not_permit:
+  id: 2
+  name: not_permit
+  dir_name: not_permit
+  permit: false
+  feature_type: 2
+free:
+  id: 3
+  name: free
+  dir_name: free
+  permit: true
+  feature_type: 1
+

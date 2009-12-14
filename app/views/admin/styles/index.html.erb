@@ -1,0 +1,38 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>規格管理</h2>
+<div class="btn_t">
+  <%= button_to '新規登録', new_admin_style_path, {:class=>"btn_s"} %>
+</div>
+<br />
+<%=h flash[:notice] %>
+<%=h flash[:error] %>
+<%= render :partial => "form" %>
+<br />
+<table class="data2" cellspacing="1">
+  <tr>
+    <th>#</th>
+    <th>規格名</th>
+    <th>編集</th>
+    <th>分類登録</th>
+    <th>削除</th>
+    <th>移動</th>
+  </tr>
+  <% @styles && @styles.each_with_index do | style, idx | %>
+  <tr>
+    <td class="t_center"><%=h style.position %></td>
+    <td><%=h style.name %></td>
+    <td class="t_center"><%= link_to "編集", :action=>"index", :id=>style.id %></td>
+    <td class="t_center"><%= link_to "分類登録", {:controller => "/admin/style_categories",  :action => "index", :style_id => style.id} %></td>
+    <td class="t_center"><%= link_to("削除", admin_style_path(style.id), :confirm => "本当に削除しますか？", :method=>"delete" ) if style.style_categories.size == 0 %></td>
+    <td class="t_center">
+      <%= link_to "上", { :action => "up", :id => style.id} if idx != 0 %>
+      <%= link_to "下", { :action => "down", :id => style.id} if idx < @styles.size - 1 %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+</div><!-- /メイン -->

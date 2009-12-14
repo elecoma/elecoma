@@ -1,0 +1,49 @@
+--- 
+target_table_00005: 
+  name: products
+  updated_at: 2008-06-18 11:41:05.833359 +09:00
+  id: 5
+  csv_output_setting_id: 5
+  created_at: 2008-06-18 11:41:05.833359 +09:00
+target_table_00006: 
+  name: customers
+  updated_at: 2008-06-18 11:41:05.962647 +09:00
+  id: 6
+  csv_output_setting_id: 6
+  created_at: 2008-06-18 11:41:05.962647 +09:00
+target_table_00007: 
+  name: campaigns
+  updated_at: 2008-06-18 11:41:06.195536 +09:00
+  id: 7
+  csv_output_setting_id: 7
+  created_at: 2008-06-18 11:41:06.195536 +09:00
+target_table_00008: 
+  name: suppliers
+  updated_at: 2008-06-18 11:41:06.195536 +09:00
+  id: 8
+  csv_output_setting_id: 8
+  created_at: 2008-06-18 11:41:06.195536 +09:00
+target_table_00001: 
+  name: 
+  updated_at: 2008-06-18 10:35:06 +09:00
+  id: 1
+  csv_output_setting_id: 1
+  created_at: 2008-06-18 10:35:06 +09:00
+target_table_00002: 
+  name: 
+  updated_at: 2008-06-18 10:35:06 +09:00
+  id: 2
+  csv_output_setting_id: 2
+  created_at: 2008-06-18 10:35:06 +09:00
+target_table_00003: 
+  name: orders
+  updated_at: 2008-06-18 10:35:06 +09:00
+  id: 3
+  csv_output_setting_id: 3
+  created_at: 2008-06-18 10:35:06 +09:00
+target_table_00004: 
+  name: 
+  updated_at: 2008-06-18 10:35:06 +09:00
+  id: 4
+  csv_output_setting_id: 4
+  created_at: 2008-06-18 10:35:06 +09:00

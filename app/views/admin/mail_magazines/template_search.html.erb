@@ -1,0 +1,52 @@
+<% content_for :head do -%>
+  <%= javascript_include_tag 'admin/mail_magazine' %>
+  <%= javascript_include_tag 'admin/emoji_palette' %>
+<% end -%>
+<%= render :partial => "submenu" %>
+<div id="main"><!-- メイン -->
+<script type="text/javascript">
+  function toConfirm() {
+  	if (document.getElementById('contents[body]').contentDocument != null) {
+		document.getElementById('contents_body').value = document.getElementById('contents[body]').contentDocument.body.innerHTML;
+	}else{
+		document.getElementById('contents_body').value = document.getElementById('contents[body]').value;
+	}
+  }
+</script>
+
+<h2>配信内容設定</h2>
+<%=h flash[:notice] %>
+<%=h flash[:errors] %>
+<table class="data" cellspacing="1">
+  <tr>
+    <th>テンプレート選択</th>
+    <td>
+      <%= select :contents, :template_id, templates_select, {:include_blank=>true},
+            {:onChange => remote_function(:update=>'mail_magazine_edit',
+            :url => {:action => 'template_re_search'}, :with => "'template_id='+value",
+            :before => "Form.disable('edit_form')",
+            :complete => "Form.enable('edit_form')")} %>
+    </td>
+  </tr>
+</table>
+<br />
+<% form_for :contents, :url => {:action => 'confirm'},
+    :html => {:id => 'edit_form'} do |f| %>
+  <%= f.error_messages %>
+  <div id="mail_magazine_edit">
+    <%= render :partial => "mail_contents", :locals => {:f => f} %>
+  </div>
+  <div class="btn_t t_right">
+    <input class="btn_s" type=button value="文字数カウント" id="text_count_button" onclick="fnTextCount('contents[body]');">
+    今までに入力したのは<input type=text size=5 id="text_count">文字です。
+  </div>
+  <br />
+  <%= hidden_field_tag 'customer_ids', @customer_ids %>
+  <div class="btn_box">
+    <%= f.submit "確認する", :class=>"btn", :onclick => "toConfirm()" %>
+    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+  </div>
+
+<% end %>
+
+</div><!-- /メイン -->

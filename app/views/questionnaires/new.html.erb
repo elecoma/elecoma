@@ -1,0 +1,96 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "front/questionnaire" %>
+  <%= javascript_include_tag :defaults %>
+<% end %>
+
+<div id="container" class="clearfix">
+  <ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ", :controller => 'portal', :action => 'show' %></li><li>アンケート</li></ol>
+  <h2 class="main_t">アンケート</h2>
+  <%=h flash[:notice] %>
+  <% if @questionnaire && @questionnaire.operation %>
+  <% form_tag :action=>"confirm", :id => @questionnaire.id do %>
+  <p class="tb_t"><%=h @questionnaire.name %></p>
+  <p class="tb_c"><%= h_br(@questionnaire.content) %></p>
+  <table class="tb2">
+    <% @questions.each_with_index do | question, question_idx | %>
+    <tr>
+      <th><span>質問<%=h question_idx+1 %>：</span>　<%=h question.content %></th>
+    </tr>
+    <tr>
+      <td>
+        <% question_choices = question.question_choices.find(:all, :conditions => ["content is not null or position=?", 1], :order => "position") %>
+        <% question_choices.each_with_index do |question_choice, choice_idx| %>
+          <% if question_choices[0][:format] == QuestionChoice::TEXTAREA %>
+            <%= text_area_tag "answers[#{question.id}]", @answers[question_idx][choice_idx][:answer], :rows=>"5", :style=>"width:100%;" %>
+          <% elsif question_choices[0][:format] == QuestionChoice::TEXTBOX %>
+            <%= text_field_tag "answers[#{question.id}]", @answers[question_idx][choice_idx][:answer], :style=>"width:100%;" %>
+          <% elsif question_choices[0][:format] == QuestionChoice::CHECKBOX %>
+            <%= check_box_tag "answers[#{question.id}][#{question_choice.id}]", @answers[question_idx][choice_idx][:answer], "on"==@answers[question_idx][choice_idx][:answer] %>
+            <label for="question_answer_content">　<%=h question_choice.content %>　</label><br />
+          <% elsif question_choices[0][:format] == QuestionChoice::RADIOBUTTON %>
+            <%= radio_button_tag "answers[#{question.id}]", question_choice.content, question_choice.content==@answers[question_idx][0][:answer] %>
+            <label for="question_answer_content">　<%=h question_choice.content %>　</label><br />
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+  <br />
+
+  <p class="tb_t">回答者情報</p>
+  <p><span class="pnt">※</span>は入力必須項目です。</p>
+  <%= error_messages_for "respondent" if @respondent%>
+  <table class="tb2">
+    <tr>
+      <th>お名前<span class="pnt">※</span></th>
+      <td>
+        姓 <%= text_field "respondent", "customer_family_name", :size => "20" %>
+        名 <%= text_field "respondent", "customer_first_name", :size => "20" %>
+      </td>
+    </tr>
+    <tr>
+      <th>フリガナ<span class="pnt">※</span></th>
+      <td>
+        セイ <%= text_field "respondent", "customer_family_name_kana", :size => "20" %>
+        メイ <%= text_field "respondent", "customer_first_name_kana", :size => "20" %>
+      </td>
+    </tr>
+    <tr>
+      <th>郵便番号<span class="pnt">※</span></th>
+      <td>
+        〒 <%= text_field "respondent", "zipcode01", :size => "3" %> - <%= text_field "respondent", "zipcode02", :size => "4" %> <%= link_to "郵便番号を調べる", "http://search.post.japanpost.jp/zipcode/", {:target => "_blank"} %> <br />
+  		<input name="zipcode_input" class="btn_s" value="住所入力" onclick="address_by_zip('respondent_zipcode01','respondent_zipcode02', 'respondent_prefecture_name', 'respondent_address_city', 'respondent_address_details', 'respondent_prefecture_id', 'questionnaires');" type="button">
+  		※郵便番号を入力後、クリックしてください。
+      </td>
+    </tr>
+    <tr>
+      <th>ご住所<span class="pnt">※</span></th>
+      <td>
+        <%= collection_select "respondent", "prefecture_name", Prefecture.find(:all, :order=>"position"), 'name', 'name', {:include_blank => true} %><br /><br />
+        <%= text_field "respondent", "address_city", :size => "60" %><br />
+        市区町村名（例：千代田区神田神保町）<br />
+        <%= text_field "respondent", "address_details", :size => "60" %><br />
+        番地・ビル名（例：1-3-5）<br />
+        住所は必ず二つに分けてご記入ください。<br />マンション名は必ず記入してください。
+      </td>
+    </tr>
+    <tr>
+      <th>お電話番号<span class="pnt">※</span></th>
+      <td><%= text_field "respondent", "tel01", :size => "4" %> - <%= text_field "respondent", "tel02", :size => "4" %> - <%= text_field "respondent", "tel03", :size => "4" %></td>
+    </tr>
+    <tr>
+      <th>メールアドレス<span class="pnt">※</span></th>
+      <td>
+        <%= text_field "respondent", "email", :size => "60" %><br /><br />
+        <%= text_field "respondent", "email_confirmation", :size => "60" %><br />
+        確認のため2度入力してください。
+      </td>
+    </tr>
+  </table>
+  <div class="btn_box">
+    <%= submit_tag("確認", :class=>"btn_s") %>
+  </div>
+  <% end %>
+  <% end %>
+</div>

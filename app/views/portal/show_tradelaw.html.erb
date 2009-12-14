@@ -1,0 +1,69 @@
+<% content_for :head do %>
+  <%= javascript_include_tag :defaults %>
+  <%= stylesheet_link_tag "front/portal" %>
+<% end %>
+<div id="container" class="clearfix">
+  <ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ", :controller => 'portal', :action => 'show' %></li><li>特定商取引に関する法律に基づく表記</li></ol>
+  <p class="tb_t">特定商取引に関する法律に基づく表記</p>
+  <!--
+  <%# FIXME 当サイトについてみたいなロゴがあると幸せです　%>
+  <%= image_tag '/images/shop/about.gif', :size => "583x31", :alt => "当サイトについて", :class => "route" %> 
+  -->
+  <table class="tb2">
+    <tr>
+      <th width="130">販売業者</th>
+      <td><%=h @law.try(:company) %></td>
+    </tr>
+    <tr>
+      <th>運営責任者</th>
+      <td><%=h @law.try(:manager) %></td>
+    </tr>
+    <tr>
+      <th>住所</th>
+      <td>
+        〒<%=h @law.try(:zipcode) %><br/>
+        <%=h @law.try(:address) %>
+      </td>
+    </tr>
+    <tr>
+      <th>電話番号</th>
+      <td><%=h @law.tel %></td>
+    </tr>
+    <tr>
+      <th>FAX番号</th>
+      <td><%=h @law.fax %></td>
+    </tr>
+    <tr>
+      <th>メールアドレス</th>
+      <td><%=h @law.email %></td>
+    </tr>
+    <tr>
+      <th>URL</th>
+      <td><%=h @law.url %></td>
+    </tr>
+    <tr>
+      <th>商品以外の必要代金</th>
+      <td><%=h_br @law.necessary_charge %></td>
+    </tr>
+    <tr>
+      <th>注文方法</th>
+      <td><%=h_br @law.order_method %></td>
+    </tr>
+    <tr>
+      <th>支払方法</th>
+      <td><%=h_br @law.payment_method %></td>
+    </tr>
+    <tr>
+      <th>支払期限</th>
+      <td><%=h_br @law.payment_time_limit %></td>
+    </tr>
+    <tr>
+      <th>引渡し時期</th>
+      <td><%=h_br @law.delivery_time %></td>
+    </tr>
+    <tr>
+      <th>返品・交換について</th>
+      <td><%=h_br @law.return_exchange %></td>
+    </tr>
+  </table>
+</div>

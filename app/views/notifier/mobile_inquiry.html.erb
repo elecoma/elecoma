@@ -1,0 +1,15 @@
+<%= @mail_template.header %>
+
+<%=h @inquiry.name %>様
+
+以下のお問い合わせを受付致しました。
+確認次第ご連絡いたしますので、少々お待ちください。
+
+■お名前　 <%=h @inquiry.name %>様
+■電話番号　：<%=h @inquiry.tel %>
+■受注番号　：<%=h @inquiry.order_number %>
+■お問い合わせ種別　：<%=h Inquiry::KIND_NAMES[@inquiry.kind] %>
+■お問い合わせの内容
+<%=h @inquiry.body %>
+
+<%= @mail_template.footer %>

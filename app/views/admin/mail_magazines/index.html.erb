@@ -1,0 +1,13 @@
+<% content_for :head do -%>
+  <%= javascript_include_tag 'admin/mail_magazine' %>
+<% end -%>
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>配信先検索条件設定</h2>
+<%=h flash[:notice] %>
+<%=h flash[:errors] %>
+<%= render :partial => "form"%>
+
+</div><!-- /メイン -->

@@ -1,0 +1,25 @@
+<ol id="bread_list" class="m_btm"><li class="bread_top"><a href="/">トップページ</a></li><li><%= link_to "利用規約", :controller => :accounts, :action => :kiyaku %></li><li><%= link_to "会員登録", :controller => :accounts, :action => :signup %></li><li>入力内容確認</li></ol>
+<h2 class="main_t">会員登録</h2>
+<div id="entry">
+<%= @customer && error_messages_for(:customer) %>
+<%= render :partial => 'confirm' %>
+<% form_for :customer, :url => {:action => 'signup_complete'} do |f| %>
+  <p>
+    <% [ :zipcode01, :zipcode02, :tel01, :tel02, :tel03,
+        :fax01, :fax02, :fax03, :sex, :occupation_id,
+        :family_name, :first_name, :family_name_kana, :first_name_kana,
+        :email, :address_city, :address_detail,
+        :birthday, :raw_password, :receive_mailmagazine, :prefecture_id,
+        :password_confirm, :email_confirm
+       ].each do | column | %>
+      <%= f.hidden_field column -%>
+    <% end %>
+
+    <%= hidden_field_tag 'password', @customer.raw_password -%>
+    <div class="my_btn2">
+      <%= link_to_function image_tag("/images/mypage/btn02.gif", :width=>"101", :height=>"28", :alt=>"戻る", :class=>"hoverImg"), 'history.back()' %>
+      <%= image_submit_tag("/images/mypage/btn03.gif", :width=>"101", :height=>"28", :alt=>"送信", :class=>"hoverImg") %>
+    </div>
+  </p>
+<% end %>
+</div>

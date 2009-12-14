@@ -1,0 +1,78 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+government_worker:
+  id: 1
+  position: 1
+  name: 公務員
+consultant:
+  id: 2
+  position: 2
+  name: コンサルタント
+computer_engineer:
+  id: 3
+  position: 3
+  name: コンピュータ関連技術職
+engineer:
+  id: 4
+  position: 4
+  name: コンピュータ関連以外の技術職
+banker:
+  id: 5
+  position: 5
+  name: 金融関係
+doctor:
+  id: 6
+  position: 6
+  name: 医師
+lower:
+  id: 7
+  position: 7
+  name: 弁護士
+office_worker:
+  id: 8
+  position: 8
+  name: 総務・人事・事務
+salesman:
+  id: 9
+  position: 9
+  name: 営業・販売
+r_and_d:
+  id: 10
+  position: 10
+  name: 研究・開発
+chindon:
+  id: 11
+  position: 11
+  name: 広報・宣伝
+planner:
+  id: 12
+  position: 12
+  name: 企画・マーケティング
+designer:
+  id: 13
+  position: 13
+  name: デザイン関係
+manager:
+  id: 14
+  position: 14
+  name: 会社経営・役員
+publisher:
+  id: 15
+  position: 15
+  name: 出版・マスコミ関係
+student:
+  id: 16
+  position: 16
+  name: 学生・フリーター
+housewife:
+  id: 17
+  position: 17
+  name: 主婦
+others:
+  id: 18
+  position: 18
+  name: その他
+unknown:
+  id: 19
+  position: 19
+  name: 不明

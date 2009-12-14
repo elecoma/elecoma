@@ -1,0 +1,90 @@
+<div style="background-color: rgb(250, 207, 210);">
+  <%= image_tag_mobile "title_pink", :width => "100%", :height => 6 %>
+  <%= image_tag_mobile "spacer", :width => "1", :height => "4" %>
+  <span style="color: rgb(205, 37, 37);">◆</span>
+  <span style="color: rgb(95, 67, 71);">アンケート</span>
+</div>
+
+<% form_tag :action=>"complete", :id=>@questionnaire.id do %>
+  <p><span style="color: rgb(205, 37, 37);">◆</span><%=h @questionnaire.name %><br/ >
+  <%=h @questionnaire.content %></p>
+  <% @questions.each_with_index do | question, question_idx | %>
+    <span style="font-weight:bold">質問<%=h question_idx+1 %>：</span>　<%=h question.content %><br/>
+    <% if question.question_choices[0][:format] == QuestionChoice::CHECKBOX %>
+      <% if @answers[question_idx].length > 0 %>
+        <% @flg_data = true %>
+        <% @answers[question_idx].each do | answer | %>
+          <% if answer.answer %>
+            <% @flg_data = nil %>
+              <%=h answer.question_choice.content %><br />
+          <% end %><!-- if answer.answer -->
+        <% end %><!-- @answers[question_idx].each-->
+        <% if @flg_data %>
+          <br />
+        <% end %><!-- if @flg_data -->
+      <% else %><!-- if @answers[question_idx].length > 0 -->
+        回答なし<br />
+      <% end %><!-- if @answers[question_idx].length > 0 -->
+    <% else %><!-- if question.question_choices[0][:format] == QuestionChoice::CHECKBOX -->
+      <% if @answers[question_idx][0].blank? %>
+        回答なし<br />
+      <% else %>
+        <%=h @answers[question_idx][0][:answer] %><br />
+      <% end %>
+    <% end %><!-- if question.question_choices[0][:format] == QuestionChoice::CHECKBOX -->
+  <% end %><!-- @questions.each_with_index -->
+
+    <% @questions.each_with_index do | question, question_idx | %>
+     <% if question.question_choices[0][:format] == QuestionChoice::CHECKBOX %>
+        <% question.question_choices.find(:all, :order=>"position").each_with_index do | question_choice, choice_idx | %>
+          <%= hidden_field_tag "answers[#{question.id}][#{question_choice.id}][question_id]", @answers[question_idx][choice_idx][:question_id] %>
+          <%= hidden_field_tag "answers[#{question.id}][#{question_choice.id}][question_choice_id]", @answers[question_idx][choice_idx][:question_choice_id] %>
+          <%= hidden_field_tag "answers[#{question.id}][#{question_choice.id}][question_position]", @answers[question_idx][choice_idx][:question_position] %>
+          <%= hidden_field_tag "answers[#{question.id}][#{question_choice.id}][answer]", @answers[question_idx][choice_idx][:answer] %>
+        <% end %>
+      <% else %>
+        <%= hidden_field_tag "answers[#{question.id}][question_id]", @answers[question_idx][0][:question_id] %>
+        <%= hidden_field_tag "answers[#{question.id}][question_choice_id]", @answers[question_idx][0][:question_choice_id] %>
+        <%= hidden_field_tag "answers[#{question.id}][question_position]", @answers[question_idx][0][:question_position] %>
+        <%= hidden_field_tag "answers[#{question.id}][answer]", @answers[question_idx][0][:answer] %>
+      <% end %>
+    <% end %>
+
+    <br />
+
+  <p><span style="color: rgb(205, 37, 37);">◆</span>回答者情報<br />
+  ※印は入力必須項目です。</p>
+  <%= error_messages_for "respondent" %>
+  ※お名前<br />
+  <%=h @respondent.customer_family_name %>　<%=h @respondent.customer_first_name %><br /><br />
+  ※フリガナ<br />
+  <%=h @respondent.customer_family_name_kana %>　<%=h @respondent.customer_first_name_kana %><br /><br />
+  郵便番号<br />
+  〒 <%=h @respondent.zipcode01 %> - <%=h @respondent.zipcode02 %><br /><br />
+  ※ご住所<br />
+  <%=h @respondent.prefecture_name %><%=h @respondent.address_city %><br />
+  <%=h @respondent.address_details %><br /><br />
+  ※お電話番号<br />
+  <%= @respondent.tel01 %> - <%=h @respondent.tel02 %> - <%=h @respondent.tel03 %><br /><br />
+  ※メールアドレス<br />
+  <%=h @respondent.email %><br /><br />
+
+  <%= hidden_field "respondent", "customer_family_name" %>
+  <%= hidden_field "respondent", "customer_first_name" %>
+  <%= hidden_field "respondent", "customer_first_name_kana" %>
+  <%= hidden_field "respondent", "customer_family_name_kana" %>
+  <%= hidden_field "respondent", "zipcode01" %>
+  <%= hidden_field "respondent", "zipcode02" %>
+  <%= hidden_field "respondent", "prefecture_name" %>
+  <%= hidden_field "respondent", "address_city" %>
+  <%= hidden_field "respondent", "address_details" %>
+  <%= hidden_field "respondent", "tel01" %>
+  <%= hidden_field "respondent", "tel02" %>
+  <%= hidden_field "respondent", "tel03" %>
+  <%= hidden_field "respondent", "email" %>
+
+  <div id="btn_box">
+    <input type="button" value="戻る" onClick="history.back()">
+    <%= submit_tag ("送信する") %>
+  </div>
+<% end %>

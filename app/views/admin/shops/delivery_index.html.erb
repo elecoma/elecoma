@@ -1,0 +1,42 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>配送業者登録</h2>
+<br />
+<div class="btn_t">
+  <input type="button" class="btn_s" value="配送業者・配送料を追加" onclick="location.href = '/admin/shops/delivery_new'">
+</div>
+<br />
+<%= flash[:notice] %>
+<%= flash[:error] %>
+ <table class="data2" cellspacing="1" >
+  <tr>
+   <th class="result_title">配送業者</th>
+   <th class="result_title">編集</th>
+   <th class="result_title">削除</th>
+   <th class="result_title">移動</th>
+  </tr>
+  <% @delivery_traders.each_with_index do | delivery_trader,index | %>
+   <tr>
+    <td><%=h  delivery_trader.name  %></td>
+    <td class="t_center"><%= link_to '編集', :action => 'delivery_edit', :id => delivery_trader.id %></td>
+    <td class="t_center">
+      <% if delivery_trader.payments.blank? %>
+        <%= link_to '削除', {:action => 'destroy', :id => delivery_trader.id, :model => @model_name, :return_act=>"delivery_index"}, :confirm=>"本当に削除しますか？", :method => :delete %>
+      <% end %>
+    </td>
+    <td class="t_center">
+      <% if index > 0 -%>
+        <%= link_to "上へ ", :action => "up", :id => delivery_trader.id, :model => @model_name, :return_act => "delivery_index"  %>
+      <% end -%>
+      <% if index < @delivery_traders.size-1 -%>
+        <%= link_to "下へ", :action => "down", :id => delivery_trader.id, :model => @model_name, :return_act => "delivery_index" %>
+      <% end -%>
+    </td>
+   </tr>
+  <% end %>
+ </table>
+  <%= will_paginate @delivery_traders %>
+
+</div><!-- /メイン -->

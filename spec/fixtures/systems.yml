@@ -1,0 +1,6 @@
+load_by_system_test_id_1:
+  id: 1
+  buying_rule: 1
+  tax: 5
+  tax_rule: 2
+  free_delivery_rule: 2500

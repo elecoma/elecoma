@@ -1,0 +1,14 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+# one:
+#   column: value
+#
+# two:
+#   column: value
+
+feature1:
+  id: 1
+  product_id: 1
+  feature_id: 1
+  position: 1
+

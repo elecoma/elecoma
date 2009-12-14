@@ -1,0 +1,36 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "front/entry" %>
+<% end %>
+
+<h2 class="main_t">パスワードを忘れた方</h2>
+
+<p class="m_btm">
+  ウェブショップ用パスワードを忘れた方は、当ページより再度パスワードを設定いただけます。<br />
+  ご登録頂いている内容を入力して下さい。
+</p>
+<p><%= flash[:notice] %></p>
+<%= error_messages_for(:input) if @input %>
+<% form_for :input, :url => {:action => 'salvage_complete'} do |f| %>
+  <table class="tb2">
+    <tr>
+      <th width="130">メールアドレス</th>
+      <td><%= f.text_field :email, {:class=>"form_m",:style=>"ime-mode:inactive"} %></td>
+    </tr>
+    <tr>
+      <th>お名前(漢字)</th>
+      <td>
+        姓<%= f.text_field :family_name, {:class=>"form_m m_left",:style=>"ime-mode:active"} %>
+        名<%= f.text_field :first_name, {:class=>"form_m m_left",:style=>"ime-mode:active"} %>
+      </td>
+    </tr>
+    <tr>
+      <th>生年月日</th>
+      <td><%= f.birthday_select :birthday , :use_month_numbers => true,:start_year =>Time.now.year-70,:end_year=>Time.now.year-10,:default=>{:year=>1980,:month=>1,:day=>1}%></td>
+    </tr>
+    <tr>
+      <th>電話番号</th>
+      <td><%= f.text_field :tel01, {:class=>"form_s",:style=>"ime-mode:inactive"} %>-<%= f.text_field :tel02, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} %>-<%= f.text_field :tel03, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} %></td>
+    </tr>
+  </table>
+  <div class="my_btn"><%= image_submit_tag("/images/mypage/btn03.gif", :width=>"101", :height=>"28", :alt=>"送信", :class=>"hoverImg") %></div>
+<% end %>

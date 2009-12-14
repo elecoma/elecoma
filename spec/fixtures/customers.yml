@@ -1,0 +1,440 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+login_customer1:
+  id: 1
+  family_name: load_test
+  created_at: 2008-05-19
+  updated_at: 2008-05-19
+have_cart_user:
+  id: 2
+  family_name: have_cart_user
+  created_at: 2008-05-19
+  updated_at: 2008-05-19
+  family_name_kana: "カートアリ"
+  first_name: have_cart_user
+  first_name_kana: "カートアリ"
+  email: cartari@hoge.com
+  password: <%= Customer.encode_password 'hogehoge' %>
+  created_at: 2008-05-19
+  updated_at: 2008-05-19
+  zipcode01: 111
+  zipcode02: 2222
+  prefecture_id: 1
+  address_city: リマ
+  address_detail: インダー
+  tel01: '012'
+  tel02: '222'
+  tel03: '3333'
+  sex: 2
+  receive_mailmagazine: 1
+reminder_customer:
+  id: 3
+  family_name: reminder_customer
+  family_name_kana: "リマインダーカスタマー"
+  first_name: reminder_customer
+  first_name_kana: "リマインダーカスタマー"
+  email: hoge@hoge.com
+  password: <%= Customer.encode_password 'hogehoge' %>
+  created_at: 2008-05-19
+  updated_at: 2008-05-19
+  zipcode01: 111
+  zipcode02: 2222
+  prefecture_id: 1
+  address_city: リマ
+  address_detail: インダー
+  tel01: '012'
+  tel02: '222'
+  tel03: '3333'
+  sex: 2
+  receive_mailmagazine: 1
+no_reminder_customer:
+  id: 4
+  family_name: no_reminder_customer
+  family_name_kana: "ノーリマインダーカスタマー"
+  first_name: reminder_customer
+  first_name_kana: "ノーリマインダーカスタマー"
+  email: hoge4@hoge.com
+  password: <%= Customer.encode_password 'hogehoge' %>
+  created_at: 2008-05-19
+  updated_at: 2008-05-19
+have_mobile_email_customer:
+  id: 5
+  family_name: have_mobile_email_customer
+  family_name_kana: "ハブモバイルイーメイルカスタマー"
+  first_name: have_mobile_email_customer
+  first_name_kana: "ハブモバイルイーメイルカスタマー"
+  email: hoge5@hoge.com
+  password: <%= Customer.encode_password 'hogehoge' %>
+  created_at: 2008-05-19
+  updated_at: 2008-05-19
+  zipcode01: 111
+  zipcode02: 2222
+  prefecture_id: 1
+  address_city: 世田谷区
+  address_detail: 一丁目
+  tel01: '012'
+  tel02: '222'
+  tel03: '3333'
+  sex: 2
+  receive_mailmagazine: 1
+login_customer:
+  id: 6
+  email: hoge6@hoge.com
+  password: <%= Customer.encode_password 'hogehoge' %>
+  activate: <%= Customer::TOUROKU %>
+  mobile_carrier: <%= Customer::NOT_MOBILE %>
+fail_reminder:
+  id: 7
+  email: hoge7@hoge.com
+  password: <%= Customer.encode_password 'hogehoge' %>
+product_buyer:
+  id: 8
+  family_name: product_buyer
+  first_name: product_buyer
+  family_name_kana: 'プロダクト'
+  first_name_kana: 'バイヤー'
+  zipcode01: 111
+  zipcode02: 2222
+  tel01: 123
+  tel02: 4567
+  tel03: 8901
+  activate: 2
+  address_city: '鎌倉市'
+  address_detail: '鎌倉1-1-2'
+  prefecture_id: 1
+  email: buyer@kamakura.com
+  password: <%= Customer.encode_password 'buyer' %>
+  mobile_carrier: <%= Customer::NOT_MOBILE %>
+  created_at: 2008-05-19
+  updated_at: 2008-05-19
+  point: 10
+member_female:
+  id: 9
+  family_name: 会員
+  first_name: 花子
+  sex: 2
+  activate: 2
+  age: ~
+  occupation_id: 19
+member_male:
+  id: 10
+  family_name: 会員
+  first_name: 太郎
+  sex: 1
+  activate: 2
+  age: 9
+  occupation_id: 1
+guest_female:
+  id: 11
+  family_name: 非会員
+  first_name: 花子
+  sex: 2
+  activate: 4
+  age: 10
+  occupation_id: 19
+guest_male:
+  id: 12
+  family_name: 非会員
+  first_name: 太郎
+  sex: 1
+  activate: 4
+  age: 29
+  occupation_id: 1
+have_delivary_address:
+  id: 13
+  family_name: 富山
+  first_name: 一郎
+  family_name_kana: トヤマ
+  first_name_kana: イチロウ
+  age: 0
+  sex: 1
+  activate: 2
+  tel01: 012
+  tel02: 222
+  tel03: 3333
+  fax01: 012
+  fax02: 221
+  fax03: 0292
+  prefecture_id: 1
+  occupation_id: 1
+  address_city: 富山市
+  address_detail: 富山町
+  email: toyama@hoge.com
+  password: <%= Customer.encode_password 'toyama' %>
+valid_signup:
+  id: 14
+  family_name: 大原
+  first_name: 正太
+  family_name_kana: オオハラ
+  first_name_kana: ショウタ
+  zipcode01: 111
+  zipcode02: 2222
+  prefecture_id: 1
+  address_city: 弁当
+  address_detail: 海苔
+  email: sho-chan@example.com
+  tel01: '012'
+  tel02: '222'
+  tel03: '3333'
+  sex: 1
+  password: <%= Customer.encode_password 'obakenoq' %>
+  receive_mailmagazine: 1
+  activate: <%= Customer::TOUROKU %>
+  mobile_carrier: <%= Customer::NOT_MOBILE %>
+invalid_signup:
+  id: 15
+  family_name: 大原
+  first_name: 伸一
+  fax01: '03'
+  fax01: '3333'
+  fax01: '9999'
+  occupation_id: 1
+  birthday: 2048-10-10
+  password: <%= Customer.encode_password 'megane2000' %>
+have_orders:
+  id: 16
+  email: have_orders@example.com
+  password: <%= Customer.encode_password 'have_orders' %>
+  activate: <%= Customer::TOUROKU %>
+  mobile_carrier: <%= Customer::NOT_MOBILE %>
+withdrawn_customer:
+  id: 17
+  activate: <%= Customer::TEISHI %>
+  family_name: 葛西
+  first_name: 臨海公園
+  family_name_kana: カサイ
+  first_name_kana: リンカイコウエン
+  zipcode01: '134'
+  zipcode02: '0086'
+  prefecture_id: 13
+  address_city: 江戸川区
+  address_detail: 臨海町6-2-1
+  email: kasai@example.com
+  tel01: '03'
+  tel02: '5696'
+  tel03: '1331'
+  sex: 1
+  password: <%= Customer.encode_password 'rinkai' %>
+  receive_mailmagazine: 1
+docomo_user:
+  id: 18
+  family_name: 日本電電
+  first_name: 度個茂
+  family_name_kana: エヌティティ
+  first_name_kana: ドコモ
+  zipcode01: '330'
+  zipcode02: '0800'
+  prefecture_id: 1
+  address_city: 電話
+  address_detail: 大名
+  tel01: '012'
+  tel02: '222'
+  tel03: '3333'
+  sex: 1
+  email: user@docomo.ne.jp
+  password: <%= Customer.encode_password 'docomo' %>
+  receive_mailmagazine: 1
+  mobile_carrier: <%= Customer::DOCOMO %>
+  activate: <%= Customer::TOUROKU %>
+kari:
+  id: 19
+  email: kari@example.ne.jp
+  password: <%= Customer.encode_password 'kari' %>
+  activation_key: abcdefgh
+  activate: <%= Customer::KARITOUROKU %>
+mail_check:
+  id: 20
+  email: test@example.ne.jp
+  receive_mailmagazine: 1
+  activate: <%= Customer::TOUROKU %>
+customer_management:
+  id: 21
+  zipcode01: 103
+  zipcode02: 0027
+  tel01: '03'
+  tel02: '5299'
+  tel03: '2102'
+  fax01: '03'
+  fax02: '5299'
+  fax03: '2103'
+  sex: 1
+  age: 20
+  point: 0
+  occupation_id: 1
+  prefecture_id: 13
+  family_name: 山田
+  first_name: 太郎
+  family_name_kana: ヤマダ
+  first_name_kana: タロウ
+  email: yamada@kbmj.com
+  mobile_serial: 
+  password: <%= Customer.encode_password 'yamada' %>
+  address_city: 中央区日本橋2-7-9
+  address_detail: 大手町建物日本橋ビル4F
+  login_id: yamada
+  birthday: 1995-08-20
+  activate: 2
+  receive_mailmagazine: 1
+  mobile_carrier: Customer::DOCOMO
+  black: f
+
+<% (22..30).each do |idx| %>
+customer_<%= idx %>:
+  id: <%= idx %>
+  family_name: "顧客名字"
+  family_name_kana: "コキャクミョウジ"
+  first_name: "顧客名前"
+  first_name_kana: "コキャクナマエ"
+  email: hoge@hoge.com
+  password: <%= Customer.encode_password 'hogehoge' %>
+  created_at: 2008-05-19
+  updated_at: 2008-05-19
+  zipcode01: 111
+  zipcode02: 2222
+  prefecture_id: 1
+  address_city: "住所"
+  address_detail: "住所詳細"
+  tel01: '012'
+  tel02: '222'
+  tel03: '3333'
+  sex: 2
+  receive_mailmagazine: 1
+<% end %>
+#black顧客
+black_customer:
+  id: 31
+  zipcode01: '103'
+  zipcode02: '0027'
+  tel01: '03'
+  tel02: '5299'
+  tel03: '2102'
+  fax01: '03'
+  fax02: '5299'
+  fax03: '2103'
+  sex: 1
+  age: 20
+  point: 0
+  occupation_id: 1
+  prefecture_id: 13
+  family_name: 山田
+  first_name: 太郎
+  family_name_kana: ヤマダ
+  first_name_kana: タロウ
+  email: kbmj31@kbmj.com
+  mobile_serial: 
+  password: <%= Customer.encode_password 'yamada' %>
+  address_city: 中央区日本橋2-7-9
+  address_detail: 大手町建物日本橋ビル4F
+  login_id: yamada
+  birthday: 1995-08-20
+  activate: 2
+  receive_mailmagazine: 1
+  mobile_carrier: Customer::DOCOMO
+  black: t
+#有効な顧客（ポイントなし）  
+valid_customer:
+  id: 32
+  zipcode01: '000'
+  zipcode02: '0000'
+  tel01: '010'
+  tel02: '1111'
+  tel03: '2222'
+  sex: 1
+  prefecture_id: 13
+  family_name: てすと
+  first_name: てすと
+  family_name_kana: テスト
+  first_name_kana: テスト
+  email: test@kbmj.com
+  activation_key: abcdefg
+  password: <%= Customer.encode_password '111111' %>
+  address_city: 渋谷区
+  address_detail: 恵比寿
+  birthday: 1980-1-1
+  activate: 2
+  receive_mailmagazine: 0
+  mobile_type: 0
+#有効な顧客（ポイント付き）  
+valid_customer_with_points:
+  id: 33
+  zipcode01: '331'
+  zipcode02: '0812'
+  tel01: '048'
+  tel02: '1111'
+  tel03: '2222'
+  sex: 1
+  prefecture_id: 11
+  family_name: てすと
+  first_name: てすと
+  family_name_kana: テスト
+  first_name_kana: テスト
+  email: test33@kbmj.com
+  activation_key: abcdefg
+  password: <%= Customer.encode_password '111111' %>
+  address_city: さいたま市
+  address_detail: 北区
+  birthday: 1980-1-1
+  activate: 2
+  receive_mailmagazine: 0
+  mobile_type: 0
+  point: 1000
+#非会員
+nonmember_customer:
+  id: 34
+  activate: <%= Customer::HIKAIIN %>
+  family_name: 葛西
+  first_name: 臨海公園
+  family_name_kana: カサイ
+  first_name_kana: リンカイコウエン
+  zipcode01: '134'
+  zipcode02: '0086'
+  prefecture_id: 13
+  address_city: 江戸川区
+  address_detail: 臨海町6-2-1
+  email: kasai_nonmember@example.com
+  tel01: '03'
+  tel02: '5696'
+  tel03: '1331'
+  sex: 1
+  password: <%= Customer.encode_password 'rinkai' %>
+  receive_mailmagazine: 1
+valid_signup2:
+  id: 35
+  family_name: 大原a
+  first_name: 正太a
+  family_name_kana: オオハラ
+  first_name_kana: ショウタ
+  zipcode01: 111
+  zipcode02: 2222
+  prefecture_id: 1
+  address_city: 弁当
+  address_detail: 海苔
+  email: sho-chana@example.com
+  tel01: '012'
+  tel02: '222'
+  tel03: '3333'
+  sex: 1
+  password: <%= Customer.encode_password 'obakenoq' %>
+  receive_mailmagazine: 1
+  activate: <%= Customer::TOUROKU %>
+  mobile_carrier: <%= Customer::NOT_MOBILE %>
+new_customer:
+  id: 36
+  family_name: aaa
+  first_name: aaa
+  family_name_kana: オオハラ
+  first_name_kana: ショウタ
+  zipcode01: 111
+  zipcode02: 2222
+  prefecture_id: 1
+  address_city: 弁当
+  address_detail: 海苔
+  email: new_test@example.com
+  tel01: '012'
+  tel02: '222'
+  tel03: '3333'
+  sex: 2
+  password: <%= Customer.encode_password 'obakenoq' %>
+  receive_mailmagazine: 1
+  activate: <%= Customer::TOUROKU %>
+  mobile_carrier: <%= Customer::NOT_MOBILE %>

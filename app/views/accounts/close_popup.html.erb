@@ -1,0 +1,5 @@
+<% content_for :head do %>
+ <%= javascript_include_tag 'close_popup' %>
+ <meta http-equiv="refresh" content="0; URL=<%=url_for :controller=>:cart, :action => :shipping %>" />
+<% end %>
+<p><%= link_to 'ご購入を続ける', :controller=>:cart, :action => :shipping %></p>

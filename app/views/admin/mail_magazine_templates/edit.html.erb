@@ -1,0 +1,11 @@
+<%= stylesheet_link_tag "mail_magazine/mail_magazine_template" %>
+
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>配信内容設定：新規登録</h2>
+<%=h flash[:notice] %>
+<%=h flash[:error] %>
+<%= render :partial=>"form" %>
+</div><!-- /メイン -->

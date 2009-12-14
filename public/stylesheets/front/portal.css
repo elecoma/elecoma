@@ -1,0 +1,166 @@
+@charset "utf-8";
+
+#container {
+  background: url();
+  width: 735px;
+  margin: 0 auto;
+}
+
+.main_t {
+  width: 690px;
+  background: url(/images/common/main_t_l.gif) no-repeat;
+}
+
+#cart {
+  width: 715px;
+  margin: 0 auto;
+}
+
+.route {
+  display: block;
+  width: 583px;
+  margin: 10px auto 20px;
+}
+
+.error_mes {
+  width: 692px;
+  padding: 10px;
+  border: 1px solid #ff0000;
+  margin: 5px 0;
+  color: #ff0000;
+}
+
+.cart_btn {
+  width: 298px;
+  margin: 0 auto;
+}
+
+.cart_btn img {
+  margin: 0 7px;
+  float: left;
+}
+
+/*---�t�H�[�����i---*/
+#cart input,
+#cart select {
+  border: 1px solid #999999;
+}
+
+#cart .radio,
+#cart .chk {
+  border: none;
+}
+
+.form_s {
+  width: 80px;
+  margin-right: 10px;
+}
+
+.form_s2 {
+  width: 60px;
+}
+
+.m_left {
+  margin-leftt: 5px;
+}
+
+.total2 {
+  width: 150px;
+  float: right;
+  text-align: center;
+}
+
+.reculc {
+  text-align: right;
+  margin: -10px 0 20px;
+  font-size: 80%;
+  color: #999999;
+}
+
+.tb_t {
+  width: 700px;
+}
+
+/*---�������---*/
+
+.comp {
+  text-align: center;
+  font-size: 140%;
+  font-weight: bold;
+  margin: 40px 0 10px;
+}
+
+.comp_s {
+  width: 420px;
+  margin: 0 auto 30px;
+  line-height: 130%;
+}
+
+.inq {
+  width: 300px;
+  margin: 0 auto 20px;
+}
+
+.inq dt {
+  text-align: center;
+  padding: 3px 0 7px;
+}
+
+.inq dd {
+  padding: 2px 0;
+}
+
+/*---���x������@�E���͂�����---*/
+#pt_box {
+  background: url(/images/cart/cart_bg.gif) repeat-y;
+  width: 545px;
+  margin: 0 auto 30px;
+}
+
+#payment {
+  width: 260px;
+  float: left;
+}
+
+#time {
+  width: 260px;
+  float: right;
+}
+
+#payment dd,
+#time dd {
+  padding: 0 20px;
+}
+
+#payment dd p,
+#time dd p {
+  line-height: 120%;
+}
+
+#payment ul {
+  margin: 15px;
+}
+
+#payment li {
+  margin: 5px;
+}
+
+#time select {
+  margin: 40px 0 20px 15px;
+  width: 100px;
+}
+.must {
+  color: #ff0000;
+}
+.btn_s {
+  height: 22px;
+  background: url(/images/btn_s.gif) repeat-x;
+  cursor: pointer;
+}
+.errorExplanation {
+  width: 692px;
+  padding: 10px;
+  border: 1px solid #ff0000;
+  margin: 5px 0;
+  color: #ff0000;
+}

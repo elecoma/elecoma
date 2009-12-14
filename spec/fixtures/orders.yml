@@ -1,0 +1,114 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  id: 1
+  customer_id: 1
+  code: order0001
+member_female:
+  id: 2
+  customer_id: 9
+  code: order0002
+member_male:
+  id: 3
+  customer_id: 10
+guest_female:
+  id: 4
+  customer_id: 11
+guest_male:
+  id: 5
+  customer_id: 12
+
+history_00:
+  id: 6
+  customer_id: 16
+  received_at: 2008-01-02 21:04:03
+  code: history_00
+history_01:
+  id: 7
+  customer_id: 16
+  received_at: 2008-03-02 01:00:00
+  code: history_01
+history_02:
+  id: 8
+  customer_id: 16
+  received_at: 2008-03-02 00:59:59
+  code: history_02
+
+for_recall:
+  id: 9
+  code: '0009'
+  customer_id: 16
+
+# 受注集計用
+# 発送済み 8 月購入
+<% (1..31).each do |i| 
+ id = i + 3000
+%>
+commited_august_<%= i %>:
+  id: <%= id %>
+  customer_id: 9
+  received_at: <%= "2008-08-%02d 00:00:00" % i %>
+<% end %>
+# 未発送 8 月購入
+<% (1..31).each do |i| 
+ id = i + 3100
+%>
+not_commited_august_<%= i %>:
+  id: <%= id %>
+  customer_id: 10
+  received_at: <%= "2008-08-%02d 00:00:00" % i %>
+<% end %>
+# 発送済み 9 月購入
+<% (1..30).each do |i| 
+ id = i + 3200
+%>
+commited_september_<%= i %>:
+  id: <%= id %>
+  customer_id: 9
+  received_at: <%= "2008-09-%02d 00:00:00" % i %>
+<% end %>
+
+#会員1商品購入
+#購入商品はproduct_id＝18（キャンペーン付き＋送料無料）
+customer_buy_one:
+  id: 3233
+  customer_id: 32
+  code: '2009111018343233'
+  received_at: 2009-11-10 09:11:20
+#会員2商品購入
+#購入商品はproduct_id＝18と16
+customer_buy_two:
+  id: 3235
+  customer_id: 32
+  code: '2009111113443235'
+  received_at: 2009-11-11 04:44:40
+#会員2商品購入+ポイント使用
+#購入商品はproduct_id＝18と16
+customer_buy_two_with_point:
+  id: 3236
+  customer_id: 33
+  code: '2009111114003236'
+  received_at: 2009-11-11 05:00:30
+#購入商品通常商品はproduct_id＝16  
+customer_buy_one_with_option_deliv:
+  id: 3237
+  customer_id: 33
+  code: '2009111114133237'
+  received_at: 2009-11-11 05:13:44
+#非会員1商品（2個）購入
+#購入商品通常商品はproduct_id＝18（キャンペーン付き＋送料無料）
+not_customer_buy_one:
+  id: 3238
+  code: '2009111114373238'
+  received_at: 2009-11-11 05:37:00
+#非会員2商品購入+オプション配送先選択
+#購入商品通常商品はproduct_id＝18と16
+not_customer_buy_two_with_option_deliv:
+  id: 3239
+  code: '2009111114593239'
+  received_at: 2009-11-11 05:59:51
+#非会員＋通常商品（product_id＝16）＋離島
+not_customer_ritou:
+  id: 3240 
+  code: '2009111312103240'
+  received_at: 2009-11-13 03:10:44     

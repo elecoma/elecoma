@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<%= stylesheet_link_tag "front/product/product" %>
+<title>K&Bスタイル　ウェブショップ</title>
+</head>
+<body>
+
+<div id="show_image">
+<% if params[:id] %>
+<div id="image_l"><%= product_image_tag(@product, :large) %></div>
+<%= h @product.large_resource_comment unless @product.large_resource_comment.blank? %>
+<% elsif params[:resource_id] %>
+  <%= view_resource_id params[:resource_id] %>
+  <%if params[:product_id]%>
+  	<%=link_to "戻る",:action=>"show",:id=>params[:product_id]%>
+  <%end%>	  
+<% end %>
+</div>
+
+</body>
+</html>

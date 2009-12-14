@@ -1,0 +1,62 @@
+<% content_for :head do %>
+  <%= javascript_include_tag :defaults %>
+  <%= stylesheet_link_tag "front/cart" %>
+  <%= javascript_include_tag "recommender_details" %>
+<% end %>
+
+<ol id="bread_list" class="m_btm"><li class="bread_top"><a href="/">トップページ</a></li><li>ショッピングカート</li></ol>
+<h2 class="main_t">ショッピングカート</h2>
+<div id="cart">
+<!-- ショッピングカート -->
+  <img src="/images/cart/route01.gif" width="583" height="31" alt="ご購入の流れ" class="route" />
+
+  <p><%= flash[:notice] %><%= flash[:error] %><%= flash[:cart_add_product] %></p>
+
+  <%- if @carts.blank? then -%>
+    <p class="cntr">※ 現在カート内に商品はございません。</p><br /><br /><br /><br />
+    <div class="my_btn3"><%= link_to image_tag('/images/cart/cart_btn01.gif', :width=>"135", :height=>"28", :alt=>"買い物を続ける"), 'javascript:location.href = "/"' %></div>
+  <%- else -%>
+    <table class="tb1 cntr">
+      <tr>
+        <th width="90">商品画像</th>
+        <th width="265">商品名</th>
+        <th width="90">単価(税込み)</th>
+        <th width="90">個数</th>
+        <th width="90">計</th>
+        <th width="90">削除</th>
+      </tr>
+      <% @carts.each_with_index do |cart, i| %>
+        <tr>
+          <td><%= link_to_product_image(cart.product, :small) %></td>
+          <td>
+            <p><%= h(cart.product_name) %><br />
+               <%- unless cart.classcategory_name1.blank? %>
+               <%= h(cart.classcategory_name1)%><br />
+               <%- end %>
+               <%- unless cart.classcategory_name2.blank? %>
+               <%= h(cart.classcategory_name2)%>
+               <%- end %>
+            </p>
+          </td>
+          <td><%= h(number_with_delimiter(cart.price)) %>円</td>
+          <td>
+            <%= h(cart.quantity) %>個<br />
+            <%= incriment_tag(cart) %>
+            <%= decriment_tag(cart) %>
+          </td>
+          <td><%= number_with_delimiter cart.subtotal %>円</td>
+          <td><%= link_to '削除する', {:controller => 'cart', :action => 'delete', :id => cart.product_style_id}, {:confirm=>'本当に削除しますか？'} %></td>
+        </tr>
+      <% end %>
+      <tr>
+        <td colspan="6">合計 <%=h(number_with_delimiter(@cart_price)) %>円</td>
+      </tr>
+    </table>
+    <%= render :partial => '/base/recommend_asp', :locals=>{:size=>4} %>
+
+    <div class="cart_btn">
+      <%= link_to image_tag('/images/cart/cart_btn01.gif', :width=>"135", :height=>"28", :alt=>"買い物を続ける"), 'javascript:location.href = "/"' %>
+      <%= link_to image_tag('/images/cart/cart_btn02.gif', :width=>"135", :height=>"28", :alt=>"購入手続き"), {:controller => 'cart', :action => 'shipping'} %>
+    </div>
+  <%- end -%>
+</div><!-- /cart -->

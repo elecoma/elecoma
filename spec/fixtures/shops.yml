@@ -1,0 +1,24 @@
+load_by_shop_test_id_1:
+    id: 1
+    name: 店名
+    name_kana: テンメイ
+    corp_name: 会社名
+    corp_name_kana: カイシャメイ
+    zipcode01: '000'
+    zipcode02: '0000'
+    address_city: 市区町村名
+    address_details: 番地・ビル名
+    businesstime: 10時-23時
+    fax01: "11"
+    fax02: "1111"
+    fax03: "1111"
+    tel01: "00"
+    tel02: "0000"
+    tel03: "0000"
+    mail_shop: "shop@example.com"
+    mail_faq: "faq@example.com"
+    mail_sender: "sender@example.com"
+    mail_admin: "admin@example.com"
+    trade_item: 取扱商品
+    introduction: 店舗案内
+    prefecture_id: '13'

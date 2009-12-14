@@ -1,0 +1,96 @@
+<% content_for :head do -%>
+  <%= stylesheet_link_tag "front/cart" %>
+  <%= javascript_include_tag :defaults %>
+  <%= javascript_include_tag 'cart_purchase' %>
+<% end %>
+
+<ol id="bread_list" class="m_btm"><li class="bread_top"><a href="/">トップページ</a></li><li><%= link_to 'ショッピングカート', :action => 'show' %></li><li><%= link_to 'お届け先住所', :action => 'shipping' %></li><li>お支払い方法・お届け時間</li></ol>
+<h2 class="main_t">ショッピングカート</h2>
+<div id="cart">
+<!-- ショッピングカート -->
+  <img src="/images/cart/route03.gif" width="583" height="31" alt="ご購入の流れ" class="route" />
+  <span class="must"><%= flash[:notice] %></span>
+  <span class="must"><%= flash[:error] %></span>
+  <%= @order_delivery && error_messages_for(:order_delivery) %>
+  <% form_for :order_delivery, :url =>{:action => 'confirm'}, :html => {:name=>'form1'} do | f | %>
+  <div id="pt_box" class="clearfix">
+    <!-- お支払い方法 -->
+    <dl id="payment">
+      <dt><img src="/images/cart/cart_t1.gif" width="260" height="49" alt="お支払い方法" /></dt>
+      <dd>
+        <p>支払方法をお選びください。</p>
+        <ul>
+          <% @order_delivery.payment_candidates(@cart_price).each do | payment | %>
+            <li>
+                <%= f.radio_button :payment_id, payment.id %><%= f.label 'payment_id_%d' % payment.id, payment.name, :class => "radio_btn" %>
+                <%= payment_image_tag payment, {:controller => "/image_resource", :action => "show", :id => payment.id} %>
+            </li>
+          <% end %>
+        </ul>
+      </dd>
+    </dl>
+
+    <!-- お届け時間 -->
+    <dl id="time">
+      <dt><img src="/images/cart/cart_t2.gif" width="260" height="49" alt="お届け時間" /></dt>
+      <dd>
+        <p>ご希望の時間帯をお選びください。</p>
+   		<span class="must">（※お支払方法を選択しないと、時間帯をお選びいただけません。）</span><br />
+		  ご希望の方は、お届け時間を選択してください。<br />
+          お届け時間指定：
+          <select id="delivery_time" name="order_delivery[delivery_time_id]">
+           <%= render :action => 'select_delivery_time', :params => {:record => @order_delivery}, :method=>:get %>
+          </select>
+      </dd>
+    </dl>
+    <div><img src="/images/cart/cart_btm.gif" width="545" height="5" alt="" /></div>
+  </div><!-- /pt_box -->
+
+   <% if @login_customer %>
+   <table id="point_tb" class="tb1">
+    <tr>
+        <th colspan="3">ポイント使用の設定</th>
+    </tr>
+    <tr>
+        <td colspan="3">
+        1ポイントを1円として使用する事ができます。<br />
+        使用する場合は、「ポイントを使用する」にチェックを入れた後、使用するポイントをご記入ください。
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3" class="t_right">
+            今回ご購入合計金額：
+            <%= number_with_delimiter(@cart_price) %>円（送料、手数料を含みません。）
+        </td>
+    </tr>
+    <tr>
+        <td>
+            現在の所持ポイント：
+            <strong><%= @login_customer.point.to_i%>Pt</strong>
+        </td>
+        <td>
+            <%= radio_button_tag 'point_check', 'true', @point_check %>
+            <label for="point_check_true">ポイントを使用する</label>
+            <%= f.text_field :use_point %>ポイント
+            </td>
+        <td>
+            <%= radio_button_tag 'point_check', 'false', !@point_check %>
+            <label for="point_check_false">ポイントを使用しない</label>
+            </td>
+    </tr>
+   </table>
+   <% end %>
+
+    <div class="my_btn2">
+      <%= render :partial=>'order_delivery_hiddens' %>
+      <%=hidden_field_tag "back"%>
+      <% if @not_login_customer%>
+      <%= image_submit_tag '/images/cart/cart_btn05.gif', {:onClick => "this.form.action='/cart/temporary_shipping'; this.form.submit();document.getElementById('back').value=1",:width=>'101', :height=>'28', :alt=>'戻る', :class=>'hoverImg'} %>
+      <% elsif @login_customer%>
+      <%= image_submit_tag '/images/cart/cart_btn05.gif', {:onClick => "this.form.action='/cart/shipping'; this.form.submit();document.getElementById('back').value=1",:width=>'101', :height=>'28', :alt=>'戻る', :class=>'hoverImg'} %>
+      <% end %>
+      <%= image_submit_tag '/images/entry/entry_btn3.gif', :width=>'101', :height=>'28', :alt=>'次へ', :class=>'hoverImg' %>
+
+    </div>
+  <% end %>
+</div><!-- /cart -->

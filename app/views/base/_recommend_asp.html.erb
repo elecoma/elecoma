@@ -1,0 +1,32 @@
+<%# render :partial => '/base/recommend_asp', :locals=>{:size=>4} 等と書く %>
+<% size = 4 unless local_variables.include?('size') %>
+<%-
+[
+  ['view', @recommend_views, '/images/item/reco_t.gif', 'この商品をチェックした人はこんな商品もチェックしています'],
+  #['buy', @recommend_buys, 'reco/recommend_buy.png', 'この商品を買った人はこんな商品も買っています'],
+  #['you', @recommend_for_you, 'reco/recommend_you.png', 'あなたにおすすめの商品'],
+].each do |key, list, image_url, alt|
+-%>
+<% unless list.blank? %>
+ <h2><%= image_tag image_url, :alt=>alt %></h2>
+ <div id="reco_box">
+   <ul class="clearfix">
+    <li class="move lt"><a id="reco-<%=key%>-back" style="cursor:pointer;visibility:hidden"><%= image_tag "/images/item/lt.gif", :alt=>"←" %></a></li>
+    <% list.each_with_index do | recommend_xml, i | %>
+    <%# 最初の 4個以外非表示にする %>
+    <% style = i >= size ? 'display:none' : ''  %>
+    <li class="products" id="reco-<%=key%><%=i%>" style="<%= style %>">
+       <%= product_image_tag recommend_xml.recommend, :small,
+                             :width=>nil, :height=>90, :class=>'itemImage' %>
+       <dl>
+         <dt><%= link_to_product recommend_xml.recommend, recommend_xml.name %></dt>
+         <dd>&yen;<%=h recommend_xml.recommend.price_label %></dd>
+       </dl>
+    </li>
+    <% end %>
+    <li class="move gt"><a id="reco-<%=key%>-next" style="cursor:pointer;visibility:hidden"><%= image_tag "/images/item/gt.gif", :alt=>"→" %></a></li>
+   </ul>
+ </div>
+ <div class="m_btm"><img src="/images/item/reco_bg_btm.gif" width="530" height="5" alt="" /></div>
+<% end %>
+<% end %>

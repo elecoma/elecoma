@@ -1,0 +1,20 @@
+<head>
+  <%= stylesheet_link_tag "front/user/user" %>
+  <%= stylesheet_link_tag "front/user/address_new" %>
+  <%= javascript_include_tag :defaults %>
+  <%= closer_for_delivery_address_script %>
+</head>
+<body onload="closeDeliveryAddress('<%= h(@back_from_url) %>'); window.close();">
+<div id="address_complete">
+
+    <h2>新しいお届け物先の追加・変更</h2>
+
+  <noscript>
+    <p>JavaScriptが利用できない状態です。<br />一部のコンテンツが正常に動作しない可能性があります</p>
+  </noscript>
+  <div id="complete_area"><%= flash[:notice] %></div>
+  <div id="submit">
+    <%= link_to_function(image_tag('user/dummy.jpg', {:alt => '閉じる'}), "closeDeliveryAddress('#{@back_from_url}')", {:tabindex => 14}) %>
+  </div>
+</div>
+</body>

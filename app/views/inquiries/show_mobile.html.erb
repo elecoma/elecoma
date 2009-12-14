@@ -1,0 +1,23 @@
+<div style="text-align:center"><h4>お問い合わせ</h4></div>
+
+<hr noshade="noshade" color="ORANGE"/>
+
+ご意見やご感想、ご質問はこちらで受けております。<br /><br />
+
+<%= link_to '●問合せ個人情報の取扱いについて', :action=>:privacy %><br /><br />
+
+■<%=h @shop.corp_name %><br />
+【電話でのお問い合わせ】<br />
+営業時間：<%=h @shop.businesstime %><br />
+電話番号：<%= link_to h(@shop.tel), 'tel:'+@shop.tel.gsub(/\D/,'') %><br />
+--<br />
+【E-mailでのお問い合わせ】<br />
+<%= link_to h(@shop.mail_faq), 'mailto:'+@shop.mail_faq %><br /><br />
+
+お問い合わせは<%= link_to 'ｺﾁﾗ', :controller => "inquiries", :action => "new" %><br /><br />
+
+→<%= link_to '戻る', :controller => "portal", :action => "show" %><br />
+
+<hr noshade="noshade" color="ORANGE"/>
+
+<%= link_to 'TOPページへ', {:controller => 'portal', :action => 'show'} %><br />

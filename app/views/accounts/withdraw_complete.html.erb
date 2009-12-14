@@ -1,0 +1,19 @@
+<%= stylesheet_link_tag "front/mypage" %>
+
+<ol id="bread_list" class="m_btm"><li class="bread_top"><a href="/">トップページ</a></li><li><%= link_to "マイページ", :controller => :accounts, :action => :history_list %></li><li>退会手続き</li></ol>
+<h2 class="main_t">マイページ</h2>
+
+<%= render :partial=> "user/navigation" %>
+
+<!-- 退会手続き -->
+<div id="mypage_main">
+  <h3><img src="/images/mypage/mypage_t4.gif" width="535" height="44" alt="退会手続き" /></h3>
+  <div class="mypage_box">
+    <p class="comp">退会完了しました。</p>
+    <p class="comp_s">退会手続きが完了しました。<br />ご利用いただき、誠にありがとうございました。<br />またのご利用を心よりお待ち申し上げております。</p>
+    <div class="my_btn">
+      <%= link_to image_tag('/images/mypage/btn04.gif', :size => "101x28", :alt => "TOP戻る", :class => "hoveIme"), :controller => "portal", :action => "show" %>
+    </div>
+  </div>
+  <div><img src="/images/mypage/mypage_btm.gif" width="535" height="5" alt="" /></div>
+</div><!-- /mypage_main -->

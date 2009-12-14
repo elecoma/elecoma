@@ -1,0 +1,30 @@
+<% fields_for :customer do |f| %>
+ <span style="color:#ff0000;">※</span>メールアドレス<br />
+ <%= f.text_field :email_user, {:size=>"30",:style=>"height:14px;"}.merge(mobile_input_mode(:alphabet)) %><br />
+ <%= render :partial => 'mobile_domain_mobile', :locals => {:confirm => false}  %><br />
+ <%= f.text_field :email_user_confirm, {:size=>"30",:style=>"height:14px;"}.merge(mobile_input_mode(:alphabet)) %><br />
+ <%= render :partial => 'mobile_domain_mobile', :locals => {:confirm => true} %><br />
+ 確認のため 2 度入力してください。<br /><br />
+
+ <span style="color:#ff0000;">※</span>希望するパスワード
+ <% unless @customer.nil? || @customer.new_record? %>
+ (変更時のみ入力してください)
+ <% end %>
+ <br />
+ <%= f.password_field :raw_password, :size => 20,:style=>"height:14px;" %><br />
+ <span style="color:#ff0000;">※</span>半角英数字 4 ～ 10 文字(記号不可)<br />
+ <%= f.password_field :password_confirm, :size => 20,:style=>"height:14px;" %><br />
+ <span style="color:#ff0000;">※</span>確認のため 2 度入力してください<br /><br />
+
+<span style="color:#ff0000;">※</span>お名前<br />
+ &nbsp;姓<%= f.text_field :family_name, :size => 10,:style=>"height:14px;" %><br />
+ &nbsp;名<%= f.text_field :first_name, :size => 10,:style=>"height:14px;" %><br /><br />
+<span style="color:#ff0000;">※</span>お名前（フリガナ）<br />
+ &nbsp;セイ<%= f.text_field :family_name_kana, {:size => 10,:style=>"height:14px;"}.merge(mobile_input_mode(:hankakukana)) %><br />
+ &nbsp;メイ<%= f.text_field :first_name_kana, {:size => 10,:style=>"height:14px;"}.merge(mobile_input_mode(:hankakukana)) %><br /><br />
+
+<div style="text-align:center;"><%= submit_tag '次へ' %></div><br />
+<% end %>
+
+
+

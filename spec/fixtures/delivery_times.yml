@@ -1,0 +1,28 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+morning:
+  id: 1
+  position: 1
+  name: 午前
+  delivery_trader_id: 1
+
+afternoon:
+  id: 2
+  position: 3
+  name: 午後
+  delivery_trader_id: 1
+
+noon:
+  id: 3
+  position: 2
+  name: 正午
+  delivery_trader_id: 1
+
+
+<% (4..16).each do |idx| %>
+delivery_time_<%=idx%>:
+  id: <%= idx %>
+  position: <%=idx%>
+  name: 適当に持っていく
+  delivery_trader_id: 1
+<% end %>

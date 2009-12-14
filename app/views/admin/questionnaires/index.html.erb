@@ -1,0 +1,40 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "admin/questionnaire" %>
+<% end %>
+
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>アンケート登録</h2>
+<br />
+<div class="btn_t">
+  <%= button_to '新規登録', new_admin_questionnaire_path ,:class =>"btn_s"%>
+</div>
+<br />
+<%=h flash[:notice] %>
+<%=h flash[:error] %>
+
+<table class="data2" cellspacing="1">
+  <tr>
+    <th>編集</th>
+    <th>登録日</th>
+    <th>アンケートタイトル</th>
+    <th>ページ参照</th>
+    <th>結果取得</th>
+    <th>削除</th>
+  </tr>
+  <% @questionnaires.each do | questionnaire | %>
+  <tr>
+    <td><%=link_to "編集", edit_admin_questionnaire_path(questionnaire.id) %></td>
+    <td><%=h date_hyphen(questionnaire.created_at) %></td>
+    <td><%=h questionnaire.name %></td>
+    <td><%=link_to "参照", { :controller=>"/questionnaires", :action=>"new", :id=>questionnaire.id}, :target=>"_blank" %></td>
+    <td><%=link_to "download", { :action=>"csv_download", :id=>questionnaire.id} %></td>
+    <td><%=link_to "削除", admin_questionnaire_path(questionnaire.id), :confirm => "削除しますか？", :method => "delete" %></td>
+  </tr>
+  <% end %>
+</table>
+
+</div><!-- /メイン -->
+

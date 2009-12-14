@@ -1,0 +1,3 @@
+<% open("#{RAILS_ROOT}/db/migrate/fixed_data/functions.yml").each_line do | fixture | %> 
+<%= fixture %>
+<% end %>

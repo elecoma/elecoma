@@ -1,0 +1,44 @@
+<div style="text-align:center;"><h4>お問い合わせフォーム</h4></div>
+
+<hr noshade="noshade" color="ORANGE"/>
+
+□お名前<span style="color:#ff0000;">※</span><br />
+<%=h @inquiry.name %><br /><br />
+
+□メールアドレス<span style="color:#ff0000;">※</span><br />
+<%=h @inquiry.email %><br /><br />
+
+□電話番号<br />
+<%=h @inquiry.tel %><br /><br />
+
+□受注番号<br />
+<%=h @inquiry.order_number %><br /><br />
+
+□お問合わせ種別<span style="color:#ff0000;">※</span><br />
+<%=h Inquiry::KIND_NAMES[@inquiry.kind] %><br /><br />
+
+□お問い合わせ内容<span style="color:#ff0000;">※</span> <br />
+<%=h_br @inquiry.body %><br /><br />
+
+<% form_tag :action => "new" do %>
+<%= hidden_field "inquiry", "name" %>
+<%= hidden_field "inquiry", "tel" %>
+<%= hidden_field "inquiry", "email_user" %>
+<%= hidden_field "inquiry", "email_domain" %>
+<%= hidden_field "inquiry", "body" %>
+<%= hidden_field "inquiry", "order_number" %>
+<%= hidden_field "inquiry", "kind" %>
+<div style="text-align:center"><%= submit_tag "戻る" %></div>
+<% end %>
+<% form_tag :action => "complete" do %>
+<%= hidden_field "inquiry", "name" %>
+<%= hidden_field "inquiry", "tel" %>
+<%= hidden_field "inquiry", "email_user" %>
+<%= hidden_field "inquiry", "email_domain" %>
+<%= hidden_field "inquiry", "body" %>
+<%= hidden_field "inquiry", "order_number" %>
+<%= hidden_field "inquiry", "kind" %>
+<div style="text-align:center"><%= submit_tag "送信" %></div>
+<% end %>
+
+<hr noshade="noshade" color="ORANGE"/>

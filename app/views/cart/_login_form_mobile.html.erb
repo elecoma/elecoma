@@ -1,0 +1,22 @@
+<div style="text-align:center;"><h4>会員登録がお済みのお客様</h4></div>
+
+<hr />
+
+  <p>会員の方は、登録時に入力されたメールアドレスとパスワードでログインしてください。</p>
+  <div><%= flash[:notice] %></div>
+    <% form_for(:customer, :url => {:controller => 'account', :action => 'login' } ) do |f| -%>
+
+    <%= f.label(:email, '▼メールアドレス:') %><br />
+    <%= f.text_field(:email, {:tabindex => 1}) %><br /><br />
+
+    <%= f.label(:password, '▼パスワード:') %><br />
+    <%= f.password_field(:password, {:tabindex => 3}) %><br /><br />
+
+
+  <div style="text-align:center;">
+        <%= submit_tag 'ログイン', :name => 'commit', :id => 'customer_submit', :tabindex => 4 %>
+  </div><br/>
+    パスワードを忘れた方は<%= link_to 'こちら', {:controller => 'account', :action => 'reminder'}, {:class => 'reminder', :tabindex => 5} %>からパスワードの再発行を行ってください。<br />
+    メールアドレスを忘れた方は、お手数ですが、<%= link_to 'お問い合せページ', {:controller => 'inquiries', :action => 'new'}, {:class => 'inquiry', :tabindex => 6} %>からお問い合わせください。<br />
+	<br />
+    <% end -%>

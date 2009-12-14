@@ -1,0 +1,56 @@
+<table border=1>
+<% if (@action_name = params[:action]) == "confirm" %>
+<% @record.attribute_names.each do | column | %>
+<% if @model.set_field_names[column] %>
+<tr><td>
+<%= @model.set_field_names[column] %>
+</td><td>
+<% else %>
+<tr><td>
+<%= column.to_s %>
+</td><td>
+<% end %>
+<% if column != "created_at" && column != "updated_at" && column != "id" %>
+<%= @record[column] %> 
+</td></tr>
+<% end %>
+<% end %>
+<% else %>
+<% @list_view.each do | column | %>
+<% if @model.set_field_names[column] %>
+<% if column != "created_at" && column != "updated_at" && column != "id" %>
+<tr><td>
+<%= @model.set_field_names[column] %>
+</td><td>
+<% end %>
+<% else %>
+<% if column != "created_at" && column != "updated_at" && column != "id" %>
+<tr><td>
+<%= column.to_s %>
+</td><td>
+<% end %>
+<% end %>
+<% if column != "created_at" && column != "updated_at" && column != "id" %>
+<%= @record[column] %>
+</td></tr>
+<% end %>
+<% end %>
+<% end %>
+</table>
+<br>
+<% if @action_name != "confirm" %>
+<% form_tag :action => "complete", :id => params[:id], :model => @model_name, :action_name => @action_name do%>
+<% @record.attribute_names.each do | column | %>
+<%= hidden_field "record", column.to_s %>
+<% end %>
+<%= hidden_field_tag "id", params[:id] %>
+<%= submit_tag "保存" %> 
+<% end %>
+<% form_tag :action => ( params[:id] ? "edit" : "new" ), :id => params[:id], :model => @model_name do%>
+<% @record.attribute_names.each do | column | %>
+<%= hidden_field "record", column.to_s %>
+<% end %>
+<%= hidden_field_tag "id", params[:id] %>
+<%= submit_tag "修正" %>
+<% end %>
+<% end %>

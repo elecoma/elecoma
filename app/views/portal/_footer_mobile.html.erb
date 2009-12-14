@@ -1,0 +1,20 @@
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<span style="color:#A84200">&#xE682;</span> <%= link_to '買い物ｶｺﾞ', {:controller => 'cart', :action => 'show'} %><br />
+<% unless @login_customer %>
+  <span style="color:#CD2525">&#xE6D9;</span> <%= link_to 'ﾛｸﾞｲﾝ', {:controller => 'accounts', :action => 'login'}  %><br />
+<% end %>
+<% if @login_customer %>
+  <span style="color:#CD2525">&#xE6D9;</span><%= link_to 'ﾛｸﾞｱｳﾄ', {:controller => 'accounts', :action => 'logout'} %><br />
+<% end %>
+<% if @login_customer %>
+  <span style="color:#CD2525">&#xE6D9;</span><%= link_to 'ﾏｲﾍﾟｰｼﾞ', {:controller => 'accounts', :action => 'myindex_mobile'} %><br />
+<% end %>
+<% unless @login_customer %>
+  <span style="color:#CD2525">&#xE6FA;</span><%= link_to '新規会員登録', {:controller => 'accounts', :action => 'kiyaku_intro'}  %><br />
+<% end %>
+<span style="color:#666666">&#xE689;</span> <%= link_to '個人情報保護方針・個人情報の取扱いについて', {:controller => 'portal', :action => 'privacy'} %><br />
+<span style="color:#009944">&#xE741;</span> <%= link_to '通信販売について', {:controller => 'portal', :action => 'show_tradelaw'} %><br />
+<span style="color:#666666">&#xE6D3;</span> <%= link_to 'お問い合わせ', {:controller => 'inquiries', :action => 'show'} %><br />
+<span style="color:#0068B7">&#xE688;</span> <%= link_to '対応端末一覧', {:controller => 'portal', :action => 'supported_device'} %><br />
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<div style="text-align:center;"><%= image_tag_mobile "border", :width => "226", :height => "2", :alt => "" %></div>

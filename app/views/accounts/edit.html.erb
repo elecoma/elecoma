@@ -1,0 +1,21 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "front/mypage" %>
+<% end %>
+
+<ol id="bread_list" class="m_btm"><li class="bread_top"><a href="/">トップページ</a></li><li><%= link_to "マイページ", :controller => :accounts, :action => :history_list %></li><li>会員登録内容変更</li></ol>
+<h2 class="main_t">マイページ</h2>
+<div id="mypage" class="clearfix">
+  <!-- マイメニュー -->
+  <%= render :partial=> "user/navigation" %>
+  <!-- 会員登録内容変更 -->
+  <div id="mypage_main">
+    <h3><img src="/images/mypage/mypage_t2.gif" width="535" height="44" alt="会員登録内容変更" /></h3>
+    <div class="mypage_box">
+      <%= error_messages_for :customer %>
+      <% form_for :customer, :url => {:action => 'edit_confirm'} do |f| %>
+        <%= render :partial => "form", :locals => {:f => f} %>
+      <% end %>
+    </div>
+    <div><img src="/images/mypage/mypage_btm.gif" width="535" height="5" alt="" /></div>
+  </div><!-- /mypage_main -->
+</div><!-- /mypage -->

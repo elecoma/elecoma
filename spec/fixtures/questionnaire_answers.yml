@@ -1,0 +1,117 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+# one:
+#   column: value
+#
+# two:
+#   column: value
+
+questionnaire_answer_id_1:
+  id: 1
+  customer_family_name: test
+  customer_first_name: test
+  customer_family_name_kana: "セイ"
+  customer_first_name_kana: "メイ"
+  zipcode01: 100
+  zipcode02: 1701
+  questionnaire_name: questionnaire_id_1
+  questionnaire_id: 1
+  prefecture_name: "都道府県"
+  address_city: "市町村"
+  address_details: "地域"
+  tel01: 111
+  tel02: 1111
+  tel03: 1111
+  email: hoge@kbmj.com
+  created_at: "2008-06-15 23:44:03"
+  customer_id: 1
+
+faile_validate_by_customer_kana:
+  id: 2
+  customer_family_name: test
+  customer_first_name: test
+  customer_family_name_kana: test
+  customer_first_name_kana: test
+  zipcode01: 100
+  zipcode02: 1701
+  questionnaire_name: questionnaire_id_1
+  prefecture_name: "都道府県"
+  address_city: "テスト"
+  address_details: "テスト"
+  tel01: 111
+  tel02: 1111
+  tel03: 1111
+  email: hoge@kbmj.com
+
+faile_validate_by_address:
+  id: 3
+  customer_family_name: test
+  customer_first_name: test
+  customer_family_name_kana: "テスト"
+  customer_first_name_kana: "テスト"
+  zipcode01: 100
+  zipcode02: 1701
+  questionnaire_name: questionnaire_id_1
+  questionnaire_id: 1
+  tel01: 111
+  tel02: 1111
+  tel03: 1111
+  email: hoge@kbmj.com
+
+faile_validate_by_email:
+  id: 4
+  customer_family_name: test
+  customer_first_name: test
+  customer_family_name_kana: "テスト"
+  customer_first_name_kana: "テスト"
+  zipcode01: 100
+  zipcode02: 1701
+  questionnaire_name: questionnaire_id_1
+  questionnaire_id: 1
+  prefecture_name: "都道府県"
+  address_city: "テスト"
+  address_details: "テスト"
+  tel01: 111
+  tel02: 1111
+  tel03: 1111
+  email: hoge@
+
+questionnaire_answer_id_5:
+  id: 5
+  customer_family_name: test
+  customer_first_name: test
+  customer_family_name_kana: "セイ"
+  customer_first_name_kana: "メイ"
+  zipcode01: 100
+  zipcode02: 1701
+  questionnaire_name: have_one_question
+  questionnaire_id: 8
+  prefecture_name: "都道府県"
+  address_city: "市町村"
+  address_details: "地域"
+  tel01: 111
+  tel02: 1111
+  tel03: 1111
+  email: hoge@kbmj.com
+  created_at: "2008-06-15 23:44:03"
+  customer_id: 1
+
+questionnaire_answer_id_6:
+  id: 6
+  customer_family_name: test
+  customer_first_name: test
+  customer_family_name_kana: "セイ"
+  customer_first_name_kana: "メイ"
+  zipcode01: 100
+  zipcode02: 1701
+  questionnaire_name: questionnaire_id_9
+  questionnaire_id: 9
+  prefecture_name: "都道府県"
+  address_city: "市町村"
+  address_details: "地域"
+  tel01: 111
+  tel02: 1111
+  tel03: 1111
+  email: hoge@kbmj.com
+  created_at: "2008-06-15 23:44:03"
+  customer_id: 1

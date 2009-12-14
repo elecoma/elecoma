@@ -1,0 +1,39 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>管理者権限管理</h2>
+<br />
+<div class="btn_t">
+  <%= button_to '新規登録', new_admin_authority_path ,:class =>"btn_s"%>
+</div>
+<br />
+<%= flash[:notice] %>
+<%= flash[:error] %>
+<table class="data2" cellspacing="1">
+  <tr>
+    <th>権限</th>
+    <th>編集</th>
+    <th>削除</th>
+    <th>移動</th>
+  </tr>
+  <% unless @authorities.empty? -%>
+    <% @authorities.each_with_index do | record, index | -%>
+    <% @record = record -%>
+  <tr>
+    <td><%=h record.name %></td>
+    <td class="t_center"><%= link_to "編集", edit_admin_authority_path(record)%></td>
+    <td class="t_center"><%= link_to "削除", admin_authority_path(record), :confirm => "本当に削除しますか？", :method => :delete %></td>
+    <td class="t_center">
+      <% if index > 0 -%>
+        <%= link_to '上へ', { :action => 'up', :id => record.id } %>
+      <% end -%>
+      <% if index < @authorities.size-1 -%>
+        <%= link_to '下へ', { :action => "down", :id => record.id } %>
+      <% end -%>
+    </td>
+  </tr>
+    <% end -%>
+  <% end -%>
+</table>
+</div><!-- メイン -->

@@ -1,0 +1,43 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+can_incriment:
+  id: 30
+  style_id: 3
+  name: classcategory1
+  position: 1
+
+can_not_incriment:
+  id: 10
+  style_id: 1
+  name: can_not_incriment
+  position: 2
+
+can_decriment:
+  id: 40
+  style_id: 4
+  name: can_decriment
+  position: 3
+
+can_not_decriment:
+  id: 20
+  style_id: 2
+  name: can_not_decriment
+  position: 4
+
+have_classcategory2:
+  id: 50
+  style_id: 5
+  name: classcategory2
+  position: 5
+
+have_classcateogry1:
+  id: 60
+  style_id: 6
+  name: have_classcategory1
+  position: 6
+
+valid_category:
+  id: 70
+  style_id: 7
+  name: valid_category
+  position: 7

@@ -1,0 +1,21 @@
+<%= stylesheet_link_tag "front/mypage" %>
+
+<ol id="bread_list" class="m_btm"><li class="bread_top"><a href="/">トップページ</a></li><li><%= link_to "マイページ", :controller => :accounts, :action => :history_list %></li><li>退会手続き</li></ol>
+<h2 class="main_t">マイページ</h2>
+<div class="clearfix" id="mypage">
+<%= render :partial=> "user/navigation" %>
+
+<!-- 退会手続き -->
+<div id="mypage_main">
+  <h3><img src="/images/mypage/mypage_t4.gif" width="535" height="44" alt="退会手続き" /></h3>
+  <div class="mypage_box">
+    <p class="comp_s">会員を退会されると、現在保存されている購入履歴や、<br />お届け先などの情報は全て削除されます。本当によろしいですか？</p>
+    <div class="my_btn">
+      <% form_tag :action => 'withdraw_confirm' do %>
+       <%= image_submit_tag("/images/mypage/btn05.gif", :width=>"101", :height=>"28", :alt=>"退会手続きへ", :class=>"hoverImg") %>
+      <% end %>
+    </div>
+  </div>
+  <div><img src="/images/mypage/mypage_btm.gif" width="535" height="5" alt="" /></div>
+</div><!-- /mypage_main -->
+</div>

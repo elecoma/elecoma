@@ -1,0 +1,79 @@
+<%= error_messages_for :search %>
+<% form_tag :action => "search" do %>
+  <% fields_for :search do |f| %>
+   <table class="data" cellspacing="1">
+    <tr>
+     <th>受注番号</th>
+     <td><%= f.text_field :order_code_from, :size => 15 %> ～ <%= f.text_field :order_code_to, :size => 15 %></td>
+     <th>対応状況</th>
+     <td>
+      <%= select_tag 'search[status]', options_for_select(OrderDelivery.status_options(true), @search.status.to_i) %>
+     </td>
+    </tr>
+    <tr>
+     <th>顧客名</th>
+     <td><%= f.text_field :customer_name, :class=>"data_m" %></td>
+     <th>顧客名(カナ)</th>
+     <td><%= f.text_field :customer_name_kana, :class=>"data_m" %></td>
+    </tr>
+    <tr>
+     <th>メールアドレス</th>
+     <td><%= f.text_field :email, :class=>"data_m" %></td>
+     <th>TEL</th>
+     <td><%= f.text_field :tel, :class=>"data_m" -%></td>
+    </tr>
+    <tr>
+     <th>生年月日</th>
+     <td class="td1" colspan="3">
+    <%= f.birthday_select "search_birth_from", :use_month_numbers => true, :include_blank=>true %>～ <%= f.birthday_select "search_birth_to", :use_month_numbers => true, :include_blank=>true %></td>
+    </tr>
+    <tr>
+     <th>性別</th>
+     <td class="td1" colspan="3">
+      <%= check_box_tag 'sex[]', "#{System::MALE}", @sex.include?("#{System::MALE}") %>男性
+      <%= check_box_tag 'sex[]', "#{System::FEMALE}", @sex.include?("#{System::FEMALE}") %>女性
+     </td>
+    </tr>
+    <tr>
+     <th>支払方法</th>
+     <td class="td1" colspan="3">
+      <% Payment.find(:all, :order => 'position').each do | payment | %>
+       <%= check_box_tag 'payment_id[]', payment.id, @payment_id.include?(payment.id.to_s) %>
+       <%= payment.name %>
+      <% end %>
+     </td>
+    </tr>
+    <tr>
+     <th>登録・更新日</th>
+     <td class="td1" colspan="3">
+      <%= f.date_select "search_updated_at_from", :use_month_numbers => true, :include_blank=>true %>～ <%= f.date_select "search_updated_at_to", :use_month_numbers => true, :include_blank=>true %>
+     </td>
+    </tr>
+    <tr>
+     <th>購入金額</th>
+     <td class="td1" colspan="3">
+      <%= f.number_field "total_from" %> ～ <%= f.number_field "total_to" %>
+     </td>
+    </tr>
+    <tr>
+     <th>商品コード</th>
+     <td class="td1" colspan="3">
+       <%= f.text_field 'product_code', :class=>"data_m" %>
+     </td>
+    </tr>
+    <tr>
+     <th>発送日</th>
+     <td class="td1" colspan="3">
+      <%= f.date_select "shipped_at_from", :use_month_numbers => true, :include_blank=>true %>～ <%= f.date_select "shipped_at_to", :use_month_numbers => true, :include_blank=>true %>
+     </td>
+    </tr>
+    <tr>
+     <td class="submit" colspan="4">
+    検索結果表示件数
+      <%= select_tag "search[per_page]", options_for_select((10..100).step(10).map(&:to_s), @search.per_page) %>
+      件
+      <%= submit_tag "この条件で検索する", :class=>"btn_s" %></td>
+    </tr>
+   </table>
+  <% end %>
+<% end %>

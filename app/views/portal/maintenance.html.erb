@@ -1,0 +1,45 @@
+<% @category_name = 'メンテナンスのお知らせ' %>
+<% content_for :head do %>
+<style type="text/css">
+ <!--
+  body {
+    line-height: 1.8;
+  }
+  h1, h2, h3 {
+    padding-top: 0.8em;
+    padding-bottom: 0.5em;
+  }
+  h1 {
+    padding-top: 0;
+    text-align: center;
+  }
+  .address-group {
+    margin-top: 1em;
+  }
+  address {
+    text-align: right;
+    font-style: normal;
+  }
+ -->
+</style>
+<% end %>
+<h1>メンテナンスのお知らせ</h1>
+
+<p>K&Bスタイル web  shop をご利用いただき、誠にありがとうございます。</p>
+<p>下記の期間、システム調整のためサイトのメンテナンスをさせていただきます。メンテナンス中、サイトをご利用になれません。ご迷惑をおかけいたしますが、何卒ご理解いただけますようお願い申し上げます。</p>
+
+<h2>期間</h2>
+<p>2008年12月15日13時半～2008年12月15日14時(予定)</p>
+<p>※メンテナンス終了とともに再開いたします。</p>
+
+<h2>サポート</h2>
+<p>メンテナンスと関わらず、すでにご購入いただいた商品は順次発送の準備を進めさせていただきます。</p>
+
+<div class="address-group">
+ <address>K&Bスタイル</address>
+ <address>03-1111-1111</address>
+ <address><a href="mailto:faq@example.com">faq@example.com</a></address>
+ <address>10:00～18:00(土日祝を除く)</address>
+</div>
+<hr />
+<p><%= link_to 'TOPに戻る', {:controller => 'portal', :action => 'show'} %></p>

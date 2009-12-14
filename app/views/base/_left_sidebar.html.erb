@@ -1,0 +1,20 @@
+<div id="l_sub"><!-- 左サブカラム -->
+  <h3 id="h3_t"><%= image_tag "/images/common/h3_search.gif", :size => "200x32", :alt => "商品検索" %></h3>
+  <div class="side_box">
+    <% form_tag({:controller=>:products, :action=>:search, :only_path=>false}, {:method=>"get", :id=>'search-form'}) do %>
+      <%= text_field_tag "search", params[:search], :size=>21, :id=>'area', :title=>'商品検索', :class=>"search_box" %>
+      <%= image_submit_tag "/images/common/search_btn.gif", :alt=>"検索", :class=>"search_btn hoverImg" %>
+    <% end %>
+  </div>
+  <div><%= image_tag "/images/common/side_bg_btm.gif", :size => "200x5", :alt => "" %></div>
+
+  <h3 id="h3_t"><%= image_tag "/images/common/h3_category.gif", :size => "200x37", :alt =>"アイテムから探す" %></h3>
+  <%= render :partial => '/base/category' %>
+
+  <div class="m_btm"><%= image_tag "/images/common/side_bg_btm.gif", :size => "200x5", :alt => "" %></div>
+
+  <%# フリースペース %>
+  <% free_space1 = Design.first.try(:pc1).to_s -%>
+  <%= render :inline => free_space1 if free_space1.present? %>
+</div><!-- /l_sub -->
+

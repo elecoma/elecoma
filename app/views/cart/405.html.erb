@@ -1,0 +1,11 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "front/error.css" %>
+  <meta http-equiv="refresh" content="3; URL=<%= url_for :action => :show%>" />
+<% end %>
+
+<h2>405エラー</h2>
+<div id="message_area">
+	<h3>ブックマークやアドレスバーからのアクセスはできません</h3>
+	<p id="caption">お手数ですが、<%= link_to 'ショッピングカート', :action => :show %>よりご購入手続きを始めてください。</p>
+	<p id="caption">3秒後自動的にジャンプします。</p>
+</div>

@@ -1,0 +1,18 @@
+<%=h flash[:notice] %>
+<%=h flash[:error] %>
+<%= error_messages_for :shop %>
+<p class="req"><span class="pnt">※</span>は必須入力です</p>
+<table cellspacing="1" cellpadding="0" class="data" >
+  <tr>
+    <th>ポイント付与率</th>
+    <td><%= text_field "shop", "point_granted_rate" %></td>
+  </tr>
+  <tr>
+    <th>入会時ポイント</th>
+    <td><%= text_field "shop", "point_at_admission" %></td>
+  </tr>
+</table>
+<div class="btn_box">
+  <%= submit_tag "この内容で登録する", :onclick => "return #{confirm_javascript_function("登録しても宜しいですか")}", :class=>"btn" %>
+  <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+</div>

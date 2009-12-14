@@ -1,0 +1,12 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>在庫切れ管理</h2>
+<%=h flash[:notice] %>
+<%=h flash[:error] %>
+<% form_tag :action => "actual_count_search" do %>
+  <%= render :partial => "search" %>
+<% end %>
+
+</div><!-- /メイン -->

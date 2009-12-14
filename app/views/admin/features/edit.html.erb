@@ -1,0 +1,22 @@
+<%= stylesheet_link_tag "admin" %>
+
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>特集管理</h2>
+
+<%= flash[:notice] %>
+<%= flash[:error] %>
+<%= error_messages_for :feature %>
+
+<% form_for [:admin, @feature], :url => {:action => 'confirm',:id =>@feature} ,:html => {:multipart => true} do |f| %>
+<h3>特集編集（<%=h Feature::TYPE_LIST[@feature.feature_type]%>）</h3>
+<%= render :partial => "form" %>
+<%= f.hidden_field :feature_type %>
+<div class="btn_box">
+  <%= submit_tag '確認する', :class => "btn"%><img width="6" height="34" class="btn_side" alt="" src="/images/btn_side.gif"/>
+</div>
+<% end %>
+</div><!-- /メイン -->
+

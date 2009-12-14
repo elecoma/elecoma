@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+<meta http-equiv="content-style-type" content="text/css" />
+<%= stylesheet_link_tag "admin" %>
+
+
+<title>Elephant Commerce│ログイン画面</title>
+</head>
+
+<body onload="window.document.forms[0]['admin_user[login_id]'].focus();" id="login_body">
+
+<% form_tag :action=>:login do -%>
+<div id="login">
+<img src="/images/login_logo.png" width="240" height="53" alt="Elephant Commerce" class="login_logo" />
+
+<form name="form1" id="form1" method="post" action="login.html">
+<p class="login_notice"><%= flash[:notice] %><%= flash[:error] %></p>
+<table class="login_table">
+<tr>
+<td><label for="admin_user_login_id">ID</label></td>
+<td><%= text_field :admin_user, :login_id %></td>
+</tr>
+<tr>
+<td><label for="admin_user_password">パスワード</label></td>
+<td><%= password_field :admin_user, :password %></td>
+</tr>
+</table>
+<form>
+  <%= submit_tag "ログイン", :class => "login_btn" %>
+</form>
+<p class="login_copy">Copyright &copy; KBMJ CO.LTD. All Rights Reserved.</p>
+</form>
+
+</div><!-- /login -->
+<% end -%>
+
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+<%= f.error_messages %>
+<p class="req"><span class="pnt">※</span>は必須入力です</p>
+<table class="data" cellspacing="1" cellpadding="0">
+  <tr>
+    <th>支払方法 <span class="pnt">※</span></th>
+    <td colspan="2"><%= f.text_field "name", :class=>"data_m" %></td>
+  </tr>
+  <tr>
+    <th>手数料 <span class="pnt">※</span></th>
+    <td colspan="2"><%= f.text_field "fee",:class=>"number" %>円</td>
+  </tr>
+  <tr>
+    <th>利用条件（円）</th>
+    <td colspan="2"><%= f.text_field "lower_limit" ,:class=>"number"  %>円～<%= f.text_field "upper_limit" ,:class=>"number"  %>円</td>
+  </tr>
+  <tr>
+    <th>配送サービス <span class="pnt">※</span></th>
+    <td colspan="2"><%= f.collection_select "delivery_trader_id", DeliveryTrader.find(:all, :order=>"position"), 'id', 'name', {:include_blank => true} %></td>
+  </tr>
+  <tr>
+    <th>ロゴ画像</th>
+    <td><%= image_field "payment", "resource" %></td>
+  </tr>
+</table>
+<div class="btn_box">
+  <%= submit_tag "この内容で登録する", :class => "btn" %>
+  <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+</div>

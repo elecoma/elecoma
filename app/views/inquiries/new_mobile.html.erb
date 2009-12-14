@@ -1,0 +1,49 @@
+<div style="text-align:center;"><h4>お問い合わせフォーム</h4></div>
+
+<hr noshade="noshade" color="ORANGE"/>
+▼お問い合わせフォーム<br /><br />
+
+<%= @inquiry && error_messages_for(:inquiry) %>
+<%= flash[:notice] %>
+<%= flash[:error] %>
+<% form_tag :action => "confirm" do %>
+
+□お名前<span style="color:#ff0000;">※</span><br />
+<%= text_field "inquiry", "name", :size=>30 %><br /><br />
+
+□メールアドレス<span style="color:#ff0000;">※</span><br />
+<%= text_field "inquiry", "email_user", :size=>50 %><br />
+<% if request.mobile.is_a? Jpmobile::Mobile::Softbank %>
+  <%= select_tag 'inquiry[email_domain]', constant_options(Constant::DOMAIN_SOFTBANK, @inquiry.email_domain) %>
+<% elsif request.mobile.is_a? Jpmobile::Mobile::Docomo %>
+  @docomo.ne.jp
+  <%= hidden_field_tag 'inquiry[email_domain]', 'docomo.ne.jp'%>
+<% elsif request.mobile.is_a? Jpmobile::Mobile::Au %>
+  @ezweb.ne.jp
+  <%= hidden_field_tag 'inquiry[email_domain]', 'ezweb.ne.jp'%>
+<%- end -%><br /><br />
+
+□電話番号<br />
+<%= text_field "inquiry", "tel", :size=>12 %><br /><br />
+
+□受注番号<br />
+<%= text_field "inquiry", "order_number", :size=>30 %><br /><br />
+
+□お問い合わせ種別<span style="color:#ff0000;">※</span><br />
+<%= select "inquiry", "kind", Inquiry.mobile_kind_list %><br /><br />
+
+お問い合わせ内容<span style="color:#ff0000;">※</span><br />
+<%= text_area "inquiry", "body", :cols=>20, :rows=>10 %><br /><br />
+
+内容をご確認の上、送信ボタンを押してください。<br />
+ページが表示されるまでにお時間がかかる場合がございます。<br />
+処理をしている間に「送信」を再度クリックすると二重送信になりますので、<br />
+送信ボタンは1度だけ押してください。<br />
+<p style="text-align:center"><%= submit_tag "確認" %></p>
+お問合せ内容により回答までにお時間がかかる場合がございます｡予めご了承ください。<br />
+受付対応時間は平日(年末年始をのぞく)の10:00～18:00までとさせていただきます｡<br /><br />
+
+<% end %>
+
+<hr noshade="noshade" color="ORANGE"/>
+

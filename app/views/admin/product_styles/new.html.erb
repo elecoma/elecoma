@@ -1,0 +1,52 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "admin/product_style" %>
+<% end %>
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<% if @product.valid? %>
+  <h2>規格登録</h2>
+  <% if @new_flg = ( @product.product_styles.empty? || @product.product_styles.first.code.blank? ) %>
+    <% form_tag( {:action => "setting"}, {:id => "setting"}) do %>
+      <table class="data" cellspacing="1">
+        <tr>
+          <th>商品名</th>
+          <td><%= h @product.name %></td>
+        </tr>
+        <tr>
+          <th>規格1</th>
+          <td><%= select_tag :style_id1, Style.select_options(@style1 && @style1.id)%></td>
+        </tr>
+        <tr>
+          <th>規格2</th>
+          <td><%= select_tag :style_id2, Style.select_options(@style2 && @style2.id) %></td>
+        </tr>
+      </table>
+
+      <div class="btn_box">
+        <%if request.referer =~ /(admin\/products\/complete)/%>
+          <%= button_to_function "検索に戻る ", "form.action = '#{url_for admin_products_index_path}'; form.submit()", :onclick => true, :class=>"btn" %>
+          <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+        <%else %>
+          <%= button_to_function '戻る', 'history.back()', :class=>"btn" %>
+          <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+        <%end %>
+        <%= submit_to_remote '', "表示する", :update => "style_create", :url => {:action => "create_form", :id => params[:id] || params[:product_id] }, :submit => "setting", :html => {:class=>"btn"} %>
+        <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+      </div>
+    <% end %>
+  <% end %>
+
+  <div id="style_create">
+    <% unless @product_styles.empty? %>
+      <%= render :partial => 'create_form' %>
+    <% end %>
+  </div>
+
+<% else %>
+  商品情報が不正です。商品を正しく登録して下さい。<br>
+  <%= link_to "編集画面へ", edit_admin_product_path(@product.id) %>
+<% end %>
+
+</div><!-- /メイン -->

@@ -1,0 +1,40 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>カテゴリ管理</h2>
+
+<div class="space20_bottom">
+<%= (params[:category_id] || 0).to_s == 0.to_s ? "ホーム" : link_to("ホーム" , {:category_id => nil}) %><br />
+  <%= set_category_list %>
+</div>
+
+<h2>カテゴリ登録</h2>
+<%=h flash[:notice] %>
+<%=h flash[:error] %>
+<%= render :partial => "form" %>
+<table class="data2 clear" cellspacing="1">
+  <tr>
+    <th>カテゴリ名</th>
+    <th>編集</th>
+    <th>削除</th>
+    <th>移動</th>
+  </tr>
+  <% @categories && @categories.each_with_index do | category, idx | %>
+    <tr>
+      <td><%=h category.name %></td>
+      <td class="t_center"><%= link_to "編集", { :action => "index", :id => category.id } %></td>
+      <td class="t_center">
+        <% if category.products.size == 0 && Category.count(:conditions => ["parent_id = ?", category.id]) == 0 %>
+          <%= link_to("削除", admin_category_path(category.id, :category_id => params[:category_id]), :confirm => "本当に削除しますか？", :method=>"delete" ) %>
+        <% end %>
+      </td>
+      <td class="t_center">
+        <%= link_to "上", { :action => "up", :id => category.id } unless idx == 0 %>
+        <%= link_to "下", { :action => "down", :id => category.id } unless idx == @categories.size - 1 %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+</div><!-- /メイン -->

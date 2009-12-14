@@ -1,0 +1,60 @@
+@charset "utf-8";
+
+.main_box {
+  background: url(/images/common/box_bg.gif) repeat-y;
+}
+
+/*------特集商品一覧説明文-------*/
+#main_comment {
+  padding: 7px 20px;
+}
+
+/*------ページャー-------*/
+#pager_box {
+  padding-bottom: 7px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #aaaaaa;
+}
+
+#pager_btm {
+  padding-top: 7px;
+  border-bottom: 0;
+  border-top: 1px solid #aaaaaa;
+}
+
+/*------特集商品一覧-------*/
+#ctgr_box {
+  margin-bottom: 15px;
+}
+
+#feature_box li {
+  float: left;
+  width: 120px;
+  margin: 0 6px 7px;
+  padding-top: 7px;
+}
+
+* html #feature_box li {
+  margin: 7px 5px;
+  display: inline;
+}
+
+#feature_box li a img {
+  border: 1px solid #aaaaaa;
+}
+
+#feature_box li a:hover img {
+  border: 1px solid #FFB6C3
+}
+
+#feature_box dl {
+  margin-top: 5px;
+}
+
+#feature_box dt {
+  line-height: 110%;
+}
+
+#feature_box dd {
+  text-align: right;
+}

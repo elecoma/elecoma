@@ -1,0 +1,196 @@
+@charset "utf-8";
+
+#main select {
+  border: 1px solid #aaaaaa;
+  padding: 2px;
+}
+
+.main_box {
+  background: url(/images/common/box_bg.gif) repeat-y;
+}
+
+/*------商品詳細-------*/
+#item_box {
+  padding: 7px 10px 5px;
+}
+
+.item_pic {
+  float: left;
+  margin-bottom: 10px;
+}
+
+.item_pic img {
+  border: 1px solid #aaaaaa;
+  margin-bottom: 10px;
+}
+
+.item_data {
+  padding-left: 310px;
+}
+
+.item_data dt {
+  font-size: 130%;
+  font-weight: bold;
+  line-height: 120%;
+  margin: 10px 0;
+}
+
+.item_data dd {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.item_data ul {
+  text-align: right;
+}
+
+.item_data li {
+  margin-bottom: 10px;
+}
+
+.item_data label {
+  margin-right: 5px;
+}
+
+.item_data select {
+  width: 80px;
+  padding: 2px;
+  border: 1px solid #aaaaaa;
+}
+
+.cart_btn {
+  float: right;
+  margin-top: 10px;
+}
+
+#thumb td {
+  padding-right: 6px;
+}
+
+#thumb td img {
+  border: 1px solid #aaaaaa;
+  width: 60px;
+  display: block;
+  margin: 0 auto 3px;
+}
+
+.main_hr hr {
+  margin: 0;
+  padding: 0;
+  display: none;
+}
+
+.main_hr {
+  height: 2px;
+  width: 510px;
+  margin: 10px 0;
+  background: url(/images/common/main_hr.gif) no-repeat;
+}
+
+.description {
+  width: 450px;
+  margin-left: 4px;
+  line-height: 130%;
+}
+
+#item_box_top {
+  margin-bottom: 10px;
+}
+
+#style_set td {
+  padding: 3px 0;
+}
+
+#style_category_id1 {
+  border: 1px solid #999999;
+}
+
+.cart_btn {
+  margin-top: 15px;
+}
+
+/*------レコメンド-------*/
+#reco_box {
+  background: url(/images/item/reco_bg.gif) repeat-y;
+  padding: 7px 0 5px;
+}
+
+#reco_box ul {
+  background: url(/images/item/reco_hr.gif) repeat-y 147px top;
+}
+
+#reco_box li {
+  float: left;
+  width: 110px;
+  padding: 0 3px;
+}
+
+#reco_box li img {
+  display: block;
+  width: 90px;
+  margin: 0 auto 5px;
+  border: 1px solid #aaaaaa;
+}
+
+#reco_box dt {
+  line-height: 110%;
+}
+
+#reco_box dd {
+  text-align: right;
+}
+
+#reco_box .move {
+  width: 32px;
+  padding: 0;
+}
+
+#reco_box .move img {
+  display: block;
+  width: 19px;
+  border: 0;
+  margin-top: 45px;
+}
+
+#reco_box .lt img {
+  margin-left: 12px;
+}
+
+#reco_box .gt img {
+  margin-right: 12px;
+}
+
+/*------クチコミ-------*/
+#kuchi_box {
+  background: url(/images/item/reco_bg.gif) repeat-y;
+  padding: 10px 15px 5px;
+}
+
+#kuchi_box li {
+  width: 500px;
+  margin-bottom: 7px;
+  padding-bottom: 7px;
+  background: url(/images/common/main_hr.gif) no-repeat 0 bottom;
+}
+
+#kuchi_box dt {
+  margin-bottom: 5px;
+}
+
+#kuchi_box dd {
+  line-height: 130%;
+}
+
+.kuchi_btn {
+  float: right;
+}
+
+.pef_box {
+margin: 10px 0 5px;
+}
+
+#kuchikomi textarea {
+  width: 492px;
+  padding: 2px;
+  margin-bottom: 5px;
+}

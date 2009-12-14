@@ -1,0 +1,9 @@
+product_new_test_1:
+  id: 1
+  name: product_new_test_1
+product_new_test_2:
+  id: 2
+  name: product_new_test_2
+<% open("#{RAILS_ROOT}/db/migrate/fixed_data/statuses.yml").each_line do | fixture | %> 
+<%= fixture %>
+<% end %>

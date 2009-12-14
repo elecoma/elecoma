@@ -1,0 +1,63 @@
+<% content_for :head do -%>
+  <%= javascript_include_tag 'admin/emoji_palette' %>
+  <%= javascript_include_tag 'admin/mail_magazine' %>
+	<script type="text/javascript">
+	  function textTypeChange(value){
+			writeRichText('mail_magazine_template[body]','<%=h_apos @mail_magazine_template.body %>', 400, 690, true, false, value);
+		}
+	  function toConfirm() {
+	  	if (document.getElementById('mail_magazine_template[body]').contentDocument != null) {
+			document.getElementById('mail_magazine_template_body').value = document.getElementById('mail_magazine_template[body]').contentDocument.body.innerHTML;
+		}else{
+			document.getElementById('mail_magazine_template_body').value = document.getElementById('mail_magazine_template[body]').value;
+		}
+	  }
+	</script>
+<% end -%>
+
+<% form_for [:admin, @mail_magazine_template] do |f| %>
+  <%= f.error_messages %>
+  <p class="req"><span class="pnt">※</span>は必須入力です</p>
+  <table class="data" cellspacing="1">
+    <tr>
+      <th>メール形式 <span class="pnt">※</span></th>
+      <td>
+        <% [MailMagazineTemplate::HTML, MailMagazineTemplate::TEXT].each do | value | %>
+        <% label = MailMagazineTemplate::FORM_TYPE_NAMES[value] %>
+         <%= radio_button_tag "mail_magazine_template[form]", value, checked=(@mail_magazine_template.form==value),:onclick=>"textTypeChange(value)" %>
+         <%= content_tag :label, label, :for => "mail_magazine_template_form_%d" % value %>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <th>Subject <span class="pnt">※</span></th>
+      <td>
+        <%= f.text_field :subject, :class=>"data_l" %>
+      </td>
+    </tr>
+    <tr>
+      <th colspan=2>
+        本文 <span class="pnt">※</span>（名前差し込み時は {name} といれてください）
+      </th>
+    </tr>
+    <tr>
+      <td colspan=2>
+      	<div id='emoji_area_mail_magazine_template[body]'>
+  		  <script type="text/javascript">
+      		  writeRichText('mail_magazine_template[body]','<%=h_apos @mail_magazine_template.body %>', 400, 690, true, false, '<%=h @mail_magazine_template.form %>');
+  		  </script>
+  		</div>
+      </td>
+    </tr>
+  </table>
+  <div class="btn_t t_right">
+    <input class="btn_s" type=button value="文字数カウント" id="text_count_button" onclick="fnTextCount('mail_magazine_template[body]');">
+    今までに入力したのは<input type=text size=5 id="text_count">文字です。
+  </div>
+  <br />
+  <%= hidden_field :mail_magazine_template, :body %>
+  <div class="btn_box">
+    <%= f.submit "この内容で登録する", :confirm=>"本当に登録しても宜しいですか？", :class=>"btn", :onclick => "toConfirm()" %>
+    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+  </div>
+<% end -%>

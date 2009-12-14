@@ -1,0 +1,25 @@
+@charset "Shift_JIS";
+
+#wrapper {
+  font-size: xx-small;
+}
+
+#body > #wrapper {
+  font-size: small;
+}
+
+#copy {
+  font-size: 12px;
+}
+
+#copy_box > #copy {
+  font-size: xx-small;
+}
+
+#select_form {
+  font-size: xx-small;
+}
+
+#body > #select_form {
+  font-size: small;
+}

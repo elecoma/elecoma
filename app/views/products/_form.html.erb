@@ -1,0 +1,35 @@
+<table>
+ <tr>
+  <th>
+	<%= Review.human_attribute_name("name") %>
+  </th>
+  <td>
+	<%= confirm_tag :text_field, :review, :name %>
+  </td>
+ </tr>
+ <tr>
+  <th>
+	<%= Review.human_attribute_name("contributor_name") %>
+  </th>
+  <td>
+	<%= confirm_tag :text_field, :review, :contributor_name %>
+  </td>
+ </tr>
+ <tr>
+  <th>
+	<%= Review.human_attribute_name("recommend_level") %>
+  </th>
+  <td>
+	<%= confirm_tag :select, :review, :recommend_level, Review::LEVEL_SELECT %>
+  </td>
+ </tr>
+ <tr>
+  <th>
+	<%= Review.human_attribute_name("comment") %>
+  </th>
+  <td>
+	<%= confirm_tag :text_area, :review, :comment %>
+  </td>
+ </tr>
+</table>
+<%= hidden_field :review, :product_id %>

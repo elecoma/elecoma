@@ -1,0 +1,53 @@
+<%= flash[:notice] %>
+<%= flash[:error] %>
+<%= error_messages_for @model_name %>
+<% @list_view.each do | column | %>
+  <% case @model.columns_hash[column].type.to_s
+     when "integer"
+       if column != "id"
+         if @model.set_field_names[column] %>
+           <%= @model.set_field_names[column] %> :
+         <% else %>
+           <%= column.to_s %> :
+         <% end %>
+         <%= text_field ("record", column.to_s) %>
+    <% end
+     when "string"
+       if @model.set_field_names[column] %>
+         <%= @model.set_field_names[column] %> :
+       <% else %>
+         <%= column.to_s %> :
+       <% end %>
+       <%= text_field ("record", column.to_s) %>
+
+   <% when "text"
+       if @model.set_field_names[column] %>
+         <%= @model.set_field_names[column] %> :
+       <% else %>
+         <%= column.to_s %> :
+       <% end %>
+       <%= text_area ("record", column.to_s) %>
+
+   <% when "datetime"
+       if column != "created_at" && column != "updated_at"
+         if @model.set_field_names[column] %>
+           <%= @model.set_field_names[column] %> :
+         <% else %>
+           <%= column.to_s %> :
+         <% end %>
+         <%= date_select ("record", column.to_s) %>
+      <% end
+
+     when "boolean"
+       if @model.set_field_names[column] %>
+         <%= @model.set_field_names[column] %> :
+       <% else %>
+         <%= column.to_s %> :
+       <% end %>
+       <%= check_box ("record", column.to_s) %>
+   <% else
+   end %>
+  <br>
+<% end %>
+<br>
+<%= submit_tag "確認" %>

@@ -1,0 +1,33 @@
+<%= render :partial => "base/title", :locals => {:title => "お届け先の確認"} %>
+
+<%= error_messages_for :delivery_address %>
+
+<span style="color:#FF9775;">■</span> お名前<br />
+<%=h @delivery_address.family_name %>&nbsp;<%=h @delivery_address.first_name %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<span style="color:#FF9775;">■</span> お名前（フリガナ）<br />
+<%=h @delivery_address.family_name_kana %>&nbsp;<%=h @delivery_address.first_name_kana %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<span style="color:#FF9775;">■</span> 郵便番号<br />
+<%=h @delivery_address.zipcode01 %>-<%=h @delivery_address.zipcode02 %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<span style="color:#FF9775;">■</span> 住所<br />
+<%=h @delivery_address.prefecture.name %><%=h @delivery_address.address_city %>&nbsp;<%=h @delivery_address.address_detail %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<span style="color:#FF9775;">■</span> 電話番号<br />
+<%=h @delivery_address.tel01 %>-<%=h @delivery_address.tel02 %>-<%=h @delivery_address.tel03 %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+
+  <% form_for :delivery_address, :url => {:action => 'delivery_complete', :id=>@id} do | f |%>
+   <div style="text-align:center;">
+    <% [:family_name, :first_name, :family_name_kana, :first_name_kana,
+        :zipcode01, :zipcode02, :prefecture_id, :address_city,
+        :address_detail, :tel01, :tel02, :tel03].each do | column | %>
+     <%= f.hidden_field column %>
+    <% end %>
+    <%= hidden_field_tag 'popup', @popup %>
+    <%= hidden_field_tag 'stage', 2 %>
+    <%= submit_tag '戻る', :name=>'back' %>
+    <%= submit_tag '登録' %>
+   </div>
+  <% end %>

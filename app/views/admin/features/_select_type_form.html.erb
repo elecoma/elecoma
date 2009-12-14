@@ -1,0 +1,19 @@
+<%= f.error_messages %>
+<table cellspacing="1" cellpadding="0" class="feature">
+	<tr>
+      <th>
+        <span class="space15_right">
+          <%= f.radio_button :feature_type, Feature::FREE, {:checked=>true} %>
+          <%= f.label "feature_type_#{Feature::FREE}", Feature::TYPE_LIST[Feature::FREE] %>
+          <%= f.radio_button :feature_type, Feature::PRODUCT, {:checked=>false} %>
+          <%= f.label "feature_type_#{Feature::PRODUCT}", Feature::TYPE_LIST[Feature::PRODUCT] %>
+        </span>
+      </th>
+      <td>
+        <span class="btn_t">
+          <%= button_to '新規登録', new_admin_feature_path ,:class =>"btn_s"%>
+        </span>
+      </td>
+    </tr>
+</table>
+<br/>

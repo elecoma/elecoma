@@ -1,0 +1,20 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "front/top" %>
+<% end %>
+
+<div id="left_box" class="clearfix">
+  <div id="top_img">
+    <img height="200" width="740" alt="カジュアルアイテム在庫一掃セール" src="images/common/top_img.jpg">
+  </div>
+  <%= render :partial => '/base/left_sidebar' %>
+  <div id="main"><!-- メイン -->
+
+    <!-- 新着アイテム -->
+    <%= render :partial => '/base/new_product' %>
+    <!-- ランキング -->
+    <%= render :partial => '/base/recommend_ranking' %>
+    <!-- オススメアイテム -->
+    <%= render :partial => '/base/recommend_product' %>
+  </div><!-- メイン -->
+</div>
+<%= render :partial => '/base/right_sidebar' %>

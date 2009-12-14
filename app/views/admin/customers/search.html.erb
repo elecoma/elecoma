@@ -1,0 +1,85 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>顧客管理</h2>
+<%= flash[:notice] %>
+<%= flash[:error] %>
+<% form_for :condition, :url => {:action => 'search'}, :html => {:method => :get} do |f| %>
+  <%= render :partial => "search", :locals=>{:f => f}%>
+<% end %>
+
+<br />
+<% if @customers && @customers.size > 0 %>
+  <% form_for :condition, :url => {:action => 'csv_download'} do | f | %>
+    <% @condition.attributes.each do | k, v | %>
+      <% if v.instance_of? Array %>
+        <% v.each do |value| %>
+          <input type="hidden" name="condition[<%= k %>][]" value="<%= value %>"/>
+        <% end %>
+      <% else %>
+        <%= f.hidden_field k %>
+      <% end %>
+    <% end %>
+  <p>&gt;&gt;検索結果一覧&nbsp;<%=@customers.total_entries %>件&nbsp;が該当しました</p>
+  <div class="btn_box space20_bottom">
+    <%= submit_tag 'CSV DOWNLOAD', :class=>"btn" %>
+    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+  </div>
+  <% end %>
+  <table class="data2 clear" cellspacing="1">
+    <tr>
+      <th rowspan="2">種別</th>
+      <th>顧客<br/>コード</th>
+      <th rowspan="2">顧客名／カナ</th>
+      <th rowspan="2">性別</th>
+      <th>TEL</th>
+      <th rowspan="2">編集</th>
+      <th rowspan="2">削除</th>
+    </tr>
+    <tr>
+      <th>都道府県</th>
+      <th>メールアドレス</th>
+    </tr>
+    <% @customers.each_with_index do |c, i| %>
+    <tr>
+      <td rowspan="2"><%= Customer::ACTIVATE_NAMES[c.activate.to_i] %></td>
+      <td><%= c.id %></td>
+      <td rowspan="2">
+        <%= c.name_kanji %>／
+        <%= c.name_kana %>
+      </td>
+      <td rowspan="2"><%= System::SEX_NAMES[c.sex] %></td>
+      <td><%= c.tel_no %></td>
+      <td rowspan="2">
+        <%= link_to "編集", :action => "edit", :id => c.id %>
+      </td>
+      <td rowspan="2">
+        <%= link_to "削除", { :action => "destroy", :id => c.id }, :confirm => "本当に削除しますか？", :method=>"delete" %>
+      </td>
+    </tr>
+    <tr>
+      <td><%= prefecture_name(c.prefecture_id) %></td>
+      <td><a href="mailto:<%=c.email%>"><%=c.email%></a></td>
+    </tr>
+    <% end %>
+  </table>
+  <% condition=@condition.nil? ? nil : {:condition => params[:condition]} %>
+  <%= will_paginate @customers, :params => condition %>
+<% end %>
+
+<br />
+<% form_tag({:action => 'csv_upload'}, {:multipart => true}) do %>
+<h3>CSVアップロード</h3>
+<br />
+<p>
+  アップロードファイル<br/>
+  <%= file_field_tag(:upload_file) %>
+</p>
+<br />
+<div class="btn_t">
+  <%= submit_tag "アップロード", :class=>"btn_s" %>
+</div>
+<% end %>
+
+</div><!-- /メイン -->

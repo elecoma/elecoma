@@ -1,0 +1,18 @@
+common: &common
+  adapter: postgresql
+  username: postgres
+  password: 
+  host: localhost
+  port: 5432
+
+development:
+  <<: *common
+  database: ec_dev
+
+test:
+  <<: *common
+  database: ec_test
+
+production:
+  <<: *common
+  database: ec

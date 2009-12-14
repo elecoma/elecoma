@@ -1,0 +1,13 @@
+ <%- @addresses.each do |address| %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+<div style="clear:both; background-color:#F3F3EC; text-align:center;"><%= image_tag_mobile "border", :width => "226", :height => "2" %><br /></div>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+選択<%= address_button(address) %><br />
+住所種類<%= address_type_to_s(address) %><br />
+お届け先<%= address_detail(address) %><br />
+<%= link_to_edit_address(address) %>
+<%= link_to_delete_address(address) %>
+ <%- end -%>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+<div style="clear:both; background-color:#F3F3EC; text-align:center;"><%= image_tag_mobile "border", :width => "226", :height => "2" %><br /></div>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>

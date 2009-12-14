@@ -1,0 +1,189 @@
+@charset "utf-8";
+
+#container {
+  background: url();
+  width: 735px;
+  margin: 0 auto;
+}
+
+.main_t {
+  width: 690px;
+  background: url(/images/common/main_t_l.gif) no-repeat;
+}
+
+#mypage {
+  width: 715px;
+  margin: 0 auto;
+}
+
+#mymenu {
+  width: 170px;
+  float: left;
+  font-size: 0;
+}
+
+#mypage_main {
+  width: 535px;
+  float: right;
+}
+
+.mypage_box {
+  width: 515px;
+  padding: 1px 10px 10px;
+  background: url(/images/mypage/mypage_bg.gif) repeat-y;
+}
+
+.tb_t {
+  width: 505px;
+  margin-bottom: 5px;
+  padding: 3px 0 3px 6px;
+  border-left: 4px solid #ff9775;
+  font-size: 120%;
+  clear: both;
+}
+
+.tb1,.tb2 {
+  width: 515px;
+  margin-bottom: 15px;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #999999;
+}
+
+.tb1 th {
+  padding: 6px;
+  border: 1px solid #999999;
+  background-color: #fdc2c9;
+  vertical-align: center;
+  text-align: center;
+}
+
+.tb2 th {
+  padding: 6px;
+  border: 1px solid #999999;
+  background-color: #fdc2c9;
+  vertical-align: center;
+  text-align: left;
+}
+
+.total {
+  float: right;
+  width: 200px;
+  text-align: center;
+}
+
+.cntr {
+  text-align: center;
+}
+
+.t_left {
+  text-align: left;
+}
+
+.t_right {
+  text-align: right;
+}
+
+.my_btn {
+  width: 101px;
+  margin: 0 auto;
+}
+
+.my_btn2 {
+  width: 230px;
+  margin: 0 auto;
+}
+
+.my_btn2 img {
+  margin: 0 7px;
+  float: left;
+}
+
+.errorExplanation {
+  width: 492px;
+  padding: 10px;
+  border: 1px solid #ff0000;
+  margin: 5px 0;
+  color: #ff0000;
+}
+
+.history {
+  float: left;
+  width: 315px;
+  margin-bottom: 10px;
+}
+
+.point_right {
+  float: right;
+  width: 200px;
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+
+/*---form parts---*/
+.mypage_box input,
+.mypage_box select {
+  border: 1px solid #999999;
+}
+
+.form_s {
+  width: 80px;
+  margin-right: 10px;
+}
+
+.form_m {
+  width: 130px;
+  margin-right: 10px;
+}
+
+.form_l {
+  width: 350px;
+  margin-right: 10px;
+}
+
+.form_y {
+  width: 70px;
+  margin-right: 10px;
+}
+
+.form_md {
+  width: 45px;
+  margin-right: 10px;
+}
+
+.m_left {
+  margin-leftt: 5px;
+}
+
+.deli_t {
+  margin: 10px 0 5px;
+}
+
+.deli_t input {
+  border: none;
+}
+
+.mypage_box .radio_btn {
+  border: none;
+}
+
+/*---complete---*/
+
+.comp {
+  text-align: center;
+  font-size: 140%;
+  font-weight: bold;
+  margin: 40px 0 10px;
+}
+
+.comp_s {
+  text-align: center;
+  margin-bottom: 30px;
+  line-height: 130%;
+}
+
+.mypage_box .my_btn input,
+.mypage_box .my_btn2 input {
+  border: none;
+}

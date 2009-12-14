@@ -1,0 +1,17 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+  <h2>個人情報通知同意文</h2>
+  <p><%= link_to '現在の内容を確認', :controller=>"/inquiries", :action=>"privacy", :target=>"blank" %></p>
+  <br />
+  <% form_tag :action => :privacy_update do %>
+    <span style="float:left;padding-left:105px;"><%= flash[:notice] %></span>
+    <p class="t_center" style="padding-bottom:10px;" ><%= text_area_tag :content, @privacy, :size=>'80x30' %></p>
+    <div class="btn_box">
+      <%= submit_tag 'この内容で登録する', :class => "btn" %>
+      <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+    </div>
+  <% end %>
+
+</div><!-- /メイン -->

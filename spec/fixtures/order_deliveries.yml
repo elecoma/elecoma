@@ -1,0 +1,608 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+nobi:
+  id: 1
+  order_id: 1
+  status: 1
+#deliv_date: 2008-04-09
+  # 発注者
+  family_name: 骨川
+  first_name: スネ夫
+  family_name_kana: ホネカワ
+  first_name_kana: スネオ
+  email: suneo@honekawa.com
+  tel01: 011
+  tel02: 2222
+  tel03: 3333
+  fax01: 044
+  fax02: 5555
+  fax03: 6666
+  zipcode01: 290
+  zipcode02: 0156
+  prefecture_id: 20
+  address_city: 住所そのいち
+  address_detail: 住所そのに
+  sex: 1
+  birthday: 2008-01-01
+#job: 1
+  message: 要望
+  # 配達先
+  deliv_family_name: 野比
+  deliv_first_name: のび太
+  deliv_family_name_kana: ノビ
+  deliv_first_name_kana: ノビタ
+  deliv_zipcode01: 330
+  deliv_zipcode02: 0800
+  deliv_tel01: 03
+  deliv_tel02: 0000
+  deliv_tel03: 0110
+  deliv_fax01: 045
+  deliv_fax02: 000
+  deliv_fax03: 9110
+  deliv_pref_id: 4
+  deliv_address_city: 配送先住所前
+  deliv_address_detail: 配送先住所後
+  discount: 7
+  deliv_fee: 20
+  charge: 400
+  use_point: 0
+  add_point: "加算ポイント"
+  subtotal: 5628
+  total: 5700
+  payment_total: 5700
+  payment_id: 1
+  delivery_trader_id: 1
+  delivery_time_id: 1
+#deliv_no: "配送伝票番号"
+  note: "SHOPメモ"
+  commit_date: 2002-12-12
+  cell01: 090
+  cell02: 2987
+  cell03: 8765
+member_female:
+  id: 5
+  order_id: 2
+  status: 1
+memger_male:
+  id: 6
+  order_id: 3
+  status: 1
+guest_female:
+  id: 7
+  order_id: 4
+  status: 2
+guest_male:
+  id: 8
+  order_id: 5
+  status: 2
+
+#昨日の配送
+<% (11..20).each do |idx| %>
+last_day_delivery_<%= idx - 10 %>:
+  id: <%= idx %>
+  order_id: <%= idx %>
+  status: 6
+#deliv_date: 2008-04-09
+  # 発注者
+  family_name: 剛田
+  first_name: ジャイ子<%= idx - 10 %>号
+  family_name_kana: ゴウダ
+  first_name_kana: ジャイコゴウ
+  email: jaiko@honekawa.com
+  tel01: 011
+  tel02: 2222
+  tel03: 3333
+  fax01: 044
+  fax02: 5555
+  fax03: 6666
+  zipcode01: 290
+  zipcode02: 0156
+  prefecture_id: 20
+  address_city: 住所そのいち
+  address_detail: 住所そのに
+  sex: 1
+  birthday: 2008-01-01
+#job: 1
+  message: 要望
+  # 配達先
+  deliv_family_name: 野比
+  deliv_first_name: のび太
+  deliv_family_name_kana: ノビ
+  deliv_first_name_kana: ノビタ
+  deliv_zipcode01: 330
+  deliv_zipcode02: 0800
+  deliv_tel01: 03
+  deliv_tel02: 0000
+  deliv_tel03: 0110
+  deliv_fax01: 045
+  deliv_fax02: 000
+  deliv_fax03: 9110
+  deliv_pref_id: 4
+  deliv_address_city: 配送先住所前
+  deliv_address_detail: 配送先住所後
+  #
+  discount: 7
+  deliv_fee: 20
+  charge: 400
+  use_point: 0
+  add_point: "加算ポイント"
+  subtotal: 5628
+  subtotal: 5700
+  payment_id: 1
+  delivery_trader_id: 1
+  delivery_time_id: 1
+#deliv_no: "配送伝票番号"
+  note: "SHOPメモ"
+  commit_date: <%= Date.today - 1 %>
+  cell01: 090
+  cell02: 2987
+  cell03: 8765
+<% end %>
+
+#本日の配送
+<% (21..30).each do |idx| %>
+today_delivery_<%= idx - 10 %>:
+  id: <%= idx %>
+  order_id: <%= idx %>
+  status: 7
+#deliv_date: 2008-04-09
+  # 発注者
+  family_name: 剛田
+  first_name: ジャイ子<%= idx - 10 %>号
+  family_name_kana: ゴウダ
+  first_name_kana: ジャイコ<%= idx - 10 %>ゴウ
+  email: jaiko@honekawa.com
+  tel01: 011
+  tel02: 2222
+  tel03: 3333
+  fax01: 044
+  fax02: 5555
+  fax03: 6666
+  zipcode01: 290
+  zipcode02: 0156
+  prefecture_id: 20
+  address_city: 住所そのいち
+  address_detail: 住所そのに
+  sex: 1
+  birthday: 2008-01-01
+#job: 1
+  message: 要望
+  # 配達先
+  deliv_family_name: 野比
+  deliv_first_name: のび太
+  deliv_family_name_kana: ノビ
+  deliv_first_name_kana: ノビタ
+  deliv_zipcode01: 330
+  deliv_zipcode02: 0800
+  deliv_tel01: 03
+  deliv_tel02: 0000
+  deliv_tel03: 0110
+  deliv_fax01: 045
+  deliv_fax02: 000
+  deliv_fax03: 9110
+  deliv_pref_id: 4
+  deliv_address_city: 配送先住所前
+  deliv_address_detail: 配送先住所後
+  #
+  discount: 7
+  deliv_fee: 20
+  charge: 400
+  use_point: 0
+  add_point: "加算ポイント"
+  subtotal: 5628
+  subtotal: 5700
+  payment_id: 1
+  delivery_trader_id: 1
+  delivery_time_id: 1
+#deliv_no: "配送伝票番号"
+  note: "SHOPメモ"
+  commit_date: <%= Date.today %>
+  cell01: 090
+  cell02: 2987
+  cell03: 8765
+<% end %>
+
+# マイページ 注文履歴用
+history_00_00:
+  id: 31
+  order_id: 6
+  discount: 219
+  deliv_fee: 400
+  charge: 20
+  use_point: 0
+  subtotal: 30140
+  total: 30341
+  payment_total: 30341
+  payment_id: 1
+  deliv_family_name: 履歴
+  deliv_first_name: 一郎
+  deliv_family_name_kana: リレキ
+  deliv_first_name_kana: イチロウ
+  deliv_zipcode01: 123
+  deliv_zipcode02: 1234
+  deliv_pref_id: 30
+  deliv_address_city: うどん市
+  deliv_address_detail: そば区
+  deliv_tel01: '03'
+  deliv_tel02: '3303'
+  deliv_tel03: '0123'
+history_01_00:
+  id: 39
+  order_id: 7
+  discount: 2
+  deliv_fee: 8
+  charge: 9
+  use_point: 0
+  payment_id: 1
+history_02_00:
+  id: 40
+  order_id: 8
+  discount: 20
+  deliv_fee: 18
+  charge: 49
+  use_point: 0
+  payment_id: 1
+
+for_recall:
+  id: 41
+  order_id: 9
+
+# 受注集計用
+# 発送済み 8 月購入
+<% (1..31).each do |i|
+ id = i + 3000
+%>
+commited_august_<%= i %>:
+  id: <%= id %>
+  order_id: <%= id %>
+  subtotal: 33333
+  total: 33551
+  payment_total: 33551
+  discount: 2
+  deliv_fee: 20
+  charge: 200
+  use_point: 0
+  commit_date: 2008-09-01 00:00:00
+  status: <%= OrderDelivery::HAITATU_KANRYO %>
+<% end %>
+# 未発送 8 月購入
+<% (1..31).each do |i|
+ id = i + 3100
+%>
+not_commited_august_<%= i %>:
+  id: <%= id %>
+  order_id: <%= id %>
+  subtotal: 22222
+  total: 31322
+  payment_total: 31322
+  discount: 1000
+  deliv_fee: 10000
+  charge: 100
+  use_point: 0
+  status: <%= OrderDelivery::YOYAKU_UKETSUKE %>
+<% end %>
+# 発送済み 9 月購入
+<% (1..30).each do |i|
+ id = i + 3200
+%>
+commited_september_<%= i %>:
+  id: <%= id %>
+  order_id: <%= id %>
+  subtotal: 20000
+  total: 30000
+  payment_total: 30000
+  discount: 200
+  deliv_fee: 1200
+  charge: 9000
+  use_point: 0
+  commit_date: 2008-10-01 00:00:00
+  status: <%= OrderDelivery::HASSOU_TYUU %>
+<% end %>
+
+#会員1商品購入
+#購入商品はproduct_id＝18（キャンペーン付き＋送料無料）
+customer_buy_one:
+  id: 3232
+  order_id: 3233
+  family_name: てすと
+  first_name: てすと
+  family_name_kana: テスト
+  first_name_kana: テスト
+  email: test@kbmj.com
+  tel01: '010'
+  tel02: '1111'
+  tel03: '2222'
+  zipcode01: '000'
+  zipcode02: '0000'
+  prefecture_id: 13
+  address_city: 渋谷区
+  address_detail: 恵比寿
+  sex: 1
+  birthday: 1980-01-01
+  deliv_family_name: てすと
+  deliv_first_name: てすと
+  deliv_family_name_kana: テスト
+  deliv_first_name_kana: テスト
+  deliv_tel01: '010'
+  deliv_tel02: '1111'
+  deliv_tel03: '2222'
+  deliv_zipcode01: '000'
+  deliv_zipcode02: '0000'
+  deliv_pref_id: 13
+  deliv_address_city: '渋谷区'
+  deliv_address_detail: '恵比寿'
+  subtotal: 10000
+  deliv_fee: 0
+  charge: 10
+  use_point: 0
+  add_point: 0
+  total: 10010
+  payment_total: 10010
+  delivery_trader_id: 1
+  delivery_time_id: 3
+  status: 3
+  payment_id: 1
+  address_select: 0
+#会員2商品購入
+#購入商品はproduct_id＝18と16
+customer_buy_two:
+  id: 3233
+  order_id: 3235
+  family_name: てすと
+  first_name: てすと
+  family_name_kana: テスト
+  first_name_kana: テスト
+  email: test@kbmj.com
+  tel01: '010'
+  tel02: '1111'
+  tel03: '2222'
+  zipcode01: '000'
+  zipcode02: '0000'
+  prefecture_id: 13
+  address_city: 渋谷区
+  address_detail: 恵比寿
+  sex: 1
+  birthday: 1980-01-01
+  deliv_family_name: てすと
+  deliv_first_name: てすと
+  deliv_family_name_kana: テスト
+  deliv_first_name_kana: テスト
+  deliv_tel01: '010'
+  deliv_tel02: '1111'
+  deliv_tel03: '2222'
+  deliv_zipcode01: '000'
+  deliv_zipcode02: '0000'
+  deliv_pref_id: 13
+  deliv_address_city: '渋谷区'
+  deliv_address_detail: '恵比寿'
+  subtotal: 20000
+  deliv_fee: 0
+  charge: 10
+  use_point: 0
+  add_point: 0
+  total: 20010
+  payment_total: 20010
+  delivery_trader_id: 1
+  delivery_time_id: 3
+  status: 3
+  payment_id: 1
+  address_select: 0
+#会員2商品購入+ポイント使用
+#購入商品はproduct_id＝18と16
+customer_buy_two_with_point:
+  id: 3234
+  order_id: 3236
+  family_name: てすと
+  first_name: てすと
+  family_name_kana: テスト
+  first_name_kana: テスト
+  email: test33@kbmj.com
+  tel01: '048'
+  tel02: '1111'
+  tel03: '2222'
+  zipcode01: '331'
+  zipcode02: '0812'
+  prefecture_id: 11
+  address_city: さいたま市
+  address_detail: 北区
+  sex: 1
+  birthday: 1980-01-01
+  deliv_family_name: てすと
+  deliv_first_name: てすと
+  deliv_family_name_kana: テスト
+  deliv_first_name_kana: テスト
+  deliv_tel01: '048'
+  deliv_tel02: '1111'
+  deliv_tel03: '2222'
+  deliv_zipcode01: '331'
+  deliv_zipcode02: '0812'
+  deliv_pref_id: 11
+  deliv_address_city: さいたま市
+  deliv_address_detail: 北区
+  subtotal: 20000
+  deliv_fee: 0
+  charge: 10
+  use_point: 150
+  add_point: 0
+  total: 20010
+  payment_total: 19860
+  delivery_trader_id: 1
+  delivery_time_id: 3
+  status: 3
+  payment_id: 1
+  address_select: 0
+#購入商品通常商品はproduct_id＝16  
+customer_buy_one_with_option_deliv:
+  id: 3235
+  order_id: 3237
+  family_name: てすと
+  first_name: てすと
+  family_name_kana: テスト
+  first_name_kana: テスト
+  email: test33@kbmj.com
+  tel01: '048'
+  tel02: '1111'
+  tel03: '2222'
+  zipcode01: '331'
+  zipcode02: '0812'
+  prefecture_id: 11
+  address_city: さいたま市
+  address_detail: 北区
+  sex: 1
+  birthday: 1980-01-01
+  deliv_family_name: ああ
+  deliv_first_name: いい
+  deliv_family_name_kana: アア
+  deliv_first_name_kana: イイ
+  deliv_tel01: '03'
+  deliv_tel02: '0000'
+  deliv_tel03: '0000'
+  deliv_zipcode01: '000'
+  deliv_zipcode02: '0000'
+  deliv_pref_id: 13
+  deliv_address_city: テスト市テスト町
+  deliv_address_detail: 1-3-5○○○ビル
+  subtotal: 10000
+  deliv_fee: 0
+  charge: 10
+  use_point: 0
+  add_point: 0
+  total: 10010
+  payment_total: 10010
+  delivery_trader_id: 1
+  delivery_time_id: 2
+  status: 3
+  payment_id: 1
+  address_select: 8
+#非会員1商品（2個）購入
+#購入商品通常商品はproduct_id＝18（キャンペーン付き＋送料無料）
+not_customer_buy_one:
+  id: 3236
+  order_id: 3238
+  family_name: 田中
+  first_name: 一郎
+  family_name_kana: タナカ
+  first_name_kana: イチロウ
+  email: test@kbmj.com
+  tel01: '03'
+  tel02: '1111'
+  tel03: '2222'
+  zipcode01: '000'
+  zipcode02: '0000'
+  prefecture_id: 13
+  address_city: テスト市テスト町
+  address_detail: 1-2-3
+  sex: 2
+  birthday: 1980-01-01
+  occupation_id: 1
+  deliv_family_name: 田中
+  deliv_first_name: 一郎
+  deliv_family_name_kana: タナカ
+  deliv_first_name_kana: イチロウ
+  deliv_tel01: '03'
+  deliv_tel02: '1111'
+  deliv_tel03: '2222'
+  deliv_zipcode01: '000'
+  deliv_zipcode02: '0000'
+  deliv_pref_id: 13
+  deliv_address_city: テスト市テスト町
+  deliv_address_detail: 1-2-3
+  subtotal: 20000
+  deliv_fee: 0
+  charge: 10
+  use_point: 0
+  add_point: 0
+  total: 20010
+  payment_total: 20010
+  delivery_trader_id: 1
+  delivery_time_id: 
+  status: 3
+  payment_id: 1
+  address_select: 0
+#非会員2商品購入+オプション配送先選択
+#購入商品通常商品はproduct_id＝18と16  
+not_customer_buy_two_with_option_deliv:
+  id: 3237
+  order_id: 3239
+  family_name: 田中
+  first_name: 一郎
+  family_name_kana: タナカ
+  first_name_kana: イチロウ
+  email: test@kbmj.com
+  tel01: '03'
+  tel02: '1111'
+  tel03: '2222'
+  zipcode01: '000'
+  zipcode02: '0000'
+  prefecture_id: 13
+  address_city: テスト市テスト町
+  address_detail: 1-2-3
+  sex: 2
+  birthday: 1980-01-01
+  deliv_family_name: 田中
+  deliv_first_name: 二郎
+  deliv_family_name_kana: タナカ
+  deliv_first_name_kana: ジロウ
+  deliv_tel01: '010'
+  deliv_tel02: '1111'
+  deliv_tel03: '1111'
+  deliv_zipcode01: '331'
+  deliv_zipcode02: '0812'
+  deliv_pref_id: 1
+  deliv_address_city: 千代田区神田神保町
+  deliv_address_detail: 1-2-3
+  subtotal: 20000
+  deliv_fee: 0
+  charge: 10
+  use_point: 0
+  add_point: 0
+  total: 20010
+  payment_total: 20010
+  delivery_trader_id: 1
+  delivery_time_id: 3
+  status: 3
+  payment_id: 1
+  address_select: 0
+#非会員＋通常商品（product_id＝16）＋離島
+not_customer_ritou:
+  id: 3238
+  order_id: 3240
+  family_name: 離島
+  first_name: 波照間
+  family_name_kana: リトウ
+  first_name_kana: ハテルマ
+  email: test@kbmj.com
+  tel01: '098'
+  tel02: '1111'
+  tel03: '2222'
+  zipcode01: '907'
+  zipcode02: '1751'
+  prefecture_id: 47
+  address_city: 八重山郡竹富町波照間
+  address_detail: 1-2-3
+  sex: 2
+  birthday: 1980-01-01
+  deliv_family_name: 離島
+  deliv_first_name: 波照間
+  deliv_family_name_kana: リトウ
+  deliv_first_name_kana: ハテルマ
+  deliv_tel01: '098'
+  deliv_tel02: '1111'
+  deliv_tel03: '1111'
+  deliv_zipcode01: '907'
+  deliv_zipcode02: '1751'
+  deliv_pref_id: 1
+  deliv_address_city: 八重山郡竹富町波照間
+  deliv_address_detail: 1-2-3
+  subtotal: 10000
+  deliv_fee: 0
+  charge: 10
+  use_point: 0
+  add_point: 0
+  total: 10010
+  payment_total: 10010
+  delivery_trader_id: 1
+  delivery_time_id: 
+  status: 3
+  payment_id: 1
+  address_select: 0   

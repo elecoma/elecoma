@@ -1,0 +1,13 @@
+<% cache(:action => params[:action], :controller => params[:controller], :category_id => params[:category_id])do %>
+  <% if params[:controller] == "products" %>
+    <div id="category_list_box">
+      <ul class="category_list_s">
+        <%= category_list_view("PC") %>
+      </ul>
+    </div>
+  <% else %>
+    <ul id="category_list">
+      <%= category_list_view("PC", true) %>
+    </ul>
+  <% end %>
+<% end %>

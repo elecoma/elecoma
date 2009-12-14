@@ -1,0 +1,2 @@
+module Admin::OrderHelper
+end

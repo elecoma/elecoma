@@ -1,0 +1,29 @@
+<% content_for :head do %>
+  <%= javascript_include_tag :defaults %>
+  <%= stylesheet_link_tag "front/portal" %>
+<% end %>
+
+<div id="container" class="clearfix">
+  <ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ", :controller => 'portal', :action => 'show' %></li><li>個人情報保護方針・個人情報の取り扱いについて
+ </li></ol>
+  
+  <p class="tb_t">個人情報保護方針・個人情報の取り扱いについて</p>
+  <!-- 
+  <%= image_tag '/images/shop/about.gif', :size => "583x31", :alt => "個人情報保護方針・個人情報の取り扱いについて", :class => "route" %> 
+  -->
+  <dl>
+    <dt>1.</dt>
+    <dd>当社の都合により、予告なしに本ｻｲﾄの運用を停止または中止することがあります。</dd>
+    <dt>2.</dt>
+    <dd>当社は、会員の承認なしに、本規約を変更できるものとします。</dd>
+
+    <dt>3.</dt>
+
+    <dd>当会員によるID及びパスワードの管理不十分、又は使用上の過誤等による損害の責任は、当会員本人が負うこととし、当社は一切の責任を負わないこととします。</dd>
+
+    <dt>4.</dt>
+    <dd>お客様と当社との間で本規約に関連して訴訟の必要が生じた場合、訴額に応じ、東京簡易裁判所又は東京地方裁判所を第一審の専属的合意管轄裁判所とします。
+  </dl>
+  </dd>
+</dl>
+</div>

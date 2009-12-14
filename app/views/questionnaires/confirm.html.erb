@@ -1,0 +1,127 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "front/questionnaire" %>
+<% end %>
+
+<div id="container" class="clearfix">
+  <ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ", :controller => 'portal', :action => 'show' %></li><li>アンケート</li></ol>
+  <h2 class="main_t">アンケート</h2>
+  <% form_tag :action=>"complete", :id=>@questionnaire.id do %>
+    <p class="tb_t"><%=h @questionnaire.name %></p>
+    <p class="tb_c"><%=h @questionnaire.content %></p>
+    <table class="tb2">
+      <% @questions.each_with_index do | question, question_idx | %>
+      <tr>
+        <th><span style="font-weight:bold">質問<%=h question_idx+1 %>：</span>　<%=h question.content %></th>
+      </tr>
+        <% if question.question_choices[0][:format] == QuestionChoice::CHECKBOX %>
+          <% if @answers[question_idx].length > 0 %>
+              <% @flg_data = true %>
+            <% @answers[question_idx].each do | answer | %>
+              <% if answer.answer %>
+              <% @flg_data = nil %>
+      <tr>
+        <td><%=h answer.question_choice.content %></td>
+      </tr>
+              <% end %><!-- if answer.answer -->
+            <% end %><!-- @answers[question_idx].each-->
+            <% if @flg_data %>
+      <tr>
+        <td></td>
+      </tr>
+            <% end %><!-- if @flg_data -->
+          <% else %><!-- if @answers[question_idx].length > 0 -->
+      <tr>
+        <td>回答なし</td>
+      </tr>
+          <% end %><!-- if @answers[question_idx].length > 0 -->
+        <% else %><!-- if question.question_choices[0][:format] == QuestionChoice::CHECKBOX -->
+      <tr>
+        <td>
+          <% if @answers[question_idx][0].blank? %>
+            回答なし
+          <% else %>
+            <%=h @answers[question_idx][0][:answer] %>
+          <% end %>
+        </td>
+      </tr>
+        <% end %><!-- if question.question_choices[0][:format] == QuestionChoice::CHECKBOX -->
+      <% end %><!-- @questions.each_with_index -->
+    </table>
+
+    <% @questions.each_with_index do | question, question_idx | %>
+     <% if question.question_choices[0][:format] == QuestionChoice::CHECKBOX %>
+        <% question.question_choices.find(:all, :order=>"position").each_with_index do | question_choice, choice_idx | %>
+          <%= hidden_field_tag "answers[#{question.id}][#{question_choice.id}][question_id]", @answers[question_idx][choice_idx][:question_id] %>
+          <%= hidden_field_tag "answers[#{question.id}][#{question_choice.id}][question_choice_id]", @answers[question_idx][choice_idx][:question_choice_id] %>
+          <%= hidden_field_tag "answers[#{question.id}][#{question_choice.id}][question_position]", @answers[question_idx][choice_idx][:question_position] %>
+          <%= hidden_field_tag "answers[#{question.id}][#{question_choice.id}][answer]", @answers[question_idx][choice_idx][:answer] %>
+        <% end %>
+      <% else %>
+        <%= hidden_field_tag "answers[#{question.id}][question_id]", @answers[question_idx][0][:question_id] %>
+        <%= hidden_field_tag "answers[#{question.id}][question_choice_id]", @answers[question_idx][0][:question_choice_id] %>
+        <%= hidden_field_tag "answers[#{question.id}][question_position]", @answers[question_idx][0][:question_position] %>
+        <%= hidden_field_tag "answers[#{question.id}][answer]", @answers[question_idx][0][:answer] %>
+      <% end %>
+    <% end %>
+
+    <br />
+
+    <h3>回答者情報</h3>
+    <p>※印は入力必須項目です。</p>
+    <%= error_messages_for "respondent" %>
+    <table class="tb2">
+      <tr>
+        <th>※お名前</th>
+        <td>
+          <%=h @respondent.customer_family_name %>　
+          <%=h @respondent.customer_first_name %>
+        </td>
+      </tr>
+      <tr>
+        <th>※フリガナ</th>
+        <td>
+          <%=h @respondent.customer_family_name_kana %>　
+          <%=h @respondent.customer_first_name_kana %>
+        </td>
+      </tr>
+      <tr>
+        <th>郵便番号</th>
+        <td>〒 <%=h @respondent.zipcode01 %> - <%=h @respondent.zipcode02 %></td>
+      </tr>
+      <tr>
+        <th>※ご住所</th>
+        <td>
+          <%=h @respondent.prefecture_name %><%=h @respondent.address_city %><br />
+          <%=h @respondent.address_details %>
+        </td>
+      </tr>
+      <tr>
+        <th>※お電話番号</th>
+        <td><%= @respondent.tel01 %> - <%=h @respondent.tel02 %> - <%=h @respondent.tel03 %></td>
+      </tr>
+      <tr>
+        <th>※メールアドレス</th>
+        <td><%=h @respondent.email %></td>
+      </tr>
+    </table>
+
+    <%= hidden_field "respondent", "customer_family_name" %>
+    <%= hidden_field "respondent", "customer_first_name" %>
+    <%= hidden_field "respondent", "customer_first_name_kana" %>
+    <%= hidden_field "respondent", "customer_family_name_kana" %>
+    <%= hidden_field "respondent", "zipcode01" %>
+    <%= hidden_field "respondent", "zipcode02" %>
+    <%= hidden_field "respondent", "prefecture_name" %>
+    <%= hidden_field "respondent", "address_city" %>
+    <%= hidden_field "respondent", "address_details" %>
+    <%= hidden_field "respondent", "tel01" %>
+    <%= hidden_field "respondent", "tel02" %>
+    <%= hidden_field "respondent", "tel03" %>
+    <%= hidden_field "respondent", "email" %>
+
+    <div id="btn_box">
+      <input type="button" value="戻る" onClick="history.back()">
+      <%= submit_tag ("送信する") %>
+    </div>
+  <% end %>
+</div>

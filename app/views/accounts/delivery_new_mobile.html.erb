@@ -1,0 +1,10 @@
+<%= render :partial => "base/title", :locals => {:title => "お届け先の追加"} %>
+
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+<span style="color:#ff0000;">※</span>は必須項目です。<br /><br />
+<%= error_messages_for :delivery_address %>
+<% form_tag :action => 'delivery_new' do %>
+  <%= render :partial => 'delivery_form_%d' % @stage %>
+  <%= hidden_field_tag 'stage', @stage %>
+  <%= hidden_field_tag 'popup', @popup %>
+<% end %>

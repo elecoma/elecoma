@@ -1,0 +1,31 @@
+<div class="d_right"><span class="pnt">※</span> は必須入力です<br /></div>
+<table class="data" cellspacing="1">
+  <tr>
+    <th>特集名 <span class="pnt">※</span></th>
+    <td><%= confirm_tag :text_field, :feature, :name %></td>
+  </tr>
+  <tr>
+    <th>ディレクトリ名 <span class="pnt">※</span></th>
+    <td><%= confirm_tag :text_field, :feature, :dir_name %></td>
+  </tr>
+  <tr>
+    <th>公開／非公開 </th>
+    <td><%= confirm_tag :select, :feature, :permit, Feature.permit_select %></td>
+  </tr>
+  <% if @feature.feature_type == Feature::PRODUCT %>
+  <tr>
+    <th>タイトル画像 </th>
+    <td><%= confirm_tag :image_field, :feature, :image_resource %></td>
+  </tr>
+  <% end %>
+  <tr>
+    <th>フリースペース<br/>(HTMLタグが有効となります)</th>
+    <td>
+    <%if params[:action] == "confirm" and @feature.errors.blank?%>
+		<%= @feature.body %>
+	<%else%>
+		<%= confirm_tag :text_area, :feature ,:body, :size => '80x20' %>
+	<%end%>
+	</td>
+  </tr>
+</table>

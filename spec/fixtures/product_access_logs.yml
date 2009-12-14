@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  product_id: 1
+  session_id: MyString
+  customer_id: 1
+  docomo_flg: false
+
+two:
+  product_id: 1
+  session_id: MyString
+  customer_id: 1
+  docomo_flg: false

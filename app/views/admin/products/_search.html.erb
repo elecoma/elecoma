@@ -1,0 +1,73 @@
+<%= error_messages_for :search %>
+<% form_tag({:action => "search"}, {:method=>"get"}) do %>
+  <% fields_for :search do |f| %>
+    <table class="data" cellspacing="1">
+      <tr>
+        <th>商品ID</th>
+        <td><%= f.text_field :product_id %></td>
+      </tr>
+      <tr>
+        <th>商品コード</th>
+        <td><%= f.text_field :code, :class=>"data_m" %></td>
+      </tr>
+      <tr>
+        <th>規格名称</th>
+        <td><%= f.text_field :style, :class=>"data_m" %></td>
+      </tr>
+      <tr>
+        <th>商品名</th>
+        <td><%= f.text_field :name, :class=>"data_m" %></td>
+      </tr>
+      <tr>
+        <th>カテゴリ</th>
+        <td><%= category_select :search, :category, :include_blank => true %></td>
+      </tr>
+      <tr>
+        <th>公開/非公開</th>
+        <td><%= f.select :permit, Product.permit_select, :include_blank => '全体' %></td>
+      </tr>
+      <tr>
+        <th>登録日</th>
+        <td>
+          <%= f.date_select :created_at_from ,:use_month_numbers => true, :include_blank=>true %>～
+          <%= f.date_select :created_at_to, :use_month_numbers => true, :include_blank=>true %>
+        </td>
+      </tr>
+      <tr>
+        <th>更新日</th>
+        <td>
+          <%= f.date_select :updated_at_from ,:use_month_numbers => true, :include_blank=>true %>～
+          <%= f.date_select :updated_at_to, :use_month_numbers => true, :include_blank=>true %>
+        </td>
+      </tr>
+      <tr>
+        <th>販売開始日</th>
+        <td>
+          <%= f.date_select :sale_start_at_start ,:use_month_numbers => true, :include_blank => true %>～
+          <%= f.date_select :sale_start_at_end, :use_month_numbers => true, :include_blank => true  %>
+        </td>
+      </tr>
+      <tr>
+        <th>ステータス</th>
+        <td>
+          <% Status.find(:all).each do | status | %>
+            <%= check_box_tag "product_status_ids[]", "#{status.id}", params[:product_status_ids] && params[:product_status_ids].include?(status.id.to_s)%><%= h status.name %>
+          <% end %>
+        </td>
+      </tr>
+      <% if params[:action] =~ /^actual_count/ %>
+        <tr>
+          <th>在庫切れ以外も含む</th>
+          <td><%= f.check_box :no_product_style_count %></td>
+        </tr>
+      <% end %>
+      <tr>
+       <td class="submit" colspan="4">
+      検索結果表示件数
+        <%= select_tag "search[per_page]", options_for_select((10..100).step(10).map(&:to_s), @search.per_page) %>
+        件
+        <%= submit_tag "この条件で検索する", :class=>"btn_s" %></td>
+      </tr>
+    </table>
+  <% end %>
+<% end %>

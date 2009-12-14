@@ -1,0 +1,36 @@
+<div class="d_right"><span class="pnt">※</span>は必須入力です<br /></div>
+<table class="data" cellspacing="1">
+  <tr>
+    <th>商品名 <span class="pnt">※</span></th>
+    <td>
+    <span id="product_name">
+    <% if @feature_product.product %>
+	  <%=@feature_product.product.name%>&nbsp;&nbsp;&nbsp;
+	<% else %>
+	      未登録&nbsp;&nbsp;&nbsp;
+	<% end %>
+    </span>
+	<% if params[:action] != "confirm" or !@feature_product.errors.blank?%>
+	  <input type="button" class="btn_s" name="search" value="検索" method="get" onclick="fnSearchSubWindow('product_search', 1000, 400);">
+	<% end %>
+	</td>
+  </tr>
+  <tr>
+    <th>画像 </th>
+    <td><%= confirm_tag :image_field, :feature_product, :image_resource %><br/>
+	<% if params[:action] != "confirm" or !@feature_product.errors.blank?%>
+	  ※デフォルトでは登録された商品の画像が表示されます
+	<% end %>	
+	</td>
+  </tr>
+  <tr>
+    <th>フリースペース</th>
+    <td>
+    <%if params[:action] == "confirm" and @feature_product.errors.blank?%>
+		<%= @feature_product.body %>
+	<%else%>
+		<%= confirm_tag :text_area, :feature_product ,:body, :size => '80x20' %>
+	<%end%>	
+	</td>
+  </tr>
+</table>

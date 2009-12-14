@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="content-style-type" content="text/css">
+    <title>配信条件</title>
+  </head>
+  <body>
+<%= stylesheet_link_tag "admin" %>
+<div id="wrapper" class="clearfix">
+  <div id="containar" class="clearfix">
+    <div id="main"><!-- メイン -->
+    
+    <h2>配信条件</h2>
+    <table class="data" cellspacing="1">
+      <tr>
+        <th>顧客名</th>
+        <td><%=h selected_check(@condition.customer_name_kanji) %></td>
+        <th>顧客名（カナ）</th>
+        <td><%=h selected_check(@condition.customer_name_kana) %></td>
+      </tr>
+      <tr>
+        <th>都道府県</th>
+        <td><%=h prefecture_name(@condition.prefecture_id, Admin::MailMagazineHelper::NOT_SELECTED) %></td>
+        <th>TEL</th>
+        <td><%=h selected_check(@condition.tel_no) %></td>
+      </tr>
+      <tr>
+        <th>性別</th>
+        <td>
+          <%= sex_name(@condition.sex_male, @condition.sex_female) %>
+        </td>
+        <th>誕生月</th>
+        <td><%= birth_month_name(@condition.birth_month) %></td>
+      </tr>
+      <tr>
+        <th>配信形式</th>
+        <td>
+          <%=h form_type_name(@condition.form_type) %>
+        </td>
+        <th>購入回数</th>
+        <td>
+          <%= order_count_name(@condition.order_count_up, @condition.order_count_down) %>
+        </td>
+      </tr>
+      <tr>
+        <th>購入商品コード</th>
+        <td><%=h selected_check(@condition.product_code) %></td>
+        <th>購入金額</th>
+        <td>
+          <%= total_name(@condition.total_up, @condition.total_down) %>
+        </td>
+      </tr>
+      <tr>
+        <th>メールアドレス</th>
+        <td colspan="3"><%=h selected_check(@condition.email) %></td>
+      </tr>
+      <tr>
+        <th>配信メールアドレス種別</th>
+        <td colspan="3">
+          <%=h mail_type_name(@condition.mail_type) %>
+        </td>
+      </tr>
+      <tr>
+        <th>職業</th>
+        <td colspan="3" style="width:600px">
+          <%= occupation_names(@condition.occupation_id) %>
+        </td>
+      </tr>
+      <tr>
+        <th>誕生日</th>
+        <td colspan="3" style="width:600px">
+          <%= date_selected_check(@condition.birthday_from, @condition.birthday_to) %>
+        </td>
+      </tr>
+      <tr>
+        <th>登録日</th>
+        <td colspan="3" style="width:600px">
+          <%= date_selected_check(@condition.updated_at_from, @condition.updated_at_to) %>
+        </td>
+      </tr>
+      <tr>
+        <th>最終購入日</th>
+        <td colspan="3" style="width:600px">
+          <%= date_selected_check(@condition.last_order_from, @condition.last_order_to) %>
+        </td>
+      </tr>
+      <tr>
+        <th>購入商品名</th><td><%=h selected_check(@condition.product_name) %></td>
+        <th>カテゴリ</th>
+        <td><%=h category_name(@condition.category_id, Admin::MailMagazineHelper::NOT_SELECTED) %></td>
+      </tr>
+      <tr>
+        <th>キャンペーン</th>
+        <td colspan="3"><%=h campaign_name(@condition.campaign_id, Admin::MailMagazineHelper::NOT_SELECTED) %></td>
+      </tr>
+    </table>
+    
+    </div><!-- /メイン -->
+  </div>
+</div>
+  </body>
+</html>

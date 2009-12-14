@@ -1,0 +1,11 @@
+<%= render :partial => "base/title", :locals => {:title => "ご注文の完了"} %>
+
+<div style="text-align:center;">ご注文ありがとうございました。</div>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "5" %><br /></div>
+只今、ご注文の確認メールをお送りさせていただきました。<br />
+万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではありますが
+もう一度お問い合わせ頂くか、お電話にてお問い合わせくださいませ。<br />
+今後ともご愛願賜りますようよろしくお願い申し上げます。<br /><br />
+<% if @login_customer%>
+<%= link_to '今回の購入履歴を確認', :controller => 'accounts', :action => 'history_list', :id => flash[:order_id] %>
+<%end%>

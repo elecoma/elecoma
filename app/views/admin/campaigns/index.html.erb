@@ -1,0 +1,53 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>キャンペーン管理</h2>
+<br />
+<div class="btn_t">
+  <%= button_to '新規登録', new_admin_campaign_path ,:class =>"btn_s"%>
+</div>
+<br />
+<%=h flash[:notice] %>
+<%=h flash[:error] %>
+
+<% if !@campaigns.blank? %>
+<table class="data2" cellspacing="1">
+  <tr>
+    <th rowspan="2">キャンペーン名</th>
+    <th rowspan="2">申込人数</th>
+    <th colspan="2">PCデザイン設定</th>
+    <th colspan="2">携帯デザイン設定</th>
+    <th rowspan="2">編集</th>
+    <th rowspan="2">削除</th>
+    <th rowspan="2">CSV</th>
+    <th rowspan="2">PCページ参照</th>
+    <th rowspan="2">携帯ページ参照</th>
+  </tr>
+  <tr>
+    <th>CP中</th>
+    <th>CP終了</th>
+    <th>CP中</th>
+    <th>CP終了</th>
+  </tr>
+  <% @campaigns.each do |campaign| %>
+  <tr>
+    <td><%=h campaign.name %></td>
+    <td><%=h campaign.application_count.to_i %></td>
+    <td><%= link_to "設定", :action=>"campaign_design", :id=>campaign.id, :type=>"open_pc" %></td>
+    <td><%= link_to "設定", :action=>"campaign_design", :id=>campaign.id, :type=>"end_pc" %></td>
+    <td><%= link_to "設定", :action=>"campaign_design", :id=>campaign.id, :type=>"open_mobile" %></td>
+    <td><%= link_to "設定", :action=>"campaign_design", :id=>campaign.id, :type=>"end_mobile" %></td>
+    <td><%= link_to "編集", edit_admin_campaign_path(campaign.id) %></td>
+    <td><%= link_to "削除", admin_campaign_path(campaign.id), :confirm=>"本当に削除しますか", :method => "delete" %></td>
+    <td><%= link_to "CSV", {:action=>"csv_download", :id=>campaign.id} %></td>
+    <% campaign_show = "/campaigns/" + campaign.dir_name %>
+    <td><%= link_to "参照", campaign_show  + "?btype=pc", :popup=>true %></td>
+    <td><%= link_to "参照", campaign_show  + "?btype=mobile", :popup=>true %></td>
+  </tr>
+  <% end %>
+</table>
+<% end %>
+<br/>
+
+</div><!-- /メイン -->

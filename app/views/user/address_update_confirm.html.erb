@@ -1,0 +1,26 @@
+<head>
+  <%= javascript_include_tag :defaults %>
+</head>
+<body>
+<h1>EC</h1>
+<div id="address_update_confirm">
+  <div id="caption">
+    <%= image_tag('user/dummy.jpg', {:alt => '新しいお届け先の追加・変更'}) %>
+    下記の内容でお届け先を変更します。<br />
+    内容に誤りがなければ、一番下の「変更する」ボタンをクリックしてください。
+  </div>
+  <noscript>
+    <p>JavaScriptが利用できない状態です。<br />一部のコンテンツが正常に動作しない可能性があります</p>
+  </noscript>
+  <div id="notice"><%= flash[:notice] %></div>
+  <div id="address_form">
+    <% form_tag({:action => 'address_update'}, {:name => 'form1'}) do %>
+      <%= render :partial => 'address_confirm' %>
+      <%= hidden_field_tag('address[id]', @address.id) %>
+      <%= link_to_function(image_tag('user/dummy.jpg', {:alt => 'キャンセル'}), "window.close()", {:tabindex => 3}) %>
+      <%= link_to(image_tag('user/dummy.jpg', {:alt => '修正する'}), {:action => 'edit', :address => @address.attributes}, {:method => :post, :tabindex => 2}) %>
+      <%= image_submit_tag('user/dummy.jpg', {:tabindex => 1, :alt => '登録する'}) %>
+    <% end %>
+  </div>
+</div>
+</body>

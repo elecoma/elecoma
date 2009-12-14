@@ -1,0 +1,20 @@
+<%= render :partial => "base/title", :locals => {:title => "お届け先の指定"} %>
+
+下記一覧よりお届け先住所を選択して、「選択したお届け先に送る」ボタンをクリックしてください。<br />
+一覧にご希望の住所が無い場合は、「新しいお届け先を追加する」より追加登録してください。<br />
+<span style="color:#ff0000;">※</span>最大20件まで登録できます。<br />
+
+<div><%= flash[:notice] %></div>
+
+<br />
+
+  <%= link_to_create_address %>
+  <% form_tag({:action => 'purchase'}, {:name=>'form1'}) do %>
+    <%= render :partial => 'address_list' %>
+    <div style="text-align:center;">
+      <br /><%= submit_tag '次へ' %>
+    </div>
+  <% end %>
+    <div style="text-align:center;">
+      <%= button_to '戻る', :controller => "cart", :action => 'show' %>
+    </div>

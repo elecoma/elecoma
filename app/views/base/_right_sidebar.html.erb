@@ -1,0 +1,64 @@
+<div id="r_sub"><!-- 右サブカラム -->
+  <!-- ログインフォーム -->
+  <% if @login_customer.nil? %>
+    <h3><%= image_tag "/images/common/h3_login.gif", :size => "200x32", :alt => "ログイン" %></h3>
+    <div id="login_box" class="side_box">
+      <% form_for(:customer, :url => { :controller => :accounts, :action => "login" } ) do |f| -%>
+        <div class="login_t">メールアドレス</div>
+        <%= f.text_field("email", :size => 6, :class => "login_form" ) %>
+        <div class="login_t">パスワード</div>
+        <%= f.password_field("password", :size=> 6, :class => "login_form") %>
+        <%= image_submit_tag("/images/common/login_btn.gif", :onclick => "return check_login_form();", :class => "login_btn hoverImg", :alt => 'ログイン') %>
+      <% end -%>
+      <div id="remind"><%= link_to 'パスワードを忘れた方はこちら', {:controller => 'accounts', :action => 'salvage'} %></div>
+
+      <div class="side_hr"><hr /></div>
+      <%= link_to image_tag("/images/common/new_entry_btn.gif", :width=>"176", :height=>"30", :alt=>"新規会員登録", :class=>"hoverImg"), {:controller => "accounts", :action => "kiyaku"} %>
+      <p class="txt_c m_top">初めてのお客様はこちら</p>
+    </div>
+    <div><%= image_tag "/images/common/side_bg_btm.gif", :size => "200x5", :alt => "", :class => "m_btm" %></div>
+  <% end %>
+
+  <!-- カート -->
+  <div><%= image_tag "/images/common/side_bg_top.gif", :size => "200x5", :alt => "" %></div>
+  <%= render :partial => "/base/cart" %>
+  <div><%= image_tag "/images/common/side_bg_btm.gif", :size => "200x5" %></div>
+
+  <!-- お知らせ -->
+  <%- unless @new_informations.blank? -%>
+    <h3 id="h3_t"><%= image_tag "/images/common/h3_info.gif", :size => "200x32", :alt => "お知らせ" %></h3>
+    <div id="info_box" class="side_box_r">
+      <ul>
+        <%- @new_informations.each do |new_information| -%>
+          <li><%= link_to_new_information new_information %></li>
+        <%- end -%>
+      </ul>
+    </div>
+    <div class="m_btm"><%= image_tag "/images/common/side_bg_btm.gif", :size => "200x5" %></div>
+  <%- end -%>
+
+  <!-- ランキング -->
+    <%- unless params[:action]=='show' && params[:controller]=='portal' -%>
+	<%- unless @recommend_xmls.blank? -%>
+	<h3 id="h3_t_rank">人気商品ランキング</h3>
+	<div id="kuchikomi_box">
+	<ol>
+	  <% @recommend_xmls.each_with_index do | recommend_xml, i | %>
+	   <%- rank = i + 1 -%>
+	   <%- img_src = "/images/common/kuchi_0"+rank.to_s+".gif" -%>
+	   <%- img_alt = "人気商品ランキング"+rank.to_s+"位" -%>
+		  <li>
+		    <div class="kuchi_img"><img src='<%=img_src%>' width="35" height="36" alt='<%=img_alt%>' /></div><div class="kuchi_t"><p><%= link_to_product recommend_xml.recommend, "#{recommend_xml.name}" %></p></div>
+		    <p class="kuchi_txt"><%=h recommend_xml.recommend.introduction%></p>
+		  </li>
+	  <% end %>
+	</ol>
+	</div>
+	<div class="top_box_btm"><img src="/images/common/side_bg_btm.gif" width="200" height="5" alt="" /></div>
+	<% end %>
+	<% end %>
+
+  <% free_space2 = Design.first.try(:pc2).to_s -%>
+  <%= render :inline => free_space2 if free_space2.present? %>
+
+</div><!-- /r_sub -->

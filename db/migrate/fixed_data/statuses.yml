@@ -1,0 +1,18 @@
+delivery_fee_free:
+  id: 3
+  name: 送料無料
+new:
+  id: 4
+  name: NEW
+few_reminder:
+  id: 5
+  name: 残りわずか
+recommend:
+  id: 7
+  name: オススメ
+limit_product:
+  id: 8
+  name: 限定品
+reserve::
+  id: 9
+  name: 予約

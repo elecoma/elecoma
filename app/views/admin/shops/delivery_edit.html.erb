@@ -1,0 +1,15 @@
+<% content_for :head do %>
+ <%= stylesheet_link_tag "shop/shop" %>
+<% end %>
+
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>配達業者登録</h2>
+<% form_tag( {:action => "delivery_update"}, :model => @model_name ,:name=>"delivery_form") do %>
+<%= render :partial => "delivery_form" %>
+ <%= hidden_field_tag "id", params[:id] %>
+<% end %>
+
+</div><!-- /メイン -->

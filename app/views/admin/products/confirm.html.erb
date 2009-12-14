@@ -1,0 +1,40 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>確認</h2>
+<% @confirm_hidden_field = "" %>
+<% form_for :produt do |f| %>
+  <%= render :partial => "form", :locals => {:f => f} %>
+<% end %>
+<div class="btn_box">
+  <% form_for [:admin, @product] do |f| %>
+    <% unless params[:product_status_ids].blank? %>
+      <% params[:product_status_ids].each do | ids | %>
+        <%= hidden_field_tag "product_status_ids[]", ids %>
+      <% end %>
+    <% end %>
+    <% @product.attribute_names.each do | column | %>
+      <%= hidden_field "product", column.to_s %>
+    <% end %>
+  
+    <%= hidden_field_tag "id", params[:id] %>
+    <%= @confirm_hidden_field %>
+    <%= submit_tag "この内容で登録する", :class=>"btn" %>
+    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+  <% end %>
+  
+  <% form_for [:admin, @product], :url => {:action => ( params[:id].blank? ? "new" : "edit" ), :id => params[:id]}, :html => {:method => "get"} do |f| %>
+    <% unless params[:product_status_ids].blank? %>
+      <% params[:product_status_ids].each do | ids | %>
+        <%= hidden_field_tag "product_status_ids[]", ids %>
+      <% end %>
+    <% end %>
+    <% @product.attribute_names.each do | column | %>
+      <%= f.hidden_field column.to_s %>
+    <% end %>
+    <%= @confirm_hidden_field %>
+    <%= submit_tag "戻る", :class=>"btn" %>
+    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+  <% end %>
+</div><!-- /メイン -->

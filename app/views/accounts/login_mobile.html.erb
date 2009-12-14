@@ -1,0 +1,13 @@
+<%= render :partial => "base/title", :locals => {:title => "ログイン"} %>
+
+<span style="color:#ff0000;"><%= flash[:notice] %></span><br /><br />
+<% form_for(:customer, :url => { :action => "login" } ) do |f| -%>
+ <span style="color:#FF9775;">■</span> メールアドレス<br /><%= f.text_field("email",{:size => "30", :style => "height : 14px;"}.merge(mobile_input_mode(:alphabet))) %><br />
+ <span style="color:#FF9775;">■</span> パスワード<br /><%= f.password_field("password",:size => "30", :style => "height : 14px;") %><br />
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
+<%= f.submit 'ログイン' %>
+<% end %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
+<span style="color:#FF9775;">⇒</span> <%= link_to 'パスワードをお忘れの方はこちら', {:controller => 'accounts', :action => 'salvage'} %><br />
+<span style="color:#FF9775;">⇒</span> <%= link_to("新規会員登録はコチラ", { :controller => "accounts", :action => "kiyaku_intro" } ) %><br />
+<span style="color:#FF9775;">⇒</span> <%= link_to("購入を引き続き", { :controller => "cart", :action => "temporary_shipping" } ) %><br />

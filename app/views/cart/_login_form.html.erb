@@ -1,0 +1,18 @@
+<!-- 会員の方 -->
+<dl id="member">
+  <dt><img src="/images/login/login_t1.gif" width="350" height="49" alt="会員の方" /></dt>
+  <dd>
+    <h3>会員登録がお済みのお客様</h3>
+    <p>会員の方は、登録時に入力されたメールアドレスとパスワードでログインしてください。</p>
+    <% form_for(:customer, :url => { :controller => 'account', :action => "login" } ) do |f| -%>
+      <div class="login_t">メールアドレス</div>
+      <%= f.text_field("email", :size => 6, :class => "login_form" ) %>
+      <%= check_box_tag('remember_email', 'true', {:tabindex => 2})%>メールアドレスを記憶させる
+      <div class="login_t">パスワード</div>
+      <%= f.password_field("password", :size=> 6, :class => "login_form") %>
+      <%= image_submit_tag("/images/common/login_btn.gif", :onclick => "return check_login_form();", :class => "login_btn hoverImg", :alt => 'ログイン') %>
+    <% end -%>
+    <div id="remind">パスワードを忘れた方は<%= link_to 'こちら', {:controller => 'account', :action => 'reminder'} %></div>
+    <div id="remind">メールアドレスを忘れた方は<%= link_to 'お問い合せページ', {:controller => 'inquiries', :action => 'new'} %>からお問い合わせください。</div>
+  </dd>
+</dl>

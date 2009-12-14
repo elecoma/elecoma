@@ -1,0 +1,283 @@
+--- 
+prefecture_00027: 
+  name: "大阪府"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 27
+  position: 27
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00005: 
+  name: "秋田県"
+  updated_at: 2008-07-04 16:48:26.090664 +09:00
+  id: 5
+  position: 5
+  created_at: 2008-07-04 16:48:26.090664 +09:00
+prefecture_00016: 
+  name: "富山県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 16
+  position: 16
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00038: 
+  name: "愛媛県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 38
+  position: 38
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00039: 
+  name: "高知県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 39
+  position: 39
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00017: 
+  name: "石川県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 17
+  position: 17
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00006: 
+  name: "山形県"
+  updated_at: 2008-07-04 16:48:26.090664 +09:00
+  id: 6
+  position: 6
+  created_at: 2008-07-04 16:48:26.090664 +09:00
+prefecture_00028: 
+  name: "兵庫県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 28
+  position: 28
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00029: 
+  name: "奈良県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 29
+  position: 29
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00007: 
+  name: "福島県"
+  updated_at: 2008-07-04 16:48:26.100664 +09:00
+  id: 7
+  position: 7
+  created_at: 2008-07-04 16:48:26.100664 +09:00
+prefecture_00018: 
+  name: "福井県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 18
+  position: 18
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00040: 
+  name: "福岡県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 40
+  position: 40
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00041: 
+  name: "佐賀県"
+  updated_at: 2008-07-04 16:48:26.120664 +09:00
+  id: 41
+  position: 41
+  created_at: 2008-07-04 16:48:26.120664 +09:00
+prefecture_00019: 
+  name: "山梨県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 19
+  position: 19
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00008: 
+  name: "茨城県"
+  updated_at: 2008-07-04 16:48:26.100664 +09:00
+  id: 8
+  position: 8
+  created_at: 2008-07-04 16:48:26.100664 +09:00
+prefecture_00030: 
+  name: "和歌山県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 30
+  position: 30
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00031: 
+  name: "鳥取県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 31
+  position: 31
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00009: 
+  name: "栃木県"
+  updated_at: 2008-07-04 16:48:26.100664 +09:00
+  id: 9
+  position: 9
+  created_at: 2008-07-04 16:48:26.100664 +09:00
+prefecture_00020: 
+  name: "長野県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 20
+  position: 20
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00042: 
+  name: "長崎県"
+  updated_at: 2008-07-04 16:48:26.120664 +09:00
+  id: 42
+  position: 42
+  created_at: 2008-07-04 16:48:26.120664 +09:00
+prefecture_00043: 
+  name: "熊本県"
+  updated_at: 2008-07-04 16:48:26.130664 +09:00
+  id: 43
+  position: 43
+  created_at: 2008-07-04 16:48:26.130664 +09:00
+prefecture_00021: 
+  name: "岐阜県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 21
+  position: 21
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00010: 
+  name: "群馬県"
+  updated_at: 2008-07-04 16:48:26.100664 +09:00
+  id: 10
+  position: 10
+  created_at: 2008-07-04 16:48:26.100664 +09:00
+prefecture_00032: 
+  name: "島根県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 32
+  position: 32
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00033: 
+  name: "岡山県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 33
+  position: 33
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00011: 
+  name: "埼玉県"
+  updated_at: 2008-07-04 16:48:26.100664 +09:00
+  id: 11
+  position: 11
+  created_at: 2008-07-04 16:48:26.100664 +09:00
+prefecture_00022: 
+  name: "静岡県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 22
+  position: 22
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00044: 
+  name: "大分県"
+  updated_at: 2008-07-04 16:48:26.130664 +09:00
+  id: 44
+  position: 44
+  created_at: 2008-07-04 16:48:26.130664 +09:00
+prefecture_00045: 
+  name: "宮崎県"
+  updated_at: 2008-07-04 16:48:26.130664 +09:00
+  id: 45
+  position: 45
+  created_at: 2008-07-04 16:48:26.130664 +09:00
+prefecture_00023: 
+  name: "愛知県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 23
+  position: 23
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00001: 
+  name: "北海道"
+  updated_at: 2008-07-04 16:48:26.080664 +09:00
+  id: 1
+  position: 1
+  created_at: 2008-07-04 16:48:26.080664 +09:00
+prefecture_00012: 
+  name: "千葉県"
+  updated_at: 2008-07-04 16:48:26.100664 +09:00
+  id: 12
+  position: 12
+  created_at: 2008-07-04 16:48:26.100664 +09:00
+prefecture_00034: 
+  name: "広島県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 34
+  position: 34
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00035: 
+  name: "山口県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 35
+  position: 35
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00013: 
+  name: "東京都"
+  updated_at: 2008-07-04 16:48:26.100664 +09:00
+  id: 13
+  position: 13
+  created_at: 2008-07-04 16:48:26.100664 +09:00
+prefecture_00002: 
+  name: "青森県"
+  updated_at: 2008-07-04 16:48:26.090664 +09:00
+  id: 2
+  position: 2
+  created_at: 2008-07-04 16:48:26.090664 +09:00
+prefecture_00024: 
+  name: "三重県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 24
+  position: 24
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00046: 
+  name: "鹿児島県"
+  updated_at: 2008-07-04 16:48:26.130664 +09:00
+  id: 46
+  position: 46
+  created_at: 2008-07-04 16:48:26.130664 +09:00
+prefecture_00047: 
+  name: "沖縄県"
+  updated_at: 2008-07-04 16:48:26.130664 +09:00
+  id: 47
+  position: 47
+  created_at: 2008-07-04 16:48:26.130664 +09:00
+prefecture_00025: 
+  name: "滋賀県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 25
+  position: 25
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00003: 
+  name: "岩手県"
+  updated_at: 2008-07-04 16:48:26.090664 +09:00
+  id: 3
+  position: 3
+  created_at: 2008-07-04 16:48:26.090664 +09:00
+prefecture_00014: 
+  name: "神奈川県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 14
+  position: 14
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00036: 
+  name: "徳島県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 36
+  position: 36
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00037: 
+  name: "香川県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 37
+  position: 37
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00015: 
+  name: "新潟県"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 15
+  position: 15
+  created_at: 2008-07-04 16:48:26.110664 +09:00
+prefecture_00004: 
+  name: "宮城県"
+  updated_at: 2008-07-04 16:48:26.090664 +09:00
+  id: 4
+  position: 4
+  created_at: 2008-07-04 16:48:26.090664 +09:00
+prefecture_00026: 
+  name: "京都府"
+  updated_at: 2008-07-04 16:48:26.110664 +09:00
+  id: 26
+  position: 26
+  created_at: 2008-07-04 16:48:26.110664 +09:00

@@ -1,0 +1,213 @@
+#!/usr/bin/env ruby
+# -*- ruby -*-
+
+# メールを
+
+require 'net/smtp'
+require 'drb'
+require 'enumerator'
+require File.dirname(__FILE__) + '/../config/boot'
+require 'optparse'
+require "actionmailer"
+require File.dirname(__FILE__) + '/../vendor/plugins/mbmail/lib/mb_mail'
+
+#DRB_URI = 'druby://0.0.0.0:9999'
+DRB_URI = 'druby://127.0.0.1:9999'
+THRESHOLD = 5
+
+def logger
+  l = (ActionMailer::Base.logger || ActionController::Base.logger)
+  l.auto_flushing = true
+  l
+end
+
+def queue_push(mail)
+  from = mail.from_addrs[0]
+  if from
+    from = from.address
+  end
+  mail.to.each do |to|
+    logger.info(mail)
+    m = Mail.new(:to_address=>to, :from_address=>from, :message=>Base64.encode64(mail.encoded))
+    m.save
+  end
+end
+
+class MailSender
+  def self.smtp_send(mails)
+    settings = ActionMailer::Base.smtp_settings
+    logger.info('script/mail: smtp server %s:%d' % [settings[:address], settings[:port]])
+    Net::SMTP.start(settings[:address], settings[:port]) do |smtp|
+      mails.each do |mail|
+        begin
+          logger.info('script/mail: send %s -> %s' % [mail.from_address, mail.to_address])
+          mail.update_attribute(:sent_at, Time.zone.now)
+          smtp.send_message(Base64.decode64(mail.message), mail.from_address, mail.to_address)
+        rescue Net::SMTPSyntaxError => e # 5xx
+          # もうこの宛先には送れない
+          p e
+          handle_fatal_error(mail)
+        rescue Net::SMTPFatalError => e # 5xx
+          p e
+          handle_fatal_error(mail)
+        rescue Net::SMTPServerBusy, Net::SMTPUnknownError => e
+          # あとで再送する
+          p e
+          handle_temporary_error(mail)
+        end
+      end
+    end
+  end
+
+  def self.send_mail
+    mails = Mail.find(:all, :conditions=>'sent_at is null', :order=>'created_at', :limit=>100)
+    mails = mails.find_all do |m|
+      customer = Customer.find_by_email_and_activate(m.to_address, Customer::TOUROKU)
+      customer && customer.reachable
+    end
+    smtp_send(mails)
+  end
+
+  def self.handle_fatal_error(address)
+    customer = Customer.find_by_email_and_activate(mail.to_address, Customer::TOUROKU)
+    customer or return
+    customer.reachable = false
+  end
+
+  def self.handle_temporary_error(mail)
+    # 規定回数を超えたら到達不能とみなす。そうでなければ再送。
+    customer = Customer.find_by_email_and_activate(mail.to_address, Customer::TOUROKU)
+    customer or return
+    customer.mail_delivery_count += 1
+    if customer.mail_delivery_count >= THRESHOLD
+      customer.reachable = false
+    else
+      newmail = Mail.new({
+        :from_address => mail.from_address,
+        :to_address => mail.to_address,
+        :message => mail.message})
+      newmail.save
+    end
+    customer.save
+  end
+
+  def self.report(message)
+    mail = TMail::Mail.parse(message)
+    status = address = nil
+    if mail.content_type == 'multipart/report'
+      part = mail.parts.find{|p| p.content_type == 'message/delivery-status'}
+      part or return
+      # このパートの中にさらにヘッダっぽいものが2つある
+      p2 = TMail::Mail.parse(part.body)
+      p3 = TMail::Mail.parse(p2.body)
+      p3['status'] && p3['original-recipient'] or return
+      status = p3['status'].to_s
+      address = p3['original-recipient'].to_s.split(';',2)[1] # rfc822;user@domain
+    else
+      pattern = /^ Out: ([45]\d{2}) \d\.\d\.\d <([^>]+)>/
+      line = mail.body.grep(pattern).first
+      line or return
+      line =~ pattern
+      status = $1
+      address = $2
+      p [status, address]
+    end
+    address or return
+    customer = Customer.find_by_email_and_activate(address, Customer::TOUROKU)
+    logger.info('script/mail: report %s %s %s' % [status, address, (customer && customer.id).inspect])
+    customer or return
+    if status[0] == ?5
+      report_5xx(customer)
+    elsif status[0] == ?4
+      report_4xx(customer)
+    end
+  end
+
+  def self.report_5xx(customer)
+    customer.reachable = false
+    customer.save!
+    logger.info('script/mail: customer(%d) reachable=%s' % [customer.id, customer.reachable.to_s])
+  end
+
+  def self.report_4xx(customer)
+    customer.mail_delivery_count += 1
+    if customer.mail_delivery_count >= THRESHOLD
+      customer.reachable = false
+    end
+    customer.save!
+    logger.info('script/mail: customer(%d) mail_delivery_count=%d' % [customer.id, customer.mail_delivery_count])
+    logger.info('script/mail: customer(%d) reachable=%s' % [customer.id, customer.reachable.to_s])
+  end
+end
+
+class MyServer
+  # 定期的に呼ぶ
+  def send_mail()
+    p "sendmail"
+    logger.info('script/mail: send_mail')
+    begin
+      MailSender.send_mail
+    rescue =>e
+      logger.error('script/mail: %s(%s)' % [e.message, e.class.name])
+      e.backtrace[0..8].each{|s|logger.error(s)}
+      raise DRb::DRbError, e.to_s
+    end
+  end
+  # エラーメールを報告
+  def report(message)
+    logger.info('script/mail: report(%s)' % (message[0..40]+'...').inspect)
+    begin
+      MailSender.report(message)
+    rescue =>e
+      logger.error('script/mail: %s(%s)' % [e.message, e.class.name])
+      e.backtrace[0..8].each{|s|logger.error(s)}
+      raise DRb::DRbError, e.to_s
+    end
+  end
+  # メールマガジン送信の時に呼ぶ
+  def add(mail)
+    logger.info('script/mail: add(%s)' % mail.inspect)
+    queue_push(mail)
+  end
+  # 再送回数をリセット
+  def reset()
+    logger.info('script/mail: reset')
+    Customer.update_all('mail_delivery_count = 0')
+  end
+end
+
+def main
+  pidfile = Pathname.new(RAILS_ROOT).join('var', 'run', 'mail.pid')
+  options = {
+    :environment => "development",
+  }
+  ARGV.clone.options do |opts|
+    opts.banner = 'Usage: %s' % $0
+    opts.on("-e", "--environment=name", String) { |v| options[:environment] = v }
+    opts.order!
+  end
+  ENV['RAILS_ENV'] = options[:environment]
+  RAILS_ENV.replace(options[:environment]) if defined?(RAILS_ENV)
+  require RAILS_ROOT + '/config/environment'
+
+  logger.info('script/mail start')
+  object = MyServer.new
+  DRb.start_service(DRB_URI, object)
+  puts DRb.uri
+  pidfile.open('wb') do |f|
+    f.puts($$)
+  end
+  begin
+    loop do
+      sleep 60
+      object.send_mail rescue nil
+    end
+  ensure
+    logger.info('script/mail exit')
+  end
+  pidfile.unlink
+end
+
+if __FILE__ == $0
+  main
+end

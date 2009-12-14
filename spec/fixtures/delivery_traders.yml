@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+witch:
+  id: 1
+  name: キキ
+  url: http://example.org/
+  position: 1
+
+yamato:
+  id: 2
+  name: ヤマト
+  url: http://example.org/
+  position: 2

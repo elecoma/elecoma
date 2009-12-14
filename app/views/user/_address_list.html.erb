@@ -1,0 +1,28 @@
+<table>
+ <tr>
+  <th colspan="5">
+▼お届け先
+  </th>
+ </tr>
+<% @addresses.each_with_index do |address, index| %>
+ <tr>
+  <td id="index">
+    <%= h(index+1) %>
+  </td>
+  <td id="label">
+    お届け先住所
+  </td>
+  <td id="detail">
+    〒<%= h([address.zipcode_first, address.zipcode_second].join('-')) %><br />
+    <%= h([address.prefecture.name, address.address_city, address.address_detail].join(' ')) %><br />
+    <%= h([address.first_name, address.last_name].join(' ')) %>
+  </td>
+  <td id="edit">
+    <%= link_to_function('変更', "popDeliveryAddress('/user/address_edit/#{address.id.to_s}', 'update_deliv', '600', '640')") %>
+  </div>
+  <td id="delete">削除
+  </td>
+ </tr>
+</table>
+
+<% end %>

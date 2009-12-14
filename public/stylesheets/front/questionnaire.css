@@ -1,0 +1,42 @@
+@charset "utf-8";
+
+#container {
+  background: url();
+  width: 735px;
+  margin: 0 auto;
+}
+
+.main_t {
+  width: 690px;
+  background: url(/images/common/main_t_l.gif) no-repeat;
+}
+
+.error_mes {
+  width: 692px;
+  padding: 10px;
+  border: 1px solid #ff0000;
+  margin: 5px 0;
+  color: #ff0000;
+}
+
+.tb_t {
+  width: 700px;
+}
+
+.tb_c {
+  margin: 10px 0 10px 0;
+}
+
+.btn_s {
+  height: 22px;
+  background: url(/images/btn_s.gif) repeat-x;
+  cursor: pointer;
+}
+
+.errorExplanation {
+  width: 692px;
+  padding: 10px;
+  border: 1px solid #ff0000;
+  margin: 5px 0;
+  color: #ff0000;
+}

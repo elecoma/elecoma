@@ -1,0 +1,13 @@
+<%= render :partial => "base/title", :locals => {:title => "ドメイン指定追加"} %>
+<p>
+ドメイン指定受信をしている方は、下記のドメインを指定受信リストに加えていください。<br />
+<br />
+<%= text_field_tag nil, @target_domain %><br />
+<br />
+設定方法<br />
+ﾒｰﾙｷｰ→Eﾒｰﾙ設定→その他の設定→ﾒｰﾙﾌｨﾙﾀｰ→暗証番号入力→その他→宛先指定受信→上記ﾄﾞﾒｲﾝを追加し「OK」を押す
+</p>
+<hr />
+<p>
+ <%= link_to '会員登録に戻る', {:action => 'kiyaku_intro'}, :accesskey => 0 %><br />
+</p>

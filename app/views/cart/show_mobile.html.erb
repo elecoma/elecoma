@@ -1,0 +1,48 @@
+<%= render :partial => "base/title", :locals => {:title => "現在のカゴの中"} %>
+
+<p><%= flash[:notice] %><%= h_br(flash[:error]) %><%= flash[:cart_add_product] %></p>
+
+<div style="text-align:center;">
+  <%- if @carts.blank? then -%>
+    <span style="color:#ff0000;">※</span> 現在カート内に商品はございません。
+  <%- else -%>
+        お買い上げ商品の合計金額は<br />
+		<span style="color:#cc0033"><%= h(number_with_delimiter(@cart_price)) %></span>円です。
+  <%- end -%>
+</div>
+
+<%- unless @carts.blank? -%>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
+  <% @carts.each_with_index do |cart, i| %>
+
+        商品名:<%= h(cart.product_name) %>
+        <%= h(cart.classcategory_name1) %>
+        <%= h(cart.classcategory_name2) %>
+        <div style="text-align:right;">単価: &yen;<%= h(number_with_delimiter(cart.price)) %> / 数量:<%= h(cart.quantity) %>個<br />
+        <span style="color:#ff6600">▲</span><%= incriment_tag(cart) %>
+		<span style="color:#000099">▼</span><a href="#"><%= decriment_tag(cart) %>
+        <span style="color:#cc0033">[×]</span><a href="#"> <%= link_to '削除',
+          {:controller => 'cart', :action => 'delete', :id => cart.product_style_id},
+          {:class => 'product_delete', :confirm=>'本当に削除しますか？'}
+         %>
+		</div>
+		<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "5" %><br /></div>
+                小計<%= number_with_delimiter cart.subtotal %>円<br />
+		<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "5" %><br /></div>
+        <p style="text-align:right;"><%= link_to_product(cart.product, '商品詳細へ') %></p>
+		
+		<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+        <div style="clear:both; background-color:#F3F3EC; text-align:center;"><%= image_tag_mobile "border", :width => "226", :height => "2" %><br /></div>
+		<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+
+   <% end %>
+   
+                合計<%= h(number_with_delimiter(@cart_price)) %>円
+		<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "5" %><br /></div>
+
+  <div style="text-align:center;">
+      <%= link_to '注文する', {:controller => 'cart', :action => 'shipping'}, {:class => 'submit_shipping'} %><br />
+      <%= link_to 'お買い物を続ける', :controller => :portal, :action => :show %>
+  </div>
+
+<%- end -%>

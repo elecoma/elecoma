@@ -1,0 +1,82 @@
+<%= stylesheet_link_tag "mobile" %>
+<?xml version="1.0" encoding="Shift_JIS" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+
+
+<head>
+
+
+<%= compound_title_tag(['K&B style', @product_name, @category_name, @campaign_name, @character && @character.title], :delimiter=>' ') %>
+
+
+<% unless @seo.nil? %>
+<meta name="author" content="<%= @seo.author %>" />
+<meta name="description" content="<%= @seo.description %>" />
+<meta name="keywords" content="<%= @seo.keywords %>" />
+<% end %>
+
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=Shift_JIS" />
+<%= yield :head -%>
+</head>
+<body bgcolor="#ffffff" link="#990066" vlink="#990066"
+style="font-size:small; background-color:#ffffff; color:#000000; margin:0 auto; padding:0; align:center; text-align:center;">
+<div style="width:236px; margin:0 auto; padding:0; text-align:left; align:left;" id="wrapper"><a name="top" id="body"></a>
+
+
+<!--タイトル-->
+<div style="text-align:center;"><a id="top"><%= image_tag_mobile "logo_s", :alt => "", :width => "100%", :height => "20" %></a></div>
+<div style="background-color:#ffffff;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+
+<div style="background-color:#F3F3EC;">
+
+<%= yield %>
+
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
+<div style="background-color:#998A83;"><%= image_tag_mobile "spacer", :width => "100%", :height => "1" %><br /></div>
+</div>
+<div style="background-color:#ffffff;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
+
+<!-- ▼ﾌｯﾀｰ ここから -->
+<div style="background-color:#F3F3EC;">
+<div style="background-color:#C6C6BA;"><%= image_tag_mobile "spacer", :width => "1", :height => "1" %><br /></div>
+
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<%= link_to_mobile 'トップへ', {:controller=>'/'}, :accesskey => "0" %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<div style="text-align:center;"><%= image_tag_mobile "border", :width => "226", :height => "2" %></div>
+
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<span style="color:#A84200">&#xE682;</span> <%= link_to '買い物ｶｺﾞ', {:controller => 'cart', :action => 'show'} %><br />
+<% if @login_customer %>
+  <span style="color:#CD2525">&#xE6D9;</span> <%= link_to 'ﾏｲﾍﾟｰｼﾞ', {:controller => 'accounts', :action => 'myindex_mobile'} %><br />
+<% else %>
+  <span style="color:#CD2525">&#xE6D9;</span> <%= link_to 'ﾛｸﾞｲﾝ', {:controller => 'accounts', :action => 'login'}  %><br />
+<% end %>
+<span style="color:#666666">&#xE689;</span> <%= link_to '個人情報保護方針・個人情報の取扱いについて', {:controller => 'portal', :action => 'privacy'} %><br />
+<span style="color:#009944">&#xE741;</span> <%= link_to '通信販売について', {:controller => 'portal', :action => 'show_tradelaw'} %><br />
+<span style="color:#666666">&#xE6D3;</span> <%= link_to 'お問い合わせ', {:controller => 'inquiries', :action => 'show'} %><br />
+<span style="color:#0068B7">&#xE688;</span> <%= link_to '対応端末一覧', {:controller => 'portal', :action => 'supported_device'} %><br />
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<div style="text-align:center;"><%= image_tag_mobile "border", :width => "226", :height => "2" %></div>
+
+<div style="background-color:#F3F3EC; text-align:center; color:#666666; font-size:xx-small;" id="copy_box">
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
+
+<span id="copy">2009 K&amp;B style</span>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
+</div>
+</div>
+
+
+
+
+
+
+</div>
+
+<!-- ▲ﾌｯﾀｰ ここまで --><!--▲MAIN-->
+
+</body>
+</html>

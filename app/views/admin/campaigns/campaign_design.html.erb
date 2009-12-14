@@ -1,0 +1,36 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "admin/campaign" %>
+<% end %>
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2><%=h @title  %></h2>
+<%=h flash[:camp_design] %>
+<%=h flash[:camp_design_e] %>
+
+<% form_for :campaign, :url => {:action=>"campaign_design_update"} do |f| %>
+<%= f.error_messages %>
+  <% @form_names.each_with_index do |form, index| %>
+    <% if @form_names.size-1 == index && is_open %>
+      <h3>フリースペース<%=h index+1 %> ※商品コード未設定時のみ有効</h3>
+    <% else %>
+      <h3>フリースペース<%=h index+1 %></h3>
+    <% end %>
+    <%= confirm_tag :text_area, :campaign, form, :rows => 6, :cols => 114 %>
+    <br /><br />
+  <%end%>
+  <%= hidden_field_tag "id", @id %>
+  <%= hidden_field_tag "type", @type %>
+  <br />
+  <div class="btn_box">
+    <%= button_to_function "登録する", "regist()", :class=>"btn" %>
+    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+    <%= button_to_function "プレビュー表示", "preview()", :class=>"btn"  %>
+    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+    <input type="button" value="登録ページへ戻る" onClick="location.href='<%= admin_campaigns_path %>'" class ="btn" %>
+    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+  </div>
+<% end %>
+
+</div><!-- /メイン -->

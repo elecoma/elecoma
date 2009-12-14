@@ -1,0 +1,141 @@
+require File.dirname(__FILE__) + '/../../spec_helper'
+
+# Date を date_select の形にする
+def date_to_select date, name
+  {
+    name+'(1i)' => date.strftime('%Y'),
+    name+'(2i)' => date.strftime('%m'),
+    name+'(3i)' => date.strftime('%d')
+  }
+end
+
+describe Admin::TotalsController do
+  self.fixture_path = RAILS_ROOT + '/spec/fixtures/totals/'
+  #self.fixture_path = RAILS_ROOT + 'spec/fixtures/totals'
+  #set_fixture_class :'totals/customers' => 'Customer'
+  #set_fixture_class :totals_order_deliveries => OrderDelivery
+  fixtures :order_deliveries
+  #set_fixture_class :'totals/order_detailss' => OrderDetail
+  #set_fixture_class :'totals/orders' => Order
+  #set_fixture_class :'test/orders2' => Order
+  #set_fixture_class :'totals/products' => Product
+  
+  #fixtures :'totals/customers', :'totals/order_details'
+  #fixtures :'test/orders2', :'totals/products'
+  fixtures :customers, :order_details, :orders, :products, :product_styles, :occupations
+  fixtures :admin_users 
+  before(:each) do
+    session[:admin_user] = admin_users(:admin10)
+    @controller.class.skip_before_filter @controller.class.before_filter
+    @controller.class.skip_after_filter @controller.class.after_filter
+  end
+
+  #Delete these examples and add some real ones
+  it "should use Admin::TotalsController" do
+    controller.should be_an_instance_of(Admin::TotalsController)
+  end
+  describe "データ網羅チェック" do
+    describe "期間別集計" do
+      before do
+        @search = {
+          'date_from(1i)'=>2009, 'date_from(2i)'=>1, 'date_from(3i)'=>1,
+          'date_to(1i)'=>2009, 'date_to(2i)'=>7, 'date_to(3i)'=>31,
+          'by_date' => "xxx"
+        }
+      end
+      it "3-1-1" do
+        post 'index', :page => "term", :type => "day", :search => @search
+        assigns[:total]["count"].should == 5
+      end
+    end
+
+    describe "商品別集計" do
+      before do
+        @search = {
+          'date_from(1i)'=>2009, 'date_from(2i)'=>8, 'date_from(3i)'=>1,
+          'date_to(1i)'=>2009, 'date_to(2i)'=>8, 'date_to(3i)'=>31,
+          'month(1i)' => 2009, 'month(2i)' => 8, 'month(3i)' => 1,
+          'sale_start_from(1i)' => 2008, 'sale_start_from(2i)' => 1, 'sale_start_from(3i)' => 1,
+          'sale_start_to(1i)' => 2008, 'sale_start_to(2i)' => 12, 'sale_start_to(3i)' => 31,
+          'by_month' => "xxx"
+        }
+      end
+      it "非会員の時一件取得" do
+        post 'index', :page => "product", :type => 'nomember', :search => @search
+        assigns[:records].length.should == 1
+      end
+      it "会員の時一件取得" do
+        post 'index', :page => "product", :type => 'member', :search => @search
+        assigns[:records].length.should == 1
+      end
+      it "全体の時二件取得" do
+        post 'index', :page => "product", :type => 'all', :search => @search
+        assigns[:records].length.should == 2
+      end
+    end
+
+    describe "年代別集計" do
+      it "非会員の集計ができない件の確認(期間集計)" do
+        @search = {
+          'date_from(1i)'=>2009, 'date_from(2i)'=>8, 'date_from(3i)'=>1,
+          'date_to(1i)'=>2009, 'date_to(2i)'=>8, 'date_to(3i)'=>31,
+          'by_date' => 'xxx'
+        }
+        post 'index', :page => 'age', :search => @search
+        record_count = 0
+        assigns[:records].each do |record|
+          record_count = record_count + 1 if record.instance_of? OrderDetail
+        end
+        record_count.should == 3
+      end
+
+      it "非会員の集計ができない件の確認(月度集計)" do
+        @search = {
+          'month(1i)' => 2009, 'month(2i)' => 8, 'month(3i)' => 1,
+          'by_month' => 'xxx'
+        }
+        post 'index', :page => 'age', :search => @search
+        record_count = 0
+        assigns[:records].each do |record|
+          record_count = record_count + 1 if record.instance_of? OrderDetail
+        end
+        record_count.should == 3
+      end
+
+    end
+
+    describe "職業別集計" do
+      it "非会員の集計ができない件の確認" do
+        @search = {
+          'month(1i)' => 2009, 'month(2i)' => 8, 'month(3i)' => 1,
+          'by_month' => 'xxx'
+        }
+        get 'index', :page => 'job', :search => @search
+        record_count = 0
+        assigns[:records].each do |record|
+          record_count = record_count + 1 if record.instance_of? OrderDetail
+        end
+        record_count.should == 3
+      end
+    end
+
+    describe "会員別集計" do
+      it "非会員の集計ができない件の確認" do
+        @search = {
+          'month(1i)' => 2009, 'month(2i)' => 8, 'month(3i)' => 1,
+          'by_month' => 'xxx'
+        }
+        get 'index', :page => 'member', :search => @search
+        record_count = 0
+        assigns[:records].each do |record|
+          if record.instance_of? OrderDetail
+            record_count = record_count + record.count.to_i
+          end
+        end
+        record_count.should == 5
+      end
+    end
+  end
+
+
+end

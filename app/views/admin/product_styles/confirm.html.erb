@@ -1,0 +1,71 @@
+<%= stylesheet_link_tag "product/product" %>
+
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>規格登録</h2>
+<table cellspacing="1">
+  <tr>
+    <th>商品名:</th>
+    <td><%= h @product.name %></td>
+  </tr>
+</table>
+
+<% form_tag( {:action => "create"}, {:id => "create" }) do %>
+<%= hidden_field_tag :product_id, @product.id %>
+  <table class="data2" cellspacing="1">
+    <tbody>
+      <tr>
+        <th>登録</th>
+        <th>規格1</th>
+        <th>規格2</th>
+        <th>商品コード</th>
+        <th>在庫</th>
+        <th>価格(円)</th>
+      </tr>
+      <% idx = 0 %>
+      <% @style_category1.each do | style_category1 | %>
+        <% @style_category2.each do | style_category2 | %>
+          <% product_style =  @product_styles["#{style_category1 && style_category1.id}_#{style_category2 && style_category2.id}"]%>
+          <% logger.debug "#{style_category1 && style_category1.id}_#{style_category2 && style_category2.id}" %>
+          <tr>
+            <td>
+              <%= h params["product_styles"][idx.to_s] && params["product_styles"][idx.to_s]["enable"] %>
+              <%= hidden_field_tag "product_styles[#{idx}][enable]",params["product_styles"][idx.to_s] && params["product_styles"][idx.to_s]["enable"]  %>
+            </td>
+            <td>
+              <%= h style_category1 ? style_category1.name : "" %>
+              <%= hidden_field_tag "product_styles[#{idx}][style_category1]",  style_category1 ? style_category1.id : "" %>
+            </td>
+            <td>
+              <%= h style_category2 ? style_category2.name : "" %>
+              <%= hidden_field_tag "product_styles[#{idx}][style_category2]",  style_category2 ? style_category2.id : "" %>
+            </td>
+            <td>
+              <%= h params["product_styles"][idx.to_s] && params["product_styles"][idx.to_s]["code"] %>
+              <%= hidden_field_tag "product_styles[#{idx.to_s}][code]", params["product_styles"][idx.to_s] && params["product_styles"][idx.to_s]["code"] %>
+            </td>
+            <td>
+              <%= h params["product_styles"][idx.to_s] && params["product_styles"][idx.to_s]["actual_count"] %>
+              <%= hidden_field_tag "product_styles[#{idx.to_s}][actual_count]", params["product_styles"][idx.to_s] && params["product_styles"][idx.to_s]["actual_count"] %>
+            </td>
+            <td>
+              <%= h params["product_styles"][idx.to_s] && params["product_styles"][idx.to_s]["sell_price"] %>
+              <%= hidden_field_tag "product_styles[#{idx.to_s}][sell_price]", params["product_styles"][idx.to_s] && params["product_styles"][idx.to_s]["sell_price"] %>
+            </td>
+          </tr>
+          <% idx += 1 %>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="btn_box">
+    <%= submit_tag "この内容で登録する", :class=>"btn" %>
+    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+    <input type="button" value="戻る" onClick="location.href='<%= new_admin_product_style_path(:id=>params[:product_id]) %>'" class="btn">
+    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+  </div>
+<% end %>
+
+</div><!-- /メイン -->

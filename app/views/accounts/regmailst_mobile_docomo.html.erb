@@ -1,0 +1,13 @@
+<%= render :partial => "base/title", :locals => {:title => "ドメイン指定追加"} %>
+<p>ﾄﾞﾒｲﾝ指定受信されている方は下のﾎﾞﾀﾝを押して、<%= @target_domain %> を追加してください。</p>
+<% form_tag 'http://docomo.ne.jp/cp/regmailst' do %>
+<p>
+ <%= hidden_field_tag 'nl', @return_to %>
+ <%= hidden_field_tag 'bm', @target_domain %>
+ <%= submit_tag '受信設定追加' %>
+</p>
+<% end %>
+<hr />
+<p>
+ <%= link_to '会員登録に戻る', {:action => 'kiyaku_intro'}, :accesskey => 0 %><br />
+</p>

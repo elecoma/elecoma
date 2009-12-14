@@ -1,0 +1,15 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>特定商取引法</h2>
+<% form_tag :action => "tradelaw_update" do%>
+ <%= hidden_field_tag "id", @id %>
+<%= render :partial => "tradelaw_form" %>
+<div class="btn_box">
+  <%= submit_tag "この内容で登録する", :onclick => "return #{confirm_javascript_function("登録しても宜しいですか")}", :class=>"btn" %>
+  <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+</div>
+<% end %>
+
+</div><!-- /メイン -->

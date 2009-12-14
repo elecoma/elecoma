@@ -1,0 +1,38 @@
+<html>
+<head>
+<title>K&Bｽﾀｲﾙ</title>
+</head>
+<body>
+<center><h4>あなたの携帯電話は本サイトに対応していません。</h4></center>
+<hr>
+(C)K&Bｽﾀｲﾙ<br>
+<br>
+申し訳ございません。<br>
+お客様がご利用の機種には対応しておりません。<br>
+<br>
+<% if !@devices.blank? %>
+対応機種はこちら<br>
+<br>
+<hr>
+<% for device in @devices %>
+<%=h device.device_name %><br>
+<% end %>
+<br>
+<%= will_paginate @devices, :prev_label => '前へ', :next_label => '次へ', :page_links => false,
+    :container => false, :renderer => 'UnsupportedDeviceLinkRenderer' %>
+<% end %>
+<hr>
+K&B style<br>
+<a href="tel:0366961207">03-6696-1207</a><br>
+10:00～18:00 (土日祝を除く)<br>
+<br>
+<%= link_to 'お問い合わせはｺﾁﾗ', "mailto:#{@shop.mail_faq}" %><br>
+必ずお使いの機種名をご記入ください。<br>
+<hr>
+Copyright(C)
+<br>
+K&B style
+<br>
+All Rights Reserved.<br>
+</body>
+</html>

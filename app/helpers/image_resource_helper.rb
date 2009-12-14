@@ -1,0 +1,2 @@
+module ImageResourceHelper
+end

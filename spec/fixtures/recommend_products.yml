@@ -1,0 +1,39 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+<% (2..3).each do | idx | %>
+test<%= idx %>:
+  id: <%= idx - 1 %>
+  product_id: <%= idx %>
+  description: test<%= idx - 1 %>
+  position: <%= idx %>
+<% end %>
+
+#オススメ商品未設定
+not_select_product:
+  id: 3
+  position: 1
+
+#オススメ商品未設定
+not_select_product2:
+  id: 4
+  position: 4
+
+#オススメ商品未設定
+not_select_product3:
+  id: 5
+  position: 5
+
+#descriptionの文字数オーバー
+longer_description:
+  id: 6
+  description: testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
+  product_id: 1
+  position: 6
+
+<% (7..8).each do | idx | %>
+test<%= idx %>:
+  id: <%= idx %>
+  product_id: 1
+  description: test<%= idx %>
+  position: <%= idx %>
+<% end %>

@@ -1,0 +1,42 @@
+<%= @order_delivery.family_name %> <%= @order_delivery.first_name %> 様
+<%= @mail_template.header %>
+
+******************************************************************
+　配送情報とご請求金額
+******************************************************************
+
+　受注番号：<%= @order.code %>
+お支払合計：￥ <%= number_with_delimiter(@order_delivery.payment_total) %>
+ご決済方法：<%= @order_delivery.payment.name %>
+お届け時間：<%= @order_delivery.delivery_time_name %>
+メッセージ：<%= @order_delivery.message %>
+◎お届け先
+　お名前　：<%= @order_delivery.deliv_family_name %> <%= @order_delivery.deliv_first_name %>　様
+　郵便番号：〒<%= @order_delivery.deliv_zipcode01 %>-<%= @order_delivery.deliv_zipcode02 %>
+　ご住所　：<%= @order_delivery.deliv_pref_name %><%= @order_delivery.deliv_address_city %><%= @order_delivery.deliv_address_detail %>
+　電話番号：<%= @order_delivery.deliv_tel01 %>-<%= @order_delivery.deliv_tel02 %>-<%= @order_delivery.deliv_tel03 %>
+
+
+******************************************************************
+　ご注文商品明細
+******************************************************************
+
+<% @order_details.each do |detail| %>
+商品名: <%= detail.product_style_name %>
+商品コード: <%= detail.product_code %>
+数量：<%= detail.quantity %> 個
+金額：￥ <%= number_with_delimiter(detail.subtotal) %>
+
+<% end %>
+-----------------------------------------------------------
+小　計 ￥ <%= number_with_delimiter(@order_delivery.subtotal) %> （税込価格）
+送　料 ￥ <%= number_with_delimiter(@order_delivery.deliv_fee) %>
+手数料 ￥ <%= number_with_delimiter(@order_delivery.charge) %>
+<% unless @order_delivery.use_point.blank?%>
+使用ポイント ￥ <%= number_with_delimiter(@order_delivery.use_point) %>
+<% end %>
+===============================================================
+合　計 ￥ <%= number_with_delimiter(@order_delivery.payment_total) %>
+===============================================================
+
+<%= @mail_template.footer %>

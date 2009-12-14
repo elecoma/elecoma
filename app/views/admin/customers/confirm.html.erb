@@ -1,0 +1,28 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>顧客編集確認</h2>
+<%= flash[:notice] %>
+<%= flash[:errors] %>
+<% form_for :customer do |f| %>
+  <%= render :partial => "form", :locals => {:f => f} %>
+<% end %>
+<div class="btn_box">
+  <% form_for [:admin, @customer] do |f| %>
+    <% @customer.attribute_names.each do |column| %>
+      <%= f.hidden_field column.to_s %>
+    <% end %>
+    <%= f.submit "この内容で登録する", :class=>"btn" %>
+    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+  <% end %>
+  <% form_for [:admin, @customer], :url=>{:action=>"edit", :id=>params[:id]}, :html=>{:method=>"get"} do |f| %>
+    <% @customer.attribute_names.each do |column| %>
+      <%= f.hidden_field column.to_s %>
+    <% end %>
+    <%= f.submit "戻る", :class=>"btn" %>
+    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+  <% end %>
+</div>
+
+</div><!-- /メイン -->

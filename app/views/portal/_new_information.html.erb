@@ -1,0 +1,15 @@
+<%- unless @new_informations.blank? -%>
+<div id="new_information">
+  <div id="new_info"><h3>新着情報</h3></div>
+
+  <% @new_informations.each do | new_information | %>
+    <div id="new_info_area">
+      ▼<%= l(new_information.date, :format => :ja_ymd) %><br />
+      <p id="new_info_title"><strong><%= link_to_new_information new_information %></strong></p>
+      <%= simple_format h new_information.body  %>
+    </div>
+  <% end %>
+
+</div>
+<%- end -%>
+

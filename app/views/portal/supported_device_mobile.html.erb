@@ -1,0 +1,14 @@
+<div style="text-align:center"><h4>対応端末一覧</h4></div>
+
+<hr noshade="noshade" color="ORANGE"/>
+
+<% for device in @devices %>
+<%=h device.device_name %><br />
+<% end %>
+<br />
+<%= will_paginate @devices, :prev_label => '前へ', :next_label => '次へ', :page_links => false,
+    :container => false, :renderer => 'UnsupportedDeviceLinkRenderer' %>
+
+<hr noshade="noshade" color="ORANGE"/>
+
+<%= link_to 'TOPページへ', {:controller => 'portal', :action => 'show'} %><br />

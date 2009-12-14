@@ -1,0 +1,13 @@
+<div style="text-align:center;"><h4>パスワード変更完了</h4></div>
+
+<hr />
+
+パスワードを記載したメールを送信しました。ご確認ください。<br /><br />
+パスワード：<%=h @password %><br /><br />
+
+<div style="text-align:center;"><%= link_to('戻る', :controller=>'portal', :action=>'show') %></div>
+
+<hr />
+
+<%= link_to 'カゴを見る', :controller => 'cart', :action => 'show' %><br />
+<%= link_to 'TOPページへ', :controller=>'/' %>

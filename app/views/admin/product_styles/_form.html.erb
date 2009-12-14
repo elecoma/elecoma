@@ -1,0 +1,52 @@
+<p class="space3_bottom">
+  <a href="#" onclick="product_style_all_select();">全選択</a>&nbsp;/&nbsp;
+  <a href="#" onclick="product_style_all_un_select();">全解除</a>&nbsp;/&nbsp;
+  <a href="#" onclick="product_style_all_copy();">一行目のデータをコピーする</a>
+</p>
+<%= hidden_field_tag :product_id, @product.id %>
+<table class="data2" cellspacing="1">
+  <tbody>
+    <tr>
+      <th>登録</th>
+      <th>規格1</th>
+      <th>規格2</th>
+      <th>商品コード</th>
+      <th>在庫</th>
+      <th>価格(円)</th>
+    </tr>
+    <% idx = 0 %>
+    <% @style_category1.each do | style_category1 | %>
+      <% @style_category2.each do | style_category2 | %>
+        <% product_style =  @product_styles["#{style_category1 && style_category1.id}_#{style_category2 && style_category2.id}"]%>
+        <% logger.debug "#{style_category1 && style_category1.id}_#{style_category2 && style_category2.id}" %>
+        <tr>
+          <td>
+            <% if product_style.nil? || @new_flg %>
+              <%= check_box_tag "product_styles[#{idx}][enable]", "on",  ! product_style.nil? %>
+            <% else %>
+              <%= hidden_field_tag "product_styles[#{idx}][enable]", "on" %>on
+            <% end %>
+          </td>
+          <td>
+            <%= h style_category1 ? style_category1.name : "" %>
+            <%= hidden_field_tag "product_styles[#{idx}][style_category1]",  style_category1 ? style_category1.id : "" %>
+          </td>
+          <td>
+            <%= h style_category2 ? style_category2.name : "" %>
+            <%= hidden_field_tag "product_styles[#{idx}][style_category2]",  style_category2 ? style_category2.id : "" %>
+          </td>
+          <td>
+            <%= text_field_tag "product_styles[#{idx}][code]", product_style && product_style.code %>
+          </td>
+          <td>
+            <%= text_field_tag "product_styles[#{idx}][actual_count]", product_style && product_style.actual_count %>
+          </td>
+          <td>
+            <%= text_field_tag "product_styles[#{idx}][sell_price]", product_style && product_style.sell_price %>
+          </td>
+        </tr>
+        <% idx += 1 %>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

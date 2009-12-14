@@ -1,0 +1,69 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+  <div id="category" class="clearfix"><!-- カテゴリ選択 -->
+    <p id="category_info">編集したいカテゴリをクリックして下さい。</p>
+    <a href="/admin/shops"><img src="/images/store_btn_l.gif" width="222" height="138" alt="店舗管理" /></a>
+    <a href="/admin/products"><img src="/images/goods_btn_l.gif" width="222" height="138" alt="商品管理" id="category_img" /></a>
+    <a href="#"><img src="/images/order_btn_l.gif" width="222" height="138" alt="発注・出荷管理" /></a>
+  </div><!-- /カテゴリ選択 -->
+  <%= flash[:notice] %>
+  <h2>ショップの状況</h2>
+  <table cellspacing="1" cellpadding="4" class="data">
+    <tr>
+      <th>現在の会員数</th>
+      <td><%=h @active_customer_num %> 人</td>
+    </tr>
+    <tr>
+      <th>昨日の受注金額</th>
+      <td><%=h number_with_delimiter(@last_day_sales) %>円（税込）</td>
+    </tr>
+    <tr>
+      <th>昨日の受注件数</th>
+      <td><%=h @last_day_sales_num %>件</td>
+    </tr>
+    <tr>
+      <th>今月の受注金額(昨日まで)</th>
+      <td><%=h number_with_delimiter(@this_month_sales) %>円（税込）</td>
+    </tr>
+    <tr>
+      <th>今月の受注件数 (昨日まで)</th>
+      <td><%=h @this_month_sales_num %>件</td>
+    </tr>
+    <tr>
+      <th rowspan="2">
+        <%= link_to '品切れ商品', :controller => 'products', :action => 'actual_count_index' %>
+      </th>
+      <td style="text-align:left;"><%= sold_outs(@sold_outs) %></td>
+    </tr>
+    <tr>
+      <td><%= sold_out_counts(@sold_outs) %></td>
+    </tr>
+  </table>
+  <br />
+  <h2>新規受付一覧（最新の10件を表示します）</h2>
+  <table class="data" cellspacing="1">
+    <tr>
+      <th>受注日</th>
+      <th>顧客名</th>
+      <th>購入商品</th>
+      <th>支払方法</th>
+      <th >購入金額(円)</th>
+    </tr>
+    <% @new_orders.each do | new_order | %>
+      <tr>
+        <td><%=h date(new_order.created_at) %></td>
+        <td><%=h new_order.family_name %> <%=h new_order.first_name %></td>
+        <td>
+          <% if new_order.order_details.find(:first) %>
+            <%=h new_order.order_details.find(:first).product_name %>
+          <% end %>
+        </td>
+        <td><%=h new_order.payment_name %></td>
+        <td><%=h number_with_delimiter(new_order.total) %></td>
+      </tr>
+    <% end %>
+  </table>
+
+</div><!-- メイン -->
+

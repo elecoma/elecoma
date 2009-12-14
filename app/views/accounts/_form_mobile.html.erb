@@ -1,0 +1,54 @@
+<%######## このファイルはもう使いません #############%>
+<%# *_0.html.erb 等を使ってください。 %>
+
+<% fields_for :customer do |f| %>
+<font color=red>※</font>お名前<br />
+ 姓<%= f.text_field :family_name, :size => 10 %>
+ 名<%= f.text_field :first_name, :size => 10 %><br />
+<font color=red>※</font>お名前（フリガナ）<br />
+ 姓<%= f.text_field :family_name_kana, :size => 10 %>
+ 名<%= f.text_field :first_name_kana, :size => 10 %><br /><br />
+ <font color=red>※</font>郵便番号<br>
+ 〒<%= f.text_field :zipcode01, :size => 3 -%>-<%= f.text_field :zipcode02, :size => 3 %><br />
+ <a href="http://postcode.goo.ne.jp/">郵便番号検索</a><br />
+ <button>住所自動入力</button><br />
+ <font color=red>※</font>住所<br />
+ <%= f.collection_select :prefecture_id, Prefecture.find(:all, :order=>:position), :id, :name %><br />
+ <%= f.text_field :address_city, :size => 30 %><br />
+ <%= f.text_field :address_detail, :size => 30 %><br />
+ 住所は必ず 2 つに分けてご記入下さい。<br />マンション名は必ず記入して下さい。<br /><br />
+ <font color=red>※</font>メールアドレス<br />
+ <%= f.text_field :email_user, :size=>"60" %><br />
+ <%= render :partial => 'mobile_domain_mobile', :locals => {:confirm => false}  %><br />
+ <%= f.text_field :email_user_confirm, :size=>"60" %><br />
+ <%= render :partial => 'mobile_domain_mobile', :locals => {:confirm => true} %><br />
+ 確認のため 2 度入力してください。<br /><br />
+ <font color=red>※</font>電話番号<br />
+ <%= f.text_field :tel01, :size => 3 %>-<%= f.text_field :tel02, :size => 3 %>-<%= f.text_field :tel03, :size => 3 %><br />
+ FAX<br>
+ <%= f.text_field :fax01, :size => 3 %>-<%= f.text_field :fax02, :size => 3 %>-<%= f.text_field :fax03, :size => 3 %><br /><br />
+ <font color=red>※</font>性別<br />
+  <% [System::MALE, System::FEMALE].each do | value | %>
+   <%= f.radio_button :sex, value %>
+   <%= content_tag :label, System::SEX_NAMES[value], :for => "customer_sex_%d" % value %>
+  <% end %><br />
+ 職業<br />
+ <%= f.collection_select :occupation_id, Occupation.find(:all, :order=>:position), :id, :name %><br />
+ 生年月日<br />
+ <%= f.birthday_select :birthday, :use_month_numbers => true %><br /><br />
+ <font color=red>※</font>希望するパスワード<br />
+ <%= f.password_field :raw_password, :size => 20 %><br />
+ <font color=red>※</font>半角英数字 4 ～ 10 文字(記号不可)<br />
+ <%= f.password_field :password_confirm, :size => 20 %><br />
+ <font color=red>※</font>確認のため 2 度入力してください<br /><br />
+ <font color=red>※</font>パスワードリマインダ<br />
+ 答え<%= f.text_field :reminder_value, :size => 20 %><br /><br />
+ <font color=red>※</font>メールマガジン送付について<br />
+  <% [Customer::HTML_MAIL, Customer::TEXT_MAIL, Customer::NO_MAIL].each do | value | %>
+  <% label = Customer::MAILMAGAZINE_NAMES[value] %>
+   <%= f.radio_button :receive_mailmagazine, value %>
+   <%= content_tag :label, label, :for => "customer_receive_mailmagazine_%d" % value %><br />
+  <% end %><br />
+ <font color=red>※</font>好きなキャラクターは？<br />
+ <center><%= submit_tag '確認ページへ' %></center>
+<% end %>

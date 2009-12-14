@@ -1,0 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>購入履歴一覧</title>
+ </head>
+ <body>
+  <center><h3>MYページ 購入履歴一覧</h3></center>
+  <hr />
+  <h3>購入履歴一覧</h3>
+  
+  <div id="mynavarea"></div>
+  <div id="history">・<%= link_to '購入履歴一覧', :action=>'history_list_mobile' %></div>
+  <div id="setting">・<%= link_to '会員登録内容変更', :action=>'setting_mobile' %></div>
+  <div id="address">・<%= link_to 'お届け先追加・変更', :action=>'address_list_mobile' %></div>
+  <div id="withdraw">・<%= link_to '退会手続き', :controller=>'account', :action=>'withdraw_mobile' %></div>
+  
+  <div id="history">・<%= link_to 'MYページTOP', :action=>'mypage_mobile' %></div>
+
+ </body>
+</html>

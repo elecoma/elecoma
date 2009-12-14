@@ -1,0 +1,25 @@
+<% content_for :head do %>
+  <%= javascript_include_tag :defaults %>
+  <%= stylesheet_link_tag "front/features" %>
+<% end %>
+
+<div id="left_box" class="clearfix">
+  <%= render :partial => '/base/left_sidebar' %>
+  
+  <%= flash[:notice] %>
+  <%= flash[:error] %>
+  
+  <%unless @feature.blank? %>
+    <div id="main"><!-- メイン -->
+    <ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ",:controller =>"/"%></li><li>特集</li></ol>
+    
+    <h2 class="main_t"><%=@feature.name%></h2>
+      <% if @feature.feature_type == Feature::PRODUCT %>
+        <%= render :partial => 'product' %>
+      <% else %>
+        <%= render :partial => 'free' %>
+      <% end%>
+    </div>  
+  <% end%>
+</div><!-- メイン -->
+<%= render :partial => '/base/right_sidebar' %>

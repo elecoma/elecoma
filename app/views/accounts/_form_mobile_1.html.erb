@@ -1,0 +1,37 @@
+<% fields_for :customer do |f| %>
+ <span style="color:#ff0000;">※</span>性別<br />
+  <% [System::MALE, System::FEMALE].each_with_index do | value,index | %>
+	  <% if index == 0%>
+      <%= f.radio_button :sex, value, {:checked=>true} %>
+		<% else %>
+      <%= f.radio_button :sex, value %>
+		<% end %>
+   <%= content_tag :label, System::SEX_NAMES[value], :for => "customer_sex_%d" % value %>
+  <% end %><br />
+
+生年月日<br />
+<%= f.birthday_select :birthday, :use_month_numbers => true ,:start_year =>Time.now.year-70,:end_year=>Time.now.year-10,:default=>{:year=>1980,:month=>1,:day=>1}%><br /><br />
+
+<span style="color:#ff0000;">※</span>郵便番号<br />
+<%= f.text_field :zipcode01, {:size => 7,:style=>"height:14px"}.merge(mobile_input_mode(:numeric)) -%>-<%= f.text_field :zipcode02, {:size => 7,:style=>"height:14px"}.merge(mobile_input_mode(:numeric)) %><br /><br />
+<div style="text-align:center;">
+  <%= submit_tag '戻る', :name=>'back' %>
+  <%= submit_tag '次へ' %>
+</div><br />
+<%# 前のページまでで入力されたものを hidden で置く %>
+<%
+ # TODO: これを自動で出したい
+ names = [
+   :email_user,
+   :email_user_confirm,
+   :email_domain,
+   :raw_password,
+   :password_confirm,
+   :family_name,
+   :first_name,
+   :family_name_kana,
+   :first_name_kana
+ ].reject{|name|@customer.send(name).blank?}
+%>
+<%= names.map{|name|hidden_field(:customer, name, :object => @customer)} %>
+<% end %>

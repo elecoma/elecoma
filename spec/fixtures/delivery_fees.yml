@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+#prefecture_id=48は離島で、配送料は1000円
+<% (1..48).each do |idx| %>
+delivery_fee_<%= idx %>:
+  id: <%= idx %>
+  price: <%if idx <48 %><%= 400+idx %><%else%><%=1000%><%end%>
+  prefecture_id: <%if idx <48 %><%= idx %><%end%>
+  delivery_trader_id: 1
+<% end %>

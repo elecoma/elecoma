@@ -1,0 +1,98 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "front/item" %>
+  <%= stylesheet_link_tag "thickbox" %>
+  <%= javascript_include_tag :defaults %>
+  <%= javascript_include_tag "jquery" %>
+  <%= javascript_include_tag "no_confrict" %>
+  <%= javascript_include_tag "thickbox" %>
+  <%= javascript_include_tag "recommender_details" %>
+<% end %>
+
+<div id="left_box" class="clearfix">
+  <%= render :partial => '/base/left_sidebar' %>
+
+  <!-- メイン -->
+  <div id="main">
+
+  <ol id="bread_list" class="m_btm"><li class="bread_top"><a href="/">トップページ</a></li><li><%= link_to("商品一覧", { :controller => "/products", :action => "index"}) %></li><li><%= @product.name %></li></ol>
+
+  <!-- 商品詳細 -->
+  <div><img src="/images/common/box_bg_top.gif" width="530" height="5" alt="" /></div>
+  <div id="item_box" class="main_box">
+  <div id="item_box_top" class="clearfix">
+  <div class="item_pic"><%= link_to((product_image_tag(@product, :medium, :width=>250)), { :controller => "/image_resource", :action => "show", :id => (@product.large_resource_id || @product.medium_resource_id),:format => "png", :height => 640, :width => 480 }, {:title => "#{@product.name}", :class => "thickbox"} ) %><p><%= h_br @product.medium_resource_comment unless @product.medium_resource_comment.blank? %></p><br /></div>
+  <div class="item_data">
+  <% @product.product_statuses.each do | product_status | %>
+    <span id="appeal"><%= h_br product_status.status && product_status.status.name %></span>
+  <% end %>
+    <dl>
+      <dt><%=@product.url.blank? ? h( @product.name ) : link_to(@product.name, @product.url) %></dt>
+      <dd>価格：<%=h @product.price_label %>円</dd>
+      <dd>販売期間：<%=h print_date(@product.sale_start_at) %> ～ <%=h print_date(@product.sale_end_at) %></dd>
+            <% if @product.product_styles && @product.product_styles.detect(nil){ |p_s| !p_s.actual_count.blank? && p_s.actual_count > 0} -%>
+              <%- unless @product.delivery_dates_label.blank? %>
+              <dd>お届け：<%= @product.delivery_dates_label %></dd>
+              <%- end %>
+            <% else %>
+              <% if @product.arrival_expected_date && @product.arrival_expected_date < Date.today %>
+                <dd>入荷未定</dd>
+            <% else %>
+                <dd>入荷予定日：<%= date_jp(@product.arrival_expected_date) %></dd>
+              <% end %>
+          <% end %>
+    </dl>
+    <%- if @product.have_zaiko? -%>
+    <%= render :partial => "base/add_cart", :locals => {:product => @product} %>
+   　　   <%have_style = @product.product_styles.any?(&:style_category1)%>
+     <%if have_style%>
+	 <dl><dd><%= link_to_remote( "在庫一覧を見る",
+						:update => "stock_table",
+						:url =>{ :action=>"stock_table",:id=>@product,:partial=>true }) %></dd></dl>
+     <div id="stock_table" align="right">
+	   <%= render :action => 'stock_table', :method=>:get %>
+	 </div>
+	 <%end%>						
+    <%- else -%>
+    品切れ中<br />
+    <%- end -%>
+  </div>
+  </div><!-- /item_pic_box -->
+
+  <%- if blank_check(@product.sub_products) %>
+  <table id="thumb">
+    <tr>
+      <% @product.sub_products.each do | sub_product | %>
+      <td>
+        <%= link_to (sub_product_image_tag(sub_product, :width=>60)), { :controller => "/image_resource", :action => "show", :id => (sub_product.large_resource_id || sub_product.medium_resource_id ) ,:format => "png", :height => 640, :width => 480 }, {:title => "#{@product.name}", :class => "thickbox"} if sub_product.medium_resource_id %>
+        <p><%= sub_product.name %></p>
+        <p><%= sub_product.description %></p>
+      </td>
+      <% end %>
+    </tr>
+  </table>
+  <%- end %>
+
+
+  <div class="main_hr"><hr /></div>
+
+  <p class="description">
+  <%=h_br @product.description %>
+  <br />
+  <%= ("【サイズ】<br />" + h_br(@product.size_txt) + "<br />" ) unless @product.size_txt.blank? %>
+  <%= ("【素材】<br />" + h_br(@product.material) + "<br />" ) unless @product.material.blank? %>
+  <%= ("【原産国】<br />" + h_br(@product.origin_country) + "<br />" ) unless @product.origin_country.blank? %>
+  <%= ("【重さ】<br />" + h_br(@product.weight) + "<br />" ) unless @product.weight.blank? %>
+  <%= ("【その他、仕様】<br />" + h_br(@product.other) + "<br />" ) unless @product.other.blank? %>
+  <%= ("【入荷日】<br />" + h_br(@product.arrival_date) + "<br />" ) unless @product.arrival_date.blank? %>
+  </p>
+
+  </div><!-- /item_box -->
+  <div class="m_btm"><img src="/images/common/box_bg_btm.gif" width="530" height="5" alt="" /></div>
+
+  <div id="under_line"></div>
+  <% @reco_no = 0 %>
+  <%= render :partial => '/base/recommend_asp', :locals => {:size=>4} %>
+
+  </div><!-- /main -->
+</div>
+<%= render :partial => '/base/right_sidebar' %>

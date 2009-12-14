@@ -1,0 +1,27 @@
+<p class="req"><span class="pnt">※</span>は必須入力です</p>
+<table class="data" cellspacing="1" with="100%">
+  <tr>
+    <th>Subject<span class="pnt">※</span></th>
+    <td>
+      <%= confirm_tag :text_field, :contents, :subject, :class=>"data_l" %>
+    </td>
+  </tr>
+  <tr>
+    <th colspan=2>本文<span class="pnt">※</span> （名前差し込み時は {name} といれてください）</th>
+  </tr>
+  <tr>
+    <td colspan=2>
+      <% unless (params[:action] =~ /confirm/ && !@contents.body.blank?) %>
+        <div id='emoji_area_contents[body]'>
+            <script language="JavaScript" type="text/javascript">
+                writeRichText('contents[body]','<%=h_apos @contents.body %>', 400, 690, true, false, '<%= @contents.form_type %>');
+            </script>
+        </div>
+      <% else %>
+        <div class="mail"><%= @contents.body.gsub(/\n/,'<br/>') if @contents.body %></div>
+      <% end %>
+    </td>
+  </tr>
+</table>
+<%= hidden_field :contents, :form_type %>
+<%= hidden_field :contents, :body %>

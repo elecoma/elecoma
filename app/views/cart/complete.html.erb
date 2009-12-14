@@ -1,0 +1,34 @@
+<% content_for :head do %>
+ <%= stylesheet_link_tag "front/cart" %>
+ <%= javascript_include_tag :defaults %>
+ <%= javascript_include_tag "recommender_details" %>
+<% end %>
+
+<ol id="bread_list" class="m_btm"><li class="bread_top"><a href="/">トップページ</a></li><li><%= link_to 'ショッピングカート', :action => 'show' %></li><li>お届け先住所</li><li>お支払い方法・お届け時間</li><li>ご注文の完了</li><li>ご注文受付完了</li></ol>
+<h2 class="main_t">ご注文の完了</h2>
+<div id="cart">
+  <img src="/images/cart/route04.gif" width="583" height="31" alt="ご購入の流れ" class="route" />
+
+  <p class="comp">ご注文ありがとうございました。</p>
+  <p class="comp_s">只今、ご注文の確認メールをお送りさせていただきました。<br />
+万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではありますが
+もう一度お問い合わせ頂くか、お電話にてお問い合わせくださいませ。<br />
+ 今後ともご愛願賜りますようよろしくお願い申し上げます。</p>
+  <dl class="inq">
+    <dt>お問い合わせ、ご連絡はこちら</dt>
+    <dd>株式会社 ケイビーエムジェイ</dd>
+    <dd>お電話：03-6696-1207 10:00～18:00(土日祝を除く)</dd>
+    <dd>メール：support@kbmj.com</dd>
+  </dl>
+
+<div class="cart_complete">
+  <% if @login_customer%>
+    <p><%= link_to '今回の購入履歴を確認', :controller => 'accounts', :action => 'history_show', :id => flash[:order_id] %></p>
+  <%end%>
+  <p><%= link_to 'トップページへ', :controller => 'portal', :action => 'show' %></p>
+</div>
+</div>
+
+<%# レコメンダー %>
+<%= render :partial => '/base/recommend_asp', :locals => {:size => 4} %>
+

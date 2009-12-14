@@ -1,0 +1,107 @@
+<%= stylesheet_link_tag "design/design" %>
+<%= render :partial => "submenu" %>
+
+<div class="set">
+<div class="contents_area">
+<div id="main"><!-- メイン -->
+
+<h2>携帯対応端末管理</h2>
+<%= flash[:notice] %>
+<%= flash[:errors] %>
+<% form_for :mobile_device, :url => {:action => 'store', :id => @id} do |f| %>
+  <%= f.error_messages if @mobile_device %>
+<table class="data" cellspacing="1">
+  <tr>
+    <th>キャリア</th>
+    <td><%=
+      carriers = MobileCarrier.find(:all, :order => "position").map {|p| [p.name, p.id]}
+      f.select :mobile_carrier_id, carriers, :include_blank => true %>
+    </td>
+  </tr>
+  <tr>
+    <th>端末機種名</th>
+    <td><%= f.text_field :device_name %></td>
+  </tr>
+  <tr>
+    <th>ユーザーエージェント</th>
+    <td><%= f.text_field :user_agent %></td>
+  </tr>
+  <tr>
+    <th>画面サイズ</th>
+    <td>
+         横<%= f.text_field :width, :size=>4 %>
+         縦<%= f.text_field :height, :size=>4 %>
+         簡単設定:
+         <%= button_to_function 'VGA', 'setScreenSize(480,640)' %>
+         <%= button_to_function 'QVGA', 'setScreenSize(240,320)' %>
+<script type="text/javascript">
+ // <![CDATA[
+function setScreenSize(w,h) {
+  var form = document.forms[0];
+  form.elements['<%=f.object_name%>[width]'].value = w;
+  form.elements['<%=f.object_name%>[height]'].value = h;
+}
+  // ]]>
+</script>
+
+        </td>
+  </tr>
+</table>
+<table class="attention" cellspacing="1">
+  <tr>
+    <td>
+注意事項：<br/>
+&nbsp;&nbsp;ユーザーエージェントは、前方一致で対象端末かどうかの判定を行います。<br/>
+&nbsp;&nbsp;同一機種で設定によってユーザーエージェントが変わる場合は可変部以降を<br/>
+&nbsp;&nbsp;削って登録してください。<br/>
+<br/>
+&nbsp;&nbsp;ドコモ　SH901iCの場合<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;キャリア使用：&nbsp;DoCoMo/2.0 SH901iC(c100;TB;W24H12)  （ブラウザからの通信時、ADF取得時）<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;登録する内容：&nbsp;DoCoMo/2.0 SH901iC<br/>
+    </td>
+  </tr>
+</table>
+<div class="submit2"><%= f.submit "登録／更新" %></div><br />
+
+<% end %>
+
+
+<h2>携帯対応端末一覧</h2>
+
+<% form_for :search, :url => {:action => 'search'} do |f| %>
+<table class="data2" cellspacing="1">
+  <tr>
+    <th>キャリア</th>
+    <th>端末機種名</th>
+    <th>ユーザーエージェント</th>
+    <th>サイズ</th>
+    <th>編集</th>
+    <th>削除</th>
+  </tr>
+    <tr>
+   <td><%= f.collection_select :mobile_carrier_id, MobileCarrier.find(:all, :order => "position"), :id, :name, :include_blank => true %>
+    </td>
+
+   <td><%= f.text_field :device_name, :size=> 15 %></td>
+   <td><%= f.text_field :user_agent, :size=> 30 %></td>
+   <td><nobr><%= f.text_field :width, :size=>4 %>x<%= f.text_field :height, :size=>4 %></nobr></td>
+   <td colspan="2" style="text-align:center"><%= f.submit "絞り込み" %></td>
+  <% for rec in @records ||= [] %>
+  <tr>
+    <td><%=h mobile_carrier_name(rec.mobile_carrier) %></td>
+    <td><%=h rec.device_name %></td>
+    <td><%=h rec.user_agent.gsub(/%/, '') %></td>
+    <td><%=h rec.human_size %></td>
+    <td class="t_center" ><%= link_to '編集', {:action => 'edit', :id => rec.id} %></td>
+    <td class="t_center" ><%= link_to '削除', {:action => 'destroy', :id => rec.id}, :confirm => '本当に削除しますか？' %></td>
+  </tr>
+  <% end %>
+</table>
+<% end %>
+
+<%= will_paginate @records, :params => {:search => params[:search]} %>
+
+</div><!-- /メイン -->
+</div>
+</div>
+

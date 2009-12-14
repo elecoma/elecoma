@@ -1,0 +1,29 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'admin/mail_magazine' %>
+<% end %>
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>配信内容設定</h2>
+<div class="btn_box">
+  <% form_for :contents, :url => {:action => 'complete'}, :html => {:multipart=>true} do |f| %>
+    <%= f.hidden_field :subject %>
+    <%= f.hidden_field :body %>
+    <%= hidden_field_tag 'customer_ids', @customer_ids %>
+    <%= render :partial => "mail_contents", :locals => {:f => f} %>
+    <%= f.submit '配信する', :class=>"btn" %>
+    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+  <% end %>
+
+  <% form_for :contents, :url => {:action => 'template_search'} do |f| %>
+    <%= f.hidden_field :form_type %>
+    <%= f.hidden_field :subject %>
+    <%= f.hidden_field :body %>
+    <%= hidden_field_tag 'customer_ids', @customer_ids %>
+    <%= f.submit 'テンプレート設定画面に戻る', :class=>"btn" %>
+    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+  <% end %>
+</div>
+
+</div><!-- /メイン -->

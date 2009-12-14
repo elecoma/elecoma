@@ -1,0 +1,33 @@
+<span style="color:#FF9775;">■</span> お名前<br />
+<%=h @customer.family_name %>&nbsp;<%=h @customer.first_name %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<span style="color:#FF9775;">■</span> お名前（フリガナ）<br />
+<%=h @customer.family_name_kana %>&nbsp;<%=h @customer.first_name_kana %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<span style="color:#FF9775;">■</span> 性別<br />
+<%= @customer.sex_view %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<span style="color:#FF9775;">■</span> 生年月日<br />
+<%= @customer.birthday %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<span style="color:#FF9775;">■</span> 郵便番号<br />
+<%=h @customer.zipcode01 -%>-<%=h @customer.zipcode02 %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<span style="color:#FF9775;">■</span> 住所<br />
+<%=h @customer.prefecture && @customer.prefecture.name %><%=h @customer.address_city %>&nbsp;<%=h @customer.address_detail %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<span style="color:#FF9775;">■</span> 電話番号<br />
+<%=h @customer.tel01 %>-<%=h @customer.tel02 %>-<%=h @customer.tel03 %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<span style="color:#FF9775;">■</span> メールアドレス<br />
+<%=h @customer.email %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<span style="color:#FF9775;">■</span> パスワード<br />
+<%= @customer.raw_password && ('*' * @customer.raw_password.size) %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<span style="color:#FF9775;">■</span> 職業<br />
+<%=h @customer.occupation && @customer.occupation.name %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>
+<span style="color:#FF9775;">■</span> メールマガジン送付について<br />
+<%=h @customer.receive_mailmagazine_view %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "3" %><br /></div>

@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>お届け先追加・変更</title>
+  <%= javascript_include_tag :defaults %>
+  <%= popup_for_delivery_address_script %>
+ </head>
+ <body>
+  <center><h3>MYページ お届け先追加・変更</h3></center>
+  <hr />
+  <div id="address_list">
+   <div id="caption">
+    <%= image_tag('user/dummy.jpg', {:alt => 'MYページ'}) %>
+   </div>
+   <noscript>
+    <p>JavaScriptが利用できない状態です。<br />一部のコンテンツが正常に動作しない可能性があります</p>
+   </noscript>
+   <div id="notice"><%= flash[:notice] %></div>
+   <div id="mainarea">
+    <div id="desctiption">
+      <%= image_tag('user/dummy.jpg', {:alt => 'お届け先追加・変更'}) %>
+      登録住所以外へのご住所へ送付される場合等にご利用いただくことができます。<br />
+      ※最大20件まで登録できます。<br />
+    </div>
+   </div>
+  </div>
+  
+  <div id="mynavarea"></div>
+  <div id="history">・<%= link_to '購入履歴一覧', :action=>'history_list_mobile' %></div>
+  <div id="setting">・<%= link_to '会員登録内容変更', :action=>'setting_mobile' %></div>
+  <div id="address">・<%= link_to 'お届け先追加・変更', :action=>'address_list_mobile' %></div>
+  <div id="withdraw">・<%= link_to '退会手続き', :controller=>'account', :action=>'withdraw_mobile' %></div>
+  
+  <div id="history">・<%= link_to 'MYページTOP', :action=>'mypage_mobile' %></div>
+
+ </body>
+</html>

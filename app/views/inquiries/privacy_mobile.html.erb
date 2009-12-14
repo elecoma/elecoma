@@ -1,0 +1,12 @@
+<div>
+ <%= @privacy %>
+</div>
+
+<hr noshade="noshade" color="ORANGE"/>
+
+→<%= link_to '戻る', :controller => "inquiries", :action => "show" %><br />
+→<%= link_to '個人情報の取り扱いについて同意した上でお問い合わせ', :controller => "inquiries", :action => "new" %><br /><br />
+
+<hr noshade="noshade" color="ORANGE"/>
+
+<%= link_to_mobile 'TOPページへ', {:controller => 'portal', :action => 'show'}, :accesskey=>0 %><br />
