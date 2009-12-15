@@ -301,6 +301,14 @@ class Customer < ActiveRecord::Base
   def full_name
     "#{family_name} #{first_name}"
   end
+  
+  def full_name_kana
+    "#{family_name_kana} #{first_name_kana}"
+  end
+
+  def tel_no
+    "#{tel01}-#{tel02}-#{tel03}"
+  end
 
   def self.get_symbols
     [

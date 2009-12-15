@@ -17,8 +17,15 @@ class Admin::CustomersController < Admin::BaseController
       render :action => "index"
       return
     end
-    condition_sql = CustomerSearchForm.get_sql_select + CustomerSearchForm.get_sql_condition(@condition)
-    @customers = Customer.paginate_by_sql(condition_sql,
+    sql_condition, conditions = CustomerSearchForm.get_sql_condition(@condition)
+    sql = CustomerSearchForm.get_sql_select(true) + sql_condition
+    sqls = [sql]
+    conditions.each do |c|
+      sqls << c
+    end
+    #condition_sql = CustomerSearchForm.get_sql_select + CustomerSearchForm.get_sql_condition(@condition)
+    #@customers = Customer.paginate_by_sql(condition_sql,
+    @customers = Customer.paginate_by_sql(sqls,
                                           :page => params[:page],
                                           :per_page => @condition.search_par_page,
                                           :order => "id")

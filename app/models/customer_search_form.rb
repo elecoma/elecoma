@@ -29,7 +29,14 @@ class CustomerSearchForm < SearchForm
 
   def self.csv(params)
     @condition = self.new(params[:condition] ||= [])
-    customers = Customer.find_by_sql(get_sql_select(true) + get_sql_condition(@condition))
+    sql_condition, conditions = get_sql_condition(@condition)
+    sql = get_sql_select(true) + sql_condition
+    sqls = [sql]
+    conditions.each do |c|
+      sqls << c
+    end
+    #customers = Customer.find_by_sql(get_sql_select(true) + get_sql_condition(@condition))
+    customers = Customer.find_by_sql(sqls)
     unless customers.size > 0
       return false
     end
@@ -161,7 +168,8 @@ EOS
   end
 
   def self.get_sql_condition(condition)
-    <<-EOS
+    conditions = []
+    sql_condition = <<-EOS
 from
 customers c
 
@@ -204,10 +212,12 @@ order_details t
 where o.id=d.order_id
 and d.id=t.order_delivery_id
 #{if !condition.product_name.blank?
-    "and t.product_name like '%#{condition.product_name}%'"
+    conditions << "%#{condition.product_name}%"
+    "and t.product_name like ? "
   end}
 #{if !condition.product_code.blank?
-    "and t.product_code like '%#{condition.product_code}%'"
+    conditions << "%#{connection.product_code}%"
+    "and t.product_code like ? "
   end}
 #{if !condition.category_id.blank?
     "and t.product_category_id =#{condition.category_id}"
@@ -228,10 +238,12 @@ where
     "and c.prefecture_id = '#{condition.prefecture_id}'"
   end}
 #{unless condition.customer_name_kanji.blank?
-    "and (c.family_name || c.first_name) like '%#{condition.customer_name_kanji}%'"
+    conditions << "%#{condition.customer_name_kanji}%"
+    "and (c.family_name || c.first_name) like ? "
   end}
 #{unless condition.customer_name_kana.blank?
-    "and (c.family_name_kana || c.first_name_kana) like '%#{condition.customer_name_kana}%'"
+    conditions << "%#{condition.customer_name_kana}%"
+    "and (c.family_name_kana || c.first_name_kana) like ?"
   end}
 #{if condition.sex_male == "1" && condition.sex_female == "0"
     "and c.sex=1"
@@ -256,13 +268,15 @@ where
   end
 }
 #{unless condition.email.blank?
-    "and c.email like '%#{condition.email}%'"
+    conditions << "%#{condition.email}%"
+    "and c.email like ? "
   end}
 #{if condition.reachable == '1'
     "and c.reachable = '1'"
   end}  
 #{unless condition.tel_no.blank?
-    "and (c.tel01 || c.tel02 || c.tel03) like '%#{condition.tel_no}%'"
+    conditions << "%#{condition.tel_no}%"
+    "and (c.tel01 || c.tel02 || c.tel03) like ? "
   end}
 #{unless condition.occupation_id.blank?
     "and c.occupation_id in ('" << condition.occupation_id.join("','") << "')"
@@ -323,6 +337,7 @@ where
 }
 order by c.id
 EOS
+  return [sql_condition, conditions] 
   end
 
 end

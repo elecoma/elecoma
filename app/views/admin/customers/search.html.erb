@@ -46,8 +46,8 @@
       <td rowspan="2"><%= Customer::ACTIVATE_NAMES[c.activate.to_i] %></td>
       <td><%= c.id %></td>
       <td rowspan="2">
-        <%= c.name_kanji %>／
-        <%= c.name_kana %>
+        <%= c.full_name %>／
+        <%= c.full_name_kana %>
       </td>
       <td rowspan="2"><%= System::SEX_NAMES[c.sex] %></td>
       <td><%= c.tel_no %></td>

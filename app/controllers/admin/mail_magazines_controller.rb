@@ -27,12 +27,20 @@ class Admin::MailMagazinesController < Admin::BaseController
       return
     end
     session[:condition_save] = @condition
-    @customers = Customer.paginate_by_sql(MailMagazine.get_sql_select + MailMagazine.get_sql_condition(@condition),
+    sql_condition, conditions = MailMagazine.get_sql_condition(@condition)
+    sql = MailMagazine.get_sql_select + sql_condition
+    sqls = [sql]
+    conditions.each do |c|
+      sqls << c
+    end
+    #@customers = Customer.paginate_by_sql(MailMagazine.get_sql_select + MailMagazine.get_sql_condition(@condition),
+    @customers = Customer.paginate_by_sql(sqls,
       :page => params[:page],
       :per_page => @condition.search_par_page,
       :order => "id")
 
-    all_customers = Customer.find_by_sql(MailMagazine.get_sql_select + MailMagazine.get_sql_condition(@condition))
+    #all_customers = Customer.find_by_sql(MailMagazine.get_sql_select + MailMagazine.get_sql_condition(@condition))
+    all_customers = Customer.find_by_sql(sqls)
 
     @check_all = true
     customer_ids = []
@@ -142,7 +150,14 @@ class Admin::MailMagazinesController < Admin::BaseController
       redirect_to :ation => "index"
     end
     condition_data = MailMagazineCondition.new(@condition).to_yaml
-    @customers = Customer.find_by_sql(MailMagazine.get_sql_select + MailMagazine.get_sql_condition(@condition, except_list))
+    sql_condition, conditions = MailMagazine.get_sql_condition(@condition, except_list)
+    sql = MailMagazine.get_sql_select + sql_condition
+    sqls = [sql]
+    conditions.each do |c|
+      sqls << c
+    end
+    #@customers = Customer.find_by_sql(MailMagazine.get_sql_select + MailMagazine.get_sql_condition(@condition, except_list))
+    @customers = Customer.find_by_sql(sqls)
 
     @contents = MailMagazineContentsForm.new(params[:contents])
     mm = MailMagazine.new

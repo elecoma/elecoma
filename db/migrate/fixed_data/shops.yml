@@ -22,3 +22,4 @@ load_by_shop_id_1:
     trade_item: 取扱商品
     introduction: 店舗案内
     prefecture_id: '13'
+    deleted_at: 

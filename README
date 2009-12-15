@@ -1,5 +1,5 @@
 ================================================================================
-   エレコマ(Elephant Commerce) version 1.0.0            http://ec.kbmj.com/     
+   エレコマ(Elephant Commerce) version 1.0.2            http://ec.kbmj.com/     
 ================================================================================
 
 エレコマのダウンロードありがとうございます。
@@ -130,8 +130,8 @@ $ sudo gem install postgres
 
 8. アプリケーションの展開
 # cd /usr/local
-# tar zxf (DOWNLOAD_PATH)/elecoma-1.0.0.tar.gz
-# mv elecoma-1.0.0 ec
+# tar zxf (DOWNLOAD_PATH)/elecoma-<version>.tar.gz
+# mv elecoma-<version> ec
 # chown -R ec:ec /usr/local/ec
 
 9. postgresqlのセットアップ
@@ -332,7 +332,7 @@ $ rake spec
 * エレコマ ライセンス
 ================================================================================
 本ソフトウェアはMIT Licenceを採用しています。
-ライセンスの詳細についてはCopyrightファイルを参照してください。
+ライセンスの詳細についてはCOPYRIGHTファイルを参照してください。
 
 配布物に含まれる「エレコマ」のロゴはクリエイティブ・コモンズノ表示-継承 2.1 
 日本ライセンスに従った範囲内でご利用いただけます。
