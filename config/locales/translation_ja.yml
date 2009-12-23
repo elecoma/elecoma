@@ -21,7 +21,7 @@ ja:
       delivery_fee: "配送料"
       delivery_ticket: "配送伝票"
       delivery_time: "配送時間"
-      delivery_trader: "配送業者"
+      delivery trader: "配送業者"
       design: "設計する"
       design_details: "設計の詳細"
       faq: "よくあるお問い合せ"
@@ -38,7 +38,7 @@ ja:
       mail magazine template: "テンプレート内容"
       mail_template: "メールテンプレート"
       mobile_carrier: "携帯キャリア"
-      mobile_device: "携帯対応端末管理"
+      mobile device: "携帯対応端末"
       new information: "新着情報"
       occupation: "職業"
       operation_history: "操作履歴"
@@ -413,6 +413,7 @@ ja:
         updated_at: "で更新"
         deleted_at: "で削除"
       mobile_device:
+        mobile_carrier_id: "携帯キャリア"
         device_name: "端末機種名"
         user_agent: "ユーザエージェント"
         width: "画像サイズ(横)"
@@ -523,7 +524,7 @@ ja:
       payment:
         name: "名前"
         image_filename: "画像のファイル名"
-        credit_card: "クレジットカード"
+        delivery_trader_id: "配送サービス"
         lower_limit: "利用条件(下限)"
         upper_limit: "利用条件(上限)"
         fee: "手数料"
@@ -538,7 +539,10 @@ ja:
         updated_at: "で更新"
         deleted_at: "で削除"
       privacy:
-        content: "本文"
+        content_collect: "個人情報収集（PC）"
+        content_collect_mobile: "個人情報収集（モバイル）"
+        content_privacy: "個人情報保護方針（PC）"
+        content_privacy_mobile: "個人情報保護方針（モバイル）"
         created_at: "で作成された"
         updated_at: "で更新"
         deleted_at: "で削除"
@@ -790,7 +794,3 @@ ja:
         deleted_at: "で削除"
         isolation_type: "離島タイプ"
         can_daibiki: "代引きフラグ"
-      mobile_device:
-        mobile_carrier: "携帯キャリア"
-
-

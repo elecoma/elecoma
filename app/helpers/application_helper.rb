@@ -4,7 +4,8 @@ module ApplicationHelper
 
   def link_parameter(name, option)
     param_datas = {}
-    params.each{ |key, value| param_datas[key.to_sym] = value }
+    #DOCOMOとAUの場合、リンクに日本語のパラメター値が付いている時の文字化けの問題対応
+    params.each{ |key, value| param_datas[key.to_sym] = ((request.mobile? && !request.mobile.is_a?(Jpmobile::Mobile::Softbank)) ? value.tosjis : value) }
     option.each{ |key, value| param_datas[key.to_sym] = value }
     link_to name, param_datas
   end

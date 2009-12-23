@@ -6,7 +6,7 @@
 <div id="container" class="clearfix">
   <ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ", :controller => 'portal', :action => 'show' %></li><li>お問い合わせ</li></ol>
   <h2 class="main_t">お問い合わせ</h2>
-  <p class="notice">※は必ずご入力ください。パスワードは商品購入時に必要となります。</p><br/>
+  <p class="notice"><span class="must">※</span>は必ずご入力ください。</p><br/>
 
   <%= @inquiry && error_messages_for(:inquiry) %>
   <%= flash[:notice] %>

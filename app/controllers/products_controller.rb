@@ -24,7 +24,7 @@ class ProductsController < BaseController
 
   def index
     load_seo_products_list
-    conditions = Product.defalt_condition
+    conditions = Product.default_condition
 
     unless params[:search].blank?
       params[:search].split(" ").each do |search_str|

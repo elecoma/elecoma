@@ -4,7 +4,10 @@ class Admin::BaseController < ApplicationController
   before_filter :admin_login_check
 
   layout 'admin/base'
-
+  #バリデーションエラーの時、レイアウトが崩れる対応
+  ActionView::Base.field_error_proc = Proc.new{ |snippet,
+  instance| "<span class=\"error\">#{snippet}</span>"
+  }
   def up
     get_model(params[:model])
     @record = @model.find_by_id(params[:id])

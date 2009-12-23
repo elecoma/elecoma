@@ -3,8 +3,8 @@ require 'csv'
 module AddCSVDownload
   module ClassMethods
     include ActiveRecordHelper
-    DEFALT_LIST_VIEW = ["id", "created_at", "updated_at", "name", "position"]
-    DEFALT_SEARCH = {"id" => :text,  "name" => :text}
+    DEFAULT_LIST_VIEW = ["id", "created_at", "updated_at", "name", "position"]
+    DEFAULT_SEARCH = {"id" => :text,  "name" => :text}
 
     def list_for_csv(params)
       prepare(params)
@@ -60,7 +60,7 @@ module AddCSVDownload
     def get_list_view(list_view_str = nil )
       list_view_str ||= list_view_data if defined? list_view_data
       list_view_str ||= self.class::VIEW_COLUMNS if defined? self.class::VIEW_COLUMNS
-      list_view_str ||= DEFALT_LIST_VIEW
+      list_view_str ||= DEFAULT_LIST_VIEW
       
       @list_view = []
       list_view_str.each do | column |

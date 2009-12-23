@@ -29,6 +29,7 @@ class PortalController < BaseController
   end
 
   def privacy
+    @privacy = Privacy.find(:first)
   end
 
   def first_one
@@ -71,7 +72,7 @@ class PortalController < BaseController
 
   def load_new_product
     status = Status.find_by_name("NEW")
-    conditions = Product.defalt_condition
+    conditions = Product.default_condition
     conditions << ["product_statuses.status_id = ?", status.id] if status
     @new_products = Product.find(:all,
                              :conditions => flatten_conditions( conditions ),

@@ -125,7 +125,7 @@ class Admin::MailMagazinesController < Admin::BaseController
 
   def confirm
     @contents = MailMagazineContentsForm.new(params[:contents])
-    @contents.body = hidden_tag_check(@contents.body)
+    #@contents.body = hidden_tag_check(@contents.body)
     @customer_ids = params[:customer_ids]
     unless @contents.valid?
       render :action => 'template_search'
@@ -133,15 +133,19 @@ class Admin::MailMagazinesController < Admin::BaseController
     end
   end
 
-  #隠れているタグを取り除く
-  def hidden_tag_check(body)
-    check = body.sub(/<(.*)>/, "")
-    if check.blank?
-      return check
-    else
-      return body
-    end
-  end
+  #
+  # TODO このままだと意味不明なのでコメントアウト
+  #      何のための処理かわかったら対処すること
+  #
+  ##隠れているタグを取り除く
+  #def hidden_tag_check(body)
+  #  check = body.sub(/<(.*)>/, "")
+  #  if check.blank?
+  #    return check
+  #  else
+  #    return body
+  #  end
+  #end
 
   def complete
     @condition = session[:condition_save]

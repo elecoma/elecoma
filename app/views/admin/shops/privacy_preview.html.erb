@@ -1,0 +1,33 @@
+<%if @preview_id == '0'%>
+	<% content_for :head do %>
+	<%= stylesheet_link_tag "front/entry" %>
+	<% end %>
+	<ol id="bread_list" class="m_btm"><li class="bread_top"><a href="#">トップページ</a></li><li>お問い合わせ</li></ol>
+	<h2 class="main_t">問合せ個人情報の取扱いについて</h2>
+	<div id="entry">
+	  <div class="agreement_box">
+		<%if (!@privacy.blank? && !@privacy.content_collect.blank?)%>
+		<%= @privacy.content_collect %>
+		<%end%>
+	  </div>
+	  <p class="my_btn2">
+	  	<a href="#"><img src="/images/common/btn02.gif" width="101" height="28" align="戻る"></a>
+	    <a href="#"><img src="/images/common/ask_btn.gif" width="101" height="28" align="個人情報の取り扱いについて同意した上でお問い合わせ"></a>
+	  </p>  
+	</div>
+<%elsif @preview_id == '2'%>
+
+	<% content_for :head do %>
+	  <%= javascript_include_tag :defaults %>
+	  <%= stylesheet_link_tag "front/portal" %>
+	<% end %>
+	<div id="container" class="clearfix">
+	  <ol id="bread_list" class="m_btm"><li class="bread_top"><a href="#">トップページ</a></li><li>個人情報保護方針・個人情報の取り扱いについて
+	 </li></ol>
+	  
+	  <h2 class="main_t">個人情報保護方針・個人情報の取り扱いについて</h2>
+		<%if (!@privacy.blank? && !@privacy.content_privacy.blank?)%>
+		<%= @privacy.content_privacy %>
+		<%end%>
+	</div>
+<%end%>

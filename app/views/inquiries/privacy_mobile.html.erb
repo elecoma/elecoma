@@ -1,5 +1,7 @@
 <div>
- <%= @privacy %>
+	<%if (!@privacy.blank? && !@privacy.content_collect_mobile.blank?)%>
+	<%= @privacy.content_collect_mobile %>
+	<%end%>
 </div>
 
 <hr noshade="noshade" color="ORANGE"/>
@@ -8,5 +10,3 @@
 →<%= link_to '個人情報の取り扱いについて同意した上でお問い合わせ', :controller => "inquiries", :action => "new" %><br /><br />
 
 <hr noshade="noshade" color="ORANGE"/>
-
-<%= link_to_mobile 'TOPページへ', {:controller => 'portal', :action => 'show'}, :accesskey=>0 %><br />

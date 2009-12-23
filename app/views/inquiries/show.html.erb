@@ -1,0 +1,22 @@
+<% content_for :head do %>
+<%= stylesheet_link_tag "front/entry" %>
+<% end %>
+
+<ol id="bread_list" class="m_btm"><li class="bread_top"><a href="/">トップページ</a></li><li>お問い合わせ</li></ol>
+<h2 class="main_t">お問い合わせ</h2>
+<div id="entry">
+  <p class="agreement_t">ご意見やご感想、ご質問はこちらで受けております。</p>
+  <hr noshade="noshade" color="ORANGE"/>
+  <div class="agreement_box">
+	<%= link_to '問合せ個人情報の取扱いについて', :action=>:privacy %><br /><br />
+	
+	■&nbsp;<%=h @shop.corp_name %><br /><br />
+	■&nbsp;【電話でのお問い合わせ】<br />
+	営業時間：<%=h @shop.businesstime %><br />
+	電話番号：<%= link_to h(@shop.tel), 'tel:'+@shop.tel.gsub(/\D/,'') %><br /><br />
+	■&nbsp;【E-mailでのお問い合わせ】<br />
+	<%= link_to h(@shop.mail_faq), 'mailto:'+@shop.mail_faq %><br /><br />
+	
+	お問い合わせは<%= link_to 'こちらへ', :controller => "inquiries", :action => "new" %><br /><br />
+  </div>
+</div><!-- /entry -->

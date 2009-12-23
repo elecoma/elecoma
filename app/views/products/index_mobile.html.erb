@@ -26,7 +26,9 @@
 
   <!-- ページング -->
   <div style="background-color:#ffffff;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
-  <div style="text-align:center;">  <%= will_paginate @products %></div>
+  <%param_datas = {}%>
+  <%params.each{ |key, value| param_datas[key.to_sym] = ((request.mobile? && !request.mobile.is_a?(Jpmobile::Mobile::Softbank)) ? value.tosjis : value) }%>
+  <div style="text-align:center;">  <%= will_paginate(@products,:params=>param_datas) %></div>
   <div style="text-align:center;"><%= link_order "price" %>│<%= link_order "update" %></div>
   <div style="background-color:#ffffff;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
 

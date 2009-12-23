@@ -32,7 +32,7 @@ class Category < ActiveRecord::Base
   def product_count
     count_num = 0
     get_child_categories.each do | child_category |
-      conditions = Product.defalt_condition
+      conditions = Product.default_condition
       conditions << ["category_id = ?",  child_category.id]
       count_num +=  Product.count(:conditions => flatten_conditions(conditions))
     end

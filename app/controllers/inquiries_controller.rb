@@ -3,12 +3,7 @@ class InquiriesController < BaseController
   before_filter :init_by_params, :only=>[:new, :confirm, :complete]
 
   def show
-    if request.mobile?
-      @shop = Shop.find(:first)
-      @p = Product.find(:first)
-    else
-      redirect_to :action => "new"
-    end
+    @shop = Shop.find(:first)
   end
 
   def new
@@ -39,11 +34,7 @@ class InquiriesController < BaseController
   end
 
   def privacy
-    record = Privacy.first
-    @privacy = record && record.content
-    unless request.mobile?
-      render :action=>:privacy_mobile, :layout=>'base_mobile'
-    end
+    @privacy = Privacy.first
   end
 
   private

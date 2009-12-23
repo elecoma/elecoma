@@ -383,8 +383,8 @@ class Admin::ShopsController < Admin::BaseController
   end
 
   def privacy
-    privacy = Privacy.first
-    @privacy = privacy && privacy.content
+    #１件のみ返す
+    @privacy = Privacy.first
   end
 
   def privacy_update
@@ -392,15 +392,36 @@ class Admin::ShopsController < Admin::BaseController
       redirect_to :action=>:privacy
       return
     end
-    if (privacy = Privacy.first)
-      privacy.update_attribute(:content, params[:content])
+    
+    if @privacy = Privacy.first #１件のみ返す
+      @privacy.attributes = params[:privacy]
     else
-      privacy = Privacy.create(:content=>params[:content])
+      @privacy = Privacy.new params[:privacy]
     end
-    flash.now[:notice] = "データを保存しました"
+
+    unless @privacy.valid?
+      render :action => "privacy"
+      return
+    end
+
+    if @privacy.save
+      flash[:shop_privacy] = "データを保存しました"
+    else
+      flash[:shop_privacy_e] = "データの保存に失敗しました"
+    end
     redirect_to :action=>:privacy
   end
 
+  def privacy_preview
+    @preview_id = params[:preview_id]
+    @privacy = Privacy.new params[:privacy]
+    if @preview_id == "1" || @preview_id == "3"
+      render :template => '/admin/shops/privacy_preview_mobile', :layout => '/admin/preview_base_mobile'
+    else
+      render :template => '/admin/shops/privacy_preview', :layout => '/admin/preview_base'
+    end    
+  end
+  
   def up
     super
     redirect_to :action => params[:return_act]

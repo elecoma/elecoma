@@ -623,26 +623,22 @@ describe Admin::ShopsController do
     it "should be successful" do
       privacy = privacies :one
       get 'privacy'
-      assigns[:privacy].should == privacy.content
+      assigns[:privacy].attributes.should == privacy.attributes
     end
   end
 
   describe "POST 'privacy_update'" do
+    before(:each) do
+      @privacy = {:content_collect=>"テスト1",:content_collect_mobile=>"テスト2",:content_privacy=>"テスト3",:content_privacy_mobile=>"テスト4"}
+    end    
     fixtures :privacies
     it "更新" do
-      content = "プライバシー"
-      post 'privacy_update', :content => content
+      post 'privacy_update', :privacy => @privacy
       response.should redirect_to(:action => :privacy)
     end
 
-    it "更新失敗" do
-      content = "1" * (ActiveRecordValidate::TEXT_MAX_LENGTH + 1)
-      lambda{post 'privacy_update', :content => content}.should raise_error
-    end
-
     it "POSTではなくGETでアクセス" do
-      content = "プライバシー"
-      get 'privacy_update', :content => content
+      get 'privacy_update', :privacy => @privacy
       flash[:notice].should be_nil
       response.should redirect_to(:action => :privacy)
     end

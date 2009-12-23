@@ -136,7 +136,7 @@ describe Admin::MailMagazinesController do
 
     it "編集画面に戻る" do
       contents = {:subject => "", 
-        :body => "<img src=\"/images/emoticons/E697.gif\" class=\"emoticon\">dasda",
+        :body => "",
         :form_type => 2}
       post 'confirm', :contents => contents, :customer_ids => "1,3,5"
       response.should render_template("admin/mail_magazines/template_search.html.erb")

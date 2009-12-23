@@ -10,7 +10,7 @@
 <meta name="keywords" content="<%= @seo.keywords %>" />
 <% end %>
 
-<%= compound_title_tag(['K&B style', @product_name, @category_name, @campaign_name]) %>
+<%= compound_title_tag(['K&B style', nil, nil, nil]) %>
 <%= javascript_include_tag 'sorry' %>
 <%= javascript_include_tag 'treemenu' %>
 <%= javascript_include_tag 'rollover' %>
@@ -21,15 +21,15 @@
 <body>
 <div id="wrapper" class="clearfix">
   <div id="header" class="clearfix"><!-- ヘッダー -->
-    <h1><%= link_to image_tag("common/logo.gif", :width => "133", :height => "37", :alt => "K&amp;Bstyle"), :controller => :portal, :action => :show %></h1>
+    <h1><a href="#"><img alt="K&amp;Bstyle" height="37" src="/images/common/logo.gif" width="133" /></a></h1>
   <div id="store_desc"><span>オシャレな女性のためのお手軽通販サイト</span></div>
   <div id="my_menubox" class="clearfix">
   <p>
-  <span><%="#{h @login_customer.full_name}&nbsp;様"if @login_customer %></span>
-  <span id="log"><%= link_to 'ログアウト', :controller => :accounts, :action => :logout if @login_customer %></span>
+  <span></span>
+  <span id="log"></span>
   </p>
   <ul id="my_menu" class="clearfix">
-    <li><%= link_to image_tag("/images/common/mypage_btn.gif", :width=>"101", :height=>"28", :alt=>"マイページ", :class=>"hoverImg"), :controller => :accounts, :action => :history_list if @login_customer %></li>
+    <li></li>
   </ul>
   </div><!-- /my_menubox -->
   </div><!-- /header -->
@@ -42,11 +42,11 @@
 <div id="footer" class="clearfix"><!-- フッター -->
   <div id="foot_l">
     <ul id="foot_list" class="clearfix">
-      <li><%= link_to '当サイトについて', {:controller => 'shop', :action => 'about'} %></li>
-      <li><%= link_to 'お問合わせ', {:controller => 'inquiries', :action => 'show'} %></li>
-      <li><%= link_to '特定商取引に関する法律', {:controller => 'portal', :action => 'show_tradelaw'} %></li>
-      <li><%= link_to '個人情報保護方針・個人情報の取扱いについて', {:controller => 'portal', :action => 'privacy'} %></li>
-      <li><%= link_to '免責事項について', {:controller => 'portal', :action => 'escape_clause'} %></li>
+      <li><a href="#">当サイトについて</a></li>
+      <li><a href="#">お問合わせ</a></li>
+      <li><a href="#">特定商取引に関する法律</a></li>
+      <li><a href="#">個人情報保護方針・個人情報の取扱いについて</a></li>
+      <li><a href="#">免責事項について</a></li>
     </ul>
     <address>Copyright (c) 2000-2009 K&amp;Bstyle CO.LTD. All Rights Reserved.</address>
   </div>

@@ -154,7 +154,7 @@ class Product < ActiveRecord::Base
     end
   end
 
-  def self.defalt_condition
+  def self.default_condition
     conditions = [["products.permit = ?", true]]
     conditions << ["? between products.public_start_at and products.public_end_at", today_utc(Date.today)]
     conditions << ["have_product_style = ?", true]
@@ -551,6 +551,6 @@ class Product < ActiveRecord::Base
 
   def self.today_utc(today)
     ud = Time.zone.local_to_utc(Time.local(today.year,today.month,today.day))
-    Date.new(ud.year, ud.month, ud.day)
+    DateTime.new(ud.year, ud.month, ud.day, ud.hour, ud.min, ud.sec)
   end
 end

@@ -124,8 +124,9 @@ describe InquiriesController do
   
     it "PCからはnewページが表示" do
       get 'show'
-      response.should redirect_to(:action => 'new')
-      assigns[:shop].should be_nil
+      response.should be_success
+      response.should render_template("inquiries/show.html.erb")
+      assigns[:shop].should_not be_nil
     end
   end
 end

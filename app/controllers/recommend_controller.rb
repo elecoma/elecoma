@@ -1,6 +1,6 @@
 class RecommendController < ApplicationController
   def tsv
-    conditions = Product.defalt_condition
+    conditions = Product.default_condition
     @products = Product.find(:all, :conditions => flatten_conditions(conditions))
     f = StringIO.new('', 'w')
     CSV::Writer.generate(f,"\t","\r\n") do | writer |

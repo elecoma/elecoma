@@ -201,7 +201,7 @@ EJS
             if method_name == "permit"
               return object.send("permit_label")
             elsif method_name == "category_id"
-              return h(object.category_id)
+              return h(object.category_name)
             else
               method = object.send(method_name)
               if method.class == ActiveSupport::TimeWithZone

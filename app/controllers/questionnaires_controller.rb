@@ -58,7 +58,7 @@ class QuestionnairesController < BaseController
                                                           :order=>"position")
         question_choices.each_with_index do | question_choice, choice_idx |
           #チェックされた選択肢を取得
-          answer = params[:answers]["#{question.id}"]["#{question_choice.id}"] if params[:answers]["#{question.id}"]
+          answer = params[:answers]["#{question.id}"]["#{question_choice.id}"] if params[:answers] && params[:answers]["#{question.id}"]
           answer_object = new_answer_object(question.id, question_choice.id, question.position, answer)
         #validateに引っかかったらnewに戻る
         answer_objects << answer_object
@@ -69,7 +69,7 @@ class QuestionnairesController < BaseController
         end
 
       else #回答形式がチェックボックス以外のときは1つの回答を取得
-        answer = params[:answers]["#{question.id}"] if params[:answers]["#{question.id}"]  #QuectonChoice::NOUSEでは回答が存在しない
+        answer = params[:answers]["#{question.id}"] if params[:answers] && params[:answers]["#{question.id}"]  #QuectonChoice::NOUSEでは回答が存在しない
 
         question_choice_id = question.question_choices[0].id
         if question.question_choices[0][:format] == QuestionChoice::RADIOBUTTON #回答形式がラジオボタンのときは、選択肢名を回答に入れる
