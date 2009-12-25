@@ -24,11 +24,11 @@ class Recommend < ActiveRecord::Base
   end
 
   def self.ranking_get(limit = nil)
-    unless Recommend.find(:first, :conditions => ["created_at > ?",Time.zone.local_to_utc(Time.now - (60 * 60))])
+    unless Recommend.find(:first, :conditions => ["created_at > ? and product_id is null and request_type is null",Time.zone.local_to_utc(Time.now - (60 * 60))])
       self.ranking_network_get
     end
 
-    RecommendXml.find(:all,:limit => limit)
+    RecommendXml.find(:all,:conditions => ["product_id is null and request_type is null"],:limit => limit)
   end
 
   def self.recommend_network_get(product_id, type)
@@ -39,8 +39,8 @@ class Recommend < ActiveRecord::Base
 
   def self.ranking_network_get
     url = RANKING_URL
-    return  unless self.network_get(url, nil, nil, nil)
-    Recommend.create
+    return  unless self.network_get(url, ["product_id is null and request_type is null"], nil, nil)
+    Recommend.create(:product_id => nil, :request_type=>nil)
   end
 
   def self.network_get(url, delete_conditions, product_id, type)
