@@ -40,7 +40,12 @@ class Category < ActiveRecord::Base
   end
 
   def get_child_categories
-    get_child_category_ids.map{|child_id| Category.find(child_id)}
+    child_categories = []
+    get_child_category_ids.each do |child_id|
+      c = Category.find_by_id(child_id)
+      child_categories << c if !c.blank?
+    end
+    child_categories    
   end
 
   def get_child_category_ids

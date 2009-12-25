@@ -23,7 +23,7 @@ class Admin::CategoriesController < Admin::BaseController
     Category.update_all("children_ids = null")
   end
 
-  [create, update].each do |action|
+  [create, update, destroy].each do |action|
     action.wants.html do
       redirect_to :action => "index", :category_id => @category.parent_id
     end
@@ -44,7 +44,7 @@ class Admin::CategoriesController < Admin::BaseController
   end
 
   destroy.after do
-    Category.re_position(@paremt_id)
+    Category.re_position(@parent_id)
+    Category.update_all("children_ids = null")
   end
-
 end
