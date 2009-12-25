@@ -135,20 +135,20 @@
    <td><%=h number_with_delimiter(@order_delivery.payment_total) %>円</td>
   </tr>
   <tr>
-   <th colspan="6">お支払方法</th>
-  </tr>
-  <tr>
-   <td colspan="6">
-     <%=h @order_delivery.payment_name %>
-   </td>
-  </tr>
-  <tr>
    <th colspan="5">使用ポイント</th>
    <td><%=h number_with_delimiter(@order_delivery.use_point) %>ポイント</td>
   </tr>
   <tr>
    <th colspan="5">追加ポイント</th>
    <td><%=h number_with_delimiter(@order_delivery.add_point) %>ポイント</td>
+  </tr>
+  <tr>
+   <th colspan="6">お支払方法</th>
+  </tr>
+  <tr>
+   <td colspan="6">
+     <%=h @order_delivery.payment_name %>
+   </td>
   </tr>
   <tr>
    <th colspan="6">時間指定</th>
