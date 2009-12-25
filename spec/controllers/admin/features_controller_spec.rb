@@ -42,7 +42,7 @@ describe Admin::FeaturesController do
       assigns[:feature].dir_name.should == "test"
       assigns[:feature].feature_type.should == 2      
       assigns[:feature].image_resource_id.should_not be_nil
-      assigns[:feature].image_resource_id.should == resource_max + 1
+      assigns[:feature].image_resource_id.should > resource_max
       response.should render_template("admin/features/confirm.html.erb")
       #validateエラーがある場合
       post 'confirm', :feature => {:name => ""}

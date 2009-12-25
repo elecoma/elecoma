@@ -109,7 +109,7 @@ describe Admin::CategoriesController do
     it "id 2を削除(通常の削除)" do
       get 'destroy', :id => 2
       Category.find_by_id(2).should be_nil
-      Category.find_by_id(4).position.should == 2
+      Category.find_by_id(4).position.should == 1
     end
     
   end

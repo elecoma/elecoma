@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Style do
-  fixtures :styles, :style_categories
+  fixtures :styles, :style_categories,:product_styles,:products
   before(:each) do
     @style = styles(:can_incriment)
   end
