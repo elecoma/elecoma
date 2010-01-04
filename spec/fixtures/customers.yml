@@ -418,6 +418,7 @@ valid_signup2:
   receive_mailmagazine: 1
   activate: <%= Customer::TOUROKU %>
   mobile_carrier: <%= Customer::NOT_MOBILE %>
+  reachable: true
 new_customer:
   id: 36
   family_name: aaa

@@ -100,6 +100,7 @@ describe Admin::CustomersController do
       assigns[:customers].should be_any do |record|
         record.id == @customer.id
       end
+      assigns[:customers][0].full_name.should_not be_nil
     end
 
     it "電話番号" do

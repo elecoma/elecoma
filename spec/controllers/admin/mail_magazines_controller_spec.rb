@@ -145,7 +145,7 @@ describe Admin::MailMagazinesController do
 
   describe "POST 'complete'" do
     it "メールが送れるパターン" do
-      controller.stub!(:deliver_mail).and_return(1)
+      #controller.stub!(:deliver_mail).and_return(1)
       #pending("メールマガ送信エラー修正中で、保留...")
       on_form = 'true'
       post 'search', :on_form => on_form, :condition => {:form_type => "0"}

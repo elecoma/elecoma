@@ -7,8 +7,7 @@ class Admin::MailMagazinesController < Admin::BaseController
   before_filter :admin_permission_check_sending_log, :only => :history
 
   cattr_accessor :drb_uri
-  DEFAULT_DRB_URI = 'druby://0.0.0.0:9999'
-#  DEFAULT_DRB_URI = 'druby://mail4.kbmj.com'
+  #DEFAULT_DRB_URI = 'druby://0.0.0.0:9999'
 
   emoticon_filter
 
@@ -267,7 +266,7 @@ class Admin::MailMagazinesController < Admin::BaseController
   def deliver_mail(customers, contents)
     customers.blank? and return 0
     delivered_case = 0
-    drb = DRb::DRbObject.new_with_uri(@@drb_uri||DEFAULT_DRB_URI)
+    #drb = DRb::DRbObject.new_with_uri(@@drb_uri||DEFAULT_DRB_URI)
     customers.each do |c|
       if contents.form_type.to_i == MailMagazineTemplate::TEXT
         mail = Notifier::create_text_mailmagazine(c, contents.body, contents.subject)
@@ -275,12 +274,22 @@ class Admin::MailMagazinesController < Admin::BaseController
         #mail = Notifier::create_html_mailmagazine(c, contents.body, contents.subject)
         mail = MobileHtmlNotifier::create_html_mailmagazine(c, contents.body, contents.subject)
       end
-      begin
-        timeout(1) do
-          drb.add(mail)
-          delivered_case += 1
-        end
+      mailobj = Mail.new
+      from = mail.from_addrs[0]
+      if from
+        from = from.address
       end
+      mail.to.each do |to|
+        m = Mail.new(:to_address => to, :from_address => from, :message => Base64.encode64(mail.encoded))
+        m.save
+        delivered_case += 1
+      end
+      #begin
+      #  timeout(1) do
+      #    drb.add(mail)
+      #    delivered_case += 1
+      #  end
+      #end
     end #customers.each
     delivered_case
   end
