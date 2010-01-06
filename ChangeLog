@@ -1,3 +1,14 @@
+2010-01-06  Taro Matsuzawa  <tmatsuzawa _at_ kbmj.com>
+
+	* 1.0.3 Release
+	* [bugfix] default spellingミスの修正
+	* [bugfix] 管理側で支払方法登録に英語のエラーメッセージが混じっているのを修正
+	* [管理画面] 管理画面ログ画像タグwidth,heigth調整
+	* [一般画面] recommend 人気ranking表示が正しく表示できるよう修正
+	* [管理画面] メールマガジン処理をcronで動かせるように修正
+	* [bugfix] #9, #10, #11, #13, #19, #20, #21, #23, #24, #25
+	* [bugfix] IE8で管理側ログイン画面が表示できない問題を修正
+	
 2009-12-15  Taro Matsuzawa  <tmatsuzawa _at_ kbmj.com>
 
 	* 1.0.2 Release
