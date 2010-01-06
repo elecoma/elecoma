@@ -16,7 +16,6 @@
 <div id="login">
 <img src="/images/login_logo.png" width="240" height="71" alt="Elephant Commerce" class="login_logo" />
 
-<form name="form1" id="form1" method="post" action="login.html">
 <p class="login_notice"><%= flash[:notice] %><%= flash[:error] %></p>
 <table class="login_table">
 <tr>
@@ -28,11 +27,8 @@
 <td><%= password_field :admin_user, :password %></td>
 </tr>
 </table>
-<form>
   <%= submit_tag "ログイン", :class => "login_btn" %>
-</form>
 <p class="login_copy">Copyright &copy; KBMJ CO.LTD. All Rights Reserved.</p>
-</form>
 
 </div><!-- /login -->
 <% end -%>
