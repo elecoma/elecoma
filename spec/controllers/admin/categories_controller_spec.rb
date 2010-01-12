@@ -68,32 +68,38 @@ describe Admin::CategoriesController do
 
   describe "GET 'up'" do
     it "id 1(大カテゴリでトップ)をup" do
-      lambda{get 'up', :id => 1}.should raise_error(NoMethodError)
+      get 'up', :id => 1
+      Category.find_by_id(1).position.should == 1      
     end
 
     it "id 2(中カテゴリでトップ)をup" do
-      lambda{get 'up', :id => 2}.should raise_error(NoMethodError)
+      get 'up', :id => 2
+      Category.find_by_id(2).position.should == 1       
     end
 
     it "id 4(中カテゴリで2番目)をup" do
       get 'up', :id => 4
-      Category.find_by_id(4).position.should == 2
+      Category.find_by_id(4).position.should == 1
+      Category.find_by_id(2).position.should == 2
     end
   end
 
   describe "GET 'down'" do
     it "id 1(大カテゴリでトップ)をdown" do
-      lambda{get 'down', :id => 1}.should raise_error(NoMethodError)
+      #lambda{get 'down', :id => 1}.should raise_error(NoMethodError)
+      get 'down', :id => 1
+      Category.find_by_id(1).position.should == 2      
     end
 
     it "id 2(中カテゴリでトップ)をdown" do
       get 'down', :id => 2
-      Category.find_by_id(2).position.should == 3
+      Category.find_by_id(2).position.should == 2
+      Category.find_by_id(4).position.should == 1
     end
 
     it "id 4(中カテゴリで二番目)をdown" do
       get 'down', :id => 4
-      Category.find_by_id(4).position.should == 5
+      Category.find_by_id(4).position.should == 3
     end
 
   end
@@ -103,7 +109,7 @@ describe Admin::CategoriesController do
       Category.find_by_id(1).should_not be_nil
       get 'destroy', :id => 1
       Category.find_by_id(1).should be_nil
-      Category.find(:all).should == []
+      Category.count.should == 1
     end
 
     it "id 2を削除(通常の削除)" do

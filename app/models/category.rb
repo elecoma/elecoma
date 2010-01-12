@@ -1,7 +1,7 @@
 class Category < ActiveRecord::Base
   acts_as_paranoid
-  acts_as_list
-  acts_as_tree
+  acts_as_list :scope => :parent_id
+  acts_as_tree :order => "position"
   has_many :products
   belongs_to :resource,
              :class_name => "ImageResource",
@@ -9,7 +9,11 @@ class Category < ActiveRecord::Base
   belongs_to :menu_resource,
              :class_name => "ImageResource",
              :foreign_key => "menu_resource_id"
-
+  
+  after_create  :after_process
+  before_destroy :destroy_before_process
+  after_destroy :after_process
+  
   alias :resource_old= :resource=
   alias :menu_resource_old= :menu_resource=
   [:resource, :menu_resource].each do  | method_name|
@@ -25,35 +29,17 @@ class Category < ActiveRecord::Base
     end
   end
 
-  def parent
-    Category.find_by_id(self.parent_id)
-  end
-
   def product_count
     count_num = 0
-    get_child_categories.each do | child_category |
+    get_child_category_ids.each do | child_category_id |      
       conditions = Product.default_condition
-      conditions << ["category_id = ?",  child_category.id]
+      conditions << ["category_id = ?",  child_category_id]
       count_num +=  Product.count(:conditions => flatten_conditions(conditions))
     end
     return count_num
   end
 
-  def get_child_categories
-    child_categories = []
-    get_child_category_ids.each do |child_id|
-      c = Category.find_by_id(child_id)
-      child_categories << c if !c.blank?
-    end
-    child_categories    
-  end
-
   def get_child_category_ids
-    if children_ids.nil?
-      self.children_ids = get_childs(true).join(",")
-      self.save
-    end
-
     children_ids.split(",").map{|child_id| child_id.to_i }
   end
 
@@ -61,58 +47,15 @@ class Category < ActiveRecord::Base
     return find_as_nested_array_intenal(nil, Category.all(:order => 'position'))
   end
 
-  def get_childs(ids_flg = false)
-    if self.children.blank?
-      return [return_model_or_id(self, ids_flg)]
-    else
-      return_childs = [return_model_or_id(self, ids_flg)]
-      children.each do | child |
-        child.get_child_categories.each do | child_s_child |
-          return_childs << return_model_or_id(child_s_child, ids_flg)
-        end
-      end
-      return return_childs
-    end
+  def destroy_before_process
+    self.update_attribute(:children_ids,nil)
   end
-
-  def position_up
-    condition = self.parent_id ? ["parent_id = ?", self.parent_id.to_i] : ["parent_id is null"]
-    max_position = Category.maximum(:position, :conditions => condition)
-    self.position = max_position ? max_position+1 : 1
+  #後処理（create/destroy共通）
+  def after_process
+    renew_children_ids(self)
   end
-
-  def self.re_position(parent_id)
-    condition = parent_id ? ["parent_id = ?", parent_id] : ["parent_id is null"]
-    records = Category.find(:all, :conditions=>condition, :order => "position asc")
-    records.each_with_index do |record, idx|
-      record.update_attribute(:position, idx+1)
-    end
-  end
-
-  def move_higher
-    position_move(true)
-  end
-
-  def move_lower
-    position_move(false)
-  end
-
+  
   protected
-
-  def position_move(posit)
-    condition = self.parent_id ? [["parent_id = ?", self.parent_id.to_i]] : [["parent_id is null"]]
-    if posit
-      condition << ["position < ?", self.position]
-    else
-      condition << ["position > ?", self.position]
-    end
-    next_record = Category.find(:first, :conditions => flatten_conditions(condition), :order => "position asc")
-    next_position = next_record.position
-    current_position = self.position
-    next_record.update_attribute(:position, current_position)
-    self.update_attribute(:position, next_position)
-  end
-
   def self.get_list(parent_id)
     if parent_id
       return Category.find(:all, :conditions => ["parent_id = ?", parent_id], :order => "position asc")
@@ -122,10 +65,6 @@ class Category < ActiveRecord::Base
   end
 
   private
-  def return_model_or_id(model, id_flg)
-    id_flg ? model.id : model
-  end
-
   def self.find_as_nested_array_intenal(id, all)
     categories = all.select{|c| c.parent_id == id}
     categories.inject([]) do |array, category|
@@ -135,5 +74,109 @@ class Category < ActiveRecord::Base
       array
     end
   end
+  #自分関連の一連親のみ更新
+  #   Example:
+  #   root
+  #    \_ child1
+  #         \_ subchild1
+  #         \_ subchild2
+  #   subchild1.ancestors # => [child1, root]
+  def renew_children_ids(category)
+    #destroyの場合、category.frozen?->true
+    #createの場合、category.frozen?->false
+    #createの時、children_ids=nilなので、ここでまず更新自分自身を更新
+    unless category.frozen?
+      category.update_attribute(:children_ids,category.id.to_s)
+    end
+    #一連の親を更新
+    p_categories = category.ancestors
+    unless p_categories.blank?
+      p_categories.each do |p_c|
+        new_children_ids = get_new_children_ids(p_c).join(",")
+        p_c.update_attribute(:children_ids,new_children_ids)
+      end
+    end
+  end
+  def get_new_children_ids(category)
+    return_childs = [category.id]
+    c_categories = category.children
+    unless c_categories.blank?
+      c_categories.each do | child |
+        child.children_ids.split(",").each do | c_child_id |
+          return_childs << c_child_id.to_i
+        end
+      end
+    end
+    return_childs
+  end
 
+#ここからはコンソールからカテゴリ全テーブルのchildren_idsを更新する時の後処理の関連メソッド
+  #1.エントリー
+  def self.renew_children_ids_with_command
+    begin
+      p "batch update start..."
+      Category.transaction {
+        #clear all
+        Category.clear_children_ids
+        
+        p_categories = Category.find(:all, :conditions => ["parent_id is null"], :order => "position asc" )
+        #親カテゴリre_postion
+        Category.re_position(nil)
+        #親カテゴリをグループとして更新
+        p_categories.each do |category| 
+          #children_idsを更新
+          Category.re_save_childs_id(category)
+          #positionを更新
+          Category.childs_re_position(category)
+        end
+      }
+      p "batch update end..."
+    rescue
+      p "batch update error.rollback..."
+    end
+
+  end
+  #1-1.clear all
+  def self.clear_children_ids
+    Category.update_all("children_ids = null")
+  end
+  #1-2.children_ids再生成
+  def self.re_save_childs_id(category)
+    category.children_ids = Category.get_childs_id(category).join(",")
+    category.save
+  end
+  #1-2-1.children_idsを取得
+  def self.get_childs_id(category)
+    return_childs = [category.id]
+    c_categories = category.children
+    unless c_categories.blank?
+      c_categories.each do | child |
+        Category.re_save_childs_id(child)
+        child.children_ids.split(",").each do | c_child_id |
+          return_childs << c_child_id.to_i
+        end
+      end
+    end
+    return_childs
+  end
+  #1-3.子カテゴリpositionを更新
+  def self.childs_re_position(category)
+    c_categories = category.children
+    unless c_categories.blank?
+      #子カテゴリpositionを更新
+      Category.re_position(category.id)
+      c_categories.each do |c_category|
+        #孫カテゴリpositionを更新
+        Category.childs_re_position(c_category)
+      end
+    end
+  end
+  def self.re_position(parent_id)
+    condition = parent_id ? ["parent_id = ?", parent_id] : ["parent_id is null"]
+    records = Category.find(:all, :conditions=>condition, :order => "position asc")
+    records.each_with_index do |record, idx|
+      record.update_attribute(:position, idx+1)
+    end
+  end
+#ここまではコンソールからカテゴリ全テーブルのchildren_idsを更新する時の後処理の関連メソッド  
 end

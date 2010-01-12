@@ -11,18 +11,6 @@ class Admin::CategoriesController < Admin::BaseController
     @category ||= Category.new
   end
 
-  create.before do
-    @category.position_up
-  end
-
-  create.after do
-    Category.update_all("children_ids = null")
-  end
-
-  update.after do
-    Category.update_all("children_ids = null")
-  end
-
   [create, update, destroy].each do |action|
     action.wants.html do
       redirect_to :action => "index", :category_id => @category.parent_id
@@ -37,14 +25,5 @@ class Admin::CategoriesController < Admin::BaseController
   def down
     super
     redirect_to :action => "index", :category_id => @record.parent_id
-  end
-
-  destroy.before do
-    @parent_id = @category.parent_id
-  end
-
-  destroy.after do
-    Category.re_position(@parent_id)
-    Category.update_all("children_ids = null")
   end
 end

@@ -18,9 +18,7 @@ module Admin::CategoriesHelper
     return_str += "<br>"
 
     if category.get_child_category_ids.include?(id.to_i) 
-      logger.debug category.id
       if get_categories = Category.find(:all, :conditions => ["parent_id = ?", category.id], :order => "position") 
-      logger.debug get_categories
         if ! get_categories.empty?
           get_categories.each do |get_category|
               return_str += make_category_list get_category, id, depth + 1

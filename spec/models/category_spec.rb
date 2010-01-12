@@ -27,44 +27,19 @@ describe Category do
     (count_after-count_before).should == 1
   end
 
-  it "子カテゴリを返す" do
-    @category.get_child_categories.sort{|a, b| a.id <=> b.id}.should == [@category, categories(:chu_category), categories(:sho_category), categories(:chu_category_two), categories(:valid_category)].sort{|a, b| a.id <=> b.id}
-  end
-
   it "子カテゴリIDを返す(children_idsを保存する)" do
     @category.get_child_category_ids.sort.should == [@category.id, categories(:chu_category).id, categories(:sho_category).id, categories(:chu_category_two).id, categories(:valid_category).id].sort
-    category_new = Category.create()
-    category_new.children_ids.should == nil
-    category_new.get_child_category_ids
-    category_new.children_ids.should == category_new.id.to_s
   end
 
-  it "子カテゴリを返す(引数がtrueのときIDを返す)" do
-    category_new = Category.create()
-    category_new.get_childs().should == [category_new]
-    category_new.get_childs(true).should == [category_new.id]
-    @category.get_childs.sort{|a, b| a.id <=> b.id}.should == [@category, categories(:chu_category), categories(:sho_category), categories(:chu_category_two), categories(:valid_category)].sort{|a, b| a.id <=> b.id}
-    @category.get_childs(true).sort.should == [@category.id, categories(:chu_category).id, categories(:sho_category).id, categories(:chu_category_two).id, categories(:valid_category).id].sort
-  end
-  
-	it "Categoryをツリー構造にする" do
-   Category.find_as_nested_array.should == [@category,[categories(:chu_category),[categories(:sho_category)],categories(:chu_category_two),categories(:valid_category)]]
+  it "Categoryをツリー構造にする" do
+   Category.find_as_nested_array.should == [@category,[categories(:chu_category),[categories(:sho_category)],categories(:chu_category_two),categories(:valid_category)],categories(:console_update_test_category)]
   end
   
   it "positionのシーケンス" do
     category_new=Category.create(:parent_id => 1)
-    max_position=Category.maximum(:position, :conditions => {:parent_id=>1})
-    category_new.position_up.should==max_position+1
+    category_new.position.should == 4
   end
   
-  it "positionを１から順に並べ直す" do
-    category_new = Category.create(:parent_id => 1)
-    Category.delete(4)
-    Category.re_position(1)
-    Category.find_by_id(2).position.should == 1
-    Category.find_by_id(category_new.id).position.should == 3
-  end
-
   it "positionを上へ" do
     id = categories(:chu_category).id
     id_position = categories(:chu_category).position
@@ -87,5 +62,52 @@ describe Category do
   
   it "指定したparent_idのオブジェクトを返す" do
     Category.get_list(1).should == [categories(:chu_category),categories(:chu_category_two),categories(:valid_category)]
+  end
+  #
+  #id: 1 position: 1 children_ids: '1,2,3,4,16'
+  #id: 2 parent_id: 1 position: 1 children_ids: '2,3'
+  #id: 3 parent_id: 2 position: 1 children_ids: '3'
+  #id: 4 parent_id: 1 position: 2 children_ids: '4'
+  #id: 16 parent_id: 1 position: 3 children_ids: '16'
+  #  
+  it "create後、親のchildren_idsが自動更新1" do
+    children_ids_old = Category.find_by_id(1).children_ids
+    Category.create(:parent_id => 1)
+    children_ids_new = Category.find_by_id(1).children_ids
+    children_ids_new.split(",").size.should == children_ids_old.split(",").size + 1
+  end
+  it "create後、親のchildren_idsが自動更新2" do
+    Category.find_by_id(1).children_ids.split(",").size.should == 5
+    Category.create(:parent_id => 3)
+    Category.find_by_id(1).children_ids.split(",").size.should == 6
+    Category.find_by_id(2).children_ids.split(",").size.should == 3
+    Category.find_by_id(3).children_ids.split(",").size.should == 2    
+  end
+  it "destory後、親のchildren_idsが自動更新1" do
+    Category.find_by_id(1).children_ids.split(",").size.should == 5
+    c = Category.find_by_id(4)
+    c.destroy
+    Category.find_by_id(1).children_ids.split(",").size.should == 4
+    Category.find_by_id(1).children_ids.split(",").include?("4").should be_false
+  end
+  it "destory後、親のchildren_idsが自動更新2" do
+    Category.find_by_id(1).children_ids.split(",").size.should == 5
+    Category.find_by_id(2).children_ids.split(",").size.should == 2
+    c = Category.find_by_id(3)
+    c.destroy
+    Category.find_by_id(1).children_ids.split(",").size.should == 4
+    Category.find_by_id(2).children_ids.split(",").size.should == 1
+    Category.find_by_id(1).children_ids.split(",").include?("3").should be_false
+    Category.find_by_id(2).children_ids.split(",").include?("3").should be_false
+  end
+  it "destory後、positionが自動更新" do
+    Category.find_by_id(16).position.should == 3
+    c = Category.find_by_id(4)
+    c.destroy
+    Category.find_by_id(16).position.should == 2
+  end  
+  it "consoleからchildren_idsを更新" do
+    Category.renew_children_ids_with_command
+    Category.find_by_id(17).children_ids.should == "17"
   end
 end
