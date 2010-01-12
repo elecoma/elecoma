@@ -1,5 +1,4 @@
 class InquiriesController < BaseController
-#  before_filter :device_check, :except => :unsupported_device
   before_filter :init_by_params, :only=>[:new, :confirm, :complete]
 
   def show

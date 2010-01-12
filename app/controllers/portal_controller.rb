@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 class PortalController < BaseController
-  before_filter :device_check, :except => :unsupported_device
-
 
   def show
     load_new_information

@@ -352,7 +352,7 @@ def each_product_styles(product)
 end
 
 def image_tag_mobile(prefix, options={})
-  width = @mobile_device.width.to_i unless @mobile_device.blank?
+  width = request.mobile.display.width
   size = 'q' # q = QVGA, v = VGA
   size = 'v' if !width.blank? && width >= 480
   format = 'gif'

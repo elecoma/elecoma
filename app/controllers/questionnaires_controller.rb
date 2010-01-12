@@ -1,7 +1,6 @@
 #class QuestionnairesController < ApplicationController
 class QuestionnairesController < BaseController
   before_filter :get_questionnaire
-  before_filter :device_check, :except => :unsupported_device
 
   def complete
     questionnaire_answer = QuestionnaireAnswer.new params[:respondent]

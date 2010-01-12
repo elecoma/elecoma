@@ -4,7 +4,6 @@ class BaseController < ApplicationController
   before_filter :verify_session_token
   before_filter :load_data
   before_filter :set_headers
-  before_filter :device_check
   after_filter :end_transaction
   layout 'base'
   mobile_filter
@@ -123,17 +122,6 @@ class BaseController < ApplicationController
   def set_headers
     if request.mobile? and request.mobile.is_a?(Jpmobile::Mobile::Docomo)
       headers["Content-Type"] = "application/xhtml+xml"
-    end
-  end
-
-  def device_check
-    request.mobile? or return true
-    conditions = ['? like user_agent', request.user_agent]
-    @mobile_device = MobileDevice.find(:first, :conditions => conditions)
-    if @mobile_device.blank?
-      logger.info "device_check error #{request.user_agent}"
-      redirect_to :controller => 'portal', :action => 'unsupported_device'
-      return false
     end
   end
 
