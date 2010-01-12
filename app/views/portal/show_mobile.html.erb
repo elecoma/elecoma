@@ -1,11 +1,22 @@
+<?xml version="1.0" encoding="Shift_JIS" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+
+
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=Shift_JIS" />
 <%= stylesheet_link_tag "mobile" %>
-<% content_for :head do %>
-<% if nil %>
-<meta name="author" content="<%= @seo_top.author %>" />
-<meta name="description" content="<%= @seo_top.description %>" />
-<meta name="keywords" content="<%= @seo_top.keywords %>" />
+
+<% unless @seo.blank? %>
+<meta name="author" content="<%= @seo.author %>" />
+<meta name="description" content="<%= @seo.description %>" />
+<meta name="keywords" content="<%= @seo.keywords %>" />
 <% end %>
-<% end %>
+</head>
+
+<body bgcolor="#ffffff" link="#990066" vlink="#990066"
+style="font-size:small; background-color:#ffffff; color:#000000; margin:0 auto; padding:0; align:center; text-align:center;">
 
 <div style="width:236px; margin:0 auto; padding:0; text-align:left; align:left;" id="wrapper"><a name="top" id="body"></a>
 
@@ -85,3 +96,7 @@
 </div>
 
 </div>
+<!-- ▲ﾌｯﾀｰ ここまで --><!--▲MAIN-->
+
+</body>
+</html>
