@@ -72,8 +72,8 @@ class OrderDelivery < ActiveRecord::Base
   end
 
   def before_save
-    calculate_charge!
-    calculate_total!
+    #calculate_charge!
+    #calculate_total!
     update_commit_date!
     update_shipped_at!
     update_delivery_completed_at!
