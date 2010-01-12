@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Campaign do
-  fixtures :campaigns,:campaigns_customers,:customers
+  fixtures :campaigns,:campaigns_customers,:customers,:products,:product_styles
   
   before(:each) do
     #商品コードなし
