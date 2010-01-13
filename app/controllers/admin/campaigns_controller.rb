@@ -78,8 +78,7 @@ class Admin::CampaignsController < Admin::BaseController
         @free_space_names << free_space_name
         @free_spaces[free_space_name] = campaign.attributes[free_space_name]
       end
-      @mobile_device = MobileDevice.new
-      @mobile_device.width = 640
+      request.user_agent = "DoCoMo/2.0 SH903i(c100;TB;W24H16)"
     else
       is_mobile = false
       if /^open_.*/ =~ @type

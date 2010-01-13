@@ -10,7 +10,6 @@
   <%= @customer && error_messages_for(:customer) %>
   <div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
   <span style="color:#ff0000;">※</span>は必須項目です。<br /><br />
-  <p><%= @mobile_carrier %></p>
   <% form_tag :action => 'signup' do %>
    <%= render :partial => "form_mobile_%d" % @stage %>
    <%= hidden_field_tag 'stage', @stage %>

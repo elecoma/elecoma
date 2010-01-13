@@ -76,36 +76,6 @@ describe PortalController do
     end
   end
 
-  describe "GET 'unsupported_device'" do
-    it "should be successful" do
-      request.user_agent = "DoCoMo/2.0 SH903i(c100;TB;W24H16)" 
-      get 'unsupported_device'
-      response.should render_template("portal/unsupported_device_mobile")
-      assigns["devices"].should_not be_nil
-    end
-
-    it "mobile以外でも一応遷移は可能" do
-      get 'unsupported_device'
-      response.should render_template("portal/unsupported_device")
-      assigns["devices"].should_not be_nil
-    end
-  end
-
-  describe "GET 'supported_device'" do
-    it "should be successful" do
-      request.user_agent = "DoCoMo/2.0 SH903i(c100;TB;W24H16)" 
-      get 'supported_device'
-      response.should render_template("portal/supported_device_mobile")
-      assigns["devices"].should_not be_nil
-    end
-
-    it "mobile以外でも一応遷移は可能" do
-      get 'supported_device'
-      response.should render_template("portal/supported_device")
-      assigns["devices"].should_not be_nil
-    end
-  end
-
   describe "privacy" do
     it "should be successful" do
       get 'privacy'

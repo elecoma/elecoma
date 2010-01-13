@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe AccountsController do
-  fixtures :customers, :kiyakus, :carts, :product_styles, :products, :mobile_devices, :delivery_addresses
+  fixtures :customers, :kiyakus, :carts, :product_styles, :products, :delivery_addresses
 
   before do
     @controller.class.skip_before_filter :start_transaction

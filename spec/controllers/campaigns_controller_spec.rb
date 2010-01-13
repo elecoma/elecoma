@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe CampaignsController do
-  fixtures :campaigns, :products, :customers, :mobile_devices
+  fixtures :campaigns, :products, :customers
 
   before do
     session[:customer_id] = customers(:valid_signup).id

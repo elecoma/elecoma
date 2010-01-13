@@ -14,7 +14,7 @@ class DummyController < BaseController
 end
 
 describe BaseController do
-  fixtures :carts, :customers, :mobile_devices
+  fixtures :carts, :customers
 
   before do
     @controller.class.skip_before_filter :start_transaction

@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe InquiriesController do
-  fixtures :inquiries, :mobile_devices
+  fixtures :inquiries
 
 
   before do

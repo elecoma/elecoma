@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ImageResourceController do
-  fixtures :image_resources, :mobile_devices, :resource_datas
+  fixtures :image_resources, :resource_datas
 
   before do
     @controller.class.skip_before_filter :start_transaction

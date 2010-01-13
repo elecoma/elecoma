@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe FeaturesController do
-  fixtures :features,:mobile_carriers,:mobile_devices
+  fixtures :features
 
   before do
     @controller.class.skip_before_filter :start_transaction
@@ -20,7 +20,7 @@ describe FeaturesController do
     end
 
     it "404 error(mobile)" do
-      request.user_agent = MobileDevice.find_by_id(1).user_agent
+      request.user_agent = "SoftBank/1.0/940SH/SHJ001/SN000000000000000 Browser/NetFront/3.5 Profile/MIDP-2.0 Configuration/CLDC-1.1"
       get 'show', :dir_name => features(:not_permit).dir_name
       assigns[:feature].should be_blank
       response.should render_template("public/404_mobile.html")

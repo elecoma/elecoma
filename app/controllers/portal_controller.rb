@@ -14,18 +14,6 @@ class PortalController < BaseController
     @law = Law.find(:first)
   end
 
-  def unsupported_device
-    get_shop_info
-    @devices = get_supported_devices
-
-    render :layout => false
-  end
-
-  def supported_device
-    get_shop_info
-    @devices = get_supported_devices
-  end
-
   def privacy
     @privacy = Privacy.find(:first)
   end
@@ -84,19 +72,4 @@ class PortalController < BaseController
     @seo = Seo.find(:first, :conditions=>{ :page_type => Seo::TOP})
   end
 
-  def get_supported_devices
-    if request.mobile.instance_of?(Jpmobile::Mobile::Vodafone) ||
-         request.mobile.instance_of?(Jpmobile::Mobile::Jphone)
-      jpmobile_class_name = 'Jpmobile::Mobile::Softbank'
-    else
-      jpmobile_class_name = (request.mobile.class).to_s
-    end
-
-    MobileDevice.paginate(:all,
-      :page => params[:page],
-      :per_page => 50,
-      :include => :mobile_carrier,
-      :conditions => ["mobile_carriers.jpmobile_class=?", jpmobile_class_name],
-      :order => :name)
-  end
 end

@@ -64,18 +64,6 @@ module ApplicationHelper
     end
   end
 
-#  def favorite_character_name(id, not_exist_string=NOT_FOUND_STRING)
-#    if id.blank?
-#      return not_exist_string
-#    end
-#    begin
-#      FavoriteCharacter.find(id).name
-#    rescue ActiveRecord::RecordNotFound => e
-#      logger.error e
-#      not_exist_string
-#    end
-#  end
-
   def grouping_name(id, not_exist_string=NOT_FOUND_STRING)
     if id.blank?
       return not_exist_string
@@ -129,19 +117,6 @@ module ApplicationHelper
       not_exist_string
     end
   end
-
-  def mobile_carrier_name(id, not_exist_string=NOT_FOUND_STRING)
-    if id.blank?
-      return not_exist_string
-    end
-    begin
-      MobileCarrier.find(id).name
-    rescue ActiveRecord::RecordNotFound => e
-      logger.error e
-      not_exist_string
-    end
-  end
-
 
 #   def date_select_tag(name, value = nil, options = {})
 #     defaults = { :discard_type => true }
