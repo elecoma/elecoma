@@ -144,14 +144,14 @@ describe Shop do
       @shop.should_not be_valid
     end
     
-    it "TEL01, 02, 03 3-4文字まで" do
+    it "TEL01, 02, 03 6文字まで" do
       @shop.tel01 = '1' * 3
       @shop.tel02 = '1' * 4
       @shop.tel03 = '1' * 4
       @shop.should be_valid
-      @shop.tel01 = '11111'
-      @shop.tel02 = '111111'
-      @shop.tel03 = '111111'
+      @shop.tel01 = '1234567'
+      @shop.tel02 = '1234567'
+      @shop.tel03 = '1234567'
       @shop.should_not be_valid
     end
     
@@ -166,14 +166,14 @@ describe Shop do
       @shop.should_not be_valid
     end
     
-    it "FAX01, 02, 03 3-4 文字まで" do
+    it "FAX01, 02, 03 6 文字まで" do
       @shop.fax01 = '1' * 3
       @shop.fax02 = '1' * 4
       @shop.fax03 = '1' * 4
       @shop.should be_valid
-      @shop.fax01 = '1' * 4
-      @shop.fax02 = '1' * 5
-      @shop.fax02 = '1' * 5
+      @shop.fax01 = '1' * 7
+      @shop.fax02 = '1' * 7
+      @shop.fax02 = '1' * 7
       @shop.should_not be_valid
     end
     

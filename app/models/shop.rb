@@ -25,8 +25,7 @@ class Shop < ActiveRecord::Base
 
   validates_length_of :trade_item,:introduction, :maximum => 99999
 
-  validates_length_of :tel01,:fax01, :maximum => 3
-  validates_length_of :tel02,:tel03, :fax02, :fax03, :maximum => 4
+  validates_length_of :tel01,:tel02,:tel03, :fax01,:fax02, :fax03, :maximum => 6, :allow_blank => true
 
 
   def validate_on_create

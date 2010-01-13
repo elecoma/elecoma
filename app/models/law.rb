@@ -11,7 +11,7 @@ class Law < ActiveRecord::Base
 
   validates_length_of :company,:manager,:address_city,:address_detail,:email,:url, :maximum => 50
 
-  validates_length_of :tel01,:tel02,:tel03,:fax01,:fax02,:fax03 , :maximum => 4
+  validates_length_of :tel01,:tel02,:tel03,:fax01,:fax02,:fax03 , :maximum => 6
 
   validates_numericality_of :zipcode01, :zipcode02,:tel01,:tel02,:tel03,:fax01,:fax02,:fax03, :allow_blank => true
 

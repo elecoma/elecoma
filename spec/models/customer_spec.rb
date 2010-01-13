@@ -181,18 +181,18 @@ describe Customer do
     @customer.should_not be_valid
   end
 
-  it "電話番号1: 4 文字まで" do
-    @customer.tel01 = '12345'
+  it "電話番号1: 6 文字まで" do
+    @customer.tel01 = '1234567'
     @customer.should_not be_valid
   end
 
-  it "電話番号2: 4 文字まで" do
-    @customer.tel02 = '12345'
+  it "電話番号2: 6 文字まで" do
+    @customer.tel02 = '1234567'
     @customer.should_not be_valid
   end
 
-  it "電話番号3: 4 文字まで" do
-    @customer.tel03 = '12345'
+  it "電話番号3: 6 文字まで" do
+    @customer.tel03 = '1234567'
     @customer.should_not be_valid
   end
 
@@ -226,18 +226,18 @@ describe Customer do
     @customer.should_not be_valid
   end
 
-  it "FAX 番号1: 4 文字まで" do
-    @customer.fax01 = '12345'
+  it "FAX 番号1: 6 文字まで" do
+    @customer.fax01 = '1234567'
     @customer.should_not be_valid
   end
 
-  it "FAX 番号2: 4 文字まで" do
-    @customer.fax02 = '12345'
+  it "FAX 番号2: 6 文字まで" do
+    @customer.fax02 = '1234567'
     @customer.should_not be_valid
   end
 
-  it "FAX 番号3: 4 文字まで" do
-    @customer.fax03 = '12345'
+  it "FAX 番号3: 6 文字まで" do
+    @customer.fax03 = '1234567'
     @customer.should_not be_valid
   end
 

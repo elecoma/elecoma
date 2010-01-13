@@ -105,8 +105,8 @@ describe Law do
       #数字のみ
       @laws.tel01 = 'abcd'
       @laws.should_not be_valid
-      #4桁以下
-      @laws.tel01 = '12345'
+      #6桁以下
+      @laws.tel01 = '1234567'
       @laws.should_not be_valid
     end
     
@@ -117,8 +117,8 @@ describe Law do
       #数字のみ
       @laws.tel02 = 'abcd'
       @laws.should_not be_valid
-      #4桁以下
-      @laws.tel02 = '12345'
+      #6桁以下
+      @laws.tel02 = '1234567'
       @laws.should_not be_valid
     end
     
@@ -129,8 +129,8 @@ describe Law do
       #数字のみ
       @laws.tel03 = 'abcd'
       @laws.should_not be_valid
-      #4桁以下
-      @laws.tel03 = '12345'
+      #6桁以下
+      @laws.tel03 = '1234567'
       @laws.should_not be_valid
     end
     
@@ -141,8 +141,8 @@ describe Law do
       #数字のみ
       @laws.fax01 = 'abcd'
       @laws.should_not be_valid
-      #4桁以下
-      @laws.fax01 = '12345'
+      #6桁以下
+      @laws.fax01 = '1234567'
       @laws.should_not be_valid
     end
     
@@ -153,8 +153,8 @@ describe Law do
       #数字のみ
       @laws.fax02 = 'abcd'
       @laws.should_not be_valid
-      #4桁以下
-      @laws.fax02 = '12345'
+      #6桁以下
+      @laws.fax02 = '1234567'
       @laws.should_not be_valid
     end
     
@@ -165,8 +165,8 @@ describe Law do
       #数字のみ
       @laws.fax03 = 'abcd'
       @laws.should_not be_valid
-      #4桁以下
-      @laws.fax03 = '12345'
+      #6桁以下
+      @laws.fax03 = '1234567'
       @laws.should_not be_valid
     end
     

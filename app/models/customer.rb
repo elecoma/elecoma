@@ -52,10 +52,10 @@ class Customer < ActiveRecord::Base
 
   validates_presence_of :tel01, :tel02, :tel03
   validates_numericality_of :tel01, :tel02, :tel03, :allow_blank => true
-  validates_length_of :tel01, :tel02, :tel03, :maximum => 4, :allow_blank => true
+  validates_length_of :tel01, :tel02, :tel03, :maximum => 6, :allow_blank => true
 
   validates_numericality_of :fax01, :fax02, :fax03, :allow_blank => true
-  validates_length_of :fax01, :fax02, :fax03, :maximum => 4, :allow_blank => true
+  validates_length_of :fax01, :fax02, :fax03, :maximum => 6, :allow_blank => true
 
   validates_inclusion_of :sex, :in => [System::MALE, System::FEMALE], :allow_blank => true
 
