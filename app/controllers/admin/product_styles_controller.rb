@@ -23,7 +23,6 @@ class Admin::ProductStylesController < Admin::BaseController
   def confirm
     set_product_styles
     set_style_category
-        logger.debug "#{@product_styles.size } ----"
     unless @save_flg
       render :action => "new"
     end
@@ -102,10 +101,7 @@ class Admin::ProductStylesController < Admin::BaseController
           end
           product_style[:position] = idx.to_i + 1
         end
-        logger.debug " ------"
-        logger.debug product_style
         @product_styles << product_style
-        logger.debug "#{@product_styles.size } ----"
         unless product_style.valid?
           @save_flg = false
           @error_messages ||= ""
