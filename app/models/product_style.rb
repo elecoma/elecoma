@@ -20,6 +20,7 @@ class ProductStyle < ActiveRecord::Base
              :foreign_key => "style_id2"
              
   validates_format_of :code, :with => /^[a-zA-Z0-9]*$/
+  validates_format_of :manufacturer_id, :with => /^[a-zA-Z0-9]*$/, :allow_blank=>true
 
   DEFAULT_DATA = {:actual_count => 0}
   alias initialize_old initialize

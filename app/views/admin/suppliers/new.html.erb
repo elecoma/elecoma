@@ -1,0 +1,19 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>仕入先登録</h2>
+<%=h flash[:notice] %>
+<%=h flash[:error] %>
+<%= error_messages_for :supplier %>
+
+<p class="req"><span class="pnt">※</span>は必須入力です</p>
+<% form_for :product, :url => {:action => "confirm"} do |f| %>
+  <%= render :partial => "form", :locals => {:f => f} %>
+  <div class="btn_box">
+    <%= submit_tag "確認する", :class=>"btn" %>
+    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+  </div>
+<% end %>
+
+</div><!-- /メイン -->

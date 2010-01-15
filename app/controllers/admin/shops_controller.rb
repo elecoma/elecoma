@@ -442,6 +442,23 @@ class Admin::ShopsController < Admin::BaseController
 
     redirect_to :action => params[:return_act]
   end
+  #使用機能一覧
+  def settings
+    
+  end
+  #使用機能設定
+  def settings_update
+    type = params[:set_id]
+    case type.to_i
+      #set_id_id = 1の場合、仕入先使用か使用しないかの設定
+    when 1
+      supplier_update
+    else
+      #将来何か追加したい場合、ここで追加してください
+      render :action => "settings"
+      return
+    end
+  end
 
   private
 
@@ -467,6 +484,23 @@ class Admin::ShopsController < Admin::BaseController
     end
 
     @kiyakus = Kiyaku.find(:all, :order=>"position")
+  end
+  #仕入先を使用するかどうか設定
+  def supplier_update
+    @system.attributes =  params[:system]
+    if @system.save
+      if @system.supplier_use_flag
+        #使用する->使用しない変更する時、既存の仕入先をそのまま
+        #supplier_use_flagの変更のみ        
+        redirect_to :controller => "suppliers",:action => ""
+      else
+        flash.now[:notice] = "仕入先を使用しないように設定しました"
+        render :action => "settings"
+      end
+    else
+      flash.now[:error] = "設定に失敗しました"
+      render :action => "settings"
+    end     
   end
 
 end

@@ -20,6 +20,7 @@ class ApplicationController < ActionController::Base
 
   def load_system
     @system = System.find(:first)
+    @system.supplier_use_flag ||= false
   end
 
   #郵便番号から住所を取得

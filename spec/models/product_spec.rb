@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Product do
-  fixtures :products, :image_resources, :product_statuses,:categories,:product_styles,:statuses
+  fixtures :products, :image_resources, :product_statuses,:categories,:product_styles,:statuses,:suppliers
   
   include ActionView::Helpers::NumberHelper
   
@@ -109,6 +109,10 @@ describe Product do
       product = Product.new(:category_id =>categories(:dai_category).id)
       product.category_name.should == categories(:dai_category).name
     end
+    it "仕入先名" do
+      product = Product.new(:supplier_id =>suppliers(:one).id)
+      product.supplier_name.should == suppliers(:one).name
+    end
   end
   describe "その他" do
     it "送料無料判断" do
@@ -184,8 +188,6 @@ describe Product do
       #画像IDがすべて18
       
       #元データ
-      #products.ymlの最後ID：23
-      #image_resoures.ymlの最後ID：70
       cnt_image_b = ImageResource.count
       cnt_image_data_b = ResourceData.count
       cnt_product_b = Product.count
@@ -193,31 +195,24 @@ describe Product do
       Product.add_by_csv(File.read("#{RAILS_ROOT}/spec/product_csv_upload_image_for_spec.csv"))
       
       #期待結果
-      #商品データが2件増加
-      #1件：小画像ID＝18、中画像IDが新規作成（72）、大画像ID＝18
-      #1件：小画像IDが新規作成（71）、中画像ID＝18、大画像ID＝nil
+      #商品データが1件更新、1件増加、
+      #1件：小画像ID＝18、中画像IDが新規作成、大画像ID＝18
+      #1件：小画像IDが新規作成、中画像ID＝18、大画像ID＝nil
       #image_resourceのデータ数が2件増やす
       #resource_dataのデータ数が2件増やす
       cnt_image_a = ImageResource.count
       cnt_image_data_a = ResourceData.count
       cnt_product_a = Product.count
 
-       (cnt_product_a - cnt_product_b).should == 2
-      #1件目
-      max_id += 1
-      product = Product.find_by_id(max_id)
-      product.should_not be_nil
-
+       (cnt_product_a - cnt_product_b).should == 1
+      #1件目更新
+      product = Product.find_by_id(17)
+      product.small_resource_id.should == 18
+      product.large_resource_id.should == 18
+      #2件目追加
+      product2 = Product.find(:last)
       product.medium_resource_id.should == 18
-      product.large_resource_id.should be_nil
-      
-      #2件目
-      max_id += 1
-      product2 = Product.find_by_id(max_id)
-      product2.should_not be_nil
-      product2.small_resource_id.should_not be_nil
-      product2.small_resource_id.should == 18
-      product2.large_resource_id.should == 18
+      product2.large_resource_id.should be_nil
       #CSV画像アップテストは環境により結果が異なるので、ここでテストコードをコメントアウトする
       pending("CSV画像アップテストは環境により結果が異なるので、ここで関連テストコードをコメントアウトする") do
       #   (cnt_image_a - cnt_image_b).should == 2

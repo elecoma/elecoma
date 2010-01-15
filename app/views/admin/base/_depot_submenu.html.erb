@@ -1,0 +1,16 @@
+<script>
+	window.onload = function init() {
+		document.getElementById("depot").style.display = 'none';
+	}
+</script>
+<div id="sub"><!-- サブメニュー -->
+  <div id="menu" class="clearfix"><!-- g_menu -->
+    <% if @system.supplier_use_flag %>
+	<p><a href="JavaScript:onClick=Tree('display1');ImgC('img1');"><img src="/images/menu_icon.gif" width="36" height="36" alt="" id="img1" /><span>仕入先管理</span></a></p>
+    <ul id="display1" style="display:block">
+      <li><%= link_to '仕入先マスタ管理', {:controller => 'suppliers', :action => 'index'} %></li>
+      <li><%= link_to '仕入先登録', {:controller => 'suppliers', :action => 'new'} %></li>
+    </ul>
+	<%end%>
+  </div><!-- /g_menu -->
+</div><!-- /サブメニュー -->

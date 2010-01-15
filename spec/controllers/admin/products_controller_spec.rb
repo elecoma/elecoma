@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe Admin::ProductsController do
   fixtures :products, :admin_users, :authorities, :functions, :authorities_functions, :admin_users, :categories, :resource_datas, :image_resources
-  fixtures :styles, :product_styles, :style_categories
+  fixtures :styles, :product_styles, :style_categories,:suppliers
 
   before do
     session[:admin_user] = admin_users(:admin10)
@@ -68,7 +68,9 @@ describe Admin::ProductsController do
     it "code" do
       get "search", :search => {:code => "AC001"}
     end
-
+    it "code" do
+      get "search", :search => {:supplier => 2}
+    end
     it "category" do
       get "search", :search => {:category => @valid_product.category_id}
     end

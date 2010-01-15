@@ -1,0 +1,12 @@
+default_supplier:
+  id: 1
+  name: 'DEFAULT'
+  zipcode01: '000'
+  zipcode02: '0000'
+  prefecture_id: '13'  
+  address_city: '-'
+  address_detail: '-'
+  tel01: '000'
+  tel02: '0000'
+  tel03: '0000'
+  contact_name: 'DEFAULT'

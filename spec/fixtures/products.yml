@@ -196,6 +196,7 @@ valid_product:
   style_id: 7
   created_at: 2009-10-01 00:00:00
   updated_at: 2009-10-01 00:00:00
+  supplier_id: 2
 #未公開商品   ＋CSVアップロード元データとして使用
 not_permit_product:
   id: 17

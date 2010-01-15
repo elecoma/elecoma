@@ -13,6 +13,7 @@
       <th>商品コード</th>
       <th>在庫</th>
       <th>価格(円)</th>
+	  <th>型番</th>
     </tr>
     <% idx = 0 %>
     <% @style_category1.each do | style_category1 | %>
@@ -43,6 +44,9 @@
           </td>
           <td>
             <%= text_field_tag "product_styles[#{idx}][sell_price]", product_style && product_style.sell_price %>
+          </td>
+          <td>
+            <%= text_field_tag "product_styles[#{idx}][manufacturer_id]", product_style && product_style.manufacturer_id %>
           </td>
         </tr>
         <% idx += 1 %>

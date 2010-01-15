@@ -15,6 +15,14 @@
       <%= confirm_tag :text_field, :product, :name, :class=>"data_m" %> (上限50文字)
     </td>
   </tr>
+ <%if @system.supplier_use_flag%>
+  <tr>
+    <th>仕入先名<span class="pnt">※</span></th>
+    <td><%suppliers = Supplier.find(:all,:order=>'id')%>
+      <%= confirm_select(confirm_tag(:select, :product, :supplier_id, suppliers.map{|s| [s.name,s.id]}), @product.supplier.name, "product") %>
+    </td>
+  </tr>  
+ <% end %>
   <tr>
     <th>カテゴリー名<span class="pnt">※</span></th>
     <td>

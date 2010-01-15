@@ -94,9 +94,10 @@ class Admin::ProductStylesController < Admin::BaseController
         if product_style[:id]
           product_style.update_attributes({:sell_price=>value[:sell_price], 
                                            :actual_count=>value[:actual_count],
-                                           :code=>value[:code]})
+                                           :code=>value[:code],
+                                           :manufacturer_id=>value[:manufacturer_id]})
         else
-          [:sell_price, :actual_count, :code].each do |column|
+          [:sell_price, :actual_count, :code ,:manufacturer_id].each do |column|
             product_style[column] = value[column]
           end
           product_style[:position] = idx.to_i + 1

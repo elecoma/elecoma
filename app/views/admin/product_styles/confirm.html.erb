@@ -23,6 +23,7 @@
         <th>商品コード</th>
         <th>在庫</th>
         <th>価格(円)</th>
+        <th>型番</th>
       </tr>
       <% idx = 0 %>
       <% @style_category1.each do | style_category1 | %>
@@ -54,6 +55,10 @@
               <%= h params["product_styles"][idx.to_s] && params["product_styles"][idx.to_s]["sell_price"] %>
               <%= hidden_field_tag "product_styles[#{idx.to_s}][sell_price]", params["product_styles"][idx.to_s] && params["product_styles"][idx.to_s]["sell_price"] %>
             </td>
+            <td>
+              <%= h params["product_styles"][idx.to_s] && params["product_styles"][idx.to_s]["manufacturer_id"] %>
+              <%= hidden_field_tag "product_styles[#{idx.to_s}][manufacturer_id]", params["product_styles"][idx.to_s] && params["product_styles"][idx.to_s]["manufacturer_id"] %>
+            </td>			
           </tr>
           <% idx += 1 %>
         <% end %>

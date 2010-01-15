@@ -5,6 +5,8 @@
 
 <div id="main"><!-- メイン -->
 
+<%= @error_messages %>
+
 <% if @product.valid? %>
   <h2>規格登録</h2>
   <% if @new_flg = ( @product.product_styles.empty? || @product.product_styles.first.code.blank? ) %>

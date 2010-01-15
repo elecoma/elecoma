@@ -38,7 +38,16 @@ describe ProductStyle do
       @product_style.style_category1 = nil
       @product_style.should_not be_valid
     end
-    
+    it "型番" do
+      #非必須
+      @product_style.manufacturer_id = nil ;
+      @product_style.should be_valid
+      #フォーマット
+      @product_style.manufacturer_id = "aあ" ;
+      @product_style.should_not be_valid
+      @product_style.manufacturer_id = "abc123" ;
+      @product_style.should be_valid      
+    end    
   end
   describe "金額計算系" do
     it "税込販売額" do

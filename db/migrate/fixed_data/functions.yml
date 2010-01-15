@@ -197,3 +197,8 @@ F900:
   name: メンバー管理
   code: "member"
   position: 900
+F901:
+  id: 41
+  name: 仕入先マスタ
+  code: "supplier"
+  position: 901
