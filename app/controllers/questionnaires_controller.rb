@@ -26,13 +26,15 @@ class QuestionnairesController < BaseController
 
     flash.now[:notice] = "アンケートにご協力頂き、ありがとうございました"
     begin
-      #アンケート回答の保存
-      @questionnaire.questionnaire_answers<<(questionnaire_answer)
-      questionnaire_answer.save!
-      #質問回答の保存
-      answers.each do | answer |
-        questionnaire_answer.question_answers<<(answer)
+      QuestionnaireAnswer.transaction do 
+        #アンケート回答の保存
+        @questionnaire.questionnaire_answers<<(questionnaire_answer)
         questionnaire_answer.save!
+        #質問回答の保存
+        answers.each do | answer |
+          questionnaire_answer.question_answers<<(answer)
+          questionnaire_answer.save!
+        end
       end
     rescue
       flash.now[:notice] = "送信に失敗しました"

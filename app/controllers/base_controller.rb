@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 class BaseController < ApplicationController
-  before_filter :start_transaction
   before_filter :verify_session_token
   before_filter :load_data
   before_filter :set_headers
-  after_filter :end_transaction
   layout 'base'
   mobile_filter
   trans_sid
@@ -127,7 +125,6 @@ class BaseController < ApplicationController
 
   alias_method :non_application_rescue_action, :rescue_action
   def rescue_action(exception)
-    ActiveRecord::Base.connection.rollback_db_transaction
     case exception
     when ActiveRecord::RecordNotFound
       if request.mobile?
@@ -138,14 +135,6 @@ class BaseController < ApplicationController
     else
      non_application_rescue_action(exception)
     end
-  end
-
-  def start_transaction
-    ActiveRecord::Base.connection.begin_db_transaction
-  end
-
-  def end_transaction
-    ActiveRecord::Base.connection.commit_db_transaction
   end
 
   alias_method :old_render_optional_error_file, :render_optional_error_file

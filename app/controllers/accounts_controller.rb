@@ -36,31 +36,33 @@ class AccountsController < BaseController
       elsif !customer.same_mobile_carrier?(request.mobile)
         flash.now[:notice] = '登録時の端末でログインしてください。'
       else
-        set_login_customer(customer)
-        # ログイン前に買い物していれば、その内容を取り込む
-        unless @carts.empty?
-          Cart.delete_all(['customer_id=?', customer.id])
-          @carts.each_with_index do |cart, i|
-            cart.customer = customer
-            cart.position = i
-            cart.save
+        Cart.transaction do
+          set_login_customer(customer)
+          # ログイン前に買い物していれば、その内容を取り込む
+          unless @carts.empty?
+            Cart.delete_all(['customer_id=?', customer.id])
+            @carts.each_with_index do |cart, i|
+              cart.customer = customer
+              cart.position = i
+              cart.save
+            end
           end
-        end
-        unless params[:reminder_id].blank?
-          cookies[:reminder_id] = {
-            :value => customer.email,
-            :expires => 14.days.from_now,
-            :path => '/'
-          }
-          customer.save
-        end
-        unless params[:auto_login].blank?
-          cookies[:auto_login] = {
-            :value => customer.generate_cookie!(request.remote_ip),
-            :expires => 14.days.from_now,
-            :path => '/'
-          }
-          customer.save
+          unless params[:reminder_id].blank?
+            cookies[:reminder_id] = {
+              :value => customer.email,
+              :expires => 14.days.from_now,
+              :path => '/'
+            }
+            customer.save
+          end
+          unless params[:auto_login].blank?
+            cookies[:auto_login] = {
+              :value => customer.generate_cookie!(request.remote_ip),
+              :expires => 14.days.from_now,
+              :path => '/'
+            }
+            customer.save
+          end
         end
         # 直前にいたページ or トップページへリダイレクト
         if session[:return_to]
