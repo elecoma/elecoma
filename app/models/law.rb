@@ -34,7 +34,7 @@ class Law < ActiveRecord::Base
   end
 
   def address
-    prefecture.name + address_city + address_detail
+    prefecture ? prefecture.name + address_city + address_detail : ""
   end
 
   def tel 

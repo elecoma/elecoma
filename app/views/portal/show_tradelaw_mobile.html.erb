@@ -1,7 +1,7 @@
 <div style="text-align:center;"><h4>通信販売について</h4></div>
 
 <hr noshade="noshade" color="ORANGE"/>
-
+<%unless @law.blank?%>
 ■販売業者<br />
 <%=h @law.company %><br /><br />
 
@@ -41,8 +41,7 @@
 
 ■返品・交換について<br />
 <%=h_br @law.return_exchange %><br /><br />
-
+<%end%>
 →<%= link_to '戻る', {:controller => 'portal', :action => 'show'} %><br />
 
 <hr noshade="noshade" color="ORANGE"/>
-<%= link_to 'TOPページへ', {:controller => 'portal', :action => 'show'} %><br />

@@ -9,6 +9,7 @@
   <%# FIXME 当サイトについてみたいなロゴがあると幸せです　%>
   <%= image_tag '/images/shop/about.gif', :size => "583x31", :alt => "当サイトについて", :class => "route" %> 
   -->
+<%unless @law.blank?%>  
   <table class="tb2">
     <tr>
       <th width="130">販売業者</th>
@@ -66,4 +67,5 @@
       <td><%=h_br @law.return_exchange %></td>
     </tr>
   </table>
+<%end%>
 </div>
