@@ -1,0 +1,148 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>作業履歴詳細</h2>
+<h3>商品情報</h3>
+<table class="data" cellspacing="1">
+  <tr>
+    <th>商品ID</th>
+    <td>
+      <%= h(@stock_history.product_id) %>
+    </td>
+  </tr>
+  <tr>
+    <th>商品名</th>
+    <td>
+      <%= h(@stock_history.product.name) %>
+    </td>
+  </tr>
+  <%if @system.supplier_use_flag%>
+  <tr>
+    <th>仕入先名</th>
+    <td><%= h(@stock_history.product.supplier_name) %></td>
+  </tr>  
+ <% end %>
+  <tr>
+    <th>カテゴリー名</th>
+    <td>
+      <%= h(@stock_history.product.category_name) %>
+    </td>
+  </tr>
+  <tr>
+    <th>商品コード</th>
+    <td>
+      <%= h(@stock_history.product_style.code) %>
+    </td>
+  </tr>
+  <tr>
+    <th>規格名称</th>
+    <td>
+      <%= h(@stock_history.product_style.style_name) %>
+    </td>
+  </tr>
+  <tr>
+    <th>商品型番</th>
+    <td>
+      <%= h(@stock_history.product_style.manufacturer_id) %>
+    </td>
+  </tr>  
+  <tr>
+    <th>価格</th>
+    <td>
+      <%= number_with_delimiter(@stock_history.product_style.sell_price) %>
+    </td>
+  </tr>
+  <tr>
+    <th>現在実在庫数</th>
+    <td>
+      <%= number_with_delimiter(@stock_history.product_style.actual_count.to_i) %>
+    </td>
+  </tr>
+  <tr>
+    <th>現在受注可能数</th>
+    <td>
+      <%= number_with_delimiter(@stock_history.product_style.orderable_count.to_i) %>
+    </td>
+  </tr>
+  <tr>
+    <th>現在不良在庫数</th>
+    <td>
+      <%= number_with_delimiter(@stock_history.product_style.broken_count.to_i) %>
+    </td>
+  </tr>
+</table>
+<h3>作業内容</h3>
+<table class="data" cellspacing="1">
+  <tr>
+    <th>操作者</th>
+    <td>
+      <%= @stock_history.admin_user.name %>
+    </td>
+  </tr>
+  <tr>
+    <th>移動日</th>
+    <td>
+      <%= date_time(@stock_history.moved_at) %>
+    </td>
+  </tr>
+  <tr>
+    <th>作業区分</th>
+    <td>
+      <%= h(StockHistory::STOCK_TYPE_NAMES[@stock_history.stock_type]) %>
+    </td>
+  </tr>
+  <% if @stock_history.stock_type == StockHistory::STOCK_IN%>
+  <tr>
+    <th>入庫数</th>
+    <td><%= number_with_delimiter(@stock_history.storaged_count) %></td>
+  </tr>
+  <tr>
+    <th>当時実在庫数</th>
+    <td><%= number_with_delimiter(@stock_history.actual_count.to_i) %></td>
+  </tr>  
+  <tr>
+    <th>当時販売可能数</th>
+    <td><%= number_with_delimiter(@stock_history.orderable_count) %></td>
+  </tr>
+  <tr>
+    <th>当時不良在庫数</th>
+    <td><%= number_with_delimiter(@stock_history.broken_count.to_i) %></td>
+  </tr>
+  <% else%>
+  <tr>
+    <th>実在庫調整数</th>
+    <td><%= number_with_delimiter(@stock_history.actual_adjustment) %></td>
+  </tr>
+  <tr>
+    <th>当時実在庫数</th>
+    <td><%= number_with_delimiter(@stock_history.actual_count.to_i) %></td>
+  </tr> 
+  <tr>
+    <th>販売可能調整数</th>
+    <td>
+      <%= number_with_delimiter(@stock_history.orderable_adjustment) %>
+    </td>
+  </tr>
+  <tr>
+    <th>当時販売可能数</th>
+    <td><%= number_with_delimiter(@stock_history.orderable_count.to_i) %></td>
+  </tr> 
+  <tr>
+    <th>不良在庫調整数</th>
+    <td><%= number_with_delimiter(@stock_history.broken_adjustment) %></td>
+  </tr>
+  <tr>
+    <th>当時不良在庫数</th>
+    <td><%= number_with_delimiter(@stock_history.broken_count.to_i) %></td>
+  </tr>
+  <% end%>  
+  <tr>
+    <th>備考</th>
+    <td>
+      <%= h(@stock_history.comment) %>
+    </td>
+  </tr>
+</table>
+</div><!-- /メイン -->
+

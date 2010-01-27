@@ -11,15 +11,14 @@
       <th>規格1</th>
       <th>規格2</th>
       <th>商品コード</th>
-      <th>在庫</th>
       <th>価格(円)</th>
 	  <th>型番</th>
+	  <th>在庫履歴</th>
     </tr>
     <% idx = 0 %>
     <% @style_category1.each do | style_category1 | %>
       <% @style_category2.each do | style_category2 | %>
         <% product_style =  @product_styles["#{style_category1 && style_category1.id}_#{style_category2 && style_category2.id}"]%>
-        <% logger.debug "#{style_category1 && style_category1.id}_#{style_category2 && style_category2.id}" %>
         <tr>
           <td>
             <% if product_style.nil? || @new_flg %>
@@ -40,13 +39,15 @@
             <%= text_field_tag "product_styles[#{idx}][code]", product_style && product_style.code %>
           </td>
           <td>
-            <%= text_field_tag "product_styles[#{idx}][actual_count]", product_style && product_style.actual_count %>
-          </td>
-          <td>
             <%= text_field_tag "product_styles[#{idx}][sell_price]", product_style && product_style.sell_price %>
           </td>
           <td>
             <%= text_field_tag "product_styles[#{idx}][manufacturer_id]", product_style && product_style.manufacturer_id %>
+          </td>
+          <td>
+            <% unless product_style.nil?%>
+			<%= link_to("在庫履歴",{:action=>"stock_histories" ,:id=>product_style},{:target=>"_blank"})%>
+			<% end%>
           </td>
         </tr>
         <% idx += 1 %>

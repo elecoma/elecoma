@@ -29,7 +29,7 @@
       <dt><%=@product.url.blank? ? h( @product.name ) : link_to(@product.name, @product.url) %></dt>
       <dd>価格：<%=h @product.price_label %>円</dd>
       <dd>販売期間：<%=h print_date(@product.sale_start_at) %> ～ <%=h print_date(@product.sale_end_at) %></dd>
-            <% if @product.product_styles && @product.product_styles.detect(nil){ |p_s| !p_s.actual_count.blank? && p_s.actual_count > 0} -%>
+            <% if @product.product_styles && @product.product_styles.detect(nil){ |p_s| p_s.orderable_count.to_i > 0} -%>
               <%- unless @product.delivery_dates_label.blank? %>
               <dd>お届け：<%= @product.delivery_dates_label %></dd>
               <%- end %>

@@ -21,7 +21,6 @@
         <th>規格1</th>
         <th>規格2</th>
         <th>商品コード</th>
-        <th>在庫</th>
         <th>価格(円)</th>
         <th>型番</th>
       </tr>
@@ -46,10 +45,6 @@
             <td>
               <%= h params["product_styles"][idx.to_s] && params["product_styles"][idx.to_s]["code"] %>
               <%= hidden_field_tag "product_styles[#{idx.to_s}][code]", params["product_styles"][idx.to_s] && params["product_styles"][idx.to_s]["code"] %>
-            </td>
-            <td>
-              <%= h params["product_styles"][idx.to_s] && params["product_styles"][idx.to_s]["actual_count"] %>
-              <%= hidden_field_tag "product_styles[#{idx.to_s}][actual_count]", params["product_styles"][idx.to_s] && params["product_styles"][idx.to_s]["actual_count"] %>
             </td>
             <td>
               <%= h params["product_styles"][idx.to_s] && params["product_styles"][idx.to_s]["sell_price"] %>

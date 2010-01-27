@@ -202,3 +202,8 @@ F901:
   name: 仕入先マスタ
   code: "supplier"
   position: 901
+F902:
+  id: 42
+  name: 在庫管理
+  code: "stock"
+  position: 902  

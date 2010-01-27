@@ -1,0 +1,11 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>作業履歴</h2>
+<%= error_messages_for :condition %>
+
+<% form_for :condition, :url => {:action => 'search'}, :html => {:method => :get} do |f| %>
+  <%= render :partial => "search", :locals=>{:f => f}%>
+<% end %>
+</div><!-- /メイン -->

@@ -1,0 +1,28 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+stock_in:
+  id: 1
+  admin_user_id: 1
+  product_id: 16
+  product_style_id: 14
+  moved_at: '2010-01-01 00:00:00'
+  storaged_count: 100
+  actual_count: 100
+  comment: '入庫'
+  stock_type: 1
+stock_modify:
+  id: 2
+  admin_user_id: 1
+  product_id: 16
+  product_style_id: 14
+  moved_at: '2010-01-15 00:00:00'
+  actual_adjustment: -5
+  actual_count: 100
+  orderable_adjustment: 80
+  orderable_count: 80
+  broken_adjustment: 5
+  broken_count: 5
+  comment: '在庫調整'
+  stock_type: 2  
+  
+  

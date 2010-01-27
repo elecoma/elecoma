@@ -17,9 +17,7 @@ describe Admin::SuppliersController do
   end
   
   describe "GET 'search'" do
-    before do
-    end
-    
+   
     it "should be successful" do
       get 'search'
       response.should be_success

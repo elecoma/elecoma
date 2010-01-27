@@ -82,48 +82,59 @@ describe ProductStyle do
     end
   end
   describe "その他" do
-    it "データ初期化" do
-      #実際在庫数
-      product_style = ProductStyle.new(:sell_price => 15000)
-      product_style.actual_count.should == 0
-      product_style = ProductStyle.new(product_styles(:valid_product).attributes)
-      product_style.actual_count.should == product_styles(:valid_product).actual_count
-    end
+#    it "データ初期化" do
+#      #実際在庫数
+#      product_style = ProductStyle.new(:sell_price => 15000)
+#      product_style.actual_count.should == 0
+#      product_style = ProductStyle.new(product_styles(:valid_product).attributes)
+#      product_style.actual_count.should == product_styles(:valid_product).actual_count
+#    end
     it "購入可能数を戻る" do
       #購入制限あり
-      #購入上限 = 5,実際在庫 = 3,購入数 = Parameter
-      product_style = ProductStyle.new(:product_id=>products(:limited_in_sep).id,:sell_price => 15000,:actual_count=>3)      
+      #購入上限 = 5,実際在庫 = 10,販売可能数 = 3,購入数 = Parameter
+      product_style = ProductStyle.new(:product_id=>products(:limited_in_sep).id,:sell_price => 15000,:actual_count=>10,:orderable_count=>3)      
 
-      #ケース１： 実際在庫 < 購入上限 < 購入数 の場合、実際在庫数を戻る
-      product_style.available?(10).should == product_style.actual_count
-      #ケース２：購入上限 < 実際在庫 < 購入数 の場合、購入制限数を戻る
-      product_style.actual_count = 6
+      #ケース１： 販売可能数 < 購入上限 < 購入数 の場合、実際在庫数を戻る
+      product_style.available?(10).should == product_style.orderable_count
+      #ケース２：購入上限 < 販売可能数 < 購入数 の場合、購入制限数を戻る
+      product_style.orderable_count = 6
       product_style.available?(10).should == product_style.product.sell_limit
-      #ケース３：購入数< 購入上限 < 実際在庫の場合、購入数を戻る
+      #ケース３：購入数< 購入上限 < 販売可能数の場合、購入数を戻る
       product_style.available?(2).should == 2
-      #ケース４：購入数< 実際在庫  < 購入上限 の場合、購入数を戻る
-      product_style.actual_count = 3
+      #ケース４：購入数< 販売可能数  < 購入上限 の場合、購入数を戻る
+      product_style.orderable_count = 3
       product_style.available?(2).should == 2
       product_style.available?(3).should == 3 
       #購入制限なし
       #テストデータの在庫数:1000
-      #ケース１：購入数< 実際在庫数
-      @product_style.available?(@product_style.actual_count-1).should == @product_style.actual_count-1
-      #ケース2購入数 > 実際在庫数
-      @product_style.available?(@product_style.actual_count+1).should == @product_style.actual_count
-      @product_style.available?(@product_style.actual_count).should == @product_style.actual_count
+      #ケース１：購入数< 販売可能数
+      @product_style.available?(@product_style.orderable_count-1).should == @product_style.orderable_count-1
+      #ケース2購入数 > 販売可能数
+      @product_style.available?(@product_style.orderable_count+1).should == @product_style.orderable_count
+      @product_style.available?(@product_style.orderable_count).should == @product_style.orderable_count
+      
+      #販売可能数がnilの時、「0」として
+      #ケース１：購入制限あり
+      p_s1 = ProductStyle.new(:product_id=>products(:limited_in_sep).id,:sell_price => 15000,:actual_count=>10)
+      p_s1.available?(1).should == 0
+      #ケース２：購入制限なし
+      p_s2 = ProductStyle.new(:product_id=>@product_style.id,:sell_price => 15000,:actual_count=>10)
+      p_s2.available?(1).should == 0
     end
     it "受注により在庫数が変わる" do
-      #在庫数1000
+      #在庫数1000、販売可能数100
+      #購入後、在庫数と販売可能数とも引く
       cnt_b = @product_style.actual_count
+      orderable_cnt_b = @product_style.orderable_count
       @product_style.order(2)
       @product_style.actual_count.should == cnt_b-2
+      @product_style.orderable_count.should == orderable_cnt_b - 2
       #在庫数0
       product_style = product_styles(:multi_styles_product_3)
       #例外が発生する箇所を、lambdaでくくる必要がある
       lambda{
         product_style.order(1)
-      }.should raise_error(RuntimeError,"実在個数が0です")
+      }.should raise_error(RuntimeError,"在庫不足です。")
     end
   end
 end

@@ -22,7 +22,7 @@
 	  <tr>
 	    <th>仕入先名</th>
 	    <td><%suppliers = Supplier.find(:all,:order=>'id')%>
-		  <%=f.select :supplier,suppliers.map{|s| [s.name,s.id.to_s]}, :include_blank => '全て' %>
+		  <%=f.select :supplier,suppliers.map{|s| [s.name,s.id.to_s]}, :include_blank => true %>
 	    </td>
 	  </tr>  
 	 <% end %>	  

@@ -41,7 +41,20 @@ class Admin::ProductStylesController < Admin::BaseController
     end
     redirect_to :controller => "products", :action => "index"
   end
-
+  
+  #在庫管理履歴プレビュー
+  def stock_histories
+    product_style_id = params[:id]
+    if !product_style_id.blank? && product_style_id=~ /^\d*$/
+      @product_style = ProductStyle.find_by_id(product_style_id.to_i)
+      if !@product_style.blank?
+        @stock_histories = @product_style.stock_histories
+      end
+    else
+      raise "Parameter Invalid"
+    end
+  end
+  
   protected
 
   def set_style_category
@@ -93,11 +106,10 @@ class Admin::ProductStylesController < Admin::BaseController
           end
         if product_style[:id]
           product_style.update_attributes({:sell_price=>value[:sell_price], 
-                                           :actual_count=>value[:actual_count],
                                            :code=>value[:code],
                                            :manufacturer_id=>value[:manufacturer_id]})
         else
-          [:sell_price, :actual_count, :code ,:manufacturer_id].each do |column|
+          [:sell_price, :code ,:manufacturer_id].each do |column|  
             product_style[column] = value[column]
           end
           product_style[:position] = idx.to_i + 1

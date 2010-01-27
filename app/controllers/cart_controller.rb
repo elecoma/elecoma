@@ -49,7 +49,7 @@ class CartController < BaseController
     new_quantity = cart.quantity + value
     cart.quantity = cart.product_style.available?(new_quantity)
     if cart.quantity < new_quantity
-      flash.now[:notice] = '購入できる上限を超えています'
+      flash[:notice] = '購入できる上限を超えています'
     end
     redirect_to :action => 'show'
   end
@@ -341,7 +341,6 @@ class CartController < BaseController
       @login_customer.point = params[:point_after_operation]
       @order = @login_customer.orders.build
     end
-    
     @order.received_at = DateTime.now
     @order_delivery = @order.order_deliveries.build(params[:order_delivery])
     
@@ -354,7 +353,8 @@ class CartController < BaseController
     @order_delivery.status = OrderDelivery::JUTYUU
     # 受注発注商品が一つでもあるか
     product_styles = @carts.map(&:product_style)
-    if product_styles.any?{|ps| ps.actual_count == 0}
+    #販売可能数で判断
+    if product_styles.any?{|ps| ps.orderable_count.to_i == 0}
       # 販売開始日が未来の物が一つでもあれば予約
       products = product_styles.map(&:product)
       today = Date.today

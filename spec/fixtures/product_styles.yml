@@ -18,6 +18,7 @@ can_not_incriment:
   name: cannotincriment
   product_id: 5
   actual_count: 1
+  orderable_count: 1  
   sell_price: 200
 
 can_decriment:
@@ -140,6 +141,9 @@ valid_product:
   style_category_id2: 30
   actual_count: 1000
   sell_price: 10000
+  orderable_count: 100
+  created_at: 2009-10-01 00:00:00
+  updated_at: 2009-10-01 00:00:00    
 #未公開商品  
 not_permit_product:  
   id: 15
@@ -157,6 +161,7 @@ campaign_product:
   style_category_id1: 60
   style_category_id2: 30
   actual_count: 1000
+  orderable_count: 100
   sell_price: 10000
 #販売終了商品  
 sell_stop_product:  
@@ -175,7 +180,8 @@ multi_styles_product_1:
   style_category_id1: 60
   style_category_id2: 30
   actual_count: 1000
-  sell_price: 10500 
+  sell_price: 10500
+  orderable_count: 900 
 multi_styles_product_2:  
   id: 19
   product_id: 20

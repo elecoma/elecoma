@@ -1,0 +1,70 @@
+<!--商品情報-->
+<h3>商品情報</h3>
+<table class="data" cellspacing="1">
+  <tr>
+    <th>商品ID</th>
+    <td>
+      <%= h(@product_style.product_id) %>
+    </td>
+  </tr>
+  <tr>
+    <th>商品名</th>
+    <td>
+      <%= h(@product_style.product_name) %>
+    </td>
+  </tr>
+  <%if @system.supplier_use_flag%>
+  <tr>
+    <th>仕入先名</th>
+    <td><%= h(@product_style.product.supplier_name) %></td>
+  </tr>  
+ <% end %>
+  <tr>
+    <th>カテゴリー名</th>
+    <td>
+      <%= h(@product_style.product.category_name) %>
+    </td>
+  </tr>
+  <tr>
+    <th>商品コード</th>
+    <td>
+      <%= h(@product_style.code) %>
+    </td>
+  </tr>
+  <tr>
+    <th>規格名称</th>
+    <td>
+      <%= h(@product_style.style_name) %>
+    </td>
+  </tr>
+  <tr>
+    <th>商品型番</th>
+    <td>
+      <%= h(@product_style.manufacturer_id) %>
+    </td>
+  </tr>  
+  <tr>
+    <th>価格</th>
+    <td>
+      <%= number_with_delimiter(@product_style.sell_price) %>
+    </td>
+  </tr>
+  <tr>
+    <th>現在実在庫数</th>
+    <td>
+      <%= number_with_delimiter(@product_style.actual_count.to_i) %>
+    </td>
+  </tr>
+  <tr>
+    <th>現在受注可能数</th>
+    <td>
+      <%= number_with_delimiter(@product_style.orderable_count.to_i) %>
+    </td>
+  </tr>
+  <tr>
+    <th>現在不良在庫数</th>
+    <td>
+      <%= number_with_delimiter(@product_style.broken_count.to_i) %>
+    </td>
+  </tr>
+</table>

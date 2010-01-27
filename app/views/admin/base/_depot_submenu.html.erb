@@ -12,5 +12,12 @@
       <li><%= link_to '仕入先登録', {:controller => 'suppliers', :action => 'new'} %></li>
     </ul>
 	<%end%>
+	<p><a href="JavaScript:onClick=Tree('display2');ImgC('img2');"><img src="/images/menu_icon.gif" width="36" height="36" alt="" id="img2" /><span>在庫管理</span></a></p>
+    <ul id="display2" style="display:block">
+      <li><%= link_to '入庫管理', {:controller => 'stock_in', :action => 'index'} %></li>
+      <li><%= link_to '在庫管理', {:controller => 'stock_modify', :action => 'index'} %></li>
+      <li><%= link_to '棚卸用CSV出力', {:controller => 'stock_csv', :action => 'index'} %></li>
+      <li><%= link_to '作業履歴', {:controller => 'stock_histories', :action => 'index'} %></li>
+    </ul>
   </div><!-- /g_menu -->
 </div><!-- /サブメニュー -->

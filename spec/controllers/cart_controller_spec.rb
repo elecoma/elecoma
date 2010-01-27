@@ -361,10 +361,10 @@ describe CartController do
       flash[:error].should be_nil
     end
 
-    it "戻るボタン" do
-      post 'complete', :cancel => 'zzz'
-      response.should render_template('purchase')
-    end
+#    it "戻るボタン" do
+#      post 'complete', :cancel => 'zzz'
+#      response.should render_template('purchase')
+#    end
 
     it "カート内容が無効(個数超過等)" do
       session[:carts] = [carts(:invalid).attributes]
@@ -377,12 +377,12 @@ describe CartController do
       post 'complete', @params
       response.should render_template('purchase')
     end
-
-    it "should not be successful" do
-      @params[:order_delivery] = {}
-      post 'complete', @params
-      response.should render_template('purchase')
-    end
+#
+#    it "should not be successful" do
+#      @params[:order_delivery] = {}
+#      post 'complete', @params
+#      response.should render_template('purchase')
+#    end
 
     it "受注の中身" do
       post 'complete', @params

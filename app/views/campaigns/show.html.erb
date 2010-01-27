@@ -31,7 +31,7 @@
                         <dd>価格：<%=h @product.price_label %>円</dd>
                         <dd>販売期間：<%=h print_date(@product.sale_start_at) %> ～ <%=h print_date(@product.sale_end_at) %></dd>
                         <% if @product.arrival_expected_date && @product.arrival_expected_date < Date.today %>
-                            <% if @product.product_styles && @product.product_styles.detect(nil){ |p_s| !p_s.actual_count.blank? && p_s.actual_count > 0} -%>
+                            <% if @product.product_styles && @product.product_styles.detect(nil){ |p_s| p_s.orderable_count.to_i > 0} -%>
                         <dd>お届け：<%= @product.delivery_dates_label %></dd>
                             <% else %>
                         <dd>入荷未定</dd>
@@ -41,7 +41,11 @@
                         <dd>入荷予定日：<%= @product.arrival_date.blank? ? date_jp(@product.arrival_expected_date) : @product.arrival_date %></dd>
                         <% end %>
                     </dl>
+    				<% if @campaign.product.have_zaiko? %>
                     <%= render :partial  => "base/add_cart", :locals => {:product => @campaign.product, :campaign_id => @campaign.id} %>
+					<%else%>
+					品切れ中<br/>
+					<%end%>
                     <% if @campaign.repeat_application %>
                         <div id="campaign_caption">
                             当キャンペーンはお一人様につき１回のみご応募いただくことが出来ます。

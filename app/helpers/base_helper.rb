@@ -308,7 +308,7 @@ end
 def category_options_internal(tree, indent='')
   tree.inject([]) do |array, item|
     if item.instance_of? Category
-      array << ['%s%s' % [indent, item.name], item.id]
+      array << ['%s%s' % [indent, item.name], item.id.to_s]
     else
       array += category_options_internal(item, indent + '>')
     end

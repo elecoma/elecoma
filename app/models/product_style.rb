@@ -18,21 +18,11 @@ class ProductStyle < ActiveRecord::Base
   belongs_to :style2, 
              :class_name => "Style",
              :foreign_key => "style_id2"
+  has_many :stock_histories
              
   validates_format_of :code, :with => /^[a-zA-Z0-9]*$/
   validates_format_of :manufacturer_id, :with => /^[a-zA-Z0-9]*$/, :allow_blank=>true
 
-  DEFAULT_DATA = {:actual_count => 0}
-  alias initialize_old initialize
-
-  def initialize(attributes = nil)
-    initialize_old(attributes)
-    if @new_record && defined? DEFAULT_DATA
-      DEFAULT_DATA.each do | column, value |
-        @attributes[column.to_s] = value unless @attributes[column.to_s] && ! @attributes[column.to_s].blank?
-      end
-    end
-  end
 =begin rdoc
   * INFO
 
@@ -44,7 +34,8 @@ class ProductStyle < ActiveRecord::Base
       引数 [size] が購入可能な個数を超過する場合は、 購入可能な最大数 を返す。
 =end
   def available?(size)
-    actual_count.to_i > 0 ? (check = actual_count) : (check = 0)
+    #販売可能数で判断
+    orderable_count.to_i > 0 ? (check = orderable_count.to_i) : (check = 0)
     limit = [check, size].min
     product.sell_limit ? [limit, product.sell_limit].min : limit
   end
@@ -73,10 +64,12 @@ class ProductStyle < ActiveRecord::Base
 
   # 受注する
   def order(number)
-    if actual_count > 0
+    #販売可能数で判断
+    if orderable_count.to_i > 0
+      self.orderable_count -= number
       self.actual_count -= number
     else
-      raise '実在個数が0です'
+      raise '在庫不足です。'
     end
   end
 
@@ -91,5 +84,11 @@ class ProductStyle < ActiveRecord::Base
   def product_name
     product && product.name
   end
-
+  # 規格分類名称
+  def style_name(delimiter=' ')
+    [style_category_name1, style_category_name2].inject([]) do | xs, x |
+      x.blank? and break xs
+      xs << x
+    end.join(delimiter)
+  end
 end

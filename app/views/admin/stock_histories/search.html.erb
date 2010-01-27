@@ -1,0 +1,41 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>操作履歴</h2>
+<%= error_messages_for :condition %>
+<% form_for :condition, :url => {:action => 'search'}, :html => {:method => :get} do |f| %>
+  <%= render :partial => "search", :locals=>{:f => f}%>
+<% end %>
+<br />
+
+<p>&gt;&gt;検索結果一覧&nbsp;<%=@stock_histories.total_entries %>件&nbsp;が該当しました。</p><br/>
+  <table class="data2 clear" cellspacing="1">
+    <tr>
+      <th>商品ID</th>
+      <th>商品コード</th>
+      <th>商品名</th>
+      <th>規格名称</th>
+      <th>商品型番</th>
+      <th>操作者</th>
+      <th>詳細</th>
+    </tr>
+<%unless @stock_histories.blank?%>	
+    <% @stock_histories.each do | sh | %>
+      <tr>
+        <td><%= h sh.product_style.product_id %></td>
+        <td><%= h sh.product_style.code %></td>
+        <td><%= h sh.product_style.product_name %></td>
+        <td><%= h sh.product_style.style_name %></td>
+        <td><%= h sh.product_style.manufacturer_id %></td>
+        <td><%= h sh.admin_user.name %></td>
+        <td class="t_center">
+	    <%= link_to "作業詳細", :action=>"show" ,:id=>sh.id %>
+        </td>
+      </tr>
+    <% end %>
+<%end%>
+</table>
+<%= will_paginate @stock_histories %>
+
+</div><!-- /メイン -->

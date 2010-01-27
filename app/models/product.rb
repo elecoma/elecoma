@@ -154,7 +154,8 @@ class Product < ActiveRecord::Base
   def have_zaiko?
     product_styles or return false
     product_styles.any? do |ps|
-      !ps.actual_count.blank? && ps.actual_count > 0
+      #販売可能数で判断
+      ps.orderable_count.to_i > 0
     end
   end
 
@@ -188,10 +189,21 @@ class Product < ActiveRecord::Base
                                              :conditions => code_condition )
           ids = product_styles.map{|p| p.product_id}.join(",")
           ids = id_change_to_i(ids)
-#          ids = "0" if ids.blank?
           search_list << ["products.id in (?) ", ids]
         end
       end
+      unless search.manufacturer.blank?
+        code_condition = ["product_styles.manufacturer_id like ? ", "%#{search.manufacturer}%"]
+        if actual_count_list_flg
+          search_list << code_condition
+        else
+          product_styles = ProductStyle.find(:all, :select => "product_styles.product_id",
+                                             :conditions => code_condition )
+          ids = product_styles.map{|p| p.product_id}.join(",")
+          ids = id_change_to_i(ids)
+          search_list << ["products.id in (?) ", ids]
+        end
+      end      
       unless search.style.blank?
         product_styles = ProductStyle.find(:all, :select => "product_styles.product_id",
                                            :joins => "left join style_categories  on product_styles.style_category_id1 = style_categories.id left join style_categories as style_categories2 on style_category_id2 = style_categories2.id ",
@@ -208,10 +220,11 @@ class Product < ActiveRecord::Base
         search_list << ["products.supplier_id = ?", search.supplier.to_i]
       end      
       unless search.category.blank?
-        search.category = search.category.to_i
-        category = Category.find_by_id search.category
-        ids = category.get_child_category_ids
-        search_list << ["products.category_id in (?)", ids] unless ids.empty?
+        category = Category.find_by_id search.category.to_i
+        unless category.blank?
+          ids = category.get_child_category_ids
+          search_list << ["products.category_id in (?)", ids] unless ids.empty?
+        end
       end
       unless search.permit.blank?
         search_list << ["products.permit = ?", search.permit]

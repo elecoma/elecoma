@@ -4,7 +4,7 @@
 <div style="text-align:center;"><%= product_image_tag(@product, :medium, {:width=>"220",:height=>"220",:style=>"margin:2px; border:1px solid #6666666;"}) %></div>
 <%= h_br @product.medium_resource_comment unless @product.medium_resource_comment.blank? %><br />
 
-<% if @product.product_styles && @product.product_styles.detect(nil){ |p_s| !p_s.actual_count.blank? && p_s.actual_count > 0} -%>
+<% if @product.product_styles && @product.product_styles.detect(nil){ |p_s| p_s.orderable_count.to_i > 0} -%>
   お届け:<%= @product.delivery_dates_label %>
 <% else %>
   <% if @product.arrival_expected_date && @product.arrival_expected_date < Date.today %>

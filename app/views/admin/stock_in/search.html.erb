@@ -1,0 +1,42 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>入庫管理</h2>
+<%=h flash[:notice] %>
+<%=h flash[:error] %>
+<%= error_messages_for :condition %>
+<% form_for :condition, :url => {:action => 'search'}, :html => {:method => :get} do |f| %>
+  <%= render :partial => "search", :locals=>{:f => f}%>
+<% end %>
+<br />
+
+<p>&gt;&gt;検索結果一覧&nbsp;<%=@product_styles.total_entries %>件&nbsp;が該当しました。</p><br/>
+  <table class="data2 clear" cellspacing="1">
+    <tr>
+      <th>商品ID</th>
+      <th>商品コード</th>
+      <th>商品名</th>
+      <th>規格名称</th>
+      <th>商品型番</th>
+      <th>実在庫数</th>
+      <th>入庫登録<br/>／編集</th>
+    </tr>
+<%unless @product_styles.blank?%>	
+    <% @product_styles.each do | ps | %>
+      <tr>
+        <td><%= h ps.product_id %></td>
+        <td><%= h ps.code %></td>
+        <td><%= h ps.product_name %></td>
+        <td><%= h ps.style_name %></td>
+        <td><%= h ps.manufacturer_id %></td>
+        <td><%= number_with_delimiter(ps.actual_count.to_i) %></td>
+        <td class="t_center">
+	    <%= link_to "登録／編集", :action=>"edit" ,:id=>ps.id %>
+        </td>
+      </tr>
+    <% end %>
+</table>
+<%end%>
+<%= will_paginate @product_styles %>
+</div><!-- /メイン -->

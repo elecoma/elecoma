@@ -15,7 +15,7 @@
   <td><%=h ps.style_category_name2 %></td>
   <%- end -%>
   <td><%= number_with_delimiter ps.sell_price.to_i %></td>
-  <td><%=h stock_mark(ps.actual_count) %></td>
+  <td><%=h stock_mark(ps.orderable_count.to_i) %></td>
  </tr>
 <%- end -%>
 </table>  
