@@ -56,7 +56,7 @@ describe Admin::ProductStylesController do
 
     it '確認画面に正常に遷移' do
       product_styles = Hash.new
-      one_product_style = {:enable => "on", :style_category1 => 50, :style_category2 => 60, :code => "VVM0001", :actual_count => 10, :sell_price => 1200}
+      one_product_style = {:enable => "on", :style_category1 => 50, :style_category2 => 60, :code => "VVM0001", :sell_price => 1200}
       product_styles[product_styles.count.to_s] = one_product_style
       post 'confirm', :id => @product_style_test.id, :product_id => @product_style_test.id, :product_styles => product_styles
       assigns[:save_flg].should be_true
@@ -70,7 +70,7 @@ describe Admin::ProductStylesController do
 
     it '登録可能な状態' do
       product_styles = Hash.new
-      one_product_style = {:enable => "on", :style_category1 => 50, :style_category2 => 60, :code => "VVM0001", :actual_count => 10, :sell_price => 1200}
+      one_product_style = {:enable => "on", :style_category1 => 50, :style_category2 => 60, :code => "VVM0001", :sell_price => 1200}
       product_styles[product_styles.count.to_s] = one_product_style
       post 'create', :id => @product_style_test.id, :product_id => @product_style_test.id, :product_styles => product_styles
       assigns[:save_flg].should be_true
@@ -78,7 +78,7 @@ describe Admin::ProductStylesController do
 
     it '登録失敗' do
       product_styles = Hash.new
-      one_product_style = {:enable => "on", :style_category1 => 50, :style_category2 => 60, :code => "VVM0001", :actual_count => 10, :sell_price => "334io"}
+      one_product_style = {:enable => "on", :style_category1 => 50, :style_category2 => 60, :code => "VVM0001", :sell_price => "334io"}
       product_styles[product_styles.count.to_s] = one_product_style
       post 'create', :id => @product_style_test.id, :product_id => @product_style_test.id, :product_styles => product_styles
       assigns[:save_flg].should_not be_true

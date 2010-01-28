@@ -85,7 +85,7 @@ class Admin::ProductsController < Admin::BaseController
   def actual_count_search
     get_search_form(true)
     unless @search.no_product_style_count && @search.no_product_style_count.to_s == 1.to_s
-      @search_list << ["product_styles.actual_count<=0"]
+      @search_list << ["product_styles.actual_count<=0 or product_styles.actual_count is null"]
     end
     find_options = {
       :page => params[:page],

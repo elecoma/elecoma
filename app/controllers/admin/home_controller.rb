@@ -37,7 +37,7 @@ class Admin::HomeController < Admin::BaseController
                                                 today_one.to_s, today.to_s, OrderDelivery::JUTYUU, OrderDelivery::HASSOU_TEHAIZUMI, OrderDelivery::HASSOU_TYUU, OrderDelivery::HAITATU_KANRYO])
     #品切れ商品
     @sold_outs = ProductStyle.find(:all, :conditions => <<-EOS,
-                   product_styles.actual_count <= 0
+                   product_styles.actual_count <= 0 or product_styles.actual_count is null
                    EOS
                    :joins => "LEFT JOIN products ON products.id = product_styles.product_id ",
                    :select => "products.name, product_styles.code",
