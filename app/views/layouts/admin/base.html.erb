@@ -21,7 +21,7 @@
       <ul id="con_menu" class="clearfix">
         <li><a href="/admin/shops" id="shop"><img src="/images/store_btn.gif" width="122" height="51" alt="店舗管理" class="hoverImg" /></a></li>
         <li><a href="/admin/products" id="product"><img src="/images/goods_btn.gif" width="122" height="51" alt="商品管理" class="hoverImg" /></a></li>
-    <% if @system.supplier_use_flag %>
+    <% if @system_supplier_use_flag %>
         <li><a href="/admin/suppliers" id="depot"><img src="/images/order_btn.gif" width="122" height="51" alt="発注出荷管理" class="hoverImg" /></a></li>
 	<%else%>
 		<li><a href="/admin/stock_in" id="depot"><img src="/images/order_btn.gif" width="122" height="51" alt="発注出荷管理" class="hoverImg" /></a></li>

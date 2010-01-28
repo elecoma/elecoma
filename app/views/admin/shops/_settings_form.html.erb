@@ -1,6 +1,6 @@
-<%=h flash[:notice] %>
+<%=h flash[:system_update] %>
 <%=h flash[:error] %>
-<%= error_messages_for :shop %>
+<%= error_messages_for :system %>
 <!--仕入先-->
 <% form_for :system, :url =>{:action => "settings_update"} do |f|%>
 <table cellspacing="1" cellpadding="0" class="data" >

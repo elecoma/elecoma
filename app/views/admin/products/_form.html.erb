@@ -15,7 +15,7 @@
       <%= confirm_tag :text_field, :product, :name, :class=>"data_m" %> (上限50文字)
     </td>
   </tr>
- <%if @system.supplier_use_flag%>
+ <%if @system_supplier_use_flag%>
   <tr>
     <th>仕入先名<span class="pnt">※</span></th>
     <td><%suppliers = Supplier.find(:all,:order=>'id')%>

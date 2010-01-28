@@ -18,7 +18,7 @@
         <th>商品名</th>
         <td><%= f.text_field :name, :class=>"data_m" %></td>
       </tr>
-	 <%if @system.supplier_use_flag%>
+	 <%if @system_supplier_use_flag%>
 	  <tr>
 	    <th>仕入先名</th>
 	    <td><%suppliers = Supplier.find(:all,:order=>'id')%>

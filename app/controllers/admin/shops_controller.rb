@@ -21,26 +21,20 @@ class Admin::ShopsController < Admin::BaseController
 
 
   def update
-    if params[:id]
-      @shop = Shop.find(:first)#１件のみ返す
-      @system = System.find(:first)
-      @shop.attributes = params[:shop]
-      @system.attributes = params[:system]
-    else
-      @shop = Shop.new params[:shop]
-      @system = System.new params[:system]
-    end
+    @shop = Shop.find(:first) || Shop.new
+    @shop.attributes = params[:shop]
+    @system = System.find(:first) || System.new
+    @system.attributes = params[:system]
 
     unless @shop.valid? && @system.valid?
-      flash.now[:error] = "保存に失敗しました"
       render :action => "index"
       return
     end
 
     if @system.save && @shop.save
-      flash.now[:notice] = "データを保存しました"
+      flash[:shop_update] = "データを保存しました"
     else
-      flash.now[:error] = "データの保存に失敗しました"
+      flash[:shop_update_e] = "データの保存に失敗しました"
     end
 
     redirect_to :action => "index"
@@ -444,7 +438,9 @@ class Admin::ShopsController < Admin::BaseController
   end
   #使用機能一覧
   def settings
-    
+    #初期化
+    @system ||= System.new
+    @system.supplier_use_flag ||= false
   end
   #使用機能設定
   def settings_update
@@ -487,19 +483,23 @@ class Admin::ShopsController < Admin::BaseController
   end
   #仕入先を使用するかどうか設定
   def supplier_update
+    @system ||= System.new
     @system.attributes =  params[:system]
     if @system.save
       if @system.supplier_use_flag
         #使用する->使用しない変更する時、既存の仕入先をそのまま
         #supplier_use_flagの変更のみ        
         redirect_to :controller => "suppliers",:action => ""
+        return
       else
-        flash.now[:notice] = "仕入先を使用しないように設定しました"
-        render :action => "settings"
+        flash[:system_update] = "仕入先を使用しないように設定しました"
+        redirect_to :controller => "shops",:action => "settings"
+        return
       end
     else
       flash.now[:error] = "設定に失敗しました"
       render :action => "settings"
+      return
     end     
   end
 

@@ -20,8 +20,8 @@ class Shop < ActiveRecord::Base
 
   validates_length_of :businesstime, :maximum => 50
 
-  validates_presence_of :mail_faq,:mail_sender,:mail_admin, :mail_shop
-  validates_length_of :mail_shop,:mail_faq,:mail_sender,:mail_admin, :maximum => 50, :allow_blank => true
+  validates_presence_of :mail_faq,:mail_sender,:mail_admin
+  validates_length_of :mail_faq,:mail_sender,:mail_admin, :maximum => 50, :allow_blank => true
 
   validates_length_of :trade_item,:introduction, :maximum => 99999
 

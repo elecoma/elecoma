@@ -188,43 +188,6 @@ describe Shop do
       @shop.should_not be_valid
     end
     
-    it "注文受付メールアドレス : 必須" do
-      @shop.mail_shop = ""
-      @shop.should_not be_valid
-    end
-    
-    it "注文受付メールアドレス フォーマット" do
-      @shop.mail_shop = 'foo@example.com'
-      @shop.should be_valid
-      @shop.mail_shop = 'foo.bar@example.com'
-      @shop.should be_valid
-      @shop.mail_shop = 'foo+bar@example.com'
-      @shop.should be_valid
-      @shop.mail_shop = 'foo@example'
-      @shop.should_not be_valid
-      @shop.mail_shop = 'foo@example.'
-      @shop.should_not be_valid
-      @shop.mail_shop = 'foo@.com'
-      @shop.should_not be_valid
-      @shop.mail_shop = 'foo'
-      @shop.should_not be_valid
-      @shop.mail_shop = 'foo@'
-      @shop.should_not be_valid
-      @shop.mail_shop = '@example.com'
-      @shop.should_not be_valid
-    end
-    
-    it "注文受付メールアドレス 50 文字まで" do
-      suffix = '@example.com'
-      name = 'x' * (50 - suffix.size)
-      email = name + suffix
-      email.size.should == 50
-      @shop.mail_shop = email
-      @shop.should be_valid
-      @shop.mail_shop = 'x'+email
-      @shop.should_not be_valid
-    end
-    
     it "問合せ受付メールアドレス : 必須" do
       @shop.mail_faq = ""
       @shop.should_not be_valid

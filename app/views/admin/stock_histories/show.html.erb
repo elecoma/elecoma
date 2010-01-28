@@ -17,7 +17,7 @@
       <%= h(@stock_history.product.name) %>
     </td>
   </tr>
-  <%if @system.supplier_use_flag%>
+  <%if @system_supplier_use_flag%>
   <tr>
     <th>仕入先名</th>
     <td><%= h(@stock_history.product.supplier_name) %></td>

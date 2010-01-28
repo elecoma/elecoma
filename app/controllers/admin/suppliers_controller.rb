@@ -53,7 +53,7 @@ class Admin::SuppliersController < Admin::BaseController
   end
   #仕入先を使用しているかしないと判断のフィルタ
   def check_supplier_use
-    unless @system.supplier_use_flag
+    unless @system_supplier_use_flag
       redirect_to :controller=>"/admin/home"
       return
     end
