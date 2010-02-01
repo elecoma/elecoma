@@ -1,4 +1,4 @@
-<ol id="bread_list" class="m_btm"><li class="bread_top"><a href="/">トップページ</a></li><li><%= link_to "利用規約", :controller => :accounts, :action => :kiyaku %></li><li><%= link_to "会員登録", :controller => :accounts, :action => :signup %></li><li>入力内容確認</li></ol>
+<ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ", :controller => :portal, :action => :show %></li><li><%= link_to "利用規約", :controller => :accounts, :action => :kiyaku %></li><li><%= link_to "会員登録", :controller => :accounts, :action => :signup %></li><li>入力内容確認</li></ol>
 <h2 class="main_t">会員登録</h2>
 <div id="entry">
 <%= @customer && error_messages_for(:customer) %>

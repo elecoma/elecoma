@@ -27,7 +27,7 @@
         <td><%=h mmt.get_form_name %></td>
         <td><%= link_to "編集", edit_admin_mail_magazine_template_path(mmt.id) %></td>
         <td><%= link_to "削除", admin_mail_magazine_template_path(mmt.id), :confirm=>"本当に削除しますか？", :method=>"delete" %></td>
-        <td><a href="javascript:fnSubWindow('/admin/mail_magazine_templates/preview/<%=h mmt.id %>', 'mail_magazine_template', '600', '600');">プレビュー</a></td>
+        <td><a href="javascript:fnSubWindow('<%= url_for(:controller => :mail_magazine_templates, :action => :preview, :id => mmt.id) %>', 'mail_magazine_template', '600', '600');">プレビュー</a></td>
       </tr>
     <% end -%>
   <% end -%>

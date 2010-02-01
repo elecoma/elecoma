@@ -8,7 +8,7 @@ function fnSubWindow(URL,Winname,Wwidth,Wheight){
   WIN.focus();
 }
 
-function address_by_zip(zipcode_first, zipcode_second, prefecture_name, city_name, town_name, prefecture_id, controller){
+function address_by_zip(zipcode_first, zipcode_second, prefecture_name, city_name, town_name, prefecture_id, controller, base_path){
 //郵便番号から住所を自動入力
   var first = $F(zipcode_first);
   var second = $F(zipcode_second);
@@ -17,7 +17,7 @@ function address_by_zip(zipcode_first, zipcode_second, prefecture_name, city_nam
     return;
   }
   var params = $H({first: first, second: second});
-  new Ajax.Request('/'+controller+'/get_address?' + params.toQueryString(), {
+  new Ajax.Request(base_path + '/'+controller+'/get_address?' + params.toQueryString(), {
     method: "get",
     onSuccess: function(request) { 
       var data = request.responseText.split("/");
@@ -34,7 +34,7 @@ function address_by_zip(zipcode_first, zipcode_second, prefecture_name, city_nam
   });
 
 }
-
+/*
 Event.observe(window, 'load', function() {
   var img = document.createElement('img');
   document.body.appendChild(img);
@@ -52,7 +52,7 @@ Event.observe(window, 'load', function() {
     img.style.marginTop = String(-(img.height / 2)) + 'px';
   }
 });
-
+*/
 Ajax.Responders.register({
   onCreate: function() {
     Element.show('loading-image');

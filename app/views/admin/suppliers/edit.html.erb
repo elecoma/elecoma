@@ -14,7 +14,8 @@
 <% form_for [:admin, @supplier], :url => {:action => 'confirm',:id =>@supplier} do |f| %>
 <%= render :partial => "form", :locals => {:f => f} %>
 <div class="btn_box">
-  <%= submit_tag '確認する', :class => "btn"%><img width="6" height="34" class="btn_side" alt="" src="/images/btn_side.gif"/>
+  <%= submit_tag '確認する', :class => "btn"%>
+  <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side", :alt => "") %>
 </div>
 <% end %>
 </div><!-- /メイン -->

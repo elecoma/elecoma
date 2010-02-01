@@ -2,6 +2,7 @@
   <%= stylesheet_link_tag "front/user/user" %>
   <%= stylesheet_link_tag "front/user/address_new" %>
   <%= javascript_include_tag :defaults %>
+  <%= javascript_include_tag js_url(:action => "application") %>
   <%= closer_for_delivery_address_script %>
 </head>
 <body onload="closeDeliveryAddress('<%= h(@back_from_url) %>'); window.close();">

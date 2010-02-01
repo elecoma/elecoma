@@ -2,7 +2,7 @@
   <%= stylesheet_link_tag "front/mypage" %>
 <% end %>
 
-<ol id="bread_list" class="m_btm"><li class="bread_top"><a href="/">トップページ</a></li><li><%= link_to "マイページ", :controller => :accounts, :action => :history_list %></li><li>購入履歴</li></ol>
+<ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ", :controller => :portal, :action => :show %></li><li><%= link_to "マイページ", :controller => :accounts, :action => :history_list %></li><li>購入履歴</li></ol>
 <h2 class="main_t">マイページ</h2>
 <div id="mypage" class="clearfix">
   <!-- マイメニュー -->
@@ -10,7 +10,7 @@
 
   <!-- 購入履歴一覧 -->
   <div id="mypage_main">
-    <h3><img src="/images/mypage/mypage_t1.gif" width="535" height="44" alt="お届け先設定" /></h3>
+    <h3><%= image_tag("mypage/mypage_t1.gif", :width => "535", :height => "44", :alt => "お届け先設定") %></h3>
     <div class="mypage_box">
       <p class="tb_t">購入履歴詳細</p>
       <table class="tb1 cntr">
@@ -128,6 +128,6 @@
       </table>
       <div id="submit"><%= link_to '戻る', :action => 'history' %></div>
     </div><!-- /mypage_box-->
-    <div><img src="/images/mypage/mypage_btm.gif" width="535" height="5" alt="" /></div>
+    <div><%= image_tag("mypage/mypage_btm.gif", :width => "535", :height => "5", :alt => "") %></div>
   </div><!-- /mypage_main -->
 </div><!-- /mypage -->

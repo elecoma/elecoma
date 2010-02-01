@@ -5,7 +5,7 @@
 </script>
 <div id="sub"><!-- サブメニュー -->
   <div id="menu" class="clearfix"><!-- g_menu -->
-    <p><a href="JavaScript:onClick=Tree('display1');ImgC('img1');"><img src="/images/menu_icon.gif" width="36" height="36" alt="" id="img1" /><span>商品管理</span></a></p>
+    <p><a href="JavaScript:onClick=Tree('display1');ImgC('img1');"><%= image_tag("menu_icon.gif", :width => "36", :height => "36", :alt => "", :id => "img1") %><span>商品管理</span></a></p>
     <ul id="display1" style="display:block">
       <li><%= link_to '商品マスタ管理', {:controller => 'products', :action => 'index'} %></li>
       <li><%= link_to '商品登録', {:controller => 'products', :action => 'new'} %></li>
@@ -14,7 +14,7 @@
       <li><%= link_to('在庫切れ一覧', {:controller => 'products', :action => 'actual_count_index'}) %></li>
     </ul>
 
-    <p><a href="JavaScript:onClick=Tree('display2');ImgC('img2');"><img src="/images/menu_icon.gif" width="36" height="36" alt="" id="img2" /><span>受注集計</span></a></p>
+    <p><a href="JavaScript:onClick=Tree('display2');ImgC('img2');"><%= image_tag("menu_icon.gif", :width => "36", :height => "36", :alt => "", :id => "img2") %><span>受注集計</span></a></p>
     <ul id="display2" style="display:block">
       <li><%= link_to '期間別集計', {:controller => "totals", :action => "index", :page => 'term'} %></li>
       <li><%= link_to '商品別集計', {:controller => "totals", :action => "index", :page => 'product'} %></li>
@@ -23,19 +23,19 @@
       <li><%= link_to '会員別集計', {:controller => "totals", :action => "index", :page => 'member'} %></li>
     </ul>
 
-    <p><a href="JavaScript:onClick=Tree('display3');ImgC('img3');"><img src="/images/menu_icon.gif" width="36" height="36" alt="" id="img3" /><span>顧客管理</span></a></p>
+    <p><a href="JavaScript:onClick=Tree('display3');ImgC('img3');"><%= image_tag("menu_icon.gif", :width => "36", :height => "36", :alt => "", :id => "img3") %><span>顧客管理</span></a></p>
     <ul id="display3" style="display:block">
       <li><%= link_to '顧客マスタ', {:controller => "customers", :action => 'index'} %></li>
     </ul>
 
-    <p><a href="JavaScript:onClick=Tree('display4');ImgC('img4');"><img src="/images/menu_icon.gif" width="36" height="36" alt="" id="img4" /><span>メルマガ管理</span></a></p>
+    <p><a href="JavaScript:onClick=Tree('display4');ImgC('img4');"><%= image_tag("menu_icon.gif", :width => "36", :height => "36", :alt => "", :id => "img4") %><span>メルマガ管理</span></a></p>
     <ul id="display4" style="display:block">
       <li><%= link_to '配信内容設定', {:controller => 'mail_magazines', :action => 'index'} %></li>
       <li><%= link_to 'テンプレート設定', {:controller => 'mail_magazine_templates', :action => 'index'} %></li>
       <li><%= link_to '配信履歴', {:controller => 'mail_magazines', :action => 'history'} %></li>
     </ul>
 
-    <p><a href="JavaScript:onClick=Tree('display5');ImgC('img5');"><img src="/images/menu_icon.gif" width="36" height="36" alt="" id="img5" /><span>受注管理</span></a></p>
+    <p><a href="JavaScript:onClick=Tree('display5');ImgC('img5');"><%= image_tag("menu_icon.gif", :width => "36", :height => "36", :alt => "", :id => "img5") %><span>受注管理</span></a></p>
     <ul id="display5" style="display:block">
       <li><%= link_to '受注管理', {:controller => 'orders', :action => 'index'} %></li>
       <li><%= link_to 'ステータス管理', {:controller => 'order_statuses', :action => 'index'} %></li>

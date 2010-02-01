@@ -12,7 +12,7 @@
 
 <%= compound_title_tag(['K&B style', nil, nil, nil]) %>
 <%= javascript_include_tag 'sorry' %>
-<%= javascript_include_tag 'treemenu' %>
+<%= javascript_include_tag js_url(:action => "treemenu") %>
 <%= javascript_include_tag 'rollover' %>
 <%= stylesheet_link_tag "front/common" %>
 <%= yield :head -%>
@@ -21,7 +21,7 @@
 <body>
 <div id="wrapper" class="clearfix">
   <div id="header" class="clearfix"><!-- ヘッダー -->
-    <h1><a href="#"><img alt="K&amp;Bstyle" height="37" src="/images/common/logo.gif" width="133" /></a></h1>
+    <h1><a href="#"><%= image_tag("common/logo.gif", :width => "133", :height => "37", :alt => "K&amp;Bstyle") %></a></h1>
   <div id="store_desc"><span>オシャレな女性のためのお手軽通販サイト</span></div>
   <div id="my_menubox" class="clearfix">
   <p>
@@ -51,7 +51,7 @@
     <address>Copyright (c) 2000-2009 K&amp;Bstyle CO.LTD. All Rights Reserved.</address>
   </div>
   <div id="foot_r">
-    <a href="#header"><img width="79" height="24" alt="page top" src="/images/common/pagetop_btn.gif"/></a>
+    <a href="#header"><%= image_tag("common/pagetop_btn.gif", :width => "79", :height => "79", :alt => "page top") %></a>
   </div>
 </div><!-- /footer -->
 </body>

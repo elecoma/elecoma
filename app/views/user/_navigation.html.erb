@@ -1,6 +1,6 @@
 <!-- マイメニュー -->
 <dl id="mymenu">
-  <dt><img src="/images/mypage/mymenu_t.gif" width="170" height="40" alt="マイメニュー" /></dt>
+  <dt><%= image_tag("mypage/mymenu_t.gif", :width => "170", :height => "40", :alt => "マイメニュー") %></dt>
   <dd><%= link_to image_tag("/images/mypage/mymenu_1.gif", :width=>"170", :height=>"40", :alt=>"購入履歴一覧"), :controller=>'accounts', :action=>'history_list' %></dd>
   <dd><%= link_to image_tag("/images/mypage/mymenu_2.gif", :width=>"170", :height=>"40", :alt=>"会員登録内容変更", :class=>"hoverImg"), :controller=>'accounts', :action=>'edit' %></dd>
   <dd><%= link_to image_tag("/images/mypage/mymenu_3.gif", :width=>"170", :height=>"40", :alt=>"お届け先追加・変更", :class=>"hoverImg"), :controller=>'accounts', :action=>'delivery' %></dd>

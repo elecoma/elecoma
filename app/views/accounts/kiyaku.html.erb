@@ -2,7 +2,7 @@
 <%= stylesheet_link_tag "front/entry" %>
 <% end %>
 
-<ol id="bread_list" class="m_btm"><li class="bread_top"><a href="/">トップページ</a></li><li>利用規約</li></ol>
+<ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ", :controller => :portal, :action => :show %></li><li>利用規約</li></ol>
 <h2 class="main_t">利用規約</h2>
 <div id="entry">
   <!-- 会員規約 -->

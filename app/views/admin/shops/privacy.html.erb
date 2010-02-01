@@ -27,7 +27,7 @@
     <%=hidden_field_tag "preview_id"%>
 	<div class="btn_box">
       <%= button_to_function "この内容で登録する", "regist()", :class=>"btn" %>
-	  <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+      <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
     </div>
   <% end %>
 

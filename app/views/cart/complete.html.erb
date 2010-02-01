@@ -2,11 +2,12 @@
  <%= stylesheet_link_tag "front/cart" %>
  <%= javascript_include_tag :defaults %>
  <%= javascript_include_tag "recommender_details" %>
+ <%= javascript_include_tag js_url(:action => "application") %>
 <% end %>
 
 <h2 class="main_t">ご注文の完了</h2>
 <div id="cart">
-  <img src="/images/cart/route04.gif" width="583" height="31" alt="ご購入の流れ" class="route" />
+  <%= image_tag("cart/route04.gif", :width => "583", :height => "31", :alt => "ご購入の流れ", :class => "route") %>
 
   <p class="comp">ご注文ありがとうございました。</p>
   <p class="comp_s">只今、ご注文の確認メールをお送りさせていただきました。<br />

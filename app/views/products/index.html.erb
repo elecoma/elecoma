@@ -12,14 +12,14 @@
     <!--カテゴリ画像 -->
     <%= view_resource_id @category.resource_id,{:width=>"530px",:height=>"213px",:class =>"m_btm",:alt=>@category.free_space}%>
     <% end %>
-    <div><img src="/images/common/box_bg_top.gif" width="530" height="5" alt="" /></div>
+    <div><%= image_tag("common/box_bg_top.gif", :width => "530", :height => "5", :alt => "") %></div>
     <div id="main_search" class="main_box">
     <dl class="clearfix">
       <dt>並び替え</dt>
       <dd><ul><li><%= link_order "price" %></li><li><%= link_order "update" %></li></ul></dd>
     </dl>
     </div>
-    <div class="m_btm"><img src="/images/common/box_bg_btm.gif" width="530" height="5" alt="" /></div>
+    <div class="m_btm"><%= image_tag("common/box_bg_btm.gif", :width => "530", :height => "5", :alt => "") %></div>
     <!-- pager -->
     <div id="pager_box" class="clearfix">
       <p><%=h ((@products.current_page-1)*@products.per_page)+1 %>～<%=h paginate_item_count(@products.current_page, @products.per_page, @products.total_entries) %>&nbsp;(<%=h @products.total_entries %>件中)</p>

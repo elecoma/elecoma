@@ -17,7 +17,7 @@
       〒 <%= confirm_tag :text_field, :supplier, :zipcode01, {:size => 10,:style=>"ime-mode:inactive"} %>－
       <%= confirm_tag :text_field, :supplier, :zipcode02, {:size => 10,:style=>"ime-mode:inactive"} %>
       <% unless params[:action] =~ /confirm/ && @supplier.errors.empty? %>
-        <input name="zipcode_input" value="住所入力" onclick="address_by_zip('supplier_zipcode01','supplier_zipcode02', 'supplier_prefecture_name', 'supplier_address_city', 'supplier_address_detail', 'supplier_prefecture_id', 'admin/suppliers');" type="button" class="btn_s">
+        <input name="zipcode_input" value="住所入力" onclick="address_by_zip('supplier_zipcode01','supplier_zipcode02', 'supplier_prefecture_name', 'supplier_address_city', 'supplier_address_detail', 'supplier_prefecture_id', 'admin/suppliers', '<%=h ActionController::Base.relative_url_root %>');" type="button" class="btn_s">
       <% end %>
     </td>
   </tr>

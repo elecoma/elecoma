@@ -8,7 +8,7 @@ if (script_tag!=null) {
   host = script_tag.src.match(/^https*:\/\/[^\/]+/i);
 }
 
-var image_path = "/images/emoticons";
+//var image_path = "/images/emoticons";
 
 var isRichText = false;
 var rng;
@@ -328,7 +328,8 @@ function fnTextCount(id){
 }
 
 
-function writeRichText(id_name, html, width, height, buttons, readOnly, use_emoji) {
+function writeRichText(id_name, html, width, height, buttons, readOnly, use_emoji, _image_path) {
+  var image_path = _image_path;
   //init variables
   var target_area = "";
   if (document.all) {
@@ -368,7 +369,8 @@ function writeRichText(id_name, html, width, height, buttons, readOnly, use_emoj
         area_html += '    <span id="emoji_' + id_name + '"><INPUT type="button" value="絵文字を使用する" onClick="dlgEmojiPalette(\'' + id_name + '\', \'emoji\')" class="btn_s"></span>\n';
       }
       area_html += '    <div style="position: absolute; color: white; background: white; border:1px solid #000000;  padding: 0px; text-align: center; display: none;" id="emoji' + id_name + '" >\n';
-      area_html += '    <img src="'+ host +'/images/emoticons/emoticons.gif" style="border: 0px none \;" usemap="#emoji" alt="">\n';
+      //area_html += '    <img src="'+ host +'/images/emoticons/emoticons.gif" style="border: 0px none \;" usemap="#emoji" alt="">\n';
+      area_html += '    <img src="'+ image_path +'/emoticons.gif" style="border: 0px none \;" usemap="#emoji" alt="">\n';
       area_html += '    <map name="emoji" id="emoji_map'+id_name+'">\n';
 
       var size=20;
@@ -392,7 +394,7 @@ function writeRichText(id_name, html, width, height, buttons, readOnly, use_emoj
     target_area.innerHTML = area_html;
     document.getElementById('hdn' + id_name).value = html;
     enableDesignMode(id_name, html, readOnly);
-    addMapEvent(id_name);
+    addMapEvent(id_name, image_path);
   } else {
     if (!readOnly) {
       area_html += '<textarea name="' + id_name + '" id="' + id_name + '" style="width: ' + width + 'px; height: ' + height + 'px;">' + html + '</textarea>\n';
@@ -722,9 +724,10 @@ function lowerButton(e) {
 
 
 
-var emojiBase = host + image_path +"/";
+//var emojiBase = host + image_path +"/";
 
-function setEmojiTag(emoji) {
+function setEmojiTag(emoji, image_path) {
+  var emojiBase = host + image_path +"/";
   var img_url = emojiBase + emoji +".gif";
   window.setEmoji(img_url);
 }
@@ -742,10 +745,10 @@ function foreach(array,callback){
     callback(i,array[i],array);
 }
 
-function addMapEvent(id_name){
+function addMapEvent(id_name, image_path){
   var area = document.getElementById("emoji_map"+id_name).getElementsByTagName("area");
   foreach(area, function(i,el){
-    addEvent(el, "mouseup", function(){ setEmojiTag( el.id );
+    addEvent(el, "mouseup", function(){ setEmojiTag( el.id, image_path );
     });
   });
 }

@@ -37,7 +37,7 @@
       〒 <%= confirm_tag :text_field, :customer, :zipcode01, :size => 10 %>－
       <%= confirm_tag :text_field, :customer, :zipcode02, :size => 10 %>
       <% unless (params[:action] =~ /confirm/ || params[:action] =~ /update/) && @customer.errors.empty? %>
-        <input name="zipcode_input" value="住所入力" onclick="address_by_zip('customer_zipcode01','customer_zipcode02', 'customer_prefecture_name', 'customer_address_city', 'customer_address_detail', 'customer_prefecture_id', 'admin/customers');" type="button" class="btn_s">
+        <input name="zipcode_input" value="住所入力" onclick="address_by_zip('customer_zipcode01','customer_zipcode02', 'customer_prefecture_name', 'customer_address_city', 'customer_address_detail', 'customer_prefecture_id', 'admin/customers', '<%=h ActionController::Base.relative_url_root %>');" type="button" class="btn_s">
       <% end %>
     </td>
   </tr>

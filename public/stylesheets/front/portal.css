@@ -8,7 +8,7 @@
 
 .main_t {
   width: 690px;
-  background: url(/images/common/main_t_l.gif) no-repeat;
+  background: url(../../images/common/main_t_l.gif) no-repeat;
 }
 
 #cart {
@@ -40,7 +40,7 @@
   float: left;
 }
 
-/*---�t�H�[�����i---*/
+/*----Cart----*/
 #cart input,
 #cart select {
   border: 1px solid #999999;
@@ -61,7 +61,7 @@
 }
 
 .m_left {
-  margin-leftt: 5px;
+  margin-left: 5px;
 }
 
 .total2 {
@@ -81,8 +81,7 @@
   width: 700px;
 }
 
-/*---�������---*/
-
+/*----Comp----*/
 .comp {
   text-align: center;
   font-size: 140%;
@@ -110,9 +109,9 @@
   padding: 2px 0;
 }
 
-/*---���x������@�E���͂�����---*/
+/*----Payment----*/
 #pt_box {
-  background: url(/images/cart/cart_bg.gif) repeat-y;
+  background: url(../../images/cart/cart_bg.gif) repeat-y;
   width: 545px;
   margin: 0 auto 30px;
 }
@@ -154,7 +153,7 @@
 }
 .btn_s {
   height: 22px;
-  background: url(/images/btn_s.gif) repeat-x;
+  background: url(../../images/btn_s.gif) repeat-x;
   cursor: pointer;
 }
 .errorExplanation {

@@ -1,10 +1,10 @@
 @charset "utf-8";
 
 .main_box {
-  background: url(/images/common/box_bg.gif) repeat-y;
+  background: url(../../images/common/box_bg.gif) repeat-y;
 }
 
-/*------�J�e�S���̟��-------*/
+/*----Category Search----*/
 #main_search {
   padding: 7px 20px;
 }
@@ -50,7 +50,7 @@
   margin-bottom: -4px;
 }
 
-/*------�y�[�W���[-------*/
+/*----Pager----*/
 #pager_box {
   padding-bottom: 7px;
   margin-bottom: 10px;
@@ -87,7 +87,7 @@ ol.pager li em {
   font-weight: bold;
 }
 
-/*------�J�e�S�����i�ꗗ-------*/
+/*----Category Product Lists----*/
 #ctgr_box {
   margin-bottom: 15px;
 }
@@ -124,11 +124,11 @@ ol.pager li em {
   text-align: right;
 }
 
-/*------�����L���O�ꗗ-------*/
+/*----Ranking List----*/
 .rank_t {
   width: 490px;
   height: 41px;
-  background: url(/images/category/rank_t_bg.gif) no-repeat;
+  background: url(../../images/category/rank_t_bg.gif) no-repeat;
   padding-left: 40px;
   line-height: 41px;
   font-size: 130%;
@@ -136,25 +136,25 @@ ol.pager li em {
 }
 
 #ctgr_box li.rank1 {
-  background: url(/images/category/rank1.gif) no-repeat center top;
+  background: url(../../images/category/rank1.gif) no-repeat center top;
   padding-top: 30px;
   margin-top: 5px;
 }
 
 #ctgr_box li.rank2 {
-  background: url(/images/category/rank2.gif) no-repeat center top;
+  background: url(../../images/category/rank2.gif) no-repeat center top;
   padding-top: 30px;
   margin-top: 5px;
 }
 
 #ctgr_box li.rank3 {
-  background: url(/images/category/rank3.gif) no-repeat center top;
+  background: url(../../images/category/rank3.gif) no-repeat center top;
   padding-top: 30px;
   margin-top: 5px;
 }
 
 #ctgr_box li.rank4 {
-  background: url(/images/category/rank4.gif) no-repeat center top;
+  background: url(../../images/category/rank4.gif) no-repeat center top;
   padding-top: 30px;
   margin-top: 5px;
 }

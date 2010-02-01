@@ -4,7 +4,8 @@
     <%= javascript_include_tag :defaults %>
     <%= javascript_include_tag "jquery" %>
     <%= javascript_include_tag "no_confrict" %>
-    <%= javascript_include_tag "thickbox" %>
+    <%= javascript_include_tag js_url(:action => "thickbox") %>
+    <%= javascript_include_tag js_url(:action => "application") %>  
 <% end %>
 <h2 class="main_t"><%= (@campaign ? h(@campaign.name) : "キャンペーン") %></h2>
 <%= flash[:notice] %>
@@ -15,7 +16,7 @@
 
     <div class="campaign_box">
         <% if !@campaign.product_id.blank? && @status == "open" %>
-        <div><img src="/images/common/box_bg_top.gif" width="530" height="5" alt="" /></div>
+          <div><%= image_tag("common/box_bg_top.gif", :width => "530", :height => "5", :alt => "") %></div>
         <div id="item_box" class="main_box">
             <div class="clearfix">
                 <div class="item_pic">
@@ -68,7 +69,7 @@
             </p>
         </div>
         <!-- /item_box -->
-        <div class="m_btm"><img src="/images/common/box_bg_btm.gif" width="530" height="5" alt="" /></div>
+        <div class="m_btm"><%= image_tag("common/box_bg_btm.gif", :width => "530", :height => "5", :alt => "") %></div>
         <% else %>
             <%= @free_spaces[@free_space_names[3]] %>
         <% end %>

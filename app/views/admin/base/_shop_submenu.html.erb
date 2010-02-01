@@ -5,7 +5,7 @@
 </script>
 <div id="sub"><!-- サブメニュー -->
   <div id="menu" class="clearfix"><!-- g_menu -->
-    <p><a href="JavaScript:onClick=Tree('display1');ImgC('img1');"><img src="/images/menu_icon.gif" width="36" height="36" alt="" id="img1" /><span>基本情報管理</span></a></p>
+    <p><a href="JavaScript:onClick=Tree('display1');ImgC('img1');"><%= image_tag("menu_icon.gif", :width => "36", :height => "36", :alt => "", :id => "img1") %><span>基本情報管理</span></a></p>
     <ul id="display1" style="display:block">
       <li><%= link_to 'SHOPマスタ', {:controller => 'shops', :action => 'index'} %></li>
       <li><%= link_to '特定商取引法', {:controller => 'shops', :action => 'tradelaw_index'} %></li>
@@ -18,7 +18,7 @@
       <li><%= link_to 'プライバシーポリシー設定', {:controller => 'shops', :action => 'privacy'} %></li>
     </ul>
 
-    <p><a href="JavaScript:onClick=Tree('display2');ImgC('img2');"><img src="/images/menu_icon.gif" width="36" height="36" alt="" id="img2" /><span>コンテンツ管理</span></a></p>
+    <p><a href="JavaScript:onClick=Tree('display2');ImgC('img2');"><%= image_tag("menu_icon.gif", :width => "36", :height => "36", :alt => "", :id => "img2") %><span>コンテンツ管理</span></a></p>
     <ul id="display2" style="display:block">
       <li><%= link_to '新着情報管理', {:controller => 'new_informations', :action => 'index'} %></li>
       <li><%= link_to 'オススメ商品管理', {:controller => 'recommend_products', :action => 'index'} %></li>
@@ -27,13 +27,13 @@
       <li><%= link_to '特集管理', {:controller => 'features', :action => 'index'} %></li>
     </ul>
 
-    <p><a href="JavaScript:onClick=Tree('display3');ImgC('img3');"><img src="/images/menu_icon.gif" width="36" height="36" alt="" id="img3" /><span>デザイン管理</span></a></p>
+    <p><a href="JavaScript:onClick=Tree('display3');ImgC('img3');"><%= image_tag("menu_icon.gif", :width => "36", :height => "36", :alt => "", :id => "img3") %><span>デザイン管理</span></a></p>
     <ul id="display3" style="display:block">
       <li><%= link_to 'PCフリースペース編集', {:controller => 'designs', :action => 'pc'} %></li>
       <li><%= link_to '携帯フリースペース編集', {:controller => 'designs', :action => 'mobile'} %></li>
     </ul>
 
-    <p><a href="JavaScript:onClick=Tree('display4');ImgC('img4');"><img src="/images/menu_icon.gif" width="36" height="36" alt="" id="img4" /><span>システム管理</span></a></p>
+    <p><a href="JavaScript:onClick=Tree('display4');ImgC('img4');"><%= image_tag("menu_icon.gif", :width => "36", :height => "36", :alt => "", :id => "img4") %><span>システム管理</span></a></p>
     <ul id="display4" style="display:block">
       <li><%= link_to 'メンバー管理', {:controller => 'admin_users', :action => 'index'} %></li>
       <li><%= link_to '管理者権限管理', {:controller => 'authorities', :action => 'index'} %></li>

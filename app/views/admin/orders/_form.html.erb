@@ -78,7 +78,7 @@
    <th>郵便番号</th>
    <td>
      〒<%= f.text_field "deliv_zipcode01", :class=>"data_s" %>-<%= f.text_field "deliv_zipcode02", :class=>"data_s" %>
-     <input name="zipcode_input" value="住所入力" onclick="address_by_zip('order_delivery_deliv_zipcode01','order_delivery_deliv_zipcode02', 'order_delivery_deliv_pref_name', 'order_delivery_deliv_address_city', 'order_delivery_deliv_address_detail', 'order_delivery_deliv_pref_id', 'admin/orders');" type="button" class="btn_s">
+     <input name="zipcode_input" value="住所入力" onclick="address_by_zip('order_delivery_deliv_zipcode01','order_delivery_deliv_zipcode02', 'order_delivery_deliv_pref_name', 'order_delivery_deliv_address_city', 'order_delivery_deliv_address_detail', 'order_delivery_deliv_pref_id', 'admin/orders', '<%=h ActionController::Base.relative_url_root %>');" type="button" class="btn_s">
    </td>
    <th>TEL</th>
    <td><%= f.text_field :deliv_tel01, :class=>"data_s" -%>
@@ -170,6 +170,6 @@
 
 <div class="btn_box">
   <%= submit_tag "この内容で登録", :confirm => 'この内容で登録してもよろしいでしょうか？', :class => "btn" %>
-  <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+  <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
 </div>
 

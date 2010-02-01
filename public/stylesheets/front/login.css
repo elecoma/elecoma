@@ -8,12 +8,12 @@
 
 .main_t {
   width: 690px;
-  background: url(/images/common/main_t_l.gif) no-repeat;
+  background: url(../../images/common/main_t_l.gif) no-repeat;
 }
 
 #login_area {
   width: 715px;
-  background: url(/images/login/login_mid.gif) repeat-y;
+  background: url(../../images/login/login_mid.gif) repeat-y;
   margin: 0 auto 40px;
 }
 

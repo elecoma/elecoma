@@ -14,14 +14,14 @@
       <%= f.hidden_field column.to_s %>
     <% end %>
     <%= f.submit "この内容で登録する", :class=>"btn" %>
-    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+    <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
   <% end %>
   <% form_for [:admin, @customer], :url=>{:action=>"edit", :id=>params[:id]}, :html=>{:method=>"get"} do |f| %>
     <% @customer.attribute_names.each do |column| %>
       <%= f.hidden_field column.to_s %>
     <% end %>
     <%= f.submit "戻る", :class=>"btn" %>
-    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+    <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
   <% end %>
 </div>
 

@@ -1,5 +1,5 @@
 @charset "utf-8";
-/*------����------*/
+/*------共通------*/
 body, div, h1, h2, h3, h4, h5, h6,
 p, brockquote, pre, address,
 ul, ol, li, dl, dt, dd,
@@ -35,7 +35,7 @@ html { overflow-y: scroll; }
 li { list-style-type: none; }
 textarea { font-size: 100%; }
 
-/*------�����N�F------*/
+/*------リンク色------*/
 a {
   text-decoration: none;
   font-weight: normal;
@@ -48,12 +48,12 @@ a:hover {
 }
 a:active { color: #414d8d; }
 
-/*---------------�S��--------------*/
+/*---------------全体--------------*/
 body {
   width: 100%;
   height: 100%;
   background-color: #f6f6f6;
-  font-family: Verdana, Osaka, "�l�r �o�S�V�b�N", sans-serif;
+  font-family: Verdana, Osaka, "ＭＳ Ｐゴシック", sans-serif;
   font-size: 75%;
 }
 
@@ -73,7 +73,7 @@ html>/**/body {
   border-right: 3px solid #ffffff;
 }
 
-/*-----------�w�b�_�[-----------*/
+/*-----------ヘッダー-----------*/
 #header {
   width: 950px;
 }
@@ -126,7 +126,7 @@ html>/**/body {
   background: url("../images/list_mizu.gif") no-repeat 0 center;
 }
 
-/*------�J�������C�A�E�g------*/
+/*------カラムレイアウト------*/
 #sub {
   float: left;
   width: 200px;
@@ -139,7 +139,7 @@ html>/**/body {
   background-color: #ffffec;
 }
 
-/*------���j���[------*/
+/*------メニュー------*/
 #menu {
   width: 190px;
   background-color: #84d0db;
@@ -205,7 +205,7 @@ html>/**/body {
   display: block;
 }
 
-/*----------�t�b�^�[----------*/
+/*----------フッター----------*/
 #footer {
   width: 944px;
   height: 60px;
@@ -237,7 +237,7 @@ html>/**/body {
   line-height: 0;
 }
 
-/*-------���o��-------*/
+/*-------見出し-------*/
 h2 {
   width: 672px;
   height: 43px;
@@ -261,7 +261,7 @@ h3 {
   color: #ffffff;
 }
 
-/*-------�e�[�u�����-------*/
+/*-------テーブル周り-------*/
 .req {
   text-align: right;
   margin: -11px 0 4px 0;
@@ -300,7 +300,7 @@ h3 {
   background-color: #ffffff;
 }
 
-/*---------�t�H�[��---------*/
+/*---------フォーム---------*/
 .data input {
   border: 1px solid #bbbbbb;
   margin-right: 5px;
@@ -337,7 +337,7 @@ h3 {
   background: url(../images/btn_s.gif) repeat-x;
 }
 
-/*----------�{�^��----------*/
+/*----------ボタン----------*/
 .btn {
   height: 34px;
   padding: 0 18px;
@@ -368,7 +368,7 @@ h3 {
 }
 
 
-/*-------���ʃ{�b�N�X-------*/
+/*-------共通ボックス-------*/
 #input_area .mybtn input,
 #input_area .mybtn2 input {
   border:  none;

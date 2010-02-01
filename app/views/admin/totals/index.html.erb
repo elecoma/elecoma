@@ -64,7 +64,7 @@
          <%= hidden_field('search', name) if @search.send(name) %>
        <% end %>
        <%= submit_tag '検索結果を CSV ダウンロード', :class=>"btn"  %>
-       <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+       <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side", :alt => "") %>
      </div>
    <% end %>
    <p><%= image_tag url_for(:action=>:graph), :alt=>'' %></p>

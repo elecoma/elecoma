@@ -8,7 +8,7 @@
 
 .main_t {
   width: 690px;
-  background: url(/images/common/main_t_l.gif) no-repeat;
+  background: url(../../images/common/main_t_l.gif) no-repeat;
 }
 
 #mypage {
@@ -30,7 +30,7 @@
 .mypage_box {
   width: 515px;
   padding: 1px 10px 10px;
-  background: url(/images/mypage/mypage_bg.gif) repeat-y;
+  background: url(../../images/mypage/mypage_bg.gif) repeat-y;
 }
 
 .tb_t {

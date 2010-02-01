@@ -77,8 +77,8 @@ a:active { color: #ff0066; }
 body {
   width: 100%;
   height: 100%;
-  background: url("/images/common/body_bg.gif") repeat-x;
-  font-family: Verdana, Osaka, "?l?r ?o?S?V?b?N","MS PGothic", Sans-serif;
+  background: url("../../images/common/body_bg.gif") repeat-x;
+  font-family: Verdana, Osaka, "ＭＳ Ｐゴシック","MS PGothic", Sans-serif;
   font-size: 75%;
 }
 
@@ -103,7 +103,7 @@ body > #wrapper {
 
 #container {
   width: 955px;
-  background: #ffffff url("/images/common/container_bg.gif") repeat-y left 0;
+  background: #ffffff url("../../images/common/container_bg.gif") repeat-y left 0;
   margin-left: 5px;
   padding: 0 10px 10px 0;
 }
@@ -113,7 +113,7 @@ body > #wrapper {
   width: 970px;
   height: 70px;
   margin-bottom: 10px;
-  background: url("/images/common/header_bg.jpg") no-repeat;
+  background: url("../../images/common/header_bg.jpg") no-repeat;
 }
 
 #header h1 {
@@ -187,7 +187,7 @@ body > #wrapper {
 #bread_list li {
   display: inline;
   padding-left: 20px;
-  background: url("/images/common/gt.gif") no-repeat 6px center;
+  background: url("../../images/common/gt.gif") no-repeat 6px center;
 }
 
 #bread_list li.bread_top {
@@ -202,13 +202,13 @@ body > #wrapper {
   padding-left: 45px;
   font-size: 130%;
   font-weight: bold;
-  background: url(/images/common/title_bg.gif) no-repeat;
+  background: url(../../images/common/title_bg.gif) no-repeat;
   line-height: 43px;
 }
 
 /*------left side column------*/
 .side_box {
-  background: url("/images/common/side_bg_mid.gif") repeat-y;
+  background: url("../../images/common/side_bg_mid.gif") repeat-y;
 }
 
 #h3_t {
@@ -225,7 +225,7 @@ body > #wrapper {
   height: 2px;
   margin-bottom: 7px;
   border: 0 none;
-  background: url("/images/common/side_hr.gif") no-repeat;
+  background: url("../../images/common/side_hr.gif") no-repeat;
 }
 
 .side_hr hr {
@@ -253,7 +253,7 @@ body > #wrapper {
 
 /*---category list---*/
 #category_list_box {
-  background: url("/images/common/side_bg_mid.gif") repeat-y;
+  background: url("../../images/common/side_bg_mid.gif") repeat-y;
   padding: 10px 10px 5px;
 }
 
@@ -263,7 +263,7 @@ body > #wrapper {
 
 /*------right side column------*/
 .side_box_r {
-  background: url("/images/common/side_bg_mid.gif") repeat-y;
+  background: url("../../images/common/side_bg_mid.gif") repeat-y;
   padding: 6px 10px;
 }
 
@@ -296,7 +296,7 @@ body > #wrapper {
 }
 
 #remind {
-  background: url("/images/common/list_pink.gif") no-repeat;
+  background: url("../../images/common/list_pink.gif") no-repeat;
   margin-bottom: 5px;
   padding-left: 14px;
 }
@@ -319,18 +319,18 @@ body > #wrapper {
 /*----------information----------*/
 #info_box li {
   padding: 3px 0 3px 15px;
-  background: url("/images/common/list_pink.gif") no-repeat 0 6px;
+  background: url("../../images/common/list_pink.gif") no-repeat 0 6px;
   line-height: 120%;
 }
 
 /*----kuchikomi ranking-----*/
 #kuchikomi_box {
-  background: url("/images/common/side_bg_mid.gif") repeat-y;
+  background: url("../../images/common/side_bg_mid.gif") repeat-y;
   padding: 0 10px 6px;
 }
 
 #kuchikomi_box li {
-  background: url("/images/common/side_hr.gif") no-repeat 0 bottom;
+  background: url("../../images/common/side_hr.gif") no-repeat 0 bottom;
   padding: 5px 0;
 }
 
@@ -380,7 +380,7 @@ body > #wrapper {
   text-align: center;
   font-weight: bold;
   font-size: 110%;
-  background: url("/images/common/rank_t_bg.gif") no-repeat;
+  background: url("../../images/common/rank_t_bg.gif") no-repeat;
 }
 
 /*----recentry checked----*/
@@ -482,7 +482,7 @@ body > #wrapper {
   width: 970px;
   height: 88px;
   margin: -88px auto 0;
-  background: url("/images/common/footer_bg.gif");
+  background: url("../../images/common/footer_bg.gif");
 }
 
 #foot_l {

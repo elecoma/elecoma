@@ -60,7 +60,7 @@ end
   <%= hidden_field_tag "id", @id %>
   <div class="btn_box">
     <%= submit_tag "この内容で登録する", :class=>"btn", :confirm => "本当に登録しますか？" %>
-    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+    <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
     <input type="button" value="クリア" class="btn" onclick="fn_form_clear();">
-    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+    <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
   </div>

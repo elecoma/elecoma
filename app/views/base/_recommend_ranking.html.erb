@@ -5,7 +5,9 @@
     <%- @recommend_xmls.each_with_index do | rx, idx | -%>
       <li class="rank<%=h idx+1 %>">
         <%= link_to((product_image_tag(rx.recommend, :small, :class=>"rank_item")), {:controller => "/products", :action => "show", :id => (rx.recommend_id),:category_id => rx.recommend.category_id}) %>
-        <div class="rank_img"><img src="/images/top/rank<%=h idx+1 %>.gif" width="41" height="41" alt="人気商品第<%=h idx+1 %>位" /></div>
+        <div class="rank_img">
+          <%= image_tag("top/rank" + (idx + 1) + ".gif", :width => "41", :height => "41", :alt => "人気商品第" + (idx + 1) + "位") %>
+        </div>
         <div class="rank_t"><p><%= link_to_product rx.recommend -%></p></div>
       </li>
     <%- end -%>

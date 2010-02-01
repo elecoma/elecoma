@@ -2,14 +2,14 @@
   <%= stylesheet_link_tag "front/mypage" %>
 <% end %>
 
-<ol id="bread_list" class="m_btm"><li class="bread_top"><a href="/">トップページ</a></li><li><%= link_to "マイページ", :controller => :accounts, :action => :history_list %></li><li>お届け先一覧</li></ol>
+<ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ", :controller => :portal, :action => :show %></li><li><%= link_to "マイページ", :controller => :accounts, :action => :history_list %></li><li>お届け先一覧</li></ol>
 <h2 class="main_t">マイページ</h2>
 <div id="mypage" class="clearfix">
   <!-- マイメニュー -->
   <%= render :partial=> "user/navigation" %>
   <!-- お届け先設定 -->
   <div id="mypage_main">
-    <h3><img src="/images/mypage/mypage_t3.gif" width="535" height="44" alt="お届け先設定" /></h3>
+    <h3><%= image_tag("mypage/mypage_t3.gif", :width => "535", :height => "44", :alt => "お届け先設定") %></h3>
     <div class="mypage_box">
       <div><%= flash[:notice] %></div>
       <div><%= flash[:error] %></div>
@@ -42,6 +42,6 @@
         </table>
       <% end %>
     </div>
-    <div><img src="/images/mypage/mypage_btm.gif" width="535" height="5" alt="" /></div>
+    <div><%= image_tag("mypage/mypage_btm.gif", :width => "535", :height => "5", :alt => "") %></div>
   </div><!-- /mypage_main -->
 </div><!-- /mypage -->

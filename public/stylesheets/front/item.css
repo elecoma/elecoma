@@ -6,7 +6,7 @@
 }
 
 .main_box {
-  background: url(/images/common/box_bg.gif) repeat-y;
+  background: url(../../images/common/box_bg.gif) repeat-y;
 }
 
 /*------商品詳細-------*/
@@ -84,7 +84,7 @@
   height: 2px;
   width: 510px;
   margin: 10px 0;
-  background: url(/images/common/main_hr.gif) no-repeat;
+  background: url(../../images/common/main_hr.gif) no-repeat;
 }
 
 .description {
@@ -111,12 +111,12 @@
 
 /*------レコメンド-------*/
 #reco_box {
-  background: url(/images/item/reco_bg.gif) repeat-y;
+  background: url(../../images/item/reco_bg.gif) repeat-y;
   padding: 7px 0 5px;
 }
 
 #reco_box ul {
-  background: url(/images/item/reco_hr.gif) repeat-y 147px top;
+  background: url(../../images/item/reco_hr.gif) repeat-y 147px top;
 }
 
 #reco_box li {
@@ -162,7 +162,7 @@
 
 /*------クチコミ-------*/
 #kuchi_box {
-  background: url(/images/item/reco_bg.gif) repeat-y;
+  background: url(../../images/item/reco_bg.gif) repeat-y;
   padding: 10px 15px 5px;
 }
 
@@ -170,7 +170,7 @@
   width: 500px;
   margin-bottom: 7px;
   padding-bottom: 7px;
-  background: url(/images/common/main_hr.gif) no-repeat 0 bottom;
+  background: url(../../images/common/main_hr.gif) no-repeat 0 bottom;
 }
 
 #kuchi_box dt {

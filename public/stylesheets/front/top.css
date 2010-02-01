@@ -25,14 +25,14 @@ h2.clearfix span.more {
   width: 107px;
   height: 34px;
   padding-top: 16px;
-  background: url(/images/top/title_r.gif) no-repeat;
+  background: url(../../images/top/title_r.gif) no-repeat;
 }
 
 /*-------新着アイテム-------*/
 #new_item {
   width: 520px;
   padding: 0 5px 10px;
-  background: url(/images/top/top_bg.gif) repeat-y;
+  background: url(../../images/top/top_bg.gif) repeat-y;
 }
 
 #new_item li {
@@ -58,7 +58,7 @@ h2.clearfix span.more {
 #ranking {
   width: 509px;
   padding: 0 11px 10px 10px;
-  background: url(/images/top/top_bg.gif) repeat-y;
+  background: url(../../images/top/top_bg.gif) repeat-y;
 }
 
 .rank_item {
@@ -78,15 +78,15 @@ h2.clearfix span.more {
 }
 
 .rank1 {
-  background: url(/images/top/rank1_bg.gif) repeat-x;
+  background: url(../../images/top/rank1_bg.gif) repeat-x;
 }
 
 .rank2 {
-  background: url(/images/top/rank2_bg.gif) repeat-x;
+  background: url(../../images/top/rank2_bg.gif) repeat-x;
 }
 
 .rank3 {
-  background: url(/images/top/rank3_bg.gif) repeat-x;
+  background: url(../../images/top/rank3_bg.gif) repeat-x;
 }
 
 
@@ -127,7 +127,7 @@ h2.clearfix span.more {
 #reco_item {
   width: 510px;
   padding: 0 10px;
-  background: url(/images/top/top_bg.gif) repeat-y;
+  background: url(../../images/top/top_bg.gif) repeat-y;
 }
 
 #reco_item li {

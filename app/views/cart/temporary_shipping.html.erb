@@ -1,6 +1,7 @@
 <% content_for :head do %>
   <%= stylesheet_link_tag "front/cart" %>
   <%= javascript_include_tag :defaults %>
+  <%= javascript_include_tag js_url(:action => "application") %>
 <% end %>
 
 <h2 class="main_t">お客様情報入力</h2>
@@ -37,8 +38,8 @@
         <th>郵便番号<span class="must">※</span></th>
         <td>
           〒<%= f.text_field :zipcode01, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} -%>-<%= f.text_field :zipcode02, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} %>
-          <a href="http://search.post.japanpost.jp/zipcode/" target="_blank">郵便番号を調べる</a><br />
-          <input name="zipcode_input" value="住所自動入力" onclick="address_by_zip('temporary_customer_zipcode01','temporary_customer_zipcode02', null, 'temporary_customer_address_city', 'temporary_customer_address_detail', 'temporary_customer_prefecture_id', 'cart');" type="button" class="btn_s">
+          <%= link_to "郵便番号を調べる", "http://search.post.japanpost.jp/zipcode/", :target => "_blank" %><br />
+          <input name="zipcode_input" value="住所自動入力" onclick="address_by_zip('temporary_customer_zipcode01','temporary_customer_zipcode02', null, 'temporary_customer_address_city', 'temporary_customer_address_detail', 'temporary_customer_prefecture_id', 'cart', '<%=h ActionController::Base.relative_url_root %>');" type="button" class="btn_s">
           ※郵便番号を入力後、クリックしてください。
         </td>
       </tr>
@@ -114,8 +115,8 @@
         <th>郵便番号<span class="must">※</span></th>
         <td>
           〒<%= f.text_field :zipcode01, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} -%>-<%= f.text_field :zipcode02, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} %>
-          <a href="http://search.post.japanpost.jp/zipcode/" target="_blank">郵便番号を調べる</a><br />
-          <input name="zipcode_input" value="住所自動入力" onclick="address_by_zip('optional_address_zipcode01','optional_address_zipcode02', null, 'optional_address_address_city', 'optional_address_address_detail', 'optional_address_prefecture_id', 'cart');" type="button" class="btn_s">
+          <%= link_to "郵便番号を調べる", "http://search.post.japanpost.jp/zipcode/", :target => "_blank" %><br />
+          <input name="zipcode_input" value="住所自動入力" onclick="address_by_zip('optional_address_zipcode01','optional_address_zipcode02', null, 'optional_address_address_city', 'optional_address_address_detail', 'optional_address_prefecture_id', 'cart', '<%=h ActionController::Base.relative_url_root %>');" type="button" class="btn_s">
           ※郵便番号を入力後、クリックしてください。
         </td>
       </tr>

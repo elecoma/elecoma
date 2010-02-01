@@ -1,7 +1,7 @@
 @charset "utf-8";
 
 .main_box {
-  background: url(/images/common/box_bg.gif) repeat-y;
+  background: url(../../images/common/box_bg.gif) repeat-y;
 }
 
 /*------特集商品一覧説明文-------*/

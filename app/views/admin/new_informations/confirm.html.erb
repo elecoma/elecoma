@@ -19,7 +19,7 @@
     <%= f.hidden_field :id %>
     
     <%= f.submit "この内容で登録する", :class=>"btn" %>
-    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+    <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
   <% end %>
   <% form_for [:admin, @new_information], :url => {:action => (params[:id].blank? ? "new" : "edit")}, :html => {:method => "post"} do |f| %>
     <%= f.hidden_field :date %>
@@ -30,7 +30,7 @@
     <%= f.hidden_field :id %>
     
       <%= f.submit "戻る", :class=>"btn" %>
-      <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+      <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
   <% end %>
 </div>
 

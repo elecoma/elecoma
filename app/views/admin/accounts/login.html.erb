@@ -14,7 +14,7 @@
 
 <% form_tag :action=>:login do -%>
 <div id="login">
-<img src="/images/login_logo.png" width="240" height="71" alt="Elephant Commerce" class="login_logo" />
+  <%= image_tag("login_logo.png", :width => "240", :height => "71", :alt => "Elephant Commerce", :class => "login_logo") %>
 
 <p class="login_notice"><%= flash[:notice] %><%= flash[:error] %></p>
 <table class="login_table">

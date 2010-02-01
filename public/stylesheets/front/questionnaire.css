@@ -8,7 +8,7 @@
 
 .main_t {
   width: 690px;
-  background: url(/images/common/main_t_l.gif) no-repeat;
+  background: url(../../images/common/main_t_l.gif) no-repeat;
 }
 
 .error_mes {
@@ -29,7 +29,7 @@
 
 .btn_s {
   height: 22px;
-  background: url(/images/btn_s.gif) repeat-x;
+  background: url(../../images/btn_s.gif) repeat-x;
   cursor: pointer;
 }
 

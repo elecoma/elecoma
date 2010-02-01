@@ -12,7 +12,7 @@
 
 <%= compound_title_tag(['K&B style', @product_name, @category_name, @campaign_name]) %>
 <%= javascript_include_tag 'sorry' %>
-<%= javascript_include_tag 'treemenu' %>
+<%= javascript_include_tag js_url(:action => "treemenu") %>
 <%= javascript_include_tag 'rollover' %>
 <%= stylesheet_link_tag "front/common" %>
 <%= yield :head -%>
@@ -51,7 +51,7 @@
     <address>Copyright (c) 2000-2009 K&amp;Bstyle CO.LTD. All Rights Reserved.</address>
   </div>
   <div id="foot_r">
-    <a href="#header"><img width="79" height="24" alt="page top" src="/images/common/pagetop_btn.gif"/></a>
+    <a href="#header"><%= image_tag("common/pagetop_btn.gif", :width => "79", :height => "24", :alt => "page top") %></a>
   </div>
 </div><!-- /footer -->
 </body>

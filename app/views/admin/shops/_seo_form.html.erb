@@ -4,7 +4,7 @@
 <% @seos.each_with_index do | seo, idx | %>
   <% form_tag :action => "seo_update" do%>
     <% fields_for seo do | f | %>
-      <h3><%= Seo::TYPE_NAMES[idx]%><a href="#" id="switch<%=idx%>" style="color:#ffff99" onClick="fnDispChange('disp<%=idx%>', 'switch<%=idx%>', 'disp_flg<%=idx%>');"> >> 非表示</a></h3>
+      <h3><%= Seo::TYPE_NAMES[idx]%><a href="#" id="switch<%=idx%>" style="color:#ffff99" onClick="fnDispChange('disp<%=idx%>', 'switch<%=idx%>', 'disp_flg<%=idx%>');"> &gt;&gt; 非表示</a></h3>
       <div id="disp<%=idx%>" style="display:">
         <table cellspacing="1" class="data2">
           <tr>
@@ -23,7 +23,7 @@
         <%= f.hidden_field :page_type %>
         <div class="btn_box">
           <%= submit_tag "この内容で登録する", :onclick => "return #{confirm_javascript_function("登録しても宜しいですか")}", :class => "btn" %>
-          <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+          <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
         </div>
       </div>
       <div class="clearfix" style="padding-bottom:10px;"></div>

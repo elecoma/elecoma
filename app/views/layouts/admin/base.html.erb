@@ -6,8 +6,9 @@
     <title><%= @title || "管理画面" %></title>
     <%= javascript_include_tag :defaults %>
     <%= javascript_include_tag "admin/common" %>
-    <%= javascript_include_tag "treemenu" %>
+    <%= javascript_include_tag js_url(:action => "treemenu") %>
     <%= javascript_include_tag "rollover" %>
+    <%= javascript_include_tag js_url(:action => "application") %>
     <%= stylesheet_link_tag "admin" %>
     <%= yield :head -%>
   </head>
@@ -15,18 +16,18 @@
 <div id="wrapper" class="clearfix">
   <div id="header" class="clearfix"><!-- ヘッダー -->
     <div id="head_l">
-      <h1><a href="/admin/home"><img src="/images/logo.gif" width="169" height="50" alt="ECパッケージ管理画面" /></a></h1>
+      <h1><%= link_to image_tag("logo.gif", :width => "169", :height => "50", :alt => "ECパッケージ管理画面"), :controller => "home", :action => "index" %></h1>
     </div>
     <div id="head_m" class="clearfix">
       <ul id="con_menu" class="clearfix">
-        <li><a href="/admin/shops" id="shop"><img src="/images/store_btn.gif" width="122" height="51" alt="店舗管理" class="hoverImg" /></a></li>
-        <li><a href="/admin/products" id="product"><img src="/images/goods_btn.gif" width="122" height="51" alt="商品管理" class="hoverImg" /></a></li>
+        <li><%= link_to image_tag("store_btn.gif", :width => "122", :height => "51", :alt => "店舗管理", :class => "hoverImg"), {:controller => "shops", :action => "index"}, :id => "shop" %></li>
+        <li><%= link_to image_tag("goods_btn.gif", :width => "122", :height => "51", :alt => "商品管理", :class => "hoverImg"), {:controller => "products", :action => "index"}, :id => "product" %></li>
     <% if @system_supplier_use_flag %>
-        <li><a href="/admin/suppliers" id="depot"><img src="/images/order_btn.gif" width="122" height="51" alt="発注出荷管理" class="hoverImg" /></a></li>
+      <li><%= link_to image_tag("order_btn.gif", :width => "122", :height => "51", :alt => "発注出荷管理", :class => "hoverImg"), {:controller => "suppliers", :action => "index"}, :id => "depot" %></li>
 	<%else%>
-		<li><a href="/admin/stock_in" id="depot"><img src="/images/order_btn.gif" width="122" height="51" alt="発注出荷管理" class="hoverImg" /></a></li>
+      <li><%= link_to image_tag("order_btn.gif", :width => "122", :height => "51", :alt => "発注出荷管理", :class => "hoverImg"), {:controller => "stock_in", :action => "index"}, :id => "depot" %></li>
 	<%end%>	
-        <li><a href="/"><img src="/images/site_btn.gif" width="122" height="51" alt="サイトを表示" class="hoverImg" /></a></li>
+  <li><%= link_to image_tag("site_btn.gif", :width => "122", :height => "51", :alt => "サイトを表示", :class => "hoverImg"), {:controller => "/portal", :action => "show"} %></li>
       </ul>
       <div id="head_r" class="clearfix">
         <p id="user_name"><a href="#"><%=h session[:admin_user].name %></a>&nbsp様</p>

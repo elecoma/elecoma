@@ -21,7 +21,7 @@
   <p>&gt;&gt;検索結果一覧&nbsp;<%=@products.total_entries %>件&nbsp;が該当しました</p>
   <div class="btn_box space20_bottom">
     <%= submit_tag 'CSV DOWNLOAD', :class=>"btn" %>
-    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+    <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
   </div>
 <% end %>
 <table class="data2 clear" cellspacing="1">

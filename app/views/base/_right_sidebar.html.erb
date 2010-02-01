@@ -46,16 +46,16 @@
 	<ol>
 	  <% @recommend_xmls.each_with_index do | recommend_xml, i | %>
 	   <%- rank = i + 1 -%>
-	   <%- img_src = "/images/common/kuchi_0"+rank.to_s+".gif" -%>
+	   <%- img_src = "common/kuchi_0"+rank.to_s+".gif" -%>
 	   <%- img_alt = "人気商品ランキング"+rank.to_s+"位" -%>
 		  <li>
-		    <div class="kuchi_img"><img src='<%=img_src%>' width="35" height="36" alt='<%=img_alt%>' /></div><div class="kuchi_t"><p><%= link_to_product recommend_xml.recommend, "#{recommend_xml.name}" %></p></div>
+      <div class="kuchi_img"><%= image_tag(img_src, :width => "35", :height => "36", :alt => img_alt) %></div><div class="kuchi_t"><p><%= link_to_product recommend_xml.recommend, "#{recommend_xml.name}" %></p></div>
 		    <p class="kuchi_txt"><%=h recommend_xml.recommend.introduction%></p>
 		  </li>
 	  <% end %>
 	</ol>
 	</div>
-	<div class="top_box_btm"><img src="/images/common/side_bg_btm.gif" width="200" height="5" alt="" /></div>
+  <div class="top_box_btm"><%= image_tag("common/side_bg_btm.gif", :width => "200", :height => "5", :alt => "") %></div>
 	<% end %>
 	<% end %>
 

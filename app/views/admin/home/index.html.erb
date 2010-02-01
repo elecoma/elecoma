@@ -3,13 +3,13 @@
 <div id="main"><!-- メイン -->
   <div id="category" class="clearfix"><!-- カテゴリ選択 -->
     <p id="category_info">編集したいカテゴリをクリックして下さい。</p>
-    <a href="/admin/shops"><img src="/images/store_btn_l.gif" width="222" height="138" alt="店舗管理" /></a>
-    <a href="/admin/products"><img src="/images/goods_btn_l.gif" width="222" height="138" alt="商品管理" id="category_img" /></a>
+    <%= link_to image_tag("store_btn_l.gif", :width => "222", :height => "138", :alt => "店舗管理"), :controller => "shops", :action => "index" %>
+    <%= link_to image_tag("goods_btn_l.gif", :width => "222", :height => "138", :alt => "商品管理", :id => "category_img"), :controller => "products", :action => "index" %>
     <% if @system_supplier_use_flag %>
-	<a href="/admin/suppliers"><img src="/images/order_btn_l.gif" width="222" height="138" alt="発注・出荷管理" /></a>
-	<%else%>
-	<a href="/admin/stock_in"><img src="/images/order_btn_l.gif" width="222" height="138" alt="発注・出荷管理" /></a>
-	<%end%>
+      <%= link_to image_tag("order_btn_l.gif", :width => "222", :height => "138", :alt => "発注・出荷管理"), :controller => "suppliers", :action => "index" %>
+	  <%else%>
+      <%= link_to image_tag("order_btn_l.gif", :width => "222", :height => "138", :alt => "発注・出荷管理"), :controller => "stock_in", :action => "index" %>
+	  <%end%>
   </div><!-- /カテゴリ選択 -->
   <%= flash[:notice] %>
   <h2>ショップの状況</h2>

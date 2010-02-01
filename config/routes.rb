@@ -77,6 +77,9 @@ ActionController::Routing::Routes.draw do |map|
   # my page
   map.connect 'accounts', :controller => 'accounts', :action => 'history'
 
+  # javascript
+  map.js 'js/:action.js', :controller => 'javascript'
+
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
 end

@@ -2,12 +2,13 @@
   <%= stylesheet_link_tag "front/cart" %>
   <%= javascript_include_tag :defaults %>
   <%= javascript_include_tag 'cart_purchase' %>
+  <%= javascript_include_tag js_url(:action => "application") %>
 <% end %>
 
 <h2 class="main_t">ショッピングカート</h2>
 <div id="cart">
 <!-- ショッピングカート -->
-  <img src="/images/cart/route03.gif" width="583" height="31" alt="ご購入の流れ" class="route" />
+  <%= image_tag("cart/route03.gif", :width => "583", :height => "31", :alt => "ご購入の流れ", :class => "route") %>
   <span class="must"><%= flash[:notice] %></span>
   <span class="must"><%= flash[:error] %></span>
   <%= @order_delivery && error_messages_for(:order_delivery) %>
@@ -15,7 +16,7 @@
   <div id="pt_box" class="clearfix">
     <!-- お支払い方法 -->
     <dl id="payment">
-      <dt><img src="/images/cart/cart_t1.gif" width="260" height="49" alt="お支払い方法" /></dt>
+      <dt><%= image_tag("cart/cart_t1.gif", :width => "260", :height => "49", :alt => "お支払い方法") %></dt>
       <dd>
         <p>支払方法をお選びください。</p>
         <ul>
@@ -31,7 +32,7 @@
 
     <!-- お届け時間 -->
     <dl id="time">
-      <dt><img src="/images/cart/cart_t2.gif" width="260" height="49" alt="お届け時間" /></dt>
+      <dt><%= image_tag("cart/cart_t2.gif", :width => "260", :height => "49", :alt => "お届け時間") %></dt>
       <dd>
         <p>ご希望の時間帯をお選びください。</p>
    		<span class="must">（※お支払方法を選択しないと、時間帯をお選びいただけません。）</span><br />
@@ -42,7 +43,7 @@
           </select>
       </dd>
     </dl>
-    <div><img src="/images/cart/cart_btm.gif" width="545" height="5" alt="" /></div>
+    <div><%= image_tag("cart/cart_btm.gif", :width => "545", :height => "5", :alt => "") %></div>
   </div><!-- /pt_box -->
 
    <% if @login_customer %>

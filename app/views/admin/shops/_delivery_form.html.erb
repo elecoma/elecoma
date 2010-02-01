@@ -68,8 +68,8 @@ Event.observe(window, 'load', function() {
 </table>
 <div class="btn_box">
   <%= button_to_function " 前のページに戻る ", "form.action = '#{url_for :action => 'delivery_list'}'; form.submit()", :onclick => true, :class=>"btn" %>
-  <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+  <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
   <%= submit_tag "この内容で登録する", :class=>"btn" %>
-  <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+  <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
 </div>
 

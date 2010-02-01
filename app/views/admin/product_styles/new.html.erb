@@ -29,13 +29,13 @@
       <div class="btn_box">
         <%if request.referer =~ /(admin\/products\/complete)/%>
           <%= button_to_function "検索に戻る ", "form.action = '#{url_for admin_products_index_path}'; form.submit()", :onclick => true, :class=>"btn" %>
-          <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+          <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
         <%else %>
           <%= button_to_function '戻る', 'history.back()', :class=>"btn" %>
-          <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+          <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
         <%end %>
         <%= submit_to_remote '', "表示する", :update => "style_create", :url => {:action => "create_form", :id => params[:id] || params[:product_id] }, :submit => "setting", :html => {:class=>"btn"} %>
-        <img class="btn_side" width="6" height="34" src="/images/btn_side.gif">
+        <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
       </div>
     <% end %>
   <% end %>

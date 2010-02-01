@@ -3,13 +3,13 @@
   <%= javascript_include_tag 'login' %>
 <% end %>
 
-<ol id="bread_list" class="m_btm"><li class="bread_top"><a href="/">トップページ</a></li><li>ログイン</li></ol>
+<ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ", :controller => :portal, :action => :show %></li><li>ログイン</li></ol>
 <h2 class="main_t">ログイン</h2>
 <p class="notice"><%=h flash[:notice] %></p>
 <div id="login_area">
   <!-- 会員の方 -->
   <dl id="member">
-    <dt><img src="/images/login/login_t1.gif" width="350" height="49" alt="会員の方" /></dt>
+    <dt><%= image_tag("login/login_t1.gif", :width => "350", :height => "49", :alt => "会員の方") %></dt>
     <dd>
     <p>会員の方はこちらからログインしてください。</p>
     <% form_for(:customer, :url => { :action => "login" } ) do |f| -%>
@@ -24,14 +24,14 @@
   </dl>
   <!-- 新規会員登録 -->
   <dl id="join">
-    <dt><img src="/images/login/login_t2.gif" width="350" height="49" alt="新規会員登録" /></dt>
+    <dt><%= image_tag("login/login_t2.gif", :width => "350", :height => "49", :alt => "新規会員登録") %></dt>
     <dd>
     <p>無料で新規登録ができます。<br /><br />
             会員登録をすると便利なMyページをご利用いただけます。また、ログインするだけで、毎回お名前や住所などを入力することなくスムーズにお買い物をお楽しみいただけます。</p>
     <%= link_to image_tag("/images/common/new_entry_btn.gif", :width=>"176", :height=>"30", :alt=>"新規会員登録", :class => "new_entry_btn"), {:controller => "accounts", :action => "kiyaku"} %>
     </dd>
   </dl>
-  <div><img src="/images/login/login_btm.gif" width="715" height="5" alt="" /></div>
+  <div><%= image_tag("login/login_btm.gif", :width => "715", :height => "5", :alt => "") %></div>
 </div><!-- /login_area -->
 <p class="cntr">会員登録をしないで商品を購入される方は、こちらより購入手続きが行えます。</p>
     <%= link_to image_tag("/images/common/purchase_btn.gif", :width=>"143", :height=>"30", :alt=>"購入手続きへ", :class => "cart_btn"), {:controller => "cart",:action=> "temporary_shipping"} %>

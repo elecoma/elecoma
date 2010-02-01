@@ -8,7 +8,7 @@
 
 .main_t {
   width: 690px;
-  background: url(/images/common/main_t_l.gif) no-repeat;
+  background: url(../../images/common/main_t_l.gif) no-repeat;
 }
 
 #cart {
@@ -65,7 +65,7 @@
 
 .cart_complete a {
   margin: 0 10px;
-  background: url(/images/common/list_pink.gif) no-repeat 0 6px;
+  background: url(../../images/common/list_pink.gif) no-repeat 0 6px;
   padding: 3px 0 3px 15px;
 }
 
@@ -157,7 +157,7 @@
 
 /*---Payment Delivery time---*/
 #pt_box {
-  background: url(/images/cart/cart_bg.gif) repeat-y;
+  background: url(../../images/cart/cart_bg.gif) repeat-y;
   width: 545px;
   margin: 0 auto 30px;
 }
