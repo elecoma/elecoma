@@ -12,4 +12,25 @@ class System < ActiveRecord::Base
   def validate_on_create
     errors.add "","複数のデータは登録できません。"  if System.count > 0
   end
+
+  def validate
+    if self.googleanalytics_use_flag
+      if self.googleanalytics_account_num.size == 0 && self.tracking_code.size == 0
+        errors.add(:googleanalytics_account_num, "を入力してください。")
+        errors.add(:tracking_code, "を入力してください。")
+      elsif self.tracking_code.size == 0
+        errors.add(:tracking_code, "を入力してください。")
+      elsif self.googleanalytics_account_num.size == 0
+        errors.add(:googleanalytics_account_num, "を入力してください。")
+      end
+    end
+    if self.googleanalytics_account_num.size > 0
+      if  self.googleanalytics_account_num =~ /[^A-Za-z0-9-]/
+        errors.add(:gooleanalytics_account_num, "を正しく入力してください")
+      end
+    end
+  end
+
+  validates_length_of :googleanalytics_account_num, :maximum=>20, :message=> 'は20文字以内で入力してください。'
+  validates_length_of :tracking_code, :maximum=>5000, :message=> 'は5000文字以内で入力してください。'
 end

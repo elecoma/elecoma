@@ -449,6 +449,8 @@ class Admin::ShopsController < Admin::BaseController
       #set_id_id = 1の場合、仕入先使用か使用しないかの設定
     when 1
       supplier_update
+    when 2
+      googleanalytics_update
     else
       #将来何か追加したい場合、ここで追加してください
       render :action => "settings"
@@ -501,6 +503,26 @@ class Admin::ShopsController < Admin::BaseController
       render :action => "settings"
       return
     end     
+  end
+
+  #GoogleAnalyticsを使用するかどうか設定
+  def googleanalytics_update
+    @system.attributes =  params[:system]
+    if @system.googleanalytics_use_flag
+        @system.tracking_code = @system.tracking_code.gsub(/__UserAccount__/, @system.googleanalytics_account_num)
+    end    
+    if @system.save
+      if @system.googleanalytics_use_flag
+        flash.now[:notice_google] = "GoogleAnalyticsを使用するように設定しました"
+        render :action => "settings"
+      else
+        flash.now[:notice_google] = "GoogleAnalyticsを使用しないように設定しました"
+        render :action => "settings"
+      end
+    else
+      flash.now[:error_google] = "設定に失敗しました"
+      render :action => "settings"
+    end
   end
 
 end

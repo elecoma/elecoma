@@ -1,17 +1,58 @@
+<% content_for :head do %>
+<%= javascript_include_tag 'admin/googleanalytics' %>
+<% end %>
+
 <%=h flash[:system_update] %>
 <%=h flash[:error] %>
-<%= error_messages_for :system %>
+<%= error_messages_for :shops %>
 <!--仕入先-->
 <% form_for :system, :url =>{:action => "settings_update"} do |f|%>
+<div>
+<h3>仕入先</h3>
 <table cellspacing="1" cellpadding="0" class="data" >
   <tr>
     <th>仕入先を使用しますか</th>
     <td><%= f.radio_button :supplier_use_flag , false%>使用しない	<%= f.radio_button :supplier_use_flag , true%>使用する</td>
   </tr>
 </table>
-<div class="btn_box">
-  <%= hidden_field_tag "set_id","1"%>	
+  <div class="btn_box">
+  <%= hidden_field_tag "set_id","1"%>
   <%= submit_tag "この内容で登録する", :onclick => "return #{confirm_javascript_function("登録しても宜しいですか")}", :class=>"btn" %>
   <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
+  </div>
+</div>
+<% end %>
+<div class="clearfix" style="padding-bottom:10px;"></div>
+<% form_for :system, :url =>{:action => "settings_update"} do |f|%>
+<%=h flash[:notice_google] %>
+<%=h flash[:error_google] %>
+<%= error_messages_for :system %>
+<div>
+<h3>Google&nbsp;Analytics</h3>
+<table cellspacing="1" cellpadding="0" class="data" >
+  <tr>
+    <th>GoogleAnalyticsを使用しますか</th>
+    <td><%= f.radio_button :googleanalytics_use_flag , false%>使用しない	<%= f.radio_button :googleanalytics_use_flag , true%>使用する</td>
+  </tr>
+  <tr>
+    <th>アカウント番号(UA-XXXXXX-X)</th>
+    <td><%= f.text_field :googleanalytics_account_num %>(20文字以内)</td>
+  </tr>
+  <tr>
+    <th>トラッキングコード</th>
+    <td>
+      <input type="button" value="同期" onclick="trackingCodeSynchronous(); return false;" class="btn_s" />
+      <input type="button" value="非同期" onclick="trackingCodeAsynchronous(); return false;" class="btn_s" />
+      <%= f.text_area :tracking_code, :cols => 70 %><br />
+      (5000文字以内)
+        <p class="req"><span class="pnt">※</span>登録すると、__UserAccount__にアカウント番号が入ります。</p>
+    </td>
+  </tr>
+</table>
+  <div class="btn_box">
+    <%= submit_tag "この内容で登録する", :onclick => "return #{confirm_javascript_function("登録しても宜しいですか")}", :class=>"btn" %>
+    <%= hidden_field_tag "set_id","2"%>
+    <img class="btn_side" width="6" height="34" src="/images/btn_side.gif" />
+  </div>
 </div>
 <% end %>

@@ -54,5 +54,10 @@
     <a href="#header"><%= image_tag("common/pagetop_btn.gif", :width => "79", :height => "24", :alt => "page top") %></a>
   </div>
 </div><!-- /footer -->
+<!--GoogleAnalytics トラッキングコード-->
+<% if @system.googleanalytics_use_flag %>
+<%= @system.tracking_code %>
+<% end %>
+<!--トラッキングコード end-->
 </body>
 </html>
