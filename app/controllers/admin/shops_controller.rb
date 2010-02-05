@@ -509,7 +509,7 @@ class Admin::ShopsController < Admin::BaseController
   def googleanalytics_update
     @system.attributes =  params[:system]
     if @system.googleanalytics_use_flag
-        @system.tracking_code = @system.tracking_code.gsub(/__UserAccount__/, @system.googleanalytics_account_num)
+        @system.tracking_code = @system.tracking_code.gsub(/UA-XXXXX-X/, @system.googleanalytics_account_num)
     end    
     if @system.save
       if @system.googleanalytics_use_flag

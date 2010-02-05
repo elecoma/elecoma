@@ -4,15 +4,15 @@ document.write(unescape(\"%3Cscript src='\" + gaJsHost + \"google-analytics.com/
 </script>\n\
 <script type=\"text/javascrip\">\n\
 try {\n\
-var pageTracker = _gat._getTracker(\"__UserAccount__\");\n\
+var pageTracker = _gat._getTracker(\"UA-XXXXX-X\");\n\
 pageTracker._trackPageview();\n\
 } catch(err) {}</script>"
 
 var asynch = "<script type=\"text/javascript\">\n\
 \n\
 var _gaq = _gaq || [];\n\
-_gaq.push(['_setAccount', '__UserAccount__']);\n\
-_gaq.push(['_trackPageview']\n\
+_gaq.push(['_setAccount', 'UA-XXXXX-X']);\n\
+_gaq.push(['_trackPageview']);\n\
 \n\
 (function() {\n\
 var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;\n\
