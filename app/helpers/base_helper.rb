@@ -64,7 +64,7 @@ module BaseHelper
       return_str += ' '
     else
       return_str += "<li>"
-      return_str += "　"*depth + "<img src='" + ActionController::Base.relative_url_root + "/images/common/list_ore_s.gif'>　" unless image_flg
+      return_str += "　"*depth + "<img src='" + ActionController::Base.relative_url_root.to_s + "/images/common/list_ore_s.gif'>　" unless image_flg
       return_str += link_to_category category, type, image_flg
       return_str += "</li>"
     end
