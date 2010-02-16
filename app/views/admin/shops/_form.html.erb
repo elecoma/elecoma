@@ -23,7 +23,7 @@
   <tr>
     <th>郵便番号 <span class="pnt">※</span></th>
     <td><%= text_field "shop", "zipcode01", :size => "3"  %>-&nbsp;&nbsp;<%= text_field "shop", "zipcode02" , :size => "4" %>
-      <input name="zipcode_input" value="住所入力" class="btn_s" onclick="address_by_zip('shop_zipcode01','shop_zipcode02', 'shop_prefecture_id', 'shop_address_city', 'shop_address_detail', 'shop_prefecture_id', 'admin/shops', '<%=h ActionController::Base.relative_url_root %>');" type="button">
+      <input name="zipcode_input" value="住所入力" class="btn_s" onclick="address_by_zip('shop_zipcode01','shop_zipcode02', 'shop_prefecture_id', 'shop_address_city', 'shop_address_detail', 'shop_prefecture_id', 'admin/shops', '<%=h ActionController::Base.relative_url_root %>');" type="button" />
     </td>
   </tr>
   <tr>
