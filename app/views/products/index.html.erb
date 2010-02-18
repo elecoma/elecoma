@@ -10,7 +10,7 @@
     <h2 class="main_t"><%=h (@category.nil? ? "商品一覧" : @category.name) %></h2>
     <% unless @category.nil? or @category.resource_id.blank? %>
     <!--カテゴリ画像 -->
-    <%= view_resource_id @category.resource_id,{:width=>"530px",:height=>"213px",:class =>"m_btm",:alt=>@category.free_space}%>
+    <%= view_resource_id @category.resource_id,{:width=>"530px",:height=>"213px",:class =>"m_btm"} %>
     <% end %>
     <div><%= image_tag("common/box_bg_top.gif", :width => "530", :height => "5", :alt => "") %></div>
     <div id="main_search" class="main_box">
