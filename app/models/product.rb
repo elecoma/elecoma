@@ -170,7 +170,7 @@ class Product < ActiveRecord::Base
     search_list = []
     if search
       unless search.product_id.blank?
-        if search.product_id =~ /^\d*$/
+        if search.product_id.to_s =~ /^\d*$/
           if search.product_id.to_i < 2147483647
             search_list << ["products.id = ?", search.product_id.to_i]
           else

@@ -12,5 +12,5 @@ inquiry_test_id_1:
   email: "hoge@hoge.hoge"
   order_number: "11111111"
   kind: <%= Inquiry::GOODS %>
-  body: "テスト"
+  body: "Test"
 

@@ -70,7 +70,12 @@ describe CustomerSearchForm do
       @search_form.should_not be_valid
       @search_form.product_code = "PF001"
       @search_form.should be_valid 
-    end    
+    end
+
+    it "(BUG Check): 商品コード検索" do
+      @search_form.product_code = "TEST"
+      CustomerSearchForm.get_sql_condition(@search_form) #before bug fix, raise error
+    end
   end
   describe "その他" do
     it "CSVダウンロード" do

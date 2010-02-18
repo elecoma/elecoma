@@ -216,7 +216,7 @@ and d.id=t.order_delivery_id
     "and t.product_name like ? "
   end}
 #{if !condition.product_code.blank?
-    conditions << "%#{connection.product_code}%"
+    conditions << "%#{condition.product_code}%"
     "and t.product_code like ? "
   end}
 #{if !condition.category_id.blank?

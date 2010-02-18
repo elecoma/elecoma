@@ -30,11 +30,14 @@ class Admin::ProductStylesController < Admin::BaseController
 
   def create
     set_product_styles
-
     if @save_flg
       @product.product_styles = @product_styles if @product.product_styles.empty?
       @product.have_product_style = true
       @product.save
+      # has_manyが正常に動かない時の対策
+      @product_styles.each do |ps|
+        ps.save
+      end
       flash.now[:notice] = "保存しました"
     else
       flash.now[:error] = "保存に失敗しました"
@@ -102,24 +105,25 @@ class Admin::ProductStylesController < Admin::BaseController
                                                    :conditions => ["style_category_id1 #{value[:style_category1].blank? ? "is" : "=" } :style_category_id1 and style_category_id2 #{value[:style_category2].blank? ? "is" : "=" } :style_category_id2 and product_id = :product_id",
                                                      {:style_category_id1 => value[:style_category1].blank? ? nil : value[:style_category1] , :style_category_id2 => value[:style_category2].blank? ? nil : value[:style_category2], :product_id => @product.id }])
             product_style = ProductStyle.new(:style_category_id1 => value[:style_category1],
-                                             :style_category_id2 => value[:style_category2])
+                                             :style_category_id2 => value[:style_category2], 
+                                             :product_id => @product.id)
           end
-        if product_style[:id]
-          product_style.update_attributes({:sell_price=>value[:sell_price], 
-                                           :code=>value[:code],
-                                           :manufacturer_id=>value[:manufacturer_id]})
-        else
-          [:sell_price, :code ,:manufacturer_id].each do |column|  
-            product_style[column] = value[column]
+          if product_style[:id]
+            product_style.update_attributes({:sell_price=>value[:sell_price], 
+                                             :code=>value[:code],
+                                             :manufacturer_id=>value[:manufacturer_id]})
+          else
+            [:sell_price, :code ,:manufacturer_id].each do |column|  
+              product_style[column] = value[column]
+            end
+            product_style[:position] = idx.to_i + 1
           end
-          product_style[:position] = idx.to_i + 1
-        end
-        @product_styles << product_style
-        unless product_style.valid?
-          @save_flg = false
-          @error_messages ||= ""
-          @error_messages += "#{idx.to_i + 1}行目が不正です。"
-        end
+          @product_styles << product_style
+          unless product_style.valid?
+            @save_flg = false
+            @error_messages ||= ""
+            @error_messages += "#{idx.to_i + 1}行目が不正です。"
+          end
         end
       end
     end

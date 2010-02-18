@@ -19,5 +19,11 @@
       <li><%= link_to '棚卸用CSV出力', {:controller => 'stock_csv', :action => 'index'} %></li>
       <li><%= link_to '作業履歴', {:controller => 'stock_histories', :action => 'index'} %></li>
     </ul>
+    <p><a href="JavaScript:onClick=Tree('display3');ImgC('img3');"><%= image_tag("menu_icon.gif", :width => "36", :height => "36", :alt => "", :id => "img3") %><span>返品処理</span></a></p>
+    <ul id="display3" style="display:block">
+      <li><%= link_to '返品登録', {:controller => 'return_items', :action => 'index'} %></li>
+      <li><%= link_to '返品履歴', {:controller => 'return_items', :action => 'history'} %></li>
+      <li><%= link_to '返品CSV', {:controller => 'return_items', :action => 'csv_index'} %></li>
+    </ul>
   </div><!-- /g_menu -->
 </div><!-- /サブメニュー -->

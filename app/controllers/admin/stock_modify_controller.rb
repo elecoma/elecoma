@@ -36,7 +36,7 @@ class Admin::StockModifyController < Admin::StockBaseController
       if broken_count < 0
         err << "不良在庫数"
       end
-      err_msg = err.join("、") + "が「-」になっています。ご確認ください。"
+      err_msg = err.join("、") + "は0以下に設定できません。ご確認ください。"
     end
     [result,err_msg]
   end

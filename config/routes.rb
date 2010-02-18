@@ -21,6 +21,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :categories
     admin.resources :styles
     admin.resources :style_categories
+    admin.resources :return_items, :collection => {:search => [:get], :history => [:get], :history_search => [:get], :new_csv => [:get], :csv_index => [:get], :csv => [:get]}
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #棚卸用CSV出力
 require 'csv'
 class Admin::StockCsvController < Admin::BaseController
@@ -5,29 +7,12 @@ class Admin::StockCsvController < Admin::BaseController
   caches_page :csv
 
   def index
-    dir = Pathname.new(page_cache_directory).join(params[:controller], 'csv')
-    unless FileTest.exist?(dir.to_s)
-      FileUtils.mkdir_p(dir.to_s)
+    pairs = CSVUtil.make_csv_index_pairs(params[:controller], page_cache_directory, page_cache_extension)
+    unless pairs
       @dates = []
       @urls = []
       return
     end
-
-    limit = 1.year.ago
-    pairs = dir.enum_for(:each_entry).map do |path|
-      dir.join(path)
-    end.select do |path|
-      path.extname == page_cache_extension or path.extname == '.csv'
-    end.map do |path|
-      path.basename(path.extname).to_s
-    end.map do |id|
-      [id, id.to_time(:local)]
-    end.select do |_, time|
-      time >= limit
-    end.sort_by do |_, time|
-      time
-    end.reverse
-
     @dates = pairs.map do |_, time|
       time
     end
@@ -45,7 +30,6 @@ class Admin::StockCsvController < Admin::BaseController
     if params[:id].blank?
       render :status => :not_found
     end
-    date = DateTime.now
     rows = ProductStyle.find(:all).map do |ps|
       a = []
       a << ps.code
@@ -56,22 +40,17 @@ class Admin::StockCsvController < Admin::BaseController
       a
     end
 
-    # CSV に吐く
-    f = StringIO.new('', 'w')
-    title = %w(商品コード 商品名 仕入先名 実在庫数 不良在庫数)
-
-    CSV::Writer.generate(f) do | writer |
-      writer << title
-      rows.each do |row|
-        writer << row
-      end
-    end
     name = params[:id]
     filename = '%s.csv' % name
+    title = %w(商品コード 商品名 仕入先名 実在庫数 不良在庫数)
+
+    f = CSVUtil.make_csv_string_with_cache(rows, title, params[:controller], page_cache_directory, filename, self.perform_caching)
     headers['Content-Type'] = "application/octet-stream; name=#{filename}"
     headers['Content-Disposition'] = "attachment; filename=#{filename}"
     render :text => Iconv.conv('cp932', 'UTF-8', f.string)    
   end
+  
+  private
 
   def url_for_date(date)
     url_for(:action => :csv, :id => date.strftime('%Y%m%d_%H%M%S'),:format => "csv")

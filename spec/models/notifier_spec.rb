@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Notifier do
@@ -73,10 +75,11 @@ describe Notifier do
     notifier.body.toutf8.index(order.code).should_not be_nil    
   end
   it "メールマガ（テキストメール）" do
-    customer = customers(:valid_customer)
+    customer = customers(:reminder_customer)
     subject = "テストコードです（テキスト）"
     replace = "\{name\}"
-    body = "メールマガ（テキストメール）"
+    #body = "メールマガ（テキストメール）"
+    body = "This is test mail (TEXT) "
     notifier = Notifier.create_text_mailmagazine(customer,(replace+body),subject)
     notifier.subject.toutf8.should == subject
     notifier.to.should == [customer.email]
@@ -84,11 +87,12 @@ describe Notifier do
     notifier.body.toutf8.index(customer.full_name + body).should_not be_nil    
   end
   it "メールマガ（HTMLメール）" do
-    customer = customers(:valid_customer)
+    customer = customers(:reminder_customer)
     subject = "テストコードです（HTML）"
     replace = "\{name\}"
-    body = "メールマガ（HTMLメール）"
-    notifier = Notifier.create_html_mailmagazine(customer,(replace+body),subject)
+    #body = "メールマガ（HTMLメール）"
+    body = "This is test mail (HTML) "
+    notifier = Notifier.create_html_mailmagazine(customer,(replace+body.toutf8),subject)
     notifier.subject.toutf8.should == subject
     notifier.to.should == [customer.email]
     notifier.from.should == [@shop.mail_sender]

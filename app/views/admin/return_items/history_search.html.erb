@@ -1,0 +1,47 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+  <h2>返品履歴</h2>
+  <%=h flash[:notice] %>
+  <%=h flash[:error] %>
+  <%= error_messages_for :condition %>
+  <% form_for :condition, :url => {:action => 'history_search'}, :html => {:method => :get} do |f| %>
+    <%= render :partial => "history_search", :locals=>{:f => f}%>
+  <% end %>
+  <br />
+
+  <p>&gt;&gt;検索結果一覧&nbsp;<%=@return_items.total_entries %>件&nbsp;が該当しました。</p><br/>
+  <table class="data2 clear" cellspacing="1">
+    <tr>
+      <th>商品ID</th>
+      <th>商品コード</th>
+      <th>商品名</th>
+      <th>規格名称</th>
+      <th>商品型番</th>
+      <th>返品数</th>
+      <th>返品日時</th>
+      <th>返品登録</th>
+    </tr>
+    <%unless @return_items.blank?%>       
+      <% @return_items.each do | ri | %>
+        <tr>
+          <td><%= h ri.product_id %></td>
+          <td><%= h ri.product_style.code %></td>
+          <td><%= h ri.product_style.product_name %></td>
+          <td><%= h ri.product_style.style_name %></td>
+          <td><%= h ri.product_style.manufacturer_id %></td>
+          <td><%= number_with_delimiter(ri.returned_count.to_i) %></td>
+          <td><%= h ri.returned_at %></td>
+          <td class="t_center">
+            <%= link_to "編集", :action => "edit", :id => ri.id %> / 
+            <%= link_to "削除", {:action => "destroy", :id => ri.id}, :confirm => "本当に削除しますか？", :method => :delete %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </table>
+  <%= will_paginate @return_items %>
+</div><!-- /メイン -->
+
+

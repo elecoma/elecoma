@@ -24,7 +24,7 @@ class Admin::StockInController < Admin::StockBaseController
     if actual_count >= 0
       result = true
     else
-      err_msg = "実在庫数が「-」になっています。ご確認ください"
+      err_msg = "実在庫数は0以下に設定できません。ご確認ください。"
     end
     [result,err_msg]
   end

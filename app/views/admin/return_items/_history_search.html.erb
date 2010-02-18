@@ -1,0 +1,40 @@
+<table class="data" cellspacing="1">
+  <tr>
+    <th>商品ID</th>
+    <td><%= f.text_field :product_id, :class => "data_m" %></td>
+  </tr>
+  <tr>
+    <th>商品コード</th>
+    <td><%= f.text_field :code, :class => "data_m" %></td>
+  </tr>
+  <tr>
+    <th>商品名</th>
+    <td><%= f.text_field :name, :class => "data_m" %></td>
+  </tr>
+  <tr>
+    <th>商品型番</th>
+    <td><%= f.text_field :manufacturer, :class => "data_m" %></td>
+  </tr>
+  <tr>
+    <th>操作者</th>
+    <td><% operators = AdminUser.find(:all, :order => 'id') %>
+      <%= f.select :operator, operators.map{|o| [o.name, o.id.to_s]}, :include_blank => true %>
+    </td>
+  </tr>
+  <tr>
+    <th>返品登録日</th>
+    <td>
+      <%= f.date_select :returned_at_from, :use_month_numbers => true, :include_blank => true %>〜
+      <%= f.date_select :returned_at_to, :use_month_numbers => true, :include_blank => true %>
+    </td>
+  </tr>
+  <tr>
+    <td class="submit" colspan="4">
+      検索結果表示件数
+      <%= select_tag "condition[per_page]", options_for_select((10..100).step(10).map(&:to_s)) %>
+      件
+      <%= submit_tag "この条件で検索する", :class => "btn_s" %>
+    </td>
+  </tr>
+</table>
+    
