@@ -1,3 +1,27 @@
+2010-02-18  Taro Matsuzawa  <tmatsuzawa _at_ kbmj.com>
+
+	* 1.0.4 Release
+	* [管理画面] 仕入先マスタ機能を追加
+	* [管理画面] 在庫管理機能を追加
+	* [管理画面] 返品処理機能を追加
+	* [管理画面] Google Analytics簡単導入機能を追加
+	* [bugfix] #20503 メニュー画像（＋－）表示の修正
+	* [bugfix] モバイルトップページにheaderタグを追加
+	* [bugfix] カテゴリ実装構造を調整
+	* [bugfix] order更新により配送料費用などが再計算されるバグ修正
+	* [一般画面] Mobile Deviceを利用せずに、JPMobileを利用するよう修正
+	* [bugfix] 電話番号最大桁数チェック変更
+	* [bugfix] #20504 GETアクセスがされないようにパンくずリストを削除
+	* [bugfix] 明示的なトランザクションを発生させるように修正
+	* [bugfix] #20505 管理画面より特定商取引法を登録しないと利用者側でエラー
+	* [bugfix] #20506 初回のSHOPマスタ登録時にエラー
+	* [bugfix] 絶対パスに依存しないよう修正(webroarにて動作確認)
+	* [bugfix] HTML Validateが通らない箇所を修正
+	* [一版画面] モバイルで横の大きさを固定にしている箇所を解除
+	* [bugfix] テストケースでいくつか動かなくなっている箇所を修正
+	* [bugfix] CustomerSearchFormで商品コードを検索するとエラーになる件を修正
+	* [bugfix] 商品を更新した際に規格が正しく登録できない問題を修正
+
 2010-01-06  Taro Matsuzawa  <tmatsuzawa _at_ kbmj.com>
 
 	* 1.0.3 Release
@@ -8,7 +32,7 @@
 	* [管理画面] メールマガジン処理をcronで動かせるように修正
 	* [bugfix] #9, #10, #11, #13, #19, #20, #21, #23, #24, #25
 	* [bugfix] IE8で管理側ログイン画面が表示できない問題を修正
-	
+
 2009-12-15  Taro Matsuzawa  <tmatsuzawa _at_ kbmj.com>
 
 	* 1.0.2 Release
