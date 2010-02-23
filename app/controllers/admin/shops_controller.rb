@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Admin::ShopsController < Admin::BaseController
   before_filter :admin_permission_check_shop, :only => [:index, :update]
   before_filter :admin_permission_check_commerce_low,
@@ -11,6 +12,7 @@ class Admin::ShopsController < Admin::BaseController
   before_filter :admin_permission_check_member_rule,
     :only => [:kiyaku_index, :kiyaku_create, :kiyaku_update, :destroy, :sort]
   before_filter :admin_permission_check_privacy, :only => [:privacy, :privacy_update]
+  before_filter :admin_permission_check_setting, :only => [:settings, :settings_update]
 
   def index
     @shop = Shop.find(:first)
