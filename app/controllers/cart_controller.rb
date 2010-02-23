@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'timeout'
 require 'open-uri'
 class CartController < BaseController
@@ -422,6 +423,7 @@ class CartController < BaseController
       return
     end
     @recommend_buys = Recommend.recommend_get(params[:ids][0], Recommend::TYPE_BUY)
+    @shop = Shop.find(:first)
     render :action => 'complete'
   end
 
