@@ -1,0 +1,13 @@
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascrip">
+try {
+var pageTracker = _gat._getTracker("<%= @system.googleanalytics_account_num %>");
+pageTracker._trackPageview();
+<% unless flash[:googleanalytics_ec].nil? %>
+  <%= flash[:googleanalytics_ec].sync %>
+<% end %>
+} catch(err) {}
+</script>

@@ -9,19 +9,24 @@ class System < ActiveRecord::Base
   # カタカナに一致する正規表現
   KATAKANA_PATTERN = /^(?:\xE3\x82[\xA1-\xBF]|\xE3\x83[\x80-\xB6\xBC])*$/
 
+  #googleanalytics（トラッキングコード）の同期・非同期の区別
+  GA_SELECT_SYNCH = 0
+  GA_SELECT_ASYNCH = 1
+  GA_SELECT_MANUAL = 2
+
   def validate_on_create
     errors.add "","複数のデータは登録できません。"  if System.count > 0
   end
 
   def validate
     if self.googleanalytics_use_flag
-      if self.googleanalytics_account_num.size == 0 && self.tracking_code.size == 0
+      if self.googleanalytics_account_num.size == 0
         errors.add(:googleanalytics_account_num, "を入力してください。")
-        errors.add(:tracking_code, "を入力してください。")
-      elsif self.tracking_code.size == 0
-        errors.add(:tracking_code, "を入力してください。")
-      elsif self.googleanalytics_account_num.size == 0
-        errors.add(:googleanalytics_account_num, "を入力してください。")
+      end
+      if self.googleanalytics_select_code == GA_SELECT_MANUAL
+        if self.tracking_code.size == 0
+          errors.add(:tracking_code, "を入力してください。")
+        end
       end
     end
     if self.googleanalytics_account_num.size > 0

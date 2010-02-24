@@ -405,6 +405,7 @@ class CartController < BaseController
         flash[:order_id] = @order.id
         # メールを送る
         Notifier::deliver_buying_complete(@order)
+        flash[:googleanalytics_ec] = add_googleanalytics_ec(@order, @order_delivery, @order_details)
         @carts.clear
       end
     rescue => e
@@ -648,4 +649,33 @@ class CartController < BaseController
     @optional_address.address_city = order_delivery.deliv_address_city
     @optional_address.address_detail = order_delivery.deliv_address_detail
   end
+
+  def add_googleanalytics_ec(order, delivery, details)
+    ecommerce = GoogleAnalyticsEcommerce.new
+    trans = GoogleAnalyticsTrans.new
+    trans.order_id = order.code
+    trans.affiliate = ""
+    trans.city = delivery.address_city
+    trans.country = "japan"
+    trans.state = delivery.prefecture.name
+    trans.shipping = delivery.deliv_fee.to_s
+    trans.tax = "0"
+    trans.total = delivery.total.to_s
+
+    details.each do | detail |
+      item = GoogleAnalyticsItem.new
+      item.order_id = order.code
+      item.category = detail.product_category.name
+      item.product_name = detail.product_name
+      item.price = detail.price.to_s
+      item.quantity = detail.quantity.to_s
+      item.sku = detail.product_style.manufacturer_id
+      ecommerce.add_item(item)
+    end
+
+    ecommerce.trans = trans
+    
+    flash[:googleanalytics_ec] = ecommerce
+  end
+
 end

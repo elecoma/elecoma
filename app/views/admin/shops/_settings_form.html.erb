@@ -39,10 +39,15 @@
     <td><%= f.text_field :googleanalytics_account_num %>(20文字以内)</td>
   </tr>
   <tr>
-    <th>トラッキングコード</th>
-    <td>
+    <th rowspan="3">トラッキングコード</th>
+  
+    <td><%= f.radio_button :googleanalytics_select_code , System::GA_SELECT_SYNCH %>同期&nbsp;
+        <%= f.radio_button :googleanalytics_select_code , System::GA_SELECT_ASYNCH %>非同期&nbsp;
+        <%= f.radio_button :googleanalytics_select_code , System::GA_SELECT_MANUAL %>手入力
+      <!-- コードの切替用ラジオボタン
       <input type="button" value="同期" onclick="trackingCodeSynchronous(); return false;" class="btn_s" />
       <input type="button" value="非同期" onclick="trackingCodeAsynchronous(); return false;" class="btn_s" />
+      ここまで　-->
       <%= f.text_area :tracking_code, :cols => 70 %><br />
       (5000文字以内)
         <p class="req"><span class="pnt">※</span>登録すると、UA-XXXXX-Xにアカウント番号が入ります。</p>

@@ -56,7 +56,14 @@
 </div><!-- /footer -->
 <!--GoogleAnalytics トラッキングコード-->
 <% if @system.googleanalytics_use_flag %>
-<%= @system.tracking_code %>
+  <%# @system.tracking_code %>
+  <% if @system.googleanalytics_select_code == System::GA_SELECT_SYNCH %>
+    <%= render :partial => '/base/googleanalytics_synchronous' %>
+  <% elsif @system.googleanalytics_select_code == System::GA_SELECT_ASYNCH %>
+    <%= render :partial => '/base/googleanalytics_asynchronous' %>
+  <% else %>
+    <%= @system.tracking_code %>
+  <% end %>
 <% end %>
 <!--トラッキングコード end-->
 </body>
