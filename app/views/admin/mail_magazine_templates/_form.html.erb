@@ -3,7 +3,7 @@
   <%= javascript_include_tag 'admin/mail_magazine' %>
 	<script type="text/javascript">
 	  function textTypeChange(value){
-      writeRichText('mail_magazine_template[body]','<%=h_apos @mail_magazine_template.body %>', 400, 690, true, false, value, "<%=h ActionController::relative_url_root + '/images/emoticons/' %>");
+      writeRichText('mail_magazine_template[body]','<%=h_apos @mail_magazine_template.body %>', 400, 690, true, false, value, "<%=h ActionController::Base.relative_url_root + '/images/emoticons/' %>");
 		}
 	  function toConfirm() {
 	  	if (document.getElementById('mail_magazine_template[body]').contentDocument != null) {
