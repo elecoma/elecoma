@@ -98,7 +98,7 @@ class AccountsController < BaseController
   def logout
     @login_customer.update_attributes(:cookie => nil) unless @login_customer.cookie.nil?
     session[:carts] = nil
-    set_login_customer(nil)
+    reset_session
     request.env["HTTP_REFERER"] ||= url_for(:controller=>:portal, :action=>:show)
     redirect_to :action => 'login'
   end

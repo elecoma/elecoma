@@ -113,8 +113,9 @@ class BaseController < ApplicationController
     keys.each{|k| saved[k] = session[k]}
 
     reset_session
-    session[:customer_id] = id
+
     keys.each{|k| session[k] = saved[k]}
+    session[:customer_id] = id
   end
 
   def reset_session_with_mobile
