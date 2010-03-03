@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe AccountsController do
@@ -905,20 +906,29 @@ describe AccountsController do
     session_customer.correct_password?('hogehoge').should be_true
   end
 
-  it "端末の種類が登録時と違うとログインできない" do
-    request.user_agent = 'Amaya/10.0'
-    customer = { "email"=>"user@docomo.ne.jp", "password"=>"docomo" }
-    post 'login', :customer => customer
-    response.should_not be_redirect
-  end
+#  it "端末の種類が登録時と違うとログインできない" do
+#    request.user_agent = 'Amaya/10.0'
+#    customer = { "email"=>"user@docomo.ne.jp", "password"=>"docomo" }
+#    post 'login', :customer => customer
+#    response.should_not be_redirect
+#  end
+#
+#  it "端末の種類が登録時と同じだとログインできる" do
+#    request.user_agent = 'DoCoMo/2.0 SH903i(c100;TB;W24H16)'
+#    customer = { "email"=>"user@docomo.ne.jp", "password"=>"docomo" }
+#    post 'login', :customer => customer
+#    flash[:error].should be_nil
+#    response.should be_redirect
+#  end
 
-  it "端末の種類が登録時と同じだとログインできる" do
-    request.user_agent = 'DoCoMo/2.0 SH903i(c100;TB;W24H16)'
+  it "端末の種類が登録時と違っていてもログインできる" do
+    request.user_agent = 'Amaya/10.0'
     customer = { "email"=>"user@docomo.ne.jp", "password"=>"docomo" }
     post 'login', :customer => customer
     flash[:error].should be_nil
     response.should be_redirect
   end
+
 
   it "ログイン前の買い物を取り込む" do
     carts = [carts(:cart_can_incriment)]

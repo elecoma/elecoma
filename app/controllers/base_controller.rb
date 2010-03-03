@@ -117,6 +117,12 @@ class BaseController < ApplicationController
     keys.each{|k| session[k] = saved[k]}
   end
 
+  def reset_session_with_mobile
+    reset_session_without_mobile
+    request.session_options[:id] = ActiveSupport::SecureRandom.hex(16)
+  end
+  alias_method_chain :reset_session, :mobile
+
   def set_headers
     if request.mobile? and request.mobile.is_a?(Jpmobile::Mobile::Docomo)
       headers["Content-Type"] = "application/xhtml+xml"
@@ -153,7 +159,4 @@ class BaseController < ApplicationController
     end
   end
 
-  def reset_session
-    session[:customer_id] = nil
-  end
 end

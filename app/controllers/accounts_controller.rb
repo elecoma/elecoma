@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AccountsController < BaseController
   before_filter :login_check, :except => [
     :activate, :kiyaku, :kiyaku_intro, :login, :logout, :reminder,
@@ -33,8 +34,9 @@ class AccountsController < BaseController
         return
       elsif customer.activate == Customer::KARITOUROKU
         flash.now[:notice] = '会員登録が完了していません。登録確認メールに書かれた URL にアクセスして会員登録を完了してください。'
-      elsif !customer.same_mobile_carrier?(request.mobile)
-        flash.now[:notice] = '登録時の端末でログインしてください。'
+      # ログインを携帯とPCに分けないようにする
+      #elsif !customer.same_mobile_carrier?(request.mobile)
+      #  flash.now[:notice] = '登録時の端末でログインしてください。'
       else
         Cart.transaction do
           set_login_customer(customer)
@@ -98,7 +100,7 @@ class AccountsController < BaseController
     session[:carts] = nil
     set_login_customer(nil)
     request.env["HTTP_REFERER"] ||= url_for(:controller=>:portal, :action=>:show)
-    redirect_to :back
+    redirect_to :action => 'login'
   end
 
   # モバイル専用規約入口

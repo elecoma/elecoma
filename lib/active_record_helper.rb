@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module ActiveRecordHelper
   def flatten_conditions(conditions, op = "and")
     return nil if conditions.empty?
@@ -57,7 +58,7 @@ module ActiveRecord #:nodoc:
     private
       def set_session(env, sid, session_data)
         Base.silence do
-          record = get_session_model(env, sid)
+          record = get_session_model(env, sid, session_data)
           record.data = session_data
           return false unless record.save
 
@@ -72,8 +73,8 @@ module ActiveRecord #:nodoc:
         return true
       end
 
-      def get_session_model(env, sid)
-        if env[ENV_SESSION_OPTIONS_KEY][:id].nil?
+      def get_session_model(env, sid, session_data = {})
+        if env[ENV_SESSION_OPTIONS_KEY][:id].nil? || !session_data.is_a?(SessionHash)
           env[SESSION_RECORD_KEY] = find_session(sid)
         else
           env[SESSION_RECORD_KEY] ||= find_session(sid)
