@@ -6,6 +6,7 @@
 	* [bugfix] インストール直後に店舗を登録するとエラーになる問題を修正
 	* [bugfix] Safariでログアウトができない問題を修正
 	* [bugfix] CSVでキャッシュコントロールを明示的に行わないよう修正
+	* [bugfix] 顧客検索時に最終購入日で正しく検索出来ない問題を修正
 	* [全般] MySQL対応コードを一部追加
 
 2010-02-18  Taro Matsuzawa  <tmatsuzawa _at_ kbmj.com>
