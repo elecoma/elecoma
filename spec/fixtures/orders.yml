@@ -38,6 +38,7 @@ for_recall:
   id: 9
   code: '0009'
   customer_id: 16
+  received_at: 2008-03-04 00:00:00
 
 # 受注集計用
 # 発送済み 8 月購入

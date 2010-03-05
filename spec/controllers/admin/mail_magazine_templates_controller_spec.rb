@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Admin::MailMagazineTemplatesController do
@@ -58,7 +59,8 @@ describe Admin::MailMagazineTemplatesController do
       post 'update', :id => @mail_magazine_template.id, :mail_magazine_template => @mail_magazine_template.attributes
       response.should redirect_to(:action => :index)
       assigns[:mail_magazine_template].body.should == @mail_magazine_template.body
-      assigns[:mail_magazine_template].attributes.should == MailMagazineTemplate.find(@mail_magazine_template.id).attributes
+      assigns[:mail_magazine_template].subject.should == @mail_magazine_template.subject
+      assigns[:mail_magazine_template].form.should == @mail_magazine_template.form
     end
 
     it "保存に失敗した場合" do

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Constant < ActiveRecord::Base
 
   acts_as_paranoid
@@ -11,7 +12,7 @@ class Constant < ActiveRecord::Base
   MOVEMENT_REASON = 5
 
   def self.list key
-    find(:all, :conditions => ['key=?', key], :order => 'position')
+    find(:all, :conditions => ['const_key=?', key], :order => 'position')
   end
 
   # options_for_select で使う

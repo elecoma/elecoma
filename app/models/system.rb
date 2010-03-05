@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class System < ActiveRecord::Base
 
   acts_as_paranoid
@@ -20,22 +21,21 @@ class System < ActiveRecord::Base
 
   def validate
     if self.googleanalytics_use_flag
-      if self.googleanalytics_account_num.size == 0
-        errors.add(:googleanalytics_account_num, "を入力してください。")
-      end
       if self.googleanalytics_select_code == GA_SELECT_MANUAL
-        if self.tracking_code.size == 0
+        if self.tracking_code.nil? || self.tracking_code.size == 0
           errors.add(:tracking_code, "を入力してください。")
         end
       end
-    end
-    if self.googleanalytics_account_num.size > 0
-      if  self.googleanalytics_account_num =~ /[^A-Za-z0-9-]/
-        errors.add(:gooleanalytics_account_num, "を正しく入力してください")
+      if self.googleanalytics_select_code != GA_SELECT_MANUAL
+        if self.googleanalytics_account_num.nil? || self.googleanalytics_account_num.size == 0
+          errors.add(:googleanalytics_account_num, "を入力してください")
+        elsif  self.googleanalytics_account_num =~ /[^A-Za-z0-9-]/
+          errors.add(:googleanalytics_account_num, "を正しく入力してください")
+        end
       end
     end
   end
 
-  validates_length_of :googleanalytics_account_num, :maximum=>20, :message=> 'は20文字以内で入力してください。'
-  validates_length_of :tracking_code, :maximum=>5000, :message=> 'は5000文字以内で入力してください。'
+  validates_length_of :googleanalytics_account_num, :maximum=>20, :allow_blank=>true, :message=> 'は20文字以内で入力してください。'
+  validates_length_of :tracking_code, :maximum=>5000, :allow_blank=>true, :message=> 'は5000文字以内で入力してください。'
 end

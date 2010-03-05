@@ -44,7 +44,7 @@ class Admin::StockCsvController < Admin::BaseController
     filename = '%s.csv' % name
     title = %w(商品コード 商品名 仕入先名 実在庫数 不良在庫数)
 
-    f = CSVUtil.make_csv_string_with_cache(rows, title, params[:controller], page_cache_directory, filename, self.perform_caching)
+    f = CSVUtil.make_csv_string(rows, title)
     headers['Content-Type'] = "application/octet-stream; name=#{filename}"
     headers['Content-Disposition'] = "attachment; filename=#{filename}"
     render :text => Iconv.conv('cp932', 'UTF-8', f.string)    

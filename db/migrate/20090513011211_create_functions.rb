@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateFunctions < ActiveRecord::Migration
   def self.up
     create_table :functions do |t|
@@ -14,7 +15,6 @@ class CreateFunctions < ActiveRecord::Migration
 
   def self.down
     remove_index :functions, :position
-    remove_index :functions, :login_id
     remove_index :functions, :deleted_at
     drop_table :functions
   end

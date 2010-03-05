@@ -40,10 +40,10 @@ class Order < ActiveRecord::Base
 
     if search
       unless search.customer_name.blank?
-        search_list << ["order_deliveries.family_name || order_deliveries.first_name like ?", "%#{search.customer_name}%"]
+        search_list << [MergeAdapterUtil.concat(["order_deliveries.family_name", "order_deliveries.first_name"]) + " like ?", "%#{search.customer_name}%"]
       end
       unless search.customer_name_kana.blank?
-        search_list << ["order_deliveries.family_name_kana || order_deliveries.first_name_kana like ?", "%#{search.customer_name_kana}%"]
+        search_list << [MergeAdapterUtil.concat(["order_deliveries.family_name_kana", "order_deliveries.first_name_kana"]) + " like ?", "%#{search.customer_name_kana}%"]
       end
       unless search.order_code_from.blank?
         search_list << ["orders.code >= ?", search.order_code_from]
@@ -105,7 +105,6 @@ class Order < ActiveRecord::Base
     end
     search_list << ['order_deliveries.sex in (?)', sex] unless sex.empty?
     search_list << ['order_deliveries.payment_id in (?)', payment_id] unless payment_id.empty?
-
     [search, search_list, sex, payment_id]
   end
 

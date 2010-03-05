@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateRecommendProducts < ActiveRecord::Migration
   def self.up
     create_table :recommend_products do |t|
@@ -9,7 +10,6 @@ class CreateRecommendProducts < ActiveRecord::Migration
       t.column :deleted_at, :datetime, :comment => '削除日'
     end
     add_index :recommend_products, :deleted_at
-    add_index :recommend_products, :description
     add_index :recommend_products, :position
     add_index :recommend_products, :product_id
   end
@@ -17,7 +17,6 @@ class CreateRecommendProducts < ActiveRecord::Migration
   def self.down
     remove_index :recommend_products, :product_id
     remove_index :recommend_products, :position
-    remove_index :recommend_products, :description
     remove_index :recommend_products, :deleted_at
     drop_table :recommend_products
   end

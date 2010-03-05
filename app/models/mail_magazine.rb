@@ -2,6 +2,7 @@ class MailMagazine < ActiveRecord::Base
   acts_as_paranoid
 
   def self.get_sql_select
+# to_char(c.birthday, 'MM') as birth_month,
 <<-EOS
 select
 c.id,
@@ -9,7 +10,7 @@ c.login_id,
 c.prefecture_id,
 c.sex,
 c.receive_mailmagazine,
-to_char(c.birthday, 'MM') as birth_month,
+#{MergeAdapterUtil.convert_time_to_mm('c.birthday')} as birth_month,
 c.family_name || c.first_name as name_kanji,
 c.family_name_kana || c.first_name_kana as name_kana,
 c.birthday,
@@ -137,12 +138,12 @@ and c.activate = 2
   to = condition.birthday_to
   unless from.blank? && to.blank?
     if !from.blank? && !to.blank?
-      "and (to_char(c.birthday,'YYYYMMDD') >= '#{from.strftime("%Y%m%d")}'
-      and to_char(c.birthday,'YYYYMMDD') <= '#{to.strftime("%Y%m%d")}')"
+      "and (#{MergeAdapterUtil.convert_time_to_yyyymmdd('c.birthday')} >= '#{from.strftime("%Y%m%d")}'
+      and #{MergeAdapterUtil.convert_time_to_yyyymmdd('c.birthday')} <= '#{to.strftime("%Y%m%d")}')"
     elsif !from.blank?
-      "and to_char(c.birthday,'YYYYMMDD') >= '#{from.strftime("%Y%m%d")}'"
+      "and #{MergeAdapterUtil.convert_time_to_yyyymmdd('c.birthday')} >= '#{from.strftime("%Y%m%d")}'"
     else
-      "and to_char(c.birthday,'YYYYMMDD') <= '#{to.strftime("%Y%m%d")}'"
+      "and #{MergeAdapterUtil.convert_time_to_yyyymmdd('c.birthday')} <= '#{to.strftime("%Y%m%d")}'"
     end
   end
 }
@@ -188,12 +189,12 @@ and c.activate = 2
   to = condition.updated_at_to
   unless from.blank? && to.blank?
     if !from.blank? && !to.blank?
-      "and (to_char(c.updated_at,'YYYYMMDD') >= '#{from.strftime("%Y%m%d")}'
-      and to_char(c.updated_at,'YYYYMMDD') <= '#{to.strftime("%Y%m%d")}')"
+      "and #{MergeAdapterUtil.convert_time_to_yyyymmdd('c.updated_at')} >= '#{from.strftime("%Y%m%d")}'
+      and #{MergeAdapterUtil.convert_time_to_yyyymmdd('c.updated_at')} <= '#{to.strftime("%Y%m%d")}')"
     elsif !from.blank?
-      "and to_char(c.updated_at,'YYYYMMDD') >= '#{from.strftime("%Y%m%d")}'"
+      "and #{MergeAdapterUtil.convert_time_to_yyyymmdd('c.updated_at')} >= '#{from.strftime("%Y%m%d")}'"
     else
-      "and to_char(c.updated_at,'YYYYMMDD') <= '#{to.strftime("%Y%m%d")}'"
+      "and #{MergeAdapterUtil.convert_time_to_yyyymmdd('c.updated_at')} <= '#{to.strftime("%Y%m%d")}'"
     end
   end
 }
@@ -202,12 +203,12 @@ and c.activate = 2
   to = condition.last_order_from
   unless from.blank? && to.blank?
     if !from.blank? && !to.blank?
-      "and (to_char(last_order_at,'YYYYMMDD') >= '#{from.strftime("%Y%m%d")}'
-      and to_char(last_order_at,'YYYYMMDD') <= '#{to.strftime("%Y%m%d")}')"
+      "and #{MergeAdapterUtil.convert_time_to_yyyymmdd('last_order_at')} >= '#{from.strftime("%Y%m%d")}'
+      and #{MergeAdapterUtil.convert_time_to_yyyymmdd('last_order_at')} <= '#{to.strftime("%Y%m%d")}')"
     elsif !from.blank?
-      "and to_char(last_order_at,'YYYYMMDD') >= '#{from.strftime("%Y%m%d")}'"
+      "and #{MergeAdapterUtil.convert_time_to_yyyymmdd('last_order_at')} >= '#{from.strftime("%Y%m%d")}'"
     else
-      "and to_char(last_order_at,'YYYYMMDD') <= '#{to.strftime("%Y%m%d")}'"
+      "and #{MergeAdapterUtil.convert_time_to_yyyymmdd('last_order_at')} <= '#{to.strftime("%Y%m%d")}'"
     end
   end
 }

@@ -48,7 +48,7 @@ ar_fixtures
 
 jpmobile
   git://github.com/darashi/jpmobile.git
-  rev: 36bbbd881d7536f9fa1fff66158c80ba8c4f7b54
+  rev: 256897e357eb48f3be61bdb207ca4eccb2c0d007
 
 jpmobile_emoticon_filter
   http://taslam-plugins.googlecode.com/svn/trunk/jpmobile_emoticon_filter/

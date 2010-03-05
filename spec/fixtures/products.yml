@@ -178,8 +178,8 @@ limited_in_sep:
 valid_product:
   id: 16
   name: コート
-  permit: t
-  no_limit_flag: f
+  permit: true
+  no_limit_flag: false
   introduction: テスト
   description: テスト
   price: 1000
@@ -187,7 +187,7 @@ valid_product:
   medium_resource_id: 69
   category_id: 16
   delivery_dates: 3
-  have_product_style: t
+  have_product_style: true
   sale_start_at: 2009-10-01 00:00:00
   sale_end_at: 2012-10-01 00:00:00
   public_start_at: 2009-10-01 00:00:00
@@ -201,8 +201,8 @@ valid_product:
 not_permit_product:
   id: 17
   name: シャツ
-  permit: f
-  no_limit_flag: f
+  permit: false
+  no_limit_flag: false
   introduction: テスト
   description: テスト
   price: 1000
@@ -210,7 +210,7 @@ not_permit_product:
   medium_resource_id: 69
   category_id: 1
   delivery_dates: 3
-  have_product_style: t
+  have_product_style: true
   sale_start_at: 2009-10-01 00:00:00
   sale_end_at: 2012-10-01 00:00:00
   public_start_at: 2009-10-01 00:00:00
@@ -220,8 +220,8 @@ not_permit_product:
 campaign_product:
   id: 18
   name: スカート
-  permit: t
-  no_limit_flag: f
+  permit: true
+  no_limit_flag: false
   introduction: テスト
   description: テスト
   price: 1000
@@ -229,7 +229,7 @@ campaign_product:
   medium_resource_id: 69
   category_id: 1
   delivery_dates: 3
-  have_product_style: t
+  have_product_style: true
   sale_start_at: 2009-10-01 00:00:00
   sale_end_at: 2012-10-01 00:00:00
   public_start_at: 2009-10-01 00:00:00
@@ -239,8 +239,8 @@ campaign_product:
 sell_stop_product:
   id: 19
   name: スカート（販売終了）
-  permit: t
-  no_limit_flag: f
+  permit: true
+  no_limit_flag: false
   introduction: テスト
   description: テスト
   price: 1000
@@ -248,7 +248,7 @@ sell_stop_product:
   medium_resource_id: 69
   category_id: 1
   delivery_dates: 3
-  have_product_style: t
+  have_product_style: true
   sale_start_at: 2009-10-01 00:00:00
   sale_end_at: 2009-10-30 00:00:00
   public_start_at: 2009-10-01 00:00:00
@@ -258,8 +258,8 @@ sell_stop_product:
 multi_styles_product:
   id: 20
   name: スカート（複数スタイル）
-  permit: t
-  no_limit_flag: f
+  permit: true
+  no_limit_flag: false
   introduction: テスト
   description: テスト
   price: 1000
@@ -267,7 +267,7 @@ multi_styles_product:
   medium_resource_id: 69
   category_id: 1
   delivery_dates: 3
-  have_product_style: t
+  have_product_style: true
   sale_start_at: 2009-10-01 00:00:00
   sale_end_at: 2012-10-30 00:00:00
   public_start_at: 2009-10-01 00:00:00
@@ -277,8 +277,8 @@ multi_styles_product:
 csv_upload_product_1:
   id: 21
   name: 下着
-  permit: f
-  no_limit_flag: f
+  permit: false
+  no_limit_flag: false
   introduction: テスト01
   description: テスト01
   key_word: ファッション
@@ -289,7 +289,7 @@ csv_upload_product_1:
   material: silk
   origin_country: japan
   delivery_dates: 3
-  have_product_style: t
+  have_product_style: true
   sale_start_at: 2009-10-01 00:00:00
   sale_end_at: 2012-10-30 00:00:00
   public_start_at: 2009-10-01 00:00:00
@@ -298,8 +298,8 @@ csv_upload_product_1:
 csv_upload_product_2:
   id: 22
   name: ロングコート
-  permit: t
-  no_limit_flag: f
+  permit: true
+  no_limit_flag: false
   introduction: テスト02
   description: テスト02
   key_word: ファッション
@@ -308,7 +308,7 @@ csv_upload_product_2:
   medium_resource_id: 18
   category_id: 1
   origin_country: english
-  have_product_style: t
+  have_product_style: true
   sale_start_at: 2009-10-01 00:00:00
   sale_end_at: 2012-10-30 00:00:00
   public_start_at: 2009-10-01 00:00:00
@@ -317,8 +317,8 @@ csv_upload_product_2:
 product_style_test:
   id: 23
   name: 規格登録テスト
-  permit: t
-  no_limit_flag: f
+  permit: true
+  no_limit_flag: false
   introduction: テスト02
   description: テスト02
   key_word: ファッション
@@ -327,7 +327,7 @@ product_style_test:
   medium_resource_id: 18
   category_id: 1
   origin_country: english
-  have_product_style: t
+  have_product_style: true
   sale_start_at: 2009-10-01 00:00:00
   sale_end_at: 2012-10-30 00:00:00
   public_start_at: 2009-10-01 00:00:00

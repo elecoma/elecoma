@@ -1,0 +1,19 @@
+common: &common
+  adapter: mysql
+  username: elecoma
+  password: elecoma
+  host: localhost
+  port: 3306
+  encoding: utf8
+
+development:
+  <<: *common
+  database: ec_dev
+
+test:
+  <<: *common
+  database: ec_test
+
+production:
+  <<: *common
+  database: ec

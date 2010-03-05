@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Constant do
@@ -15,7 +16,7 @@ describe Constant do
       records = Constant.list(Constant::DOMAIN_SOFTBANK)
       position = 0
       records.each do | record |
-        record.key.should == Constant::DOMAIN_SOFTBANK
+        record.const_key.should == Constant::DOMAIN_SOFTBANK
         record.position.should >= position
         position = record.position
       end

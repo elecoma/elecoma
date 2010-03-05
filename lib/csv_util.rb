@@ -34,11 +34,10 @@ class CSVUtil
       return pairs
     end
     
-    def make_csv_string_with_cache(rows, title, controller, page_cache_directory, filename, perform_caching)
+    def make_csv_string(rows, title)
       date = DateTime.now
 
       # CSV に吐く
-      path = Pathname.new(page_cache_directory).join(controller, 'csv').join(filename)
       f = StringIO.new('', 'w')
 
       CSV::Writer.generate(f) do | writer |
@@ -46,11 +45,6 @@ class CSVUtil
         rows.each do |row|
           writer << row
         end
-      end
-      unless perform_caching
-        fw = File.open(path.to_s, 'w')
-        fw << Iconv.conv('cp932', 'UTF-8', f.string)
-        fw.close
       end
       return f
     end

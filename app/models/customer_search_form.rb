@@ -152,12 +152,12 @@ c.login_id,
 c.prefecture_id,
 c.sex,
 c.activate,
-to_char(c.birthday, 'MM') as birth_month,
-c.family_name || c.first_name as name_kanji,
-c.family_name_kana || c.first_name_kana as name_kana,
+#{MergeAdapterUtil.convert_time_to_mm('c.birthday')} as birth_month,
+#{MergeAdapterUtil.concat(['c.family_name', 'c.first_name'])} as name_kanji,
+#{MergeAdapterUtil.concat(['c.family_name_kana', 'c.first_name_kana'])} as name_kana,
 c.birthday,
 c.email,
-c.tel01 || '-' || c.tel02 || '-' || c.tel03 as tel_no,
+#{MergeAdapterUtil.concat(['c.tel01', "'-'", 'c.tel02', "'-'", 'c.tel03'])} as tel_no,
 c.occupation_id,
 coalesce(sum_total.total,0) as total,
 coalesce(sum_order_count.order_count,0) as order_count,
@@ -239,11 +239,11 @@ where
   end}
 #{unless condition.customer_name_kanji.blank?
     conditions << "%#{condition.customer_name_kanji}%"
-    "and (c.family_name || c.first_name) like ? "
+    "and (#{MergeAdapterUtil.concat(['c.family_name', 'c.first_name'])}) like ? "
   end}
 #{unless condition.customer_name_kana.blank?
     conditions << "%#{condition.customer_name_kana}%"
-    "and (c.family_name_kana || c.first_name_kana) like ?"
+    "and (#{MergeAdapterUtil.concat(['c.family_name_kana', 'c.first_name_kana'])}) like ?"
   end}
 #{if condition.sex_male == "1" && condition.sex_female == "0"
     "and c.sex=1"
@@ -251,19 +251,19 @@ where
     "and c.sex=2"
   end}
 #{unless condition.birth_month.blank?
-    "and to_char(c.birthday,'MM')='#{sprintf("%02d",condition.birth_month)}'"
+    "and #{MergeAdapterUtil.convert_time_to_mm('c.birthday')}='#{sprintf("%02d",condition.birth_month)}'"
   end}
 #{
   from = condition.birthday_from
   to = condition.birthday_to
   unless from.blank? && to.blank?
     if !from.blank? && !to.blank?
-      "and (to_char(c.birthday,'YYYYMMDD') >= '#{from.strftime("%Y%m%d")}'
-      and to_char(c.birthday,'YYYYMMDD') <= '#{to.strftime("%Y%m%d")}')"
+      "and (#{MergeAdapterUtil.convert_time_to_yyyymmdd('c.birthday')} >= '#{from.strftime("%Y%m%d")}'
+      and #{MergeAdapterUtil.convert_time_to_yyyymmdd('c.birthday')} <= '#{to.strftime("%Y%m%d")}')"
     elsif !from.blank?
-      "and to_char(c.birthday,'YYYYMMDD') >= '#{from.strftime("%Y%m%d")}'"
+      "and #{MergeAdapterUtil.convert_time_to_yyyymmdd('c.birthday')} >= '#{from.strftime("%Y%m%d")}'"
     else
-      "and to_char(c.birthday,'YYYYMMDD') <= '#{to.strftime("%Y%m%d")}'"
+      "and #{MergeAdapterUtil.convert_time_to_yyyymmdd('c.birthday')} <= '#{to.strftime("%Y%m%d")}'"
     end
   end
 }
@@ -276,7 +276,7 @@ where
   end}  
 #{unless condition.tel_no.blank?
     conditions << "%#{condition.tel_no}%"
-    "and (c.tel01 || c.tel02 || c.tel03) like ? "
+    "and (#{MergeAdapterUtil.concat(['c.tel01', 'c.tel02', 'c.tel03'])}) like ? "
   end}
 #{unless condition.occupation_id.blank?
     "and c.occupation_id in ('" << condition.occupation_id.join("','") << "')"
@@ -312,12 +312,12 @@ where
   to = condition.updated_at_to
   unless from.blank? && to.blank?
     if !from.blank? && !to.blank?
-      "and (to_char(c.updated_at,'YYYYMMDD') >= '#{from.strftime("%Y%m%d")}'
-      and to_char(c.updated_at,'YYYYMMDD') <= '#{to.strftime("%Y%m%d")}')"
+      "and (#{MergeAdapterUtil.convert_time_to_yyyymmdd('c.updated_at')} >= '#{from.strftime("%Y%m%d")}'
+      and #{MergeAdapterUtil.convert_time_to_yyyymmdd('c.updated_at')} <= '#{to.strftime("%Y%m%d")}')"
     elsif !from.blank?
-      "and to_char(c.updated_at,'YYYYMMDD') >= '#{from.strftime("%Y%m%d")}'"
+      "and #{MergeAdapterUtil.convert_time_to_yyyymmdd('c.updated_at')} >= '#{from.strftime("%Y%m%d")}'"
     else
-      "and to_char(c.updated_at,'YYYYMMDD') <= '#{to.strftime("%Y%m%d")}'"
+      "and #{MergeAdapterUtil.convert_time_to_yyyymmdd('c.updated_at')} <= '#{to.strftime("%Y%m%d")}'"
     end
   end
 }
@@ -326,12 +326,12 @@ where
   to = condition.last_order_from
   unless from.blank? && to.blank?
     if !from.blank? && !to.blank?
-      "and (to_char(last_order_at,'YYYYMMDD') >= '#{from.strftime("%Y%m%d")}'
-      and to_char(last_order_at,'YYYYMMDD') <= '#{to.strftime("%Y%m%d")}')"
+      "and (#{MergeAdapterUtil.convert_time_to_yyyymmdd('last_order_at')} >= '#{from.strftime("%Y%m%d")}'
+      and #{MergeAdapterUtil.convert_time_to_yyyymmdd('last_order_at')} <= '#{to.strftime("%Y%m%d")}')"
     elsif !from.blank?
-      "and to_char(last_order_at,'YYYYMMDD') >= '#{from.strftime("%Y%m%d")}'"
+      "and #{MergeAdapterUtil.convert_time_to_yyyymmdd('last_order_at')} >= '#{from.strftime("%Y%m%d")}'"
     else
-      "and to_char(last_order_at,'YYYYMMDD') <= '#{to.strftime("%Y%m%d")}'"
+      "and #{MergeAdapterUtil.convert_time_to_yyyymmdd('last_order_at')} <= '#{to.strftime("%Y%m%d")}'"
     end
   end
 }

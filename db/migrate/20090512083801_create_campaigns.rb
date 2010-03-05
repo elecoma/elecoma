@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateCampaigns < ActiveRecord::Migration
   def self.up
     create_table :campaigns do |t|
@@ -36,6 +37,6 @@ class CreateCampaigns < ActiveRecord::Migration
   def self.down
     remove_index :campaigns, :product_id
     remove_index :campaigns, :deleted_at
-    drop_table :campaings
+    drop_table :campaigns
   end
 end

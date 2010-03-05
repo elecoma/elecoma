@@ -12,6 +12,7 @@ permit:
   dir_name: permit
   permit: true
   feature_type: 2
+  body: "test"
 not_permit:
   id: 2
   name: not_permit

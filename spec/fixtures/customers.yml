@@ -276,7 +276,7 @@ customer_management:
   activate: 2
   receive_mailmagazine: 1
   mobile_carrier: Customer::DOCOMO
-  black: f
+  black: false
 
 <% (22..30).each do |idx| %>
 customer_<%= idx %>:
@@ -330,7 +330,7 @@ black_customer:
   activate: 2
   receive_mailmagazine: 1
   mobile_carrier: Customer::DOCOMO
-  black: t
+  black: true
 #有効な顧客（ポイントなし）  
 valid_customer:
   id: 32

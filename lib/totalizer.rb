@@ -237,10 +237,16 @@ class TermTotalizer < Totalizer
     end
 
     def columns date_column_name
-      offset = Time.zone.utc_offset
+      offset = "%d" % Time.zone.utc_offset
+      dow_column_interval = "%s + #{MergeAdapterUtil.interval_second(offset)}" % [date_column_name]
+      dow_column = "#{MergeAdapterUtil.day_of_week(dow_column_interval)} as dow"
       @fields.map do | f |
-        "extract(%s from %s + interval '%d seconds') as %s" % [f, date_column_name, offset, f]
-      end.join(",")
+        unless f == 'dow'
+          "extract(%s from %s + #{MergeAdapterUtil.interval_second(offset)}) as %s" % [f, date_column_name, f]
+        else
+          dow_column
+        end
+      end.join(",\n")
     end
 
     def term_of record
@@ -417,8 +423,8 @@ class AgeTotalizer < Totalizer
       elsif v.nil?
         "when ((customers.birthday is null and customers.id is not null) or (customers.id is null and order_deliveries.birthday is null)) then '%s'" % label
       else
-        "when extract(year from age(now(), customers.birthday)) < %d then '%s'" % [v, label]
-        "when extract(year from age(now(), order_deliveries.birthday)) < %d then '%s'" % [v, label]
+        "when extract(year from #{MergeAdapterUtil.age('customers.birthday')}) < %d then '%s'" % [v, label]
+        "when extract(year from #{MergeAdapterUtil.age('order_deliveries.birthday')}) < %d then '%s'" % [v, label]
       end
     end.join("\n")
     records = OrderDetail.find_by_sql([<<-EOS, conditions])

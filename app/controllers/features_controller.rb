@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 class FeaturesController < BaseController
   def show
     #公開特集を取得
     @feature = Feature.find(:first,
-      :conditions => ["dir_name=? and permit = '1'", params[:dir_name]])
+      :conditions => ["dir_name = ? and permit = ?", params[:dir_name], true])
 
     if @feature.blank?
 #      flash.now[:error] = "該当する特集がありません"
