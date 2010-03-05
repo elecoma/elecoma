@@ -323,7 +323,7 @@ where
 }
 #{
   from = condition.last_order_from
-  to = condition.last_order_from
+  to = condition.last_order_to
   unless from.blank? && to.blank?
     if !from.blank? && !to.blank?
       "and (#{MergeAdapterUtil.convert_time_to_yyyymmdd('last_order_at')} >= '#{from.strftime("%Y%m%d")}'
