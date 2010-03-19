@@ -150,6 +150,12 @@ describe Admin::OrdersController, "/admin/order" do
       post 'search', :search => {:product_code => code, :per_page => expected.size}
       assigns[:order_deliveries].should == expected
     end
+
+    it "電話番号(検索バグチェック用)" do
+      post 'search', :search => { :tel => "is_not_invalid_value" }
+      assigns[:order_deliveries].should == []
+    end
+
   end
 
   describe "編集" do

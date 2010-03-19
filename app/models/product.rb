@@ -177,7 +177,7 @@ class Product < ActiveRecord::Base
             search_list << ["products.id = ?", 0]
           end
         else
-          search.errors.add nil, "商品IDは数字で入力して下さい。"
+          search.errors.add "商品IDは数字で入力して下さい。", ""
         end
       end
       unless search.code.blank?

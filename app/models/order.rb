@@ -58,7 +58,7 @@ class Order < ActiveRecord::Base
         search_list << ["order_deliveries.email like ?", "%#{search.email}%"]
       end
       unless search.tel.blank?
-        search_list << ["order_deliveries.tel01 || order_deliveries.tel02 || order_deliveries.tel03 like ?", "%#{search.tel}%"]
+        search_list << [MergeAdapterUtil.concat(["order_deliveries.tel01", "order_deliveries.tel02", "order_deliveries.tel03"]) + " like ?", "%#{search.tel}%"]
       end
       unless search.search_birth_from.blank?
         search_list << ["order_deliveries.birthday >= ?", search.search_birth_from]
@@ -80,17 +80,17 @@ class Order < ActiveRecord::Base
         search_list << ["order_deliveries.updated_at < ?", search.search_updated_at_to + 1 * 60 * 60 * 24 ]
       end
       unless search.total_from.blank?
-        if search.total_from =~ /^\d*$/
+        if search.total_from.to_s =~ /^\d*$/
           search_list << ["order_deliveries.total >= ?", search.total_from]
         else
-          search.errors.add nil, "購入金額は数字で入力してください。"
+          search.errors.add "購入金額は数字で入力してください。", ""
         end
       end
       unless search.total_to.blank?
-        if search.total_to =~ /^\d*$/
+        if search.total_to.to_s =~ /^\d*$/
           search_list << ["order_deliveries.total <= ?", search.total_to]
         else
-          search.errors.add nil, "購入金額は数字で入力してください。"
+          search.errors.add "購入金額は数字で入力してください。", ""
         end
       end
       unless search.product_code.blank?
