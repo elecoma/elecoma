@@ -71,7 +71,7 @@ class AccountsController < BaseController
           # login_check で飛ばされた場合
           redirect_to :controller=>session[:return_to]["controller"],
                       :action=>session[:return_to]["action"],
-                      :action=>session[:return_to]["dir_name"],
+                      :dir_name=>session[:return_to]["dir_name"],
                       :id=>session[:return_to][:id]
           session[:return_to] = nil
         else

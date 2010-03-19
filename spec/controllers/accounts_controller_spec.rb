@@ -2,7 +2,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe AccountsController do
-  fixtures :customers, :kiyakus, :carts, :product_styles, :products, :delivery_addresses
+  fixtures :customers, :kiyakus, :carts, :product_styles, :products, :delivery_addresses, :campaigns
 
   before do
     @controller.class.skip_before_filter :start_transaction
@@ -889,7 +889,19 @@ describe AccountsController do
     customer = { "email"=>"hoge6@hoge.com", "password"=>"hogehoge" }
     session[:return_to] = {"controller"=>'accounts', "action"=>'edit'}
     post 'login', :customer => customer
-    response.should redirect_to(:controller => 'accounts')
+    response.should redirect_to(:controller => 'accounts', :action => 'edit')
+    session_customer = Customer.find(session[:customer_id])
+    session_customer.email.should == 'hoge6@hoge.com'
+    session_customer.correct_password?('hogehoge').should be_true
+    session[:return_to].should be_nil
+  end
+
+  it "パスワードが合っている場合(dir_nameが正しい時)" do
+    campaign = campaigns(:open_campaign)
+    customer = { "email"=>"hoge6@hoge.com", "password"=>"hogehoge" }
+    session[:return_to] = {"controller"=>'campaigns', "action"=>'show', "dir_name" => campaign.dir_name}
+    post 'login', :customer => customer
+    response.should redirect_to("campaigns/" + campaign.dir_name)
     session_customer = Customer.find(session[:customer_id])
     session_customer.email.should == 'hoge6@hoge.com'
     session_customer.correct_password?('hogehoge').should be_true
