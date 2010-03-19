@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe Admin::NewInformationsController do
@@ -55,7 +56,7 @@ describe Admin::NewInformationsController do
       post 'confirm', :new_information => record
       get 'update', :new_information => record
       assigns[:new_information].id.should == new_informations(:success_validates_2).id
-      assigns[:new_information].date.should == Time.mktime(2008, 01, 01)
+      assigns[:new_information].date.should == DateTime.parse("2008-01-01")
       #assigns[:status].should == "confirm"
       response.should redirect_to("admin/new_informations")
     end
@@ -67,7 +68,8 @@ describe Admin::NewInformationsController do
       post 'confirm', :new_information => record
       get 'update', :new_information => record
       assigns[:new_information].id.should == id
-      assigns[:new_information].date.should == Time.mktime(2008, 01, 01)
+      p assigns[:new_information].date.class
+      assigns[:new_information].date.should == DateTime.parse("2008-01-01")
       response.should_not be_redirect
     end
   end

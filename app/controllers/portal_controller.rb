@@ -43,7 +43,7 @@ class PortalController < BaseController
 
   def load_new_information(character_id=nil)
     conds = []
-    conds << ['date <= ? ', Time.zone.now]
+    conds << ['date <= ? ', Time.now]
     @new_informations = NewInformation.find(:all,
       :conditions => flatten_conditions(conds),
       :order => "position")

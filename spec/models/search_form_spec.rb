@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 class TestForm < SearchForm
   set_field_names({"customer_id" => "顧客コード"})
@@ -38,9 +39,9 @@ describe SearchForm do
       search_form = SearchForm.new({"order_date_to" => "2009-10-01 00:30:45","month(1i)"=>"2009"})
       #期待結果：
       #1.文字列の時間系をdateへ変換 2.["month(1i)"=>"2009"]が [@month=Thu, 01 Jan 2009 00:00:00]に変換
-      search_form.order_date_to.class.should == ActiveSupport::TimeWithZone
+      search_form.order_date_to.class.should == Time
       search_form.month.should_not be_nil
-      search_form.month.should == Time.zone.parse("2009-01-01 00:00:00")
+      search_form.month.should == Time.parse("2009-01-01 00:00:00")
     end
     it "その他" do
       TestForm.human_attribute_name("customer_id").should == "顧客コード"

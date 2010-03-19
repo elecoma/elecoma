@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Mail < ActiveRecord::Base
   THRESHOLD = 5
   def self.post_all_mail
@@ -12,7 +13,7 @@ class Mail < ActiveRecord::Base
       mails.each do |mail|
         begin
           logger.info('Mail.post_all_mail: send %s -> %s' % [mail.from_address, mail.to_address])
-          mail.update_attribute(:sent_at, Time.zone.now)
+          mail.update_attribute(:sent_at, Time.now)
           smtp.send_message(Base64.decode64(mail.message), mail.from_address, mail.to_address)
         rescue Net::SMTPSyntaxError => e # 5xx
           handle_fatal_error(mail)

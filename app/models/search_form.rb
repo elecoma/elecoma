@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # 検索条件を格納する
 # 例: @search = SearchForm.new(params[:search])
 
@@ -52,7 +53,7 @@ class SearchForm < ActiveForm
       elsif value.is_a?(String) &&
           value =~ /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/
         # 日時に見える文字列は Date に
-        send(name+'=', Time.zone.parse(value))
+        send(name+'=', Time.parse(value))
       else
         send(name+'=', value)
       end
@@ -141,9 +142,9 @@ class SearchForm < ActiveForm
       end
     end
     if selected_time
-      Time.zone.local(year.to_i,month.to_i,day.to_i,hour.to_i,min.to_i,sec.to_i)
+      Time.local(year.to_i,month.to_i,day.to_i,hour.to_i,min.to_i,sec.to_i)
     else
-      Time.zone.local(year.to_i,month.to_i,day.to_i)
+      Time.local(year.to_i,month.to_i,day.to_i)
     end
   end
 

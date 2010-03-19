@@ -2,7 +2,8 @@
   def parse_date_select params, name
     return nil unless params and not params['%s(1i)' % name].blank?
     args = (1..3).map {|i| params["%s(%di)" % [name, i]]}.reject(&:blank?).map(&:to_i)
-    Time.zone.local(*args)
+    args << 1 if args.length < 3
+    Time.local(*args)
   end
 
 require 'gruff'
@@ -73,9 +74,9 @@ class Totalizer < TotalizerBase
       date_to = parse_date_select(params[:search], 'date_to')
     else
       date_from = parse_date_select(params[:search], 'month')
-      date_to = Time.zone.local(date_from.year, date_from.month, -1) if date_from
+      date_to = Time.local(date_from.year, date_from.month, 1) + 1.month - 1.day if date_from
     end
-    date_to &&= Time.zone.local(date_to.year, date_to.month, date_to.day, 23, 59, 59)
+    date_to &&= Time.local(date_to.year, date_to.month, date_to.day, 23, 59, 59)
     { :date_from => date_from, :date_to => date_to }
   end
 
@@ -122,6 +123,7 @@ class TermTotalizer < Totalizer
 
   def graph
     @records or return nil
+    return nil if @records == []
     g = init_graph(Gruff::Line)
     g.title = self.title
     g.data('価格', @records.map{|r| r['total']})
@@ -237,12 +239,12 @@ class TermTotalizer < Totalizer
     end
 
     def columns date_column_name
-      offset = "%d" % Time.zone.utc_offset
-      dow_column_interval = "%s + #{MergeAdapterUtil.interval_second(offset)}" % [date_column_name]
+      #offset = "%d" % Time.zone.utc_offset
+      dow_column_interval = "%s" % [date_column_name]#+ #{MergeAdapterUtil.interval_second(offset)}" % [date_column_name]
       dow_column = "#{MergeAdapterUtil.day_of_week(dow_column_interval)} as dow"
       @fields.map do | f |
         unless f == 'dow'
-          "extract(%s from %s + #{MergeAdapterUtil.interval_second(offset)}) as %s" % [f, date_column_name, f]
+          "extract(%s from %s ) as %s" % [f, date_column_name, f]
         else
           dow_column
         end
@@ -276,7 +278,7 @@ class TermTotalizer < Totalizer
         d = date_from
         while d.year < date_to.year || d.month <= date_to.month
           terms << term_of(date_to_record(d))
-          d = Time.zone.local(d.year, d.month + 1)
+          d = Time.local(d.year, d.month + 1)
         end
         terms
       when 'year'
@@ -284,7 +286,7 @@ class TermTotalizer < Totalizer
         d = date_from
         while d.year <= date_to.year
           terms << term_of(date_to_record(d))
-          d = Time.zone.local(d.year + 1)
+          d = Time.local(d.year + 1)
         end
         terms
       when 'wday'

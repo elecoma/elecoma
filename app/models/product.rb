@@ -142,12 +142,12 @@ class Product < ActiveRecord::Base
 #  end
 
   # 販売期間内
-  def in_sale_term?(now=Time.zone.now)
+  def in_sale_term?(now=Time.now)
     sale_start_at <= now && now <= (sale_end_at + 1.day - 1 )
   end
 
   # 公開期間内
-  def in_public_term?(now=Time.zone.now)
+  def in_public_term?(now=Time.now)
     public_start_at <= now && now <= (public_end_at + 1.day  - 1)
   end
   # 在庫がある
@@ -584,7 +584,7 @@ class Product < ActiveRecord::Base
   end
 
   def self.today_utc(today)
-    ud = Time.zone.local_to_utc(Time.local(today.year,today.month,today.day))
+    ud = Time.local(today.year,today.month,today.day)
     DateTime.new(ud.year, ud.month, ud.day, ud.hour, ud.min, ud.sec)
   end
 end

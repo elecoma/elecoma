@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Admin::AuthoritiesController do
@@ -43,20 +44,18 @@ describe Admin::AuthoritiesController do
 
   describe "POST 'create'" do
     it "正常に追加できるパターン" do
-      new_id = Authority.maximum(:id) + 1
       get 'new'
       authority = {:name => "管理者2"}
       functions = {"1" => 1, "2" => 2}
       post 'create', :authority => authority, :functions => functions
       assigns[:authority].should_not be_nil
       #assigns[:authority].id.should == new_id
-      check = Authority.find_by_id(new_id)
+      check = Authority.find(:last)
       check.name.should == "管理者2"
       response.should redirect_to(:action => :index)
     end
 
     it "authorityが不正なパターン" do
-      new_id = Authority.maximum(:id) + 1
       get 'new'
       authority = {:name => ""}
       functions = {"1" => 1, "2" => 2}
@@ -68,7 +67,6 @@ describe Admin::AuthoritiesController do
     end
 
     it "functionsが不正なパターン" do
-      new_id = Authority.maximum(:id) + 1
       get 'new'
       authority = {:name => "管理者2"}
       functions = {"test" => 1, "2" => 2}

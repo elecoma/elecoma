@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.dirname(__FILE__) + '/../../spec_helper'
 
 # Date を date_select の形にする
@@ -93,15 +94,16 @@ describe Admin::TotalsController do
     end
 
     it "合計を表示する(検索結果0)" do
-      post 'index', :page => 'term', :search => { 'month(1i)'=>1008, 'month(2i)'=>6, 'by_month'=>'x' }
+      post 'index', :page => 'term', :search => { 'month(1i)'=>1978, 'month(2i)'=>6, 'by_month'=>'x' }
       assigns[:total].should_not be_nil
       assigns[:total]['total'].should == 0
     end
 
+
     it "合計を表示する(検索結果複数)" do
       post 'index', :page => 'term', :type => 'wday', :search => {
         'date_from(1i)'=>2000, 'date_from(2i)'=>1, 'date_from(31)'=>1,
-        'date_to(1i)'=>2100, 'date_to(2i)'=>9, 'date_to(3i)'=>9, 'by_date'=>'x'
+        'date_to(1i)'=>2030, 'date_to(2i)'=>9, 'date_to(3i)'=>9, 'by_date'=>'x'
       }
       assigns[:total]['total'].should > 0
     end

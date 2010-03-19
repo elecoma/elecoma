@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'open-uri'
 require 'rexml/document'
 require 'timeout'
@@ -15,7 +16,7 @@ class Recommend < ActiveRecord::Base
   RANKING_URL = "RECOMMEND_RANKING_URL" #ランキング用のURLを設定して下さい(team=w まで)
 
   def self.recommend_get(product_id, type=TYPE_BUY)
-    unless Recommend.find(:first, :conditions => ["product_id = ? and request_type = ? and created_at > ?", product_id, type, Time.zone.local_to_utc(Time.now - (60 * 60))])
+    unless Recommend.find(:first, :conditions => ["product_id = ? and request_type = ? and created_at > ?", product_id, type, Time.now - (60 * 60)])
       self.recommend_network_get(product_id, type)
     end
 
@@ -24,7 +25,7 @@ class Recommend < ActiveRecord::Base
   end
 
   def self.ranking_get(limit = nil)
-    unless Recommend.find(:first, :conditions => ["created_at > ? and product_id is null and request_type is null",Time.zone.local_to_utc(Time.now - (60 * 60))])
+    unless Recommend.find(:first, :conditions => ["created_at > ? and product_id is null and request_type is null",Time.now - (60 * 60)])
       self.ranking_network_get
     end
 
