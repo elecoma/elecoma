@@ -146,11 +146,11 @@ class Admin::BaseController < ApplicationController
 
           time = nil
           if !@year[key].blank? && !@month[key].blank? && !@day[key].blank?
-            time = Time.zone.local(@year[key].to_i, @month[key].to_i, @day[key].to_i)
+            time = Time.local(@year[key].to_i, @month[key].to_i, @day[key].to_i)
           elsif [Date, Time].any?{|c| value.is_a?(c)}
             time = value
           elsif date.empty? # search[:foo]='1900-01-01 00:00:00' みたいに来た場合
-            time = Time.zone.parse(value) # 失敗したときは nil になる
+            time = Time.parse(value) # 失敗したときは nil になる
           end
 
 

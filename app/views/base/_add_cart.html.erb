@@ -31,7 +31,7 @@
     </td>
    </tr>
   </table>
- <% elsif product.sale_start_at > Time.zone.now # 販売終了商品 %>
+ <% elsif product.sale_start_at > Time.now # 販売終了商品 %>
   <p><%= product.sale_start_at.strftime("%Y年%m月%d日") %>発売予定</p>
  <% else # 販売終了商品 %>
   <p>この商品は販売を終了しております。</p>
