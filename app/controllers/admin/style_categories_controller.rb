@@ -37,7 +37,7 @@ class Admin::StyleCategoriesController < Admin::BaseController
 
   private
   def object
-    if params[:id]
+    if not params[:id].blank?
       style_category = StyleCategory.find_by_id(params[:id])
       raise ActiveRecord::RecordNotFound unless style_category.style.retailer_id == session[:admin_user].retailer_id
     elsif params[:style_category] && params[:style_category][:style_id]

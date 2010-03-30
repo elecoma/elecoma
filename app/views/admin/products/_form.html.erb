@@ -23,16 +23,7 @@
     </td>
   </tr>  
  <% end %>
- <%if session[:admin_user].master_shop? %>
-  <tr>
-    <th>販売元<span class="pnt">※</span></th>
-    <td><% retailers = Retailer.find(:all,:order=>'id')%>
-      <%= confirm_select(confirm_tag(:select, :product, :retailer_id, retailers.map{|s| [s.name,s.id]}), @product.retailer.name, "product") %>
-    </td>
-  </tr>  
-  <% else %>
-    <%= hidden_field_tag :retailer_id, session[:admin_user].retailer_id %>
- <% end %>
+ <%= hidden_field_tag "product[retailer_id]", session[:admin_user].retailer_id %>
  
   <tr>
     <th>カテゴリー名<span class="pnt">※</span></th>

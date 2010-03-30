@@ -18,11 +18,11 @@
         </tr>
         <tr>
           <th>規格1</th>
-          <td><%= select_tag :style_id1, Style.select_options(@style1 && @style1.id)%></td>
+          <td><%= select_tag :style_id1, Style.select_options(@style1 && @style1.id, session[:admin_user].retailer_id)%></td>
         </tr>
         <tr>
           <th>規格2</th>
-          <td><%= select_tag :style_id2, Style.select_options(@style2 && @style2.id) %></td>
+          <td><%= select_tag :style_id2, Style.select_options(@style2 && @style2.id, session[:admin_user].retailer_id) %></td>
         </tr>
       </table>
 
