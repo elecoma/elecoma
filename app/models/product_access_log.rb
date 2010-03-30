@@ -27,7 +27,6 @@ class ProductAccessLog < ActiveRecord::Base
           product_access_log.save!
         }
     rescue TimeoutError => e
-      p "err: #{ e }"
       logger.info "err: #{ e }"
       return false
     rescue 

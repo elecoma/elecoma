@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Product do
-  fixtures :products, :image_resources, :product_statuses,:categories,:product_styles,:statuses,:suppliers
+  fixtures :products, :image_resources, :product_statuses,:categories,:product_styles,:statuses,:suppliers,:retailers
   
   include ActionView::Helpers::NumberHelper
   
@@ -234,6 +235,12 @@ describe Product do
     it "配送日（ハッシュを配列へ）" do
       arr = Product::DELIVERY_DATE.to_a
       Product.delivery_dates_select.should == arr
+    end
+  end
+
+  describe "販売元を追加" do
+    it "販売元にアクセスが可能" do
+      @product.retailer.should_not be_nil
     end
   end
   

@@ -18,11 +18,22 @@
  <%if @system_supplier_use_flag%>
   <tr>
     <th>仕入先名<span class="pnt">※</span></th>
-    <td><%suppliers = Supplier.find(:all,:order=>'id')%>
+    <td><%suppliers = Supplier.list_by_retailer(session[:admin_user].retailer_id)%>
       <%= confirm_select(confirm_tag(:select, :product, :supplier_id, suppliers.map{|s| [s.name,s.id]}), @product.supplier.name, "product") %>
     </td>
   </tr>  
  <% end %>
+ <%if session[:admin_user].master_shop? %>
+  <tr>
+    <th>販売元<span class="pnt">※</span></th>
+    <td><% retailers = Retailer.find(:all,:order=>'id')%>
+      <%= confirm_select(confirm_tag(:select, :product, :retailer_id, retailers.map{|s| [s.name,s.id]}), @product.retailer.name, "product") %>
+    </td>
+  </tr>  
+  <% else %>
+    <%= hidden_field_tag :retailer_id, session[:admin_user].retailer_id %>
+ <% end %>
+ 
   <tr>
     <th>カテゴリー名<span class="pnt">※</span></th>
     <td>

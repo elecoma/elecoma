@@ -67,6 +67,7 @@ class Admin::ReturnItemsController < Admin::BaseController
   end
 
   def search
+    add_retailer_condition
     @condition = ReturnItemSearchForm.new(params[:condition])
     unless @condition.valid?
       render :action => :index
@@ -107,7 +108,8 @@ class Admin::ReturnItemsController < Admin::BaseController
     if params[:id].blank?
       render :status => :not_found
     end
-    rows = ReturnItem.find(:all).map do |ri|
+    condition, join = get_csv_condition
+    rows = ReturnItem.find(:all, :conditions => flatten_conditions(condition), :joins => join).map do |ri|
       a = []
       a << ri.product_id
       a << ri.product_style.code
@@ -132,6 +134,7 @@ class Admin::ReturnItemsController < Admin::BaseController
 
   private
   def get_return_items
+    add_retailer_condition
     @condition = ReturnItemSearchForm.new(params[:condition])
     unless @condition.valid?
       render :action => :index
@@ -142,7 +145,8 @@ class Admin::ReturnItemsController < Admin::BaseController
       :page => params[:page], 
       :per_page => @condition.per_page || 10,
       :conditions => flatten_conditions(@search_list),
-      :order => "id"
+      :include => [:product],
+      :order => "return_items.id"
     }
     @return_items = ReturnItem.paginate(find_options)
   end
@@ -150,5 +154,21 @@ class Admin::ReturnItemsController < Admin::BaseController
   def url_for_date(date)
     url_for(:action => :csv, :id => date.strftime('%Y%m%d_%H%M%S'),:format => "csv")
   end  
+
+  def add_retailer_condition
+    unless session[:admin_user].master_shop?
+      addparam = {'retailer_id' => session[:admin_user].retailer_id}
+      params[:condition].merge! addparam unless params[:condition].nil?
+    end
+  end
+
+  def get_csv_condition
+    condition = []
+    unless session[:admin_user].master_shop?
+      condition << ["products.retailer_id = ?", session[:admin_user].retailer_id]
+      return condition, "LEFT JOIN product_styles ON product_styles.id = return_items.product_style_id " + "LEFT JOIN products ON products.id = product_styles.product_id "
+    end
+    return condition, nil
+  end
 
 end

@@ -28,9 +28,11 @@ class Admin::StockCsvController < Admin::BaseController
   def csv
     # params[:id] はページキャッシュのキーにするだけで抽出条件にはしない
     if params[:id].blank?
-      render :status => :not_found
+      render :file => 'public/404.html', :status => :not_found
+      return
     end
-    rows = ProductStyle.find(:all).map do |ps|
+    condition, join = get_condition
+    rows = ProductStyle.find(:all, :conditions => flatten_conditions(condition), :joins => join).map do |ps|
       a = []
       a << ps.code
       a << ps.product.name
@@ -54,5 +56,14 @@ class Admin::StockCsvController < Admin::BaseController
 
   def url_for_date(date)
     url_for(:action => :csv, :id => date.strftime('%Y%m%d_%H%M%S'),:format => "csv")
-  end  
+  end
+
+  def get_condition
+    condition = []
+    unless session[:admin_user].master_shop?
+      condition << ["products.retailer_id = ?", session[:admin_user].retailer_id]
+      return condition, "LEFT JOIN products ON products.id = product_styles.product_id "
+    end
+    return condition, nil
+  end
 end

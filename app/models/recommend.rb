@@ -66,7 +66,6 @@ class Recommend < ActiveRecord::Base
       end
       return true
     rescue TimeoutError => e
-      p "err: #{ e }"
       logger.info "err: #{ e }"
       return false
     rescue 

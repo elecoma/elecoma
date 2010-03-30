@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Category do
-  fixtures :categories, :products, :image_resources,:suppliers
+  fixtures :categories, :products, :image_resources,:suppliers, :retailers
 
   before(:each) do
     @category = categories(:dai_category)

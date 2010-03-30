@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 require 'spec_helper'
 
 describe Admin::StockInController do
-  fixtures :admin_users,:products,:product_styles,:suppliers,:stock_histories
+  fixtures :admin_users,:products,:product_styles,:suppliers,:stock_histories, :retailers
   before do 
     session[:admin_user] = admin_users(:admin10)
     @controller.class.skip_before_filter @controller.class.before_filter
@@ -65,4 +66,5 @@ describe Admin::StockInController do
       response.should render_template("admin/stock_in/edit.html.erb")
     end
   end  
+
 end

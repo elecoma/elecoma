@@ -7,7 +7,7 @@
 <p><%= link_to "規格管理に戻る", admin_styles_path %></p>
 <br />
 <ul>
-  <% Style.find(:all).each do | style | %>
+  <% Style.find(:all, :conditions=> ["retailer_id = ? ", session[:admin_user].retailer_id]).each do | style | %>
     <li>
       <%= style.id.to_s != params[:style_id].to_s ?  link_to(h(style.name), :style_id => style.id) : h(style.name)%><br>
     </li>

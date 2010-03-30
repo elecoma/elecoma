@@ -53,6 +53,13 @@ describe Admin::StyleCategoriesController do
       post "create", :style_category => {:style_id => 1, :name => "test"}
       StyleCategory.find(:last).name.should == "test"
     end
+
+    it "other shop should not be successful" do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      lambda { post "create", :style_category => {:style_id => 1, :name => "test2"} }.should raise_error(ActiveRecord::RecordNotFound)
+      StyleCategory.find(:last).name.should_not == "test2"
+    end
+
   end
   
   describe "POST 'update'" do
@@ -60,6 +67,13 @@ describe Admin::StyleCategoriesController do
       post "update", :id => 60, :style_category => {:style_id => 6, :name => "test"}
       StyleCategory.find_by_id(60).name.should == "test"
     end
+
+    it "other shop should not be successful" do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      lambda { post "update", :id => 60, :style_category => {:style_id => 6, :name => "test2"} }.should raise_error(ActiveRecord::RecordNotFound)
+      StyleCategory.find_by_id(60).name.should_not == "test2"
+    end
+
   end
 
   describe "GET 'destroy'" do
@@ -67,6 +81,13 @@ describe Admin::StyleCategoriesController do
       get 'destroy', :id => 60
       StyleCategory.find_by_id(60).should be_nil
     end
+
+    it "other shop should not be successful" do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      lambda { get 'destroy', :id => 60 }.should raise_error(ActiveRecord::RecordNotFound)
+      StyleCategory.find_by_id(60).should_not be_nil
+    end
+
   end
 
 

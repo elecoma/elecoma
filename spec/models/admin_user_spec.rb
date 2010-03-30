@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe AdminUser do
-  fixtures :admin_users, :authorities
+  fixtures :admin_users, :authorities, :retailers
   before(:each) do
     @admin_user = admin_users(:login_admin_user)
   end
@@ -60,7 +61,7 @@ describe AdminUser do
     end
 
     it "入力されたパスワードを暗号化(新規作成の場合)" do
-      admin_user = AdminUser.new({:name=>"zak", :login_id=>"gundam", :password=>"zak", :authority_id => authorities(:auth01).id })
+      admin_user = AdminUser.new({:name=>"zak", :login_id=>"gundam", :password=>"zak", :authority_id => authorities(:auth01).id, :retailer_id => 1 })
       admin_user.save
       AdminUser.find(:first, :conditions=>["login_id=?","gundam"]).password.should == AdminUser.encode_password("zak")
     end
@@ -98,4 +99,16 @@ describe AdminUser do
     end
   end
 
+  describe "販売元IDを追加" do
+    it "販売元IDがないとvalidateに失敗する" do
+      @admin_user.retailer_id = nil
+      @admin_user.should_not be_valid
+    end
+
+    it "マスターショップかどうか判定" do 
+      @admin_user.should be_master_shop
+      not_master_retailer = admin_users(:admin17_retailer_id_is_fails)
+      not_master_retailer.should_not be_master_shop
+    end
+  end
 end

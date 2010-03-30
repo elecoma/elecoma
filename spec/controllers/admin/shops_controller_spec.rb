@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe Admin::ShopsController do
-  fixtures :authorities, :functions, :admin_users , :shops
+  fixtures :authorities, :functions, :admin_users , :shops, :retailers
   
   before(:each) do
     session[:admin_user] = AdminUser.first
@@ -151,7 +151,7 @@ describe Admin::ShopsController do
   
   describe "GET 'delivery_create'" do
     before do
-      @delivery_trader = {:name=>"追加",:url=>"http://www.hoge.com"}
+      @delivery_trader = {:name=>"追加",:url=>"http://www.hoge.com", :retailer_id => Retailer::DEFAULT_ID}
       @delivery_time = {}
       DeliveryTime::MAX_SIZE.times do |i|
         @delivery_time["#{i}"]={:name=>"午前中なら#{i}"}
@@ -186,6 +186,24 @@ describe Admin::ShopsController do
       DeliveryTrader.find(:first,:order=>"id desc",:limit=>1).delivery_fees.size.should == DeliveryFee::MAX_SIZE
       DeliveryTrader.find(:first,:order=>"id desc",:limit=>1).delivery_fees[47].prefecture_id == nil
     end
+
+    it "retailer_idが無効なものは登録できない" do
+      delivery_trader = {:name=>"追加",:url=>"http://www.hoge.com", :retailer_id => nil}
+      trader_count = DeliveryTrader.count
+      time_count = DeliveryTime.count
+      fee_count = DeliveryFee.count
+      get 'delivery_create', :delivery_trader=>delivery_trader,:delivery_time=>@delivery_time,:delivery_fee=>@delivery_fee
+      response.should render_template("admin/shops/delivery_new.html.erb")
+    end
+
+    it "存在しないretailer_idは登録できない" do
+      retailer_max = Retailer.find(:last).id + 100
+      delivery_trader = @delivery_trader.merge({:name => "fail_trader", :retailer_id => retailer_max})
+      get 'delivery_create', :delivery_trader=>delivery_trader,:delivery_time=>@delivery_time,:delivery_fee=>@delivery_fee
+      response.should render_template("admin/shops/delivery_new.html.erb")
+    end
+
+
   end
   
   

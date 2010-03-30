@@ -114,7 +114,7 @@ class Category < ActiveRecord::Base
   #1.エントリー
   def self.renew_children_ids_with_command
     begin
-      p "batch update start..."
+      logger.info "batch update start..."
       Category.transaction {
         #clear all
         Category.clear_children_ids
@@ -130,9 +130,9 @@ class Category < ActiveRecord::Base
           Category.childs_re_position(category)
         end
       }
-      p "batch update end..."
+      logger.info "batch update end..."
     rescue
-      p "batch update error.rollback..."
+      logger.info "batch update error.rollback..."
     end
 
   end

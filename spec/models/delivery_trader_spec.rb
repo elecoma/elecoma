@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe DeliveryTrader do
-  fixtures :delivery_traders
+  fixtures :delivery_traders, :retailers
   
   before(:each) do
     @delivery_trader = delivery_traders :witch

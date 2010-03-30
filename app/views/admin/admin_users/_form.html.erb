@@ -34,6 +34,13 @@
         select :admin_user, :authority_id, auths, :include_blank=>true %>
     </td>
   </tr>
+  <tr>
+    <th>販売元 <span class="pnt">※</span></th>
+    <td>
+      <%= retailers = Retailer.find(:all, :order => :id).map {|r| [r.name, r.id]}
+	  select :admin_user, :retailer_id, retailers, :include_blank=>true %>
+    </td>
+  </tr>
 </table>
 
 <div class="btn_box">

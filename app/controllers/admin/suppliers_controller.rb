@@ -6,6 +6,12 @@ class Admin::SuppliersController < Admin::BaseController
   before_filter :check_default,:only => [:edit,:confirm]
   
   def search
+
+    if params[:condition].nil?
+      render :action => "index"
+      return
+    end
+    params[:condition].merge!({"retailer_id" => session[:admin_user].retailer_id}) unless params[:condition].nil?
     @condition = SupplierSearchForm.new(params[:condition])
     unless @condition.valid?
       render :action => "index"

@@ -7,8 +7,10 @@ class DeliveryTrader < ActiveRecord::Base
   has_many :delivery_fees, :dependent => :destroy, :order => :prefecture_id
   has_many :payments
   has_many :orders
+  belongs_to :retailer
   
   validates_presence_of :name
+  validates_presence_of :retailer
   
   validates_length_of :name,:url, :maximum => 50
   

@@ -35,4 +35,16 @@ class Admin::StyleCategoriesController < Admin::BaseController
     redirect_to :action => :index, :style_id => params[:style_id]
   end
 
+  private
+  def object
+    if params[:id]
+      style_category = StyleCategory.find_by_id(params[:id])
+      raise ActiveRecord::RecordNotFound unless style_category.style.retailer_id == session[:admin_user].retailer_id
+    elsif params[:style_category] && params[:style_category][:style_id]
+      style = Style.find(:all, :conditions => ["id = ? and retailer_id = ? ", params[:style_category][:style_id], session[:admin_user].retailer_id])
+      raise ActiveRecord::RecordNotFound if style.nil? or style == []
+    end
+    super
+  end
+
 end

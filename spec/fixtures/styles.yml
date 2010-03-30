@@ -35,3 +35,8 @@ valid_style:
   name: valid_style
   position: 7
 
+other_shop_style1:
+  id: 8
+  name: other_shop_style1
+  position: 8
+  retailer_id: 2

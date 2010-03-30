@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Supplier do
-  fixtures :suppliers
+  fixtures :suppliers, :retailers
   before(:each) do
     @supplier = suppliers(:one)
   end
@@ -164,6 +164,15 @@ describe Supplier do
       @supplier.tax_rule = 2
       @supplier.should be_valid
     end    
+    it "販売元" do
+      @supplier.retailer_id = nil
+      @supplier.should_not be_valid
+      retailer_max = Retailer.find(:last).id + 100
+      @supplier.retailer_id = retailer_max
+      @supplier.should_not be_valid
+      @supplier.retailer_id = Retailer::DEFAULT_ID
+      @supplier.should be_valid      
+    end
   end
   describe "その他" do
     fixtures :prefectures
@@ -172,5 +181,25 @@ describe Supplier do
       supplier.prefecture_name.should == prefectures(:prefecture_00011).name
     end
   end
-  
+
+  describe "販売元一覧メソッド" do
+    fixtures :admin_users
+
+    it "引数なしの場合はDEFAILT_IDで検索" do 
+      suppliers = Supplier.list_by_retailer
+      suppliers.size.should == 4
+    end
+    it "検索が正常にできる(マスターショップ)" do 
+      admin_user = admin_users(:load_by_admin_user_test_id_1)
+      suppliers = Supplier.list_by_retailer(admin_user.retailer_id)
+      suppliers.size.should == 4
+    end
+
+    it "検索が正常にできる(マスター以外のショップ)" do 
+      admin_user = admin_users(:admin18_retailer_id_is_another_shop)
+      suppliers = Supplier.list_by_retailer(admin_user.retailer_id)
+      suppliers.size.should == 2
+    end
+
+  end
 end

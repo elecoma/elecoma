@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe Admin::ProductsController do
   fixtures :products, :admin_users, :authorities, :functions, :authorities_functions, :admin_users, :categories, :resource_datas, :image_resources
-  fixtures :styles, :product_styles, :style_categories,:suppliers
+  fixtures :styles, :product_styles, :style_categories,:suppliers, :retailers
 
   before do
     session[:admin_user] = admin_users(:admin10)
@@ -96,6 +97,10 @@ describe Admin::ProductsController do
       get "search", :search => search
     end
 
+    it "retailer_id" do
+      get "search", :search => {:retailer_id => @valid_product.retailer_id, :product_id => @valid_product.id.to_s}
+    end
+
     after(:each) do
       assigns[:products][0].should == @valid_product
     end
@@ -130,7 +135,7 @@ describe Admin::ProductsController do
 
     it "confirm単体" do
       resource_max = ImageResource.maximum(:id)
-      post 'confirm', :product => {:small_resource => @small_pic, :medium_resource => @medium_pic, :large_resource => @large_pic, :name => "test", :category_id => 1, :introduction => "test intro", :description => "test desc"}
+      post 'confirm', :product => {:small_resource => @small_pic, :medium_resource => @medium_pic, :large_resource => @large_pic, :name => "test", :category_id => 1, :introduction => "test intro", :description => "test desc", :retailer_id => 1}
       assigns[:product].small_resource_id.should_not be_nil
       assigns[:product].small_resource_id.should > resource_max
       response.should render_template("admin/products/confirm.html.erb")
@@ -139,9 +144,9 @@ describe Admin::ProductsController do
     it "confirm and create" do
       last_product = Product.find(:last)
       resource_max = ImageResource.maximum(:id)
-      post 'confirm', :product => {:small_resource => @small_pic, :medium_resource => @medium_pic, :large_resource => @large_pic, :name => "test", :category_id => 1, :introduction => "test intro", :description => "test desc"}
+      post 'confirm', :product => {:small_resource => @small_pic, :medium_resource => @medium_pic, :large_resource => @large_pic, :name => "test", :category_id => 1, :introduction => "test intro", :description => "test desc", :retailer_id => 1}
       product = assigns[:product]
-      post 'create', :product => {:small_resource_id => product.small_resource_id, :medium_resource_id => product.medium_resource_id, :large_resource_id => product.large_resource_id, :name => "test", :category_id => 1, :introduction => "test intro", :description => "test desc"}
+      post 'create', :product => {:small_resource_id => product.small_resource_id, :medium_resource_id => product.medium_resource_id, :large_resource_id => product.large_resource_id, :name => "test", :category_id => 1, :introduction => "test intro", :description => "test desc", :retailer_id => 1}
       ImageResource.maximum(:id).should_not == resource_max
       Product.find(:last).should_not == last_product
       response.should redirect_to(:action => "show", :id => assigns[:product].id)
@@ -179,6 +184,64 @@ describe Admin::ProductsController do
       csv = uploaded_file(File.dirname(__FILE__) + "/../../product_sample.csv", "text", "product_sample.csv")
       post 'csv_upload', :upload_file => csv
       Product.find(:last).should_not == last_product
+    end
+  end
+
+  describe "GET 'search' from retailer_fail" do
+    before(:each) do
+      session[:admin_user] = admin_users(:admin17_retailer_id_is_fails)
+      @valid_product = products(:valid_product)
+    end
+
+    it "product_id" do
+      get "search", :search => {:product_id => @valid_product.id.to_s}
+    end
+
+    it "name" do
+      get "search", :search => {:name => @valid_product.name}
+    end
+
+    it "style" do
+      get "search", :search => {:style => "valid_category"}
+    end
+
+    it "code" do
+      get "search", :search => {:code => "AC001"}
+    end
+    it "code" do
+      get "search", :search => {:supplier => 2}
+    end
+    it "category" do
+      get "search", :search => {:category => @valid_product.category_id}
+    end
+
+    it "created_at" do
+      search = {}
+      search.merge! date_to_select(@valid_product.created_at, 'created_at_from')
+      search.merge! date_to_select(@valid_product.created_at, 'created_at_to')
+      get "search", :search => search
+    end
+
+    it "updated_at" do
+      search = {}
+      search.merge! date_to_select(@valid_product.updated_at, 'updated_at_from')
+      search.merge! date_to_select(@valid_product.updated_at, 'updated_at_to')
+      get "search", :search => search
+    end
+
+    it "sale_start_at" do
+      search = {}
+      search.merge! date_to_select(@valid_product.sale_start_at, 'sale_start_at_start')
+      search.merge! date_to_select(@valid_product.sale_start_at, 'sale_start_at_end')
+      get "search", :search => search
+    end
+
+    it "retailer_id" do
+      get "search", :search => {:retailer_id => @valid_product.retailer_id}
+    end
+
+    after(:each) do
+      assigns[:products].should == []
     end
   end
 

@@ -84,6 +84,7 @@ ja:
       mobile_device: "携帯対応端末"
       input: "入力内容"
       return_item: "返品情報"
+      retailer: "販売元"
     attributes:
       admin_user:
         name: "名前"
@@ -96,6 +97,7 @@ ja:
         created_at: "で作成された"
         updated_at: "で更新"
         deleted_at: "で削除"
+        retailer: "販売元"
       authorities_function:
         create_at: "で作成"
         update_at: "更新時に"
@@ -585,6 +587,7 @@ ja:
         created_at: "で作成された"
         updated_at: "で更新"
         deleted_at: "で削除"
+        retailer: "販売元名"
       product_access_log:
         docomo_flg: "ドコモフラグ"
         send_flg: "送信フラグ"
@@ -696,6 +699,11 @@ ja:
         request_type: "リクエストタイプ"
       resource_data:
         content: "バイナリデータ"
+        created_at: "で作成された"
+        updated_at: "で更新"
+        deleted_at: "で削除"
+      retailer:
+        name: "販売元名"
         created_at: "で作成された"
         updated_at: "で更新"
         deleted_at: "で削除"

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Admin::SuppliersController do
-  fixtures :admin_users,:suppliers,:prefectures
+  fixtures :admin_users,:suppliers,:prefectures, :retailers
   before do 
     session[:admin_user] = admin_users(:admin10)
     @controller.class.skip_before_filter @controller.class.before_filter
@@ -19,8 +19,14 @@ describe Admin::SuppliersController do
   describe "GET 'search'" do
    
     it "should be successful" do
-      get 'search'
+      get 'search', :condition => {}
       response.should be_success
+      assigns[:suppliers].size.should == 4
+    end
+
+    it "conditionがないと検索ができない" do 
+      get 'search'
+      response.should render_template("admin/suppliers/index.html.erb")      
     end
     
     it "仕入先ID" do
@@ -70,6 +76,28 @@ describe Admin::SuppliersController do
       assigns[:suppliers].size.should == 1
       assigns[:suppliers][0].attributes.should == suppliers(:three).attributes      
     end    
+
+    it "違う販売元検索" do 
+      not_master_shop = suppliers(:not_master_shop_1)
+      get 'search', :condition => {:name => not_master_shop.name}
+      response.should be_success
+      assigns[:suppliers].size.should == 0      
+    end
+    it "違う販売元検索、admin_userが正しいケース" do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      not_master_shop = suppliers(:not_master_shop_1)
+      get 'search', :condition => {:name => not_master_shop.name}
+      response.should be_success
+      assigns[:suppliers].size.should == 1
+    end
+
+    it "admin_userがメインショップじゃない場合" do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      get 'search', :condition => {}
+      response.should be_success
+      assigns[:suppliers].size.should == 2
+    end
+
   end
   describe "GET 'new'" do
     it "成功" do
@@ -133,6 +161,16 @@ describe Admin::SuppliersController do
       response.should_not be_redirect
       response.should render_template("admin/suppliers/new.html.erb")
     end
+
+    it "retailer_idが不正なパターン" do
+      retailer_max = Retailer.find(:last).id + 100
+      post 'create', :supplier => @supplier.attributes.merge({"name" => "retailer_fail", "retailer_id" => retailer_max})
+      assigns[:supplier].should_not be_nil
+      assigns[:supplier].id.should be_nil
+      response.should_not be_redirect
+      response.should render_template("admin/suppliers/new.html.erb")
+    end
+
   end
   
   describe "POST 'update'" do

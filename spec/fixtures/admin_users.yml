@@ -13,6 +13,7 @@ load_by_admin_user_test_id_1:
   password: <%= AdminUser.encode_password 'hoge' %>
   authority_id: 1
   activity: true
+  retailer_id: 1
 
 load_by_admin_user_mim_position_1:
   id: 2
@@ -22,18 +23,21 @@ load_by_admin_user_mim_position_1:
   created_at: Wed May 21 13:14:11 +0900 2008
   password: <%= AdminUser.encode_password 'hoge' %>
   authority_id: 1
+  retailer_id: 1
 
 load_by_admin_user_max_position_100:
   id: 3
   name: max_position_100
   position: 100
   created_at: Wed May 22 13:14:11 +0900 2008
+  retailer_id: 1
 
 load_by_admin_user_created_at_23:
   id: 4
   name: created_at_23
   position: 4
   created_at: Wed May 23 13:14:11 +0900 2008
+  retailer_id: 1
 
 load_by_admin_user_created_at_24:
   id: 5
@@ -41,6 +45,7 @@ load_by_admin_user_created_at_24:
   position: 5
   created_at: Wed May 24 13:14:11 +0900 2008
   activity : true
+  retailer_id: 1
 
 load_by_admin_user_created_at_22:
   id: 6
@@ -48,6 +53,7 @@ load_by_admin_user_created_at_22:
   position: 6
   created_at: Wed May 22 13:14:11 +0900 2008
   activity : false
+  retailer_id: 1
 
 load_by_admin_user_activity_true:
   id: 7
@@ -58,6 +64,7 @@ load_by_admin_user_activity_true:
   activity : true
   authority_id: 1
   password: <%= AdminUser.encode_password 'hoge' %>
+  retailer_id: 1
 
 login_admin_user:
   id: 8
@@ -68,6 +75,7 @@ login_admin_user:
   created_at: Wed May 21 13:14:11 +0900 2008
   activity : true
   authority_id: 1
+  retailer_id: 1
   
 load_by_admin_user_activity_false:
   id: 9
@@ -78,6 +86,7 @@ load_by_admin_user_activity_false:
   login_id: admin9
   password: <%= AdminUser.encode_password 'hoge' %>
   authority_id: 1
+  retailer_id: 1
 
 admin10:
   id: 10
@@ -88,6 +97,7 @@ admin10:
   created_at: Wed May 21 13:14:11 +0900 2008
   activity : true
   authority_id: 1
+  retailer_id: 1
 
 admin_user_00011: 
   name: "KBMJリーダー"
@@ -101,6 +111,7 @@ admin_user_00011:
   login_id: kbmjadmin
   created_at: 2008-08-22 08:52:03.953000 Z
   belongs_to: KBMJ
+  retailer_id: 1
   
 admin_user_00012: 
   name: "KBMJ担当者"
@@ -114,6 +125,7 @@ admin_user_00012:
   login_id: kbmj
   created_at: 2008-08-22 08:55:33.140000 Z
   belongs_to: KBMJ
+  retailer_id: 1
   
 admin_user_00013: 
   name: "KBMJ管理者"
@@ -127,6 +139,7 @@ admin_user_00013:
   login_id: kbmjadmin
   created_at: 2008-08-22 08:56:02.453000 Z
   belongs_to: KBMJ
+  retailer_id: 1
   
 admin_user_00014: 
   name: "KBMJ運用者"
@@ -140,6 +153,7 @@ admin_user_00014:
   login_id: kbmj
   created_at: 2008-08-22 08:56:29.171000 Z
   belongs_to: KBMJ
+  retailer_id: 1
   
 admin_user_00015: 
   name: "KBMJ顧客対応"
@@ -153,6 +167,7 @@ admin_user_00015:
   login_id: kbmjs
   created_at: 2008-08-22 08:56:58.156000 Z
   belongs_to: KBMJ
+  retailer_id: 1
   
 admin_user_00016: 
   name: "KBMJ"
@@ -166,5 +181,27 @@ admin_user_00016:
   login_id: nitsu
   created_at: 2008-08-22 08:57:28.421000 Z
   belongs_to: "KBMJ"
+  retailer_id: 1  
   
-  
+admin17_retailer_id_is_fails:
+  id: 17
+  name: admin17
+  login_id: admin17
+  password: <%= AdminUser.encode_password 'hoge' %>
+  position: 17
+  created_at: Wed May 21 13:14:11 +0900 2008
+  activity : true
+  authority_id: 1
+  retailer_id: 100
+
+admin18_retailer_id_is_another_shop:
+  id: 18
+  name: admin18
+  login_id: admin18
+  password: <%= AdminUser.encode_password 'hoge' %>
+  position: 18
+  created_at: Wed May 21 13:14:11 +0900 2008
+  activity : true
+  authority_id: 1
+  retailer_id: 2
+

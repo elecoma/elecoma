@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe Admin::AdminUsersController do
@@ -44,7 +45,7 @@ describe Admin::AdminUsersController do
  
   describe "GET '新規登録'" do
     before do
-      @record = AdminUser.new({:name=>"gundam", :login_id=>"zak", :password=>"hyakushiki", :authority_id => 1})
+      @record = AdminUser.new({:name=>"gundam", :login_id=>"zak", :password=>"hyakushiki", :authority_id => 1, :retailer_id => 1})
     end
     it "登録に成功する" do
       post 'create', :admin_user => @record.attributes

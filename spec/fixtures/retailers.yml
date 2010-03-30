@@ -1,0 +1,6 @@
+valid_retailer:
+  id: 1
+  name: メイン販売元
+other_retailer_2:
+  id: 2
+  name: サブ販売元

@@ -7,7 +7,8 @@ class Supplier < ActiveRecord::Base
   DEFAULT_SUPPLIER_ID = 1
   SHISYAGONYU, KIRISUTE, KIRIAGE = 0, 1, 2
   TAX_RULE_NAMES = { SHISYAGONYU => "四捨五入", KIRISUTE => "切り捨て", KIRIAGE => "切り上げ"}  
-  
+  belongs_to :retailer
+
   validates_presence_of :name
   validates_uniqueness_of :name
   validates_length_of :name, :maximum => 50
@@ -36,6 +37,8 @@ class Supplier < ActiveRecord::Base
   
   validates_length_of :free_comment, :maximum => 10000 , :allow_blank => true
   validates_inclusion_of :tax_rule, :in => [SHISYAGONYU, KIRISUTE, KIRIAGE] , :allow_blank => true
+
+  validates_presence_of :retailer
 
   before_update :check_default
   before_destroy :check_default_and_products
@@ -76,5 +79,9 @@ class Supplier < ActiveRecord::Base
     if self.id == DEFAULT_SUPPLIER_ID
       raise ActiveRecord::ReadOnlyRecord
     end
+  end
+
+  def self.list_by_retailer(retailer_id = Retailer::DEFAULT_ID)
+    return find(:all, :conditions => ["retailer_id = ? or id = ?", retailer_id, Retailer::DEFAULT_ID], :order => "id")
   end
 end

@@ -140,7 +140,7 @@ $ sudo gem install postgres
 # /etc/init.d/postgresql start
 # su - postgres
 $ psql template1
-# alert user postgres with password 'xxxx';
+# alter user postgres with password 'xxxx';
 # q\
 $ createuser ec
 Shall the new role be a superuser? (y/n) y

@@ -60,6 +60,14 @@ describe Admin::ReturnItemsController do
       assigns[:product_styles][0].manufacturer_id.should == @ps.manufacturer_id
     end
 
+    it "with fail_retailer" do
+      session[:admin_user] = admin_users(:admin17_retailer_id_is_fails)
+      search = {}
+      get "search", :condition => search
+      response.should be_success
+      assigns[:product_styles].should == []
+    end
+
   end
 
   describe "GET 'new'" do
@@ -168,6 +176,16 @@ describe Admin::ReturnItemsController do
       assigns[:return_items][0].product_style.manufacturer_id.should == @ri.product_style.manufacturer_id
       response.should be_success
     end
+
+    it "is fail_retailer" do
+      session[:admin_user] = admin_users(:admin17_retailer_id_is_fails)
+      condition = {:name => ""}
+      get 'history_search', :condition => condition
+      assigns[:return_items].size.should == 0
+      response.should be_success
+    end
+
+
   end
 
   describe "GET 'edit'" do
@@ -261,6 +279,14 @@ describe Admin::ReturnItemsController do
       get 'csv', :id => id
       response.body.count("\n").should == csv_line_count
     end      
+
+    it "is retailer_fail" do 
+      session[:admin_user] = admin_users(:admin17_retailer_id_is_fails)
+      get 'csv', :id => DateTime.now.strftime('%Y%m%d_%H%M%S')
+      response.headers['Content-Type'].should =~ %r(^application/octet-stream)
+      rows = response.body.chomp.split("\n")
+      rows.size.should == 1
+    end
   end
 end
 

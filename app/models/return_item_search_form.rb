@@ -49,6 +49,10 @@ class ReturnItemSearchForm < SearchForm
       unless search.returned_at_to.blank?
         search_list << ["return_items.returned_at <= ?", search.returned_at_to]
       end
+      unless search.retailer_id.blank?
+        search_list << ["products.retailer_id = ?", search.retailer_id]
+      end
+
     end
     search_list
   end

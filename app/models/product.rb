@@ -24,6 +24,7 @@ class Product < ActiveRecord::Base
   has_many :order_details
   has_one :campaign
   belongs_to :supplier
+  belongs_to :retailer
 
   validates_length_of :name , :maximum => 50
   validates_length_of :name , :minimum => 1
@@ -35,6 +36,7 @@ class Product < ActiveRecord::Base
   validates_presence_of :description
   validates_presence_of :introduction
   validates_presence_of :supplier
+  validates_presence_of :retailer
   validates_associated :sub_products
 
   attr_accessor :small_resource_path
@@ -126,6 +128,9 @@ class Product < ActiveRecord::Base
   end
   def supplier_name
     self.supplier && self.supplier.name
+  end
+  def retailer_name
+    self.retailer && self.retailer.name
   end
   # 送料無料？
   def free_delivery?
@@ -263,6 +268,9 @@ class Product < ActiveRecord::Base
       unless search.sale_start_at_end.blank?
         search_list << ["products.sale_start_at <= ?", search.sale_start_at_end + 1.day]
       end
+      unless search.retailer_id.blank?
+        search_list << ["products.retailer_id = ?", search.retailer_id]
+      end
     end
     unless params["product_status_ids"].blank?
       product_status = ProductStatus.find(:all, :select => "distinct product_id",  :conditions => "status_id IN (#{ params["product_status_ids"].join(",") })" )
@@ -292,7 +300,7 @@ class Product < ActiveRecord::Base
             end
           elsif column.to_s == "delivery_dates_label"
             product.delivery_dates_label
-          elsif ![:small_resource_path,:medium_resource_path,:large_resource_path,:category_name,:delivery_dates_label,:supplier_name].include?(column)&& Product.columns_hash[column.to_s].type == :datetime
+          elsif ![:small_resource_path,:medium_resource_path,:large_resource_path,:category_name,:delivery_dates_label,:supplier_name,:retailer_name].include?(column)&& Product.columns_hash[column.to_s].class == :datetime
             (product[column] + (60*60*9)).strftime("%Y-%m-%d %H:%M") if product[column]
           else
             product[column] || product.send(column)
@@ -386,6 +394,8 @@ class Product < ActiveRecord::Base
       product.free_comment = arr[29]
       setDelivery_dates(product,arr[30])
       setSupplierId(product,arr[31])
+      # todo: csvupload retailer対応
+      setRetailerId(product,arr[32])
     end
 
     def setPermit(product, permit)
@@ -409,6 +419,19 @@ class Product < ActiveRecord::Base
         else
           raise ActiveRecord::RecordNotFound 
         end        
+      end
+    end
+
+    def setRetailerId(product, name)
+      if name.blank?
+        product.retailer_id = Retailer::DEFAULT_ID
+      else
+        r = Retailer.find_by_name(name)
+        if !r.blank?
+          product.retailer_id = r.id
+        else
+          raise ActiveRecord::RecordNotFound
+        end
       end
     end
     #画像データセット
@@ -530,6 +553,7 @@ class Product < ActiveRecord::Base
       :free_comment,
       :delivery_dates_label,
       :supplier_name,
+      :retailer_name,
       :created_at,
       :updated_at
     ]
@@ -569,6 +593,7 @@ class Product < ActiveRecord::Base
       :free_comment => "フリー入力",
       :delivery_dates_label => "配送日",
       :supplier_name => "仕入先名",
+      :retailer_name => "販売元名",
       :created_at => "登録日",
       :updated_at => "更新日"
     }

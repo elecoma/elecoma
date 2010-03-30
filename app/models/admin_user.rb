@@ -5,6 +5,7 @@ class AdminUser < ActiveRecord::Base
   acts_as_list
 
   belongs_to :authority
+  belongs_to :retailer
   
   def self.validates_uniqueness_of(*attr_names)
     configuration = { :message => I18n.translate("activerecord.errors.messages")[:taken], :case_sensitive => true }
@@ -69,6 +70,8 @@ class AdminUser < ActiveRecord::Base
   validates_presence_of :authority
   
   validates_presence_of :login_id
+
+  validates_presence_of :retailer
   validates_length_of :login_id, :maximum => 15
   validates_format_of :login_id, :with => /^[a-zA-Z0-9]*$/
   validates_uniqueness_of :login_id
@@ -101,6 +104,14 @@ class AdminUser < ActiveRecord::Base
     columns = ['id', 'login_id']
     titles = ['id', 'login_id']
     [columns, titles]
+  end
+
+  #
+  # 管理者ユーザの販売元がマスターショップであるかどうかを判定する
+  #
+  def master_shop?
+    return true if retailer_id == Retailer::DEFAULT_ID
+    return false
   end
 
   protected

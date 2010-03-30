@@ -17,6 +17,7 @@
     <th>権限</th>
     <th>名前</th>
     <th>所属</th>
+    <th>販売元</th>
     <th>稼働</th>
     <th>非稼働</th>
     <th>編集</th>
@@ -30,6 +31,7 @@
     <td><%=h authority_name(record.authority_id) %></td>
     <td><%=h record.name %></td>
     <td><%=h record.belongs_to %></td>
+    <td><%=h record.retailer.name %></td>
     <td class="t_center"><%= radio_button_tag "activity_#{index}", "true", checked=record.activity==1, {:onclick=>"fnUpdateActivity(#{record.id}, 'true')"} %></td>
     <td class="t_center"><%= radio_button_tag "activity_#{index}", "false", checked=record.activity==0, {:onclick=>"fnUpdateActivity(#{record.id}, 'false')"} %></td>
     <td class="t_center"><%= link_to "編集", edit_admin_admin_user_path(record) %></td>

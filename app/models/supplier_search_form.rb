@@ -25,7 +25,7 @@ class SupplierSearchForm < SearchForm
 from
 suppliers s
 where
-(s.deleted_at IS NULL OR s.deleted_at > '#{Time.now.gmtime.strftime("%Y-%m-%d %H:%M:%S")}')
+(s.deleted_at IS NULL OR s.deleted_at > '#{Time.now.gmtime.strftime("%Y-%m-%d %H:%M:%S")}') 
 #{unless condition.supplier_id.blank?
     conditions << condition.supplier_id.to_i
     "and s.id = ?"
@@ -50,6 +50,10 @@ where
     conditions << "%#{condition.email}%"
     "and s.email like ? "
   end}
+#{unless condition.retailer_id.blank?
+    conditions << condition.retailer_id.to_i
+    "and (s.retailer_id = ? or s.id = 1) "
+end}
 order by s.id
 EOS
   return [sql_condition, conditions] 

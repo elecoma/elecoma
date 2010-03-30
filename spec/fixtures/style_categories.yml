@@ -41,3 +41,9 @@ valid_category:
   style_id: 7
   name: valid_category
   position: 7
+
+other_shop_category1:
+  id: 80
+  style_id: 8
+  name: other_shop_category1
+  position: 8

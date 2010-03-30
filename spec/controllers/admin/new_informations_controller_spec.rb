@@ -68,7 +68,6 @@ describe Admin::NewInformationsController do
       post 'confirm', :new_information => record
       get 'update', :new_information => record
       assigns[:new_information].id.should == id
-      p assigns[:new_information].date.class
       assigns[:new_information].date.should == DateTime.parse("2008-01-01")
       response.should_not be_redirect
     end

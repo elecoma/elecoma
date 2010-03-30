@@ -50,6 +50,9 @@ class StockSearchForm < SearchForm
       unless search.moved_at_to.blank?
         search_list << ["stock_histories.moved_at <= ?", search.moved_at_to]
       end
+      unless search.retailer_id.blank?
+        search_list << ["products.retailer_id = ?", search.retailer_id]
+      end
     end
     search_list
   end

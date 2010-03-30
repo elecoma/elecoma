@@ -26,7 +26,8 @@ class Admin::TotalsController < Admin::BaseController
     begin
       @records = @agent.get_records(params)
     rescue => e
-      p e
+      logger.error e.message
+      e.backtrace.each{|bt|logger.error(bt)}
     end
     @total = @agent.total
     begin

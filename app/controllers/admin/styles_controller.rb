@@ -3,8 +3,8 @@ class Admin::StylesController < Admin::BaseController
   before_filter :admin_permission_check_standard
   
   index.before do
-    @styles = Style.find(:all, :order => "position")
-    @style = Style.find_by_id(params[:id]) || Style.new
+    @styles = Style.find(:all, :conditions=>["retailer_id = ? ", session[:admin_user].retailer_id], :order => "position")
+    @style = Style.find(:last, :conditions=>["id = ? and retailer_id = ? ", params[:id], session[:admin_user].retailer_id]) || Style.new
   end
   
   new_action.wants.html do
@@ -17,7 +17,7 @@ class Admin::StylesController < Admin::BaseController
     end
 
     action.failure.wants.html do
-      @styles = Style.find(:all, :order => "position")
+      @styles = Style.find(:all, :conditions=>["retailer_id = ? ", session[:admin_user].retailer_id], :order => "position")
       render :action => "index"
     end
   end
@@ -30,6 +30,11 @@ class Admin::StylesController < Admin::BaseController
   def down
     super
     redirect_to :action => :index
+  end
+
+  private
+  def object
+    @object ||= Style.find(:last, :conditions => ["id = ? and retailer_id = ? ", params[:id], session[:admin_user].retailer_id])
   end
 
 end

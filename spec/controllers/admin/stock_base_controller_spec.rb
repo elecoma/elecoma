@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'spec_helper'
 
 describe Admin::StockBaseController do
@@ -71,5 +72,13 @@ describe Admin::StockBaseController do
       assigns[:product_styles].size.should == 1
       assigns[:product_styles][0].attributes.should == product_styles(:valid_product).attributes      
     end      
+
+    it "販売元が商品を持っていない時に検索すると空になる" do
+      session[:admin_user] = admin_users(:admin17_retailer_id_is_fails)
+      get 'search', :condition => {}
+      assigns[:product_styles].should == []
+    end
+
+
   end
 end

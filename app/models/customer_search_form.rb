@@ -51,7 +51,6 @@ class CustomerSearchForm < SearchForm
     CSV::Writer.generate(f) do | writer |
       writer << col_names
       customers.each do |c|
-#        p c
         arr = []
         syms.each do |sym|
           if sym == "sex".to_sym

@@ -5,6 +5,7 @@
       <th>規格名</th>
       <td>
         <%= f.text_field :name %>
+	<%= f.hidden_field :retailer_id, {:value => session[:admin_user].retailer_id.to_s} %>
         <%= f.submit "登録", :confirm=>"この内容で登録して宜しいですか？", :class=>"btn_s" %>
       </td>
     </tr>
