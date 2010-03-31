@@ -4,7 +4,7 @@ describe Admin::ShopsController do
   fixtures :authorities, :functions, :admin_users , :shops, :retailers
   
   before(:each) do
-    session[:admin_user] = AdminUser.first
+    session[:admin_user] = admin_users(:load_by_admin_user_test_id_1)
     @controller.class.skip_before_filter @controller.class.before_filter
     @controller.class.skip_after_filter @controller.class.after_filter
   end
@@ -64,8 +64,16 @@ describe Admin::ShopsController do
     it "should be successful" do
       get 'delivery_index'
       response.should be_success
-      assigns[:delivery_traders].should == DeliveryTrader.find(:all)
+      assigns[:delivery_traders].should == DeliveryTrader.find(:all, :conditions => ["retailer_id = ?", session[:admin_user].retailer_id], :order=>"position")
     end
+
+    it "他店舗では他店舗用の配送業者のみ表示" do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      get 'delivery_index'
+      response.should be_success
+      assigns[:delivery_traders].should == DeliveryTrader.find(:all, :conditions => ["retailer_id = ?", session[:admin_user].retailer_id], :order=>"position")
+    end
+
   end
   
   describe "GET 'sort'" do
@@ -76,6 +84,7 @@ describe Admin::ShopsController do
       get 'up', :model => "delivery_traders", :id => 2, :return_act=>"delivery_list"
       DeliveryTrader.find(2).position.should == 1
       response.should redirect_to(:action => "delivery_list")
+      DeliveryTrader.find(3).position.should == 1
     end
     
     it "positionを上げる場合(これ以上あがらない)" do
@@ -91,6 +100,7 @@ describe Admin::ShopsController do
       get 'down', :model => "delivery_traders", :id => 1, :return_act=>"delivery_list"
       DeliveryTrader.find(1).position.should == 2
       response.should redirect_to(:action => "delivery_list")
+      DeliveryTrader.find(3).position.should == 1
     end
     
     it "positionを下げる場合（これ以上下がらない）" do
@@ -105,7 +115,7 @@ describe Admin::ShopsController do
   describe "GET 'destroy'" do
     it "削除に成功する" do
       get 'destroy', :model => "delivery_traders", :id => 1,:return_act=>"delivery_list"
-      DeliveryTrader.find(:first).id.should == 2
+      DeliveryTrader.find(:first, :order=>"id").id.should == 2
       response.should redirect_to(:action => "delivery_list")
     end
     it "削除に失敗する場合" do
@@ -150,6 +160,7 @@ describe Admin::ShopsController do
   end
   
   describe "GET 'delivery_create'" do
+    fixtures :delivery_traders,:delivery_times,:delivery_fees
     before do
       @delivery_trader = {:name=>"追加",:url=>"http://www.hoge.com", :retailer_id => Retailer::DEFAULT_ID}
       @delivery_time = {}
@@ -203,7 +214,12 @@ describe Admin::ShopsController do
       response.should render_template("admin/shops/delivery_new.html.erb")
     end
 
-
+    it "同じ名前でもretailer_idが異なれば登録できる" do 
+      other_shop = delivery_traders(:other_shop)
+      delivery_trader = @delivery_trader.merge({:name => other_shop.name })
+      get 'delivery_create', :delivery_trader=>delivery_trader,:delivery_time=>@delivery_time,:delivery_fee=>@delivery_fee
+      response.should redirect_to(:action=>:delivery_index)
+    end
   end
   
   

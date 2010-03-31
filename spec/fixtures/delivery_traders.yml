@@ -13,3 +13,17 @@ yamato:
   url: http://example.org/
   position: 2
   retailer_id: 1
+
+other_shop:
+  id: 3
+  name: 他店舗用業者1
+  url: http://example.org/
+  position: 1
+  retailer_id: 2
+
+other_shop2:
+  id: 4
+  name: 他店舗用業者2
+  url: http://example.org/
+  position: 3
+  retailer_id: 2

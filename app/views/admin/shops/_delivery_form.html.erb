@@ -33,6 +33,7 @@ Event.observe(window, 'load', function() {
     <td><%= text_field "delivery_trader", "url" %></td>
   </tr>
 </table>
+<%= hidden_field_tag "delivery_trader[retailer_id]", session[:admin_user].retailer_id %>
 <table class="data2" cellspacing="1" cellpadding="0">
     <tr>
 <%  DeliveryTime::MAX_SIZE.times do |i|%>

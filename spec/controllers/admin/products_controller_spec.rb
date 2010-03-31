@@ -191,7 +191,6 @@ describe Admin::ProductsController do
       last_product = Product.find(:last)
       csv = uploaded_file(File.dirname(__FILE__) + "/../../csv/product_sample.csv", "text", "product_sample.csv")
       post 'csv_upload', :upload_file => csv
-      p flash[:product_csv_upload_e]
       Product.find(:last).should == last_product
     end
 
@@ -200,7 +199,6 @@ describe Admin::ProductsController do
       last_product = Product.find(:last)
       csv = uploaded_file(File.dirname(__FILE__) + "/../../csv/product_sample_other_shop.csv", "text", "product_sample_other_shop.csv")
       post 'csv_upload', :upload_file => csv
-      p flash[:product_csv_upload_e]
       Product.find(:last).should_not == last_product
     end
 

@@ -47,7 +47,8 @@ class Admin::ShopsController < Admin::BaseController
     @model_name = "delivery_trader"
     @model = DeliveryTrader
 
-    @delivery_traders = @model.paginate(:page => params[:page],
+    @delivery_traders = @model.paginate(:conditions => ["retailer_id = ? ", session[:admin_user].retailer_id],
+                               :page => params[:page],
                                :per_page => params[:per_page] || 10,
                                :order => :position)
   end
