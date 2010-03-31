@@ -334,4 +334,28 @@ product_style_test:
   public_start_at: 2009-10-01 00:00:00
   public_end_at: 2012-10-30 00:00:00
   arrival_expected_date: 2009-10-01 00:00:00
+#通常商品  
+valid_product_other_shop:
+  id: 24
+  name: コート
+  permit: true
+  no_limit_flag: false
+  introduction: テスト
+  description: テスト
+  price: 1000
+  small_resource_id: 70
+  medium_resource_id: 69
+  category_id: 16
+  delivery_dates: 3
+  have_product_style: true
+  sale_start_at: 2009-10-01 00:00:00
+  sale_end_at: 2012-10-01 00:00:00
+  public_start_at: 2009-10-01 00:00:00
+  public_end_at: 2012-10-01 00:00:00
+  arrival_expected_date: 2009-10-01 00:00:00
+  style_id: 7
+  created_at: 2009-10-01 00:00:00
+  updated_at: 2009-10-01 00:00:00
+  supplier_id: 2
+  retailer_id: 2
 

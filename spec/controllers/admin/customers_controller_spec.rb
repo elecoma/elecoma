@@ -170,7 +170,7 @@ describe Admin::CustomersController do
   describe "POST 'csv_upload'" do
     it "should be successful" do
       last_customer = Customer.find(:last)
-      csv = uploaded_file(File.dirname(__FILE__) + "/../../customer_upload.csv", "text", "customer_upload.csv")
+      csv = uploaded_file(File.dirname(__FILE__) + "/../../csv/customer_upload.csv", "text", "customer_upload.csv")
       post 'csv_upload', :upload_file => csv
       Customer.find(:last).should_not == last_customer
     end

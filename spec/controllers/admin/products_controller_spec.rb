@@ -181,11 +181,32 @@ describe Admin::ProductsController do
   describe "POST 'csv_upload'" do
     it "should be successful" do
       last_product = Product.find(:last)
-      csv = uploaded_file(File.dirname(__FILE__) + "/../../product_sample.csv", "text", "product_sample.csv")
+      csv = uploaded_file(File.dirname(__FILE__) + "/../../csv/product_sample.csv", "text", "product_sample.csv")
       post 'csv_upload', :upload_file => csv
       Product.find(:last).should_not == last_product
     end
+
+    it "other shop should not be successful" do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      last_product = Product.find(:last)
+      csv = uploaded_file(File.dirname(__FILE__) + "/../../csv/product_sample.csv", "text", "product_sample.csv")
+      post 'csv_upload', :upload_file => csv
+      p flash[:product_csv_upload_e]
+      Product.find(:last).should == last_product
+    end
+
+    it "違うショップでもデータが正しければ登録できる" do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      last_product = Product.find(:last)
+      csv = uploaded_file(File.dirname(__FILE__) + "/../../csv/product_sample_other_shop.csv", "text", "product_sample_other_shop.csv")
+      post 'csv_upload', :upload_file => csv
+      p flash[:product_csv_upload_e]
+      Product.find(:last).should_not == last_product
+    end
+
+
   end
+
 
   describe "GET 'search' from retailer_fail" do
     before(:each) do

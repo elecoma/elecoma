@@ -335,12 +335,15 @@ class Product < ActiveRecord::Base
   end
 
   class << self
-    def add_by_csv(file)
+    def add_by_csv(file, retailer_id)
       line = 0
       Product.transaction do
         CSV::Reader.parse(file) do |row|
           if line != 0
-            product = new_by_array(row)
+            product = new_by_array(row, retailer_id)
+            if product.nil?
+              return [line-1, false]              
+            end
             unless product.save!
               return [line-1, false]
             end
@@ -353,21 +356,26 @@ class Product < ActiveRecord::Base
 
     private
 
-    def new_by_array(arr)
+    def new_by_array(arr, retailer_id)
       arr.map! do | val |
         Iconv.conv('UTF-8', 'cp932', val)
       end
+      # retailer_idの確認
+      product = Product.find_by_id(arr[0].to_i) unless arr[0].blank?
+      if retailer_id != Retailer::DEFAULT_ID && product && product.retailer_id != retailer_id
+        return nil
+      end
       #arr[0]が対応しているデータ存在する時、更新、存在しない時、新規作成
-      unless !arr[0].blank? && product = Product.find_by_id(arr[0].to_i)
+      unless product
         product = Product.new
       end
       #CSVデータ設定
-      set_data(product,arr)
+      set_data(product,arr,retailer_id)
       product
     end
 
     #CSVデータ設定
-    def set_data(product,arr)
+    def set_data(product,arr,retailer_id)
       setPermit(product, arr[1])
       product.name = arr[2]
       product.url = arr[3]
@@ -395,7 +403,11 @@ class Product < ActiveRecord::Base
       setDelivery_dates(product,arr[30])
       setSupplierId(product,arr[31])
       # todo: csvupload retailer対応
-      setRetailerId(product,arr[32])
+      if retailer_id == Retailer::DEFAULT_ID
+        setRetailerId(product,arr[32])
+      else
+        setRetailerId(product,arr[32],retailer_id)
+      end
     end
 
     def setPermit(product, permit)
@@ -422,9 +434,11 @@ class Product < ActiveRecord::Base
       end
     end
 
-    def setRetailerId(product, name)
-      if name.blank?
+    def setRetailerId(product, name, retailer_id = nil)
+      if name.blank? && retailer_id.nil?
         product.retailer_id = Retailer::DEFAULT_ID
+      elsif retailer_id
+        product.retailer_id = retailer_id
       else
         r = Retailer.find_by_name(name)
         if !r.blank?

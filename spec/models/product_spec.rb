@@ -175,7 +175,7 @@ describe Product do
     end
     it "CSVアップロード" do
       max_id = Product.maximum(:id)
-      Product.add_by_csv(File.read("#{RAILS_ROOT}/spec/product_csv_upload_for_spec.csv"))
+      Product.add_by_csv(File.read("#{RAILS_ROOT}/spec/csv/product_csv_upload_for_spec.csv"), 1)
       max_id.should < Product.maximum(:id)
       
       #=========================================
@@ -193,7 +193,7 @@ describe Product do
       cnt_image_data_b = ResourceData.count
       cnt_product_b = Product.count
       #CSVアップロード
-      Product.add_by_csv(File.read("#{RAILS_ROOT}/spec/product_csv_upload_image_for_spec.csv"))
+      Product.add_by_csv(File.read("#{RAILS_ROOT}/spec/csv/product_csv_upload_image_for_spec.csv"), 1)
       
       #期待結果
       #商品データが1件更新、1件増加、

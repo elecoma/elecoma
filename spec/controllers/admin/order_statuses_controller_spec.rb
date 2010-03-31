@@ -67,7 +67,7 @@ describe Admin::OrderStatusesController do
 
   describe "POST 'csv_upload'" do
     it "should be successful" do
-      csv = uploaded_file(File.dirname(__FILE__) + "/../../order_status_update.csv", "text", "order_status_update.csv")
+      csv = uploaded_file(File.dirname(__FILE__) + "/../../csv/order_status_update.csv", "text", "order_status_update.csv")
       post 'csv_upload', :upload_file => csv
       flash[:status].should_not be_nil
     end
