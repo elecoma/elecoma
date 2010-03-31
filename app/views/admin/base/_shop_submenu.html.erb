@@ -1,8 +1,10 @@
-<script type="javascript">
+<% content_for :head do -%>
+<script type="text/javascript">
 	window.onload = function init() {
 		document.getElementById("shop").style.display = 'none';
 	}
 </script>
+<% end -%>
 <div id="sub"><!-- サブメニュー -->
   <div id="menu" class="clearfix"><!-- g_menu -->
     <p><a href="JavaScript:onClick=Tree('display1');ImgC('img1');"><%= image_tag("menu_icon.gif", :width => "36", :height => "36", :alt => "", :id => "img1") %><span>基本情報管理</span></a></p>

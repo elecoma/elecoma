@@ -1,8 +1,10 @@
-<script>
+<% content_for :head do -%>
+<script type="text/javascript">
 	window.onload = function init() {
 		document.getElementById("depot").style.display = 'none';
 	}
 </script>
+<% end -%>
 <div id="sub"><!-- サブメニュー -->
   <div id="menu" class="clearfix"><!-- g_menu -->
     <% if @system_supplier_use_flag %>

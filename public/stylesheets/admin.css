@@ -169,7 +169,7 @@ html>/**/body {
 
 #head_r {
   float: right;
-  width: 350px;
+  width: 200px;
 }
 
 #con_menu {
@@ -184,7 +184,6 @@ html>/**/body {
 
 #user_name {
   float: left;
-  width: 230px;
   height: 30px;
   text-align: right;
   margin-top: 33px;
