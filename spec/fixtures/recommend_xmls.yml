@@ -1,17 +1,17 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  recommend_id: MyString
+  recommend_id: 1
   name: MyString
   url: MyString
   categroy: MyString
-  price: MyString
+  price: 200
   image_url: MyString
 
 two:
-  recommend_id: MyString
+  recommend_id: 2
   name: MyString
   url: MyString
   categroy: MyString
-  price: MyString
+  price: 300
   image_url: MyString
