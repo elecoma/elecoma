@@ -15,6 +15,8 @@ class Admin::OrdersController < Admin::BaseController
   end
 
   def edit
+    order_delivery = OrderDelivery.find_by_order_id(params[:id])
+    raise ActiveRecord::RecordNotFound if order_delivery.nil? || order_delivery.order.retailer_id != session[:admin_user].retailer_id
     if params[:recalculate]
       recalculate
       return
@@ -39,7 +41,7 @@ class Admin::OrdersController < Admin::BaseController
   def update
     get_order_delivery
     #@order_delivery = OrderDelivery.find_by_order_id(params[:id])
-    if @order_delivery.nil?
+    if @order_delivery.nil? || @order_delivery.order.retailer_id != session[:admin_user].retailer_id
       raise ActiveRecord::RecordNotFound
     end
     begin
@@ -63,7 +65,7 @@ class Admin::OrdersController < Admin::BaseController
     # 親と子も消す
     order_delivery = OrderDelivery.find(:first, :conditions => ["id=?", params[:id]])
     begin
-      raise if order_delivery.nil?
+      raise if order_delivery.nil? || order_delivery.order.retailer_id != session[:admin_user].retailer_id
       order_delivery.order_details.each(&:destroy)
       order = order_delivery.order
       order_delivery.destroy
@@ -113,6 +115,8 @@ class Admin::OrdersController < Admin::BaseController
   end
 
   def get_search_form
+    addparam = {'retailer_id' => session[:admin_user].retailer_id}
+    params[:search].merge! addparam unless params[:search].nil?
     @search = SearchForm.new(params[:search])
     @search, @search_list, @sex, @payment_id = Order.get_conditions(@search, params)
   end

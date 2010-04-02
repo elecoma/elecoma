@@ -17,6 +17,12 @@ guest_female:
 guest_male:
   id: 5
   customer_id: 12
+#昨日の配送
+<% (11..20).each do |idx| %>
+last_day_delivery_<%= idx - 10 %>:
+  id: <%= idx %>
+  customer_id: 13
+<% end %>
 
 history_00:
   id: 6
@@ -113,3 +119,41 @@ not_customer_ritou:
   id: 3240 
   code: '2009111312103240'
   received_at: 2009-11-13 03:10:44     
+
+other_shop:
+  id: 3241 
+  code: '2010040100000001'
+  received_at: 2010-04-01 03:10:44
+  retailer_id: 2     
+
+# 受注集計用 多店舗
+# 発送済み 8 月購入
+<% (1..31).each do |i| 
+ id = i + 3300
+%>
+other_shop_commited_august_<%= i %>:
+  id: <%= id %>
+  customer_id: 9
+  received_at: <%= "2008-08-%02d 00:00:00" % i %>
+  retailer_id: 2
+<% end %>
+# 未発送 8 月購入 多店舗
+<% (1..31).each do |i| 
+ id = i + 3400
+%>
+other_shop_not_commited_august_<%= i %>:
+  id: <%= id %>
+  customer_id: 10
+  received_at: <%= "2008-08-%02d 00:00:00" % i %>
+  retailer_id: 2
+<% end %>
+# 発送済み 9 月購入 多店舗
+<% (1..30).each do |i| 
+ id = i + 3500
+%>
+other_shop_commited_september_<%= i %>:
+  id: <%= id %>
+  customer_id: 9
+  received_at: <%= "2008-09-%02d 00:00:00" % i %>
+  retailer_id: 2
+<% end %>

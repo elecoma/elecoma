@@ -16,6 +16,7 @@ class Admin::OrderStatusesController < Admin::BaseController
         OrderDelivery.transaction do
           params[:id_array].each do | id |
             if order_delivery = OrderDelivery.find_by_id(id)
+              raise if order_delivery.order.retailer_id != session[:admin_user].retailer_id
               order_delivery.status = params[:new_status]
               order_delivery.update_ticket(params[:order_delivery_ticket_code][id])
               order_delivery.save!
@@ -23,7 +24,7 @@ class Admin::OrderStatusesController < Admin::BaseController
           end
           flash[:status] = "保存しました"
         end
-      rescue
+      rescue => e
         flash[:status_e] = "保存に失敗しました"
       end
     end
@@ -36,10 +37,11 @@ class Admin::OrderStatusesController < Admin::BaseController
     file = params[:upload_file]
     begin
       if CSVUtil.valid_data_from_file?(file)
-        line, update_line, result = OrderDelivery.update_by_csv(file)
+        line, update_line, result = OrderDelivery.update_by_csv(file, session[:admin_user].retailer_id)
         unless result
           line = line + 1
           flash[:status] = "#{line}行目のデータが不正です。最初からやり直して下さい。"
+          flash[:has_error] = true
           redirect_to :action => "index"
           return
         end
@@ -57,6 +59,7 @@ class Admin::OrderStatusesController < Admin::BaseController
     rescue => e
       logger.error("order_statuses_controller#csv_upload catch error: " + e.to_s)
       flash[:status] = "エラーが発生しました。最初からやり直してく下さい。"
+      flash[:has_error] = true
 #      flash[:error] = e.to_s
       redirect_to :action => "index"
     end
@@ -71,7 +74,8 @@ class Admin::OrderStatusesController < Admin::BaseController
                           :page => params[:page],
                           :per_page => 10,
                           :conditions => flatten_conditions(@search_list),
-                          :order => "id desc"
+                          :order => "order_deliveries.id desc",
+                          :include => OrderDelivery::DEFAULT_INCLUDE
                                 )
   end
 
@@ -79,6 +83,7 @@ class Admin::OrderStatusesController < Admin::BaseController
     @search_list = []
 
     status = params[:select] || OrderDelivery::YOYAKU_UKETSUKE
-    @search_list << ["status=?", status]
+    @search_list << ["order_deliveries.status = ? ", status]
+    @search_list << ["orders.retailer_id = ? ", session[:admin_user].retailer_id]
   end
 end

@@ -19,6 +19,7 @@ describe Admin::OrdersController, "/admin/order" do
   fixtures :admin_users , :payments
   fixtures :functions, :authorities, :authorities_functions
   fixtures :products
+  fixtures :retailers
 
   before do
     @order = orders(:one)
@@ -145,7 +146,121 @@ describe Admin::OrdersController, "/admin/order" do
 
     it "商品コードで検索" do
       code = 'NATSU0001'
-      details = OrderDetail.find(:all, :conditions => ['product_code=?', code])
+      details = OrderDetail.find(:all, :conditions => ['order_details.product_code=? and orders.retailer_id = ?', code, 1], :include => {:order_delivery => :order})
+      expected = details.map(&:order_delivery).uniq.sort_by(&:id).reverse
+      post 'search', :search => {:product_code => code, :per_page => expected.size}
+      assigns[:order_deliveries].should == expected
+    end
+
+    it "電話番号(検索バグチェック用)" do
+      post 'search', :search => { :tel => "is_not_invalid_value" }
+      assigns[:order_deliveries].should == []
+    end
+
+  end
+
+  describe "POST / 検索結果表示 / 別ショップの場合" do
+    fixtures :payments
+    before do 
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      @order_delivery = order_deliveries :nobi_other_shop
+    end
+
+#    it "条件に該当する受注一覧を表示" do
+#      post 'search', :search => { :id => @order_delivery.id }
+#      p assigns[:search].id
+#      assigns[:order_deliveries][0].should == @order_delivery
+#    end
+
+    it "顧客名" do
+      post 'search', :search => { :customer_name => @order_delivery.family_name }
+      assigns[:order_deliveries][0].should == @order_delivery
+    end
+
+    it "顧客名" do
+      post 'search', :search => { :customer_name => @order_delivery.first_name }
+      assigns[:order_deliveries][0].should == @order_delivery
+    end
+
+    it "顧客名(カナ)" do
+      post 'search', :search => { :customer_name_kana => @order_delivery.family_name_kana }
+      assigns[:order_deliveries][0].should == @order_delivery
+    end
+
+    it "顧客名(カナ)" do
+      post 'search', :search => { :customer_name_kana => @order_delivery.first_name_kana }
+      assigns[:order_deliveries][0].should == @order_delivery
+    end
+
+    it "メールアドレス" do
+      post 'search', :search => { :email => @order_delivery.email }
+      assigns[:order_deliveries][0].should == @order_delivery
+    end
+
+    it "生年月日" do
+      search = {}
+      search.merge! date_to_select(@order_delivery.birthday, 'search_birth_from')
+      search.merge! date_to_select(@order_delivery.birthday, 'search_birth_to')
+      post 'search', :search => search
+      assigns[:order_deliveries].each do | record |
+        record.birthday.should == @order_delivery.birthday
+      end
+    end
+
+    it "性別" do
+      post 'search', :sex => ['0']
+      assigns[:order_deliveries].each do | record |
+        record.sex.should == '0'
+      end
+    end
+
+    it "支払方法" do
+      post 'search', :payment_id => ['1']
+      assigns[:order_deliveries].each do | record |
+        record.payment_id.to_i.should == 1
+      end
+    end
+
+    it "登録・更新日" do
+      search = {}
+      search.merge! date_to_select(@order_delivery.updated_at, 'search_updated_at_from')
+      search.merge! date_to_select(@order_delivery.updated_at, 'search_updated_at_to')
+      post 'search', :search => search
+      assigns[:order_deliveries].each do | record |
+        record.updated_at.year.should == @order_delivery.updated_at.year
+        record.updated_at.month.should == @order_delivery.updated_at.month
+        record.updated_at.day.should == @order_delivery.updated_at.day
+      end
+    end
+
+    it "購入金額" do
+      search = { :total_from => @order_delivery.total, :total_to => @order_delivery.total }
+      post 'search', :search => search
+      assigns[:order_deliveries].each do | record |
+        record.total == @order_delivery.total
+      end
+    end
+
+#    it "配送日" do
+#      search = {}
+#      search.merge! date_to_select(@order_delivery.deliv_date, 'search_deliv_date_from')
+#      search.merge! date_to_select(@order_delivery.deliv_date, 'search_deliv_date_to')
+#      post 'search', :search => search
+#      assigns[:order_deliveries].each do | record |
+#        record.deliv_date.year.should == @order_delivery.deliv_date.year
+#        record.deliv_date.month.should == @order_delivery.deliv_date.month
+#        record.deliv_date.day.should == @order_delivery.deliv_date.day
+#      end
+#    end
+
+    it "admin/order/list を表示する" do
+      post 'search'
+      response.should render_template("admin/orders/search.html.erb")
+    end
+
+    it "商品コードで検索" do
+      code = 'NATSU0001'
+      details = OrderDetail.find(:all, :conditions => ['order_details.product_code=? and orders.retailer_id = ?', code, 2], :include => {:order_delivery => :order})
       expected = details.map(&:order_delivery).uniq.sort_by(&:id).reverse
       post 'search', :search => {:product_code => code, :per_page => expected.size}
       assigns[:order_deliveries].should == expected
@@ -163,6 +278,16 @@ describe Admin::OrdersController, "/admin/order" do
       get 'edit', :id => @order.id
       assigns[:order_delivery].should == @order.order_deliveries.first
     end
+
+    it "存在しないIDを指定" do 
+      lambda { get :edit, :id => 10000 }.should raise_error(ActiveRecord::RecordNotFound)
+    end
+    
+    it "違うショップからアクセス" do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      lambda{ get 'edit', :id => @order.id }.should raise_error(ActiveRecord::RecordNotFound)
+    end
+
   end
 
   describe "更新" do
@@ -210,6 +335,12 @@ describe Admin::OrdersController, "/admin/order" do
 #      assigns[:order].total.should > -1
 #      assigns[:order].payment_total.should > -1
 #    end
+    
+    it "別ユーザが編集するとエラー" do 
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      @order_delivery = order_deliveries(:customer_buy_one)
+      lambda { post 'update', :id => @order_delivery.order_id, :order_delivery => {:first_name => '何某'} }.should raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 
   describe "「計算結果の確認」ボタン" do
@@ -237,6 +368,12 @@ describe Admin::OrdersController, "/admin/order" do
       assigns[:order_delivery].total.should > -1
       assigns[:order_delivery].payment_total.should > -1
     end
+
+    it "違うショップからは再計算できない" do 
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      lambda { post 'update', :id => @order_delivery.order_id, :order_delivery => {}}.should raise_error(ActiveRecord::RecordNotFound)      
+    end
+
   end
 
 
@@ -250,7 +387,18 @@ describe Admin::OrdersController, "/admin/order" do
       order_details.each do | detail |
         OrderDetail.find(:first, :conditions=>["id=?",order.id]).should be_nil
       end
-      flash[:error].should be_blank
+    end
+
+    it "違うショップからは削除できない" do 
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      order = @order_delivery.order
+      order_details = @order_delivery.order_details
+      get :destroy, :id => @order_delivery.id 
+      Order.find(:first, :conditions=>["id=?",order.id]).should_not be_nil
+      OrderDelivery.find(:first, :conditions=>["id=?",@order_delivery.id]).should_not be_nil
+      order_details.each do | detail |
+        OrderDetail.find(:first, :conditions=>["id=?",order.id]).should_not be_nil
+      end
     end
   end
 
@@ -273,7 +421,7 @@ describe Admin::OrdersController, "/admin/order" do
     end
   end
 
-  describe "POST 'destory'" do
+  describe "POST 'destroy'" do
     it "親子とも消す" do
       post 'destroy', :id => @order_delivery.id
       Order.find_by_id(@order_delivery.order_id).should be_nil

@@ -257,13 +257,14 @@ class OrderDelivery < ActiveRecord::Base
   end
 
   class << self
-    def update_by_csv(file)
+    def update_by_csv(file, retailer_id)
       line = 0
       update_line = 0
       OrderDelivery.transaction do
         CSV::Reader.parse(file) do |row|
           if line != 0
             record = OrderDelivery.find_by_order_id(row[0].to_i)
+            return [line-1, update_line, false] if record.order.retailer_id != retailer_id
             params = get_params(Iconv.conv('UTF-8', 'cp932', row[49]), row[47], row[48])
             if record
               if record.update_attributes(params)

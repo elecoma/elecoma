@@ -2,6 +2,7 @@
 class Order < ActiveRecord::Base
   acts_as_paranoid
   belongs_to :customer
+  belongs_to :retailer
   has_many :order_deliveries
 
   def subtotal
@@ -101,6 +102,9 @@ class Order < ActiveRecord::Base
       end
       unless search.shipped_at_to.blank?
         search_list << ["order_deliveries.shipped_at < ?", search.shipped_at_to + 1 * 60 * 60 * 24 ]
+      end
+      unless search.retailer_id.blank?
+        search_list << ["orders.retailer_id = ? ", search.retailer_id]
       end
     end
     search_list << ['order_deliveries.sex in (?)', sex] unless sex.empty?
