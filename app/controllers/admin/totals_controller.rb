@@ -10,6 +10,10 @@ class Admin::TotalsController < Admin::BaseController
     [:month, :date_from, :date_to, :sale_start_from, :sale_start_to].each do | key |
       params[:search][key] = parse_date_select(params[:search], key)
     end
+    params[:search][:retailer_id] ||= session[:admin_user].retailer_id
+    if session[:admin_user].retailer_id != Retailer::DEFAULT_ID && params[:search][:retailer_id] != session[:admin_user].retailer_id
+      raise ActiveRecord::RecordNotFound
+    end
     @search = OpenStruct.new(params[:search])
     params[:page] ||= 'term'
     @agent = Totalizer.get_instance(params[:page])
@@ -36,6 +40,7 @@ class Admin::TotalsController < Admin::BaseController
       logger.error(e.message)
       e.backtrace.each{|bt|logger.error(bt)}
     end
+    @selected_retailer = params[:search][:retailer_id].to_i
   end
 
   def graph

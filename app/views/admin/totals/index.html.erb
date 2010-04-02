@@ -7,6 +7,17 @@
 <h2><%= @title %></h2>
 
 <% form_tag :action => 'index', :page => params[:page] do %>
+  <% if session[:admin_user].master_shop? %>
+    <table class="data2" cellspacing="1">
+  <tr>
+   <th style="width:10%">販売元</th>
+   <td style="width:90%">
+     <%= retailers = Retailer.find(:all, :order => :id).map {|r| [r.name, r.id]}
+	 select 'search', 'retailer_id', retailers, {:selected => @selected_retailer, :include_blank=>false} %>
+   </td>
+  </tr>
+    </table>
+  <% end %>
  <% if @sale_start_enabled %>
   <table class="data2" cellspacing="1">
    <tr>

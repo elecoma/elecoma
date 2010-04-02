@@ -48,7 +48,7 @@ class Totalizer < TotalizerBase
     'deliv_fee' => '送料',
     'use_point' => '使用ポイント',
   }
-  WHERE_CLAUSE = "orders.received_at between :date_from and :date_to"
+  WHERE_CLAUSE = "orders.received_at between :date_from and :date_to and orders.retailer_id = :retailer_id "
 
   attr_accessor :columns, :title, :total, :links, :default_type
 
@@ -77,7 +77,7 @@ class Totalizer < TotalizerBase
       date_to = Time.local(date_from.year, date_from.month, 1) + 1.month - 1.day if date_from
     end
     date_to &&= Time.local(date_to.year, date_to.month, date_to.day, 23, 59, 59)
-    { :date_from => date_from, :date_to => date_to }
+    { :date_from => date_from, :date_to => date_to, :retailer_id => params[:search][:retailer_id] }
   end
 
   def self.list_for_csv(params)

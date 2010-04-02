@@ -134,7 +134,7 @@ other_shop:
 other_shop_commited_august_<%= i %>:
   id: <%= id %>
   customer_id: 9
-  received_at: <%= "2008-08-%02d 00:00:00" % i %>
+  received_at: <%= "2010-08-%02d 00:00:00" % i %>
   retailer_id: 2
 <% end %>
 # 未発送 8 月購入 多店舗
@@ -144,7 +144,7 @@ other_shop_commited_august_<%= i %>:
 other_shop_not_commited_august_<%= i %>:
   id: <%= id %>
   customer_id: 10
-  received_at: <%= "2008-08-%02d 00:00:00" % i %>
+  received_at: <%= "2010-08-%02d 00:00:00" % i %>
   retailer_id: 2
 <% end %>
 # 発送済み 9 月購入 多店舗
@@ -154,6 +154,6 @@ other_shop_not_commited_august_<%= i %>:
 other_shop_commited_september_<%= i %>:
   id: <%= id %>
   customer_id: 9
-  received_at: <%= "2008-09-%02d 00:00:00" % i %>
+  received_at: <%= "2010-09-%02d 00:00:00" % i %>
   retailer_id: 2
 <% end %>

@@ -72,6 +72,8 @@ describe Admin::TotalsController do
       assigns[:records].size.should == 30
     end
 
+
+
     it "指定された期間の一覧を表示する(両端とも含む)" do
       search = {
         'month(1i)'=>2008, 'month(2i)'=>6,
@@ -181,6 +183,43 @@ describe Admin::TotalsController do
 #      assigns[:total]['count'].should == count
 #      assigns[:total]['average'].should == record.total / count
 #    end
+
+    it "別ショップで表示をする(2009年以前のデータ)" do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      post 'index', :page => 'term', :type => 'wday', :search => {
+        'date_from(1i)'=>2000, 'date_from(2i)'=>1, 'date_from(31)'=>1,
+        'date_to(1i)'=>2009, 'date_to(2i)'=>9, 'date_to(3i)'=>9, 'by_date'=>'x'
+      }
+      assigns[:total].should_not be_nil
+      assigns[:total]['total'].should == 0
+    end
+
+    it "別ショップで表示をする(2010年以降のデータ)" do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      post 'index', :page => 'term', :type => 'wday', :search => {
+        'date_from(1i)'=>2010, 'date_from(2i)'=>1, 'date_from(31)'=>1,
+        'date_to(1i)'=>2020, 'date_to(2i)'=>9, 'date_to(3i)'=>9, 'by_date'=>'x'
+      }
+      assigns[:total].should_not be_nil
+      assigns[:total]['total'].should > 0
+    end
+
+    it "マスターショップ以外は自分のショップのデータ以外は見れない" do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      lambda { post 'index', :page => 'term', :type => 'wday', :search => {
+        'date_from(1i)'=>2010, 'date_from(2i)'=>1, 'date_from(31)'=>1,
+        'date_to(1i)'=>2020, 'date_to(2i)'=>9, 'date_to(3i)'=>9, 'by_date'=>'x', 'retailer_id' => 1
+        } }.should raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it "マスターショップは別ショップのデータも表示できる" do
+      post 'index', :page => 'term', :type => 'wday', :search => {
+        'date_from(1i)'=>2010, 'date_from(2i)'=>1, 'date_from(31)'=>1,
+        'date_to(1i)'=>2020, 'date_to(2i)'=>9, 'date_to(3i)'=>9, 'by_date'=>'x', 'retailer_id' => 2
+      }
+      assigns[:total].should_not be_nil
+      assigns[:total]['total'].should > 0
+    end
 
   end
 
