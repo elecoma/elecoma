@@ -11,7 +11,7 @@ class Admin::TotalsController < Admin::BaseController
       params[:search][key] = parse_date_select(params[:search], key)
     end
     params[:search][:retailer_id] ||= session[:admin_user].retailer_id
-    if session[:admin_user].retailer_id != Retailer::DEFAULT_ID && params[:search][:retailer_id] != session[:admin_user].retailer_id
+    if !session[:admin_user].master_shop? && params[:search][:retailer_id] != session[:admin_user].retailer_id
       raise ActiveRecord::RecordNotFound
     end
     @search = OpenStruct.new(params[:search])
