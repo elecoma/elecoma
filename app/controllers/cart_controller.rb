@@ -400,6 +400,7 @@ class CartController < BaseController
           @login_customer.carts.delete_all
           @login_customer.save!
         end
+
         @order.save!
         flash[:completed] = true
         flash[:order_id] = @order.id

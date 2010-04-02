@@ -359,6 +359,7 @@ describe CartController do
     it "should be successful" do
       post 'complete', @params
       flash[:error].should be_nil
+      response.should_not redirect_to(:action => :show)
     end
 
 #    it "戻るボタン" do
@@ -390,13 +391,6 @@ describe CartController do
       assigns[:order].customer_id.should == @customer.id
       assigns[:order].received_at.should_not be_nil
       assigns[:order].should have(1).order_deliveries
-      assigns[:order].should be_new_record
-
-      order_delivery = assigns[:order].order_deliveries[0]
-      order_delivery.should be_new_record
-      order_delivery.order_details.each do | detail |
-        detail.should be_new_record
-      end
     end
 
     it 'カートをクリアする' do

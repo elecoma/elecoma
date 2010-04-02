@@ -827,3 +827,6 @@ ja:
         deleted_at: "で削除"
         isolation_type: "離島タイプ"
         can_daibiki: "代引きフラグ"
+    errors:
+      messages:
+        record_invalid: "Validation failed: {{errors}}"
