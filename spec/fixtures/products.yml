@@ -169,12 +169,12 @@ have_base_price:
 
 limited_in_sep:
   id: 15
-  name: 2学期
+  name: limit_in_sep
   permit: true
   sell_limit: 5
   no_limit_flag: true
   point_granted_rate: 10
-  style_id: 1
+  style_id: 2
   sale_start_at: 2008-09-01
   sale_end_at: 2008-12-23
   introduction: テスト

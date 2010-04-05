@@ -1,4 +1,13 @@
 module BaseHelper
+
+  def show_retailer_shop(product)
+    if product.master_shop?
+      return product.retailer.name
+    else
+      return link_to product.retailer.name, { :controller => :retailers, :action => "index", :id => product.retailer_id}
+    end
+  end
+
   def link_to_product(product, name=nil, options = {})
     product or return name
     name ||= h(product.name)
@@ -481,3 +490,4 @@ end
       end
     end
 end
+

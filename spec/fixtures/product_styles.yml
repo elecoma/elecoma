@@ -144,6 +144,7 @@ valid_product:
   orderable_count: 100
   created_at: 2009-10-01 00:00:00
   updated_at: 2009-10-01 00:00:00    
+
 #未公開商品  
 not_permit_product:  
   id: 15
@@ -198,4 +199,17 @@ multi_styles_product_3:
   style_category_id2: 30
   actual_count: 0
   sell_price: 12000    
+#通常商品 (product_id:15)
+valid_product_product_id_15:  
+  id: 21
+  product_id: 15
+  code: PRO15
+  style_category_id1: 20
+  style_category_id2: 40
+  actual_count: 1000
+  sell_price: 10000
+  orderable_count: 100
+  created_at: 2009-11-01 00:00:00
+  updated_at: 2009-11-01 00:00:00    
+
         

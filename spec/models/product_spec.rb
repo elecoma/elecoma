@@ -242,6 +242,12 @@ describe Product do
     it "販売元にアクセスが可能" do
       @product.retailer.should_not be_nil
     end
+
+    it "販売元がマスターショップかどうか返すメソッド" do 
+      @product.should be_master_shop
+      other_shop = products(:valid_product_other_shop)
+      other_shop.should_not be_master_shop
+    end
   end
   
   #=====================================================

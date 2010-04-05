@@ -1,0 +1,25 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "front/retailer" %>
+<% end %>
+
+<div id="left_box" class="clearfix">
+  <%= render :partial => '/base/left_sidebar' %>
+  <div id="main"><!-- メイン -->
+    <ol id="bread_list" class="m_btm">
+      <li class="bread_top"><%= link_to "トップページ", "/" %></li>
+      <li><%= "#{@retailer.name} " %></li>
+    </ol>
+
+    <div class="clearfix">
+      <%= image_tag "/images/top/top_bg_up.gif", :size => "530x5", :alt => "" %>
+    </div>
+    <div id="retailer_content" class="clearfix">
+      <h1><%= @retailer.name %></h1>
+      <%= render :partial => 'rule' %>
+    </div>
+    <div class="m_btm">
+      <%= image_tag "/images/top/top_bg_btm.gif", :size => "530x5", :alt => "" %>
+    </div>
+  </div>
+</div>
+

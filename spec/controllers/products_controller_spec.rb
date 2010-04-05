@@ -5,8 +5,6 @@ describe ProductsController do
   fixtures :products, :categories, :seos, :product_styles, :styles, :style_categories
 
   before do
-    @controller.class.skip_before_filter :start_transaction
-    @controller.class.skip_after_filter :end_transaction
   end
 
   #Delete these examples and add some real ones

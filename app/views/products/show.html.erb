@@ -41,6 +41,7 @@
                 <dd>入荷予定日：<%= date_jp(@product.arrival_expected_date) %></dd>
               <% end %>
           <% end %>
+          <dd>販売元: <%= show_retailer_shop(@product) %></dd>
     </dl>
     <%- if @product.have_zaiko? -%>
     <%= render :partial => "base/add_cart", :locals => {:product => @product} %>

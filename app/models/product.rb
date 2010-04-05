@@ -334,6 +334,10 @@ class Product < ActiveRecord::Base
     [f.string, filename]
   end
 
+  def master_shop?
+    return retailer_id == Retailer::DEFAULT_ID
+  end
+
   class << self
     def add_by_csv(file, retailer_id)
       line = 0
