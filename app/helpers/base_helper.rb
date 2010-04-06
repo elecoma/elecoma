@@ -73,7 +73,7 @@ module BaseHelper
       return_str += ' '
     else
       return_str += "<li>"
-      return_str += "　"*depth + "<img src='" + ActionController::Base.relative_url_root.to_s + "/images/common/list_ore_s.gif'>　" unless image_flg
+      return_str += "　"*depth + "<img src='" + ActionController::Base.relative_url_root.to_s + "/images/common/list_ore_s.gif' width='4' height='5' alt='>' />　" unless image_flg
       return_str += link_to_category category, type, image_flg
       return_str += "</li>"
     end
@@ -429,8 +429,8 @@ def link_to_new_information(new_information, options={}, html_options={})
   return name if new_information.url.blank?
   url = new_information.url
   html_options = {
-    :target => new_information.new_window ? "_blank" : ""
-  }.merge(html_options)
+    :target => "_blank"
+  }.merge(html_options) if new_information.new_window
   u = URI.parse(url)
   if request.host == u.host
     path = u.path

@@ -68,7 +68,7 @@
   float: left;
 }
 
-ol.pager {
+div.pager {
   float: right;
 }
 
@@ -92,23 +92,23 @@ ol.pager li em {
   margin-bottom: 15px;
 }
 
-#ctgr_box li {
+#ctgr_box div {
   display: inline-block;
   vertical-align: top;
   width: 120px;
   margin: 4px;
 }
 
-* html #ctgr_box li {
+* html #ctgr_box div {
   margin: 7px 5px;
   display: inline;
 }
 
-#ctgr_box li a img {
+#ctgr_box div a img {
   border: 1px solid #aaaaaa;
 }
 
-#ctgr_box li a:hover img {
+#ctgr_box div a:hover img {
   border: 1px solid #FFB6C3
 }
 

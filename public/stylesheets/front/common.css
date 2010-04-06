@@ -217,6 +217,18 @@ body > #wrapper {
   height: 32px;
 }
 
+#h3_category {
+  margin-top: 10px;
+  width: 200px;
+  height: 32px;
+}
+
+#h3_info {
+  margin-top: 10px;
+  width: 200px;
+  height: 32px;
+}
+
 .banner li {
   margin-top: 10px;
 }

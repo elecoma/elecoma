@@ -17,7 +17,7 @@
     <td>
       〒<%= f.text_field :zipcode01, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} %>-<%= f.text_field :zipcode02, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} %>
       <%= link_to "郵便番号を調べる", "http://search.post.japanpost.jp/zipcode/", :target => "_blank" %><br />
-      <input name="zipcode_input" value="住所自動入力" onclick="address_by_zip('delivery_address_zipcode01','delivery_address_zipcode02', null, 'delivery_address_address_city', 'delivery_address_address_detail', 'delivery_address_prefecture_id', 'accounts', '<%=h ActionController::Base.relative_url_root %>');" type="button">
+      <input name="zipcode_input" value="住所自動入力" onclick="address_by_zip('delivery_address_zipcode01','delivery_address_zipcode02', null, 'delivery_address_address_city', 'delivery_address_address_detail', 'delivery_address_prefecture_id', 'accounts', '<%=h ActionController::Base.relative_url_root %>');" type="button" />
       郵便番号を入力後、クリックしてください。
     </td>
   </tr>

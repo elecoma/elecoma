@@ -1,5 +1,5 @@
 <%- unless @recommend_xmls.blank? -%>
-<h2 class="clearfix"><%= image_tag "/images/top/ranking_t.gif", :alt => "人気商品ランキング" %><span class="more"></span></h2>
+<h2 class="clearfix"><%= image_tag "/images/top/ranking_t.gif", :alt => "人気商品ランキング" %><span class="more">&nbsp;</span></h2>
 <div id="ranking" class="clearfix">
   <ul>
     <%- @recommend_xmls.each_with_index do | rx, idx | -%>

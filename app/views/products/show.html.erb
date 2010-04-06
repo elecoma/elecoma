@@ -21,7 +21,15 @@
   <div><%= image_tag("common/box_bg_top.gif", :width => "530", :height => "5", :alt => "") %></div>
   <div id="item_box" class="main_box">
   <div id="item_box_top" class="clearfix">
-  <div class="item_pic"><%= link_to((product_image_tag(@product, :medium, :width=>250)), { :controller => "/image_resource", :action => "show", :id => (@product.large_resource_id || @product.medium_resource_id),:format => "png", :height => 640, :width => 480 }, {:title => "#{@product.name}", :class => "thickbox"} ) %><p><%= h_br @product.medium_resource_comment unless @product.medium_resource_comment.blank? %></p><br /></div>
+    <div class="item_pic">
+      <%= link_to((product_image_tag(@product, :medium, :width=>250)), { :controller => "/image_resource", :action => "show", :id => (@product.large_resource_id || @product.medium_resource_id),:format => "png", :height => 640, :width => 480 }, {:title => "#{@product.name}", :class => "thickbox"} ) %>
+      <%- unless @product.medium_resource_comment.blank? %>
+      <p>
+      <%= h_br @product.medium_resource_comment unless @product.medium_resource_comment.blank? %>
+      </p>
+      <%- end %>
+    <br />
+  </div>
   <div class="item_data">
   <% @product.product_statuses.each do | product_status | %>
     <span id="appeal"><%= h_br product_status.status && product_status.status.name %></span>

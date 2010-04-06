@@ -24,13 +24,15 @@
     <h1><%= link_to image_tag("common/logo.gif", :width => "133", :height => "37", :alt => "K&amp;Bstyle"), :controller => :portal, :action => :show %></h1>
   <div id="store_desc"><span>オシャレな女性のためのお手軽通販サイト</span></div>
   <div id="my_menubox" class="clearfix">
+  <%- if @login_customer %>
   <p>
-  <span><%="#{h @login_customer.full_name}&nbsp;様"if @login_customer %></span>
+  <span><%="#{h @login_customer.full_name}&nbsp;様" if @login_customer %></span>
   <span id="log"><%= link_to 'ログアウト', :controller => :accounts, :action => :logout if @login_customer %></span>
   </p>
   <ul id="my_menu" class="clearfix">
     <li><%= link_to image_tag("/images/common/mypage_btn.gif", :width=>"101", :height=>"28", :alt=>"マイページ", :class=>"hoverImg"), :controller => :accounts, :action => :history_list if @login_customer %></li>
   </ul>
+  <%- end %>
   </div><!-- /my_menubox -->
   </div><!-- /header -->
 

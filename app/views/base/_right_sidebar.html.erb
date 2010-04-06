@@ -4,6 +4,8 @@
   <% if @login_customer.nil? %>
     <h3><%= image_tag "/images/common/h3_login.gif", :size => "200x32", :alt => "ログイン" %></h3>
     <div id="login_box" class="side_box">
+      <%= link_to image_tag("/images/common/login_btn.gif", :class => 'login_btn hoverImg', :alt => 'ログイン'), {:controller => 'accounts', :action => 'login'} %>
+      <%- if false %>
       <% form_for(:customer, :url => { :controller => :accounts, :action => "login" } ) do |f| -%>
         <div class="login_t">メールアドレス</div>
         <%= f.text_field("email", :size => 6, :class => "login_form" ) %>
@@ -12,7 +14,7 @@
         <%= image_submit_tag("/images/common/login_btn.gif", :onclick => "return check_login_form();", :class => "login_btn hoverImg", :alt => 'ログイン') %>
       <% end -%>
       <div id="remind"><%= link_to 'パスワードを忘れた方はこちら', {:controller => 'accounts', :action => 'salvage'} %></div>
-
+      <%- end %>
       <div class="side_hr"><hr /></div>
       <%= link_to image_tag("/images/common/new_entry_btn.gif", :width=>"176", :height=>"30", :alt=>"新規会員登録", :class=>"hoverImg"), {:controller => "accounts", :action => "kiyaku"} %>
       <p class="txt_c m_top">初めてのお客様はこちら</p>
@@ -27,7 +29,7 @@
 
   <!-- お知らせ -->
   <%- unless @new_informations.blank? -%>
-    <h3 id="h3_t"><%= image_tag "/images/common/h3_info.gif", :size => "200x32", :alt => "お知らせ" %></h3>
+    <h3 id="h3_info"><%= image_tag "/images/common/h3_info.gif", :size => "200x32", :alt => "お知らせ" %></h3>
     <div id="info_box" class="side_box_r">
       <ul>
         <%- @new_informations.each do |new_information| -%>

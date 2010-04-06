@@ -24,7 +24,7 @@
     <td>
       〒<%= f.text_field :zipcode01, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} -%>-<%= f.text_field :zipcode02, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} %>
       <%= link_to "郵便番号を調べる", "http://search.post.japanpost.jp/zipcode/", :target => "_blank" %><br />
-      <input name="zipcode_input" value="住所自動入力" onclick="address_by_zip('customer_zipcode01','customer_zipcode02', null, 'customer_address_city', 'customer_address_detail', 'customer_prefecture_id', 'accounts', '<%=h ActionController::Base.relative_url_root %>');" type="button">
+      <input name="zipcode_input" value="住所自動入力" onclick="address_by_zip('customer_zipcode01','customer_zipcode02', null, 'customer_address_city', 'customer_address_detail', 'customer_prefecture_id', 'accounts', '<%=h ActionController::Base.relative_url_root %>');" type="button" />
       ※郵便番号を入力後、クリックしてください。
     </td>
   </tr>
@@ -103,4 +103,4 @@
   </tr>
 </table>
 
-<div class="my_btn"><%= image_submit_tag("/images/mypage/btn03.gif", :width=>"101", :height=>"28", :alt=>"確認", :class=>"hoverImg") %></div>
+<div class="my_btn"><%= image_submit_tag("/images/mypage/btn03.gif", :alt=>"確認", :class=>"hoverImg") %></div>

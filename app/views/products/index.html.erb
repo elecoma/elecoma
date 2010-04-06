@@ -23,17 +23,15 @@
     <!-- pager -->
     <div id="pager_box" class="clearfix">
       <p><%=h ((@products.current_page-1)*@products.per_page)+1 %>～<%=h paginate_item_count(@products.current_page, @products.per_page, @products.total_entries) %>&nbsp;(<%=h @products.total_entries %>件中)</p>
-      <ol class="pager">
-        <%= will_paginate @products %>
-      </ol>
+      <%= will_paginate @products, :class => "pager" %>
     </div>
     <!-- /ctgr_box -->
     <%- unless @products.blank? %>
       <div id="ctgr_box" class="clearfix">
 
       <% @products.each do | product | %>
-        <li>
-          <div id="image">
+        <div>
+          <div class="image">
             <%= link_to(product_image_tag(product, :small,:alt=>product.small_resource_comment), {:controller => "/products", :action => "show", :id => product.id, :category_id => product.category_id}) %><br />
             <%= h product.small_resource_comment %>
           </div>
@@ -41,16 +39,14 @@
             <dt><%= link_to_product product %></dt>
             <dd><%= product.price_label %>円</dd>
           </dl>
-        </li>
+        </div>
       <% end %>
       </div>
     <% end -%>
     <!-- pager -->
     <div id="pager_btm" class="clearfix">
       <p><%=h ((@products.current_page-1)*@products.per_page)+1 %>～<%=h paginate_item_count(@products.current_page, @products.per_page, @products.total_entries) %>&nbsp;(<%=h @products.total_entries %>件中)</p>
-      <ol class="pager">
-        <%= will_paginate @products %>
-      </ol>
+      <%= will_paginate @products, :class => "pager" %>
     </div>
   </div><!-- メイン -->
 </div>
