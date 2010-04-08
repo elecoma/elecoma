@@ -2,13 +2,12 @@
   <%= stylesheet_link_tag "front/portal" %>
 <% end %>
 
-<div id="container" class="clearfix">
   <ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ", :controller => 'portal', :action => 'show' %></li><li>当サイトについて</li></ol>
 
   <p class="tb_t">当サイトについて</p>
   <table class="tb2">
     <tr>
-      <th width="130">店名</td>
+      <th width="130">店名</th>
       <td><%=h @shop.try(:name) %></td>
     </tr>
     <tr>
@@ -53,9 +52,7 @@
     <% unless @shop.introduction.blank? %>
     <tr>
       <th>メッセージ</th>
-      <td class=no_bg><%=h @shop.try(:introduction) %></td>
+      <td class="no_bg"><%=h @shop.try(:introduction) %></td>
     </tr>
     <% end %>
   </table>
-  <!-- /container -->
-</div>

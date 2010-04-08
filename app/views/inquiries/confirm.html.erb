@@ -4,7 +4,6 @@
   <%= javascript_include_tag js_url(:action => "application") %>
 <% end %>
 
-<div id="container" class="clearfix">
   <ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ", :controller => 'portal', :action => 'show' %></li><li>お問い合わせ</li></ol>
 
   <h2 class="main_t">お問い合わせ</h2>
@@ -42,9 +41,8 @@
     <%= f.hidden_field :body %>
     <%= f.hidden_field :order_number %>
     <%= f.hidden_field :kind %>
-    <%= image_submit_tag '/images/common/btn02.gif', {:onClick => "this.form.action='/inquiries/new'; this.form.submit();",:width=>'101', :height=>'28', :alt=>'戻る', :class=>'hoverImg'} %>
-	<%= image_submit_tag("/images/common/btn03.gif", :width=>"101", :height=>"28", :alt=>"送信", :class=>"hoverImg") %>
+    <%= image_submit_tag '/images/common/btn02.gif', {:onclick => "this.form.action='/inquiries/new'; this.form.submit();",:alt=>'戻る', :class=>'hoverImg'} %>
+	<%= image_submit_tag("/images/common/btn03.gif", :alt=>"送信", :class=>"hoverImg") %>
   <% end %>
-</div>
 
 

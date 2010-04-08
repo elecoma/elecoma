@@ -4,7 +4,6 @@
   <%= javascript_include_tag js_url(:action => "application") %>
 <% end %>
 
-<div id="container" class="clearfix">
   <ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ", :controller => 'portal', :action => 'show' %></li><li>お問い合わせ</li></ol>
   <h2 class="main_t">お問い合わせ</h2>
   <p class="notice"><span class="must">※</span>は必ずご入力ください。</p><br/>
@@ -16,11 +15,11 @@
     <table class="tb2">
       <tr>
         <th width="145">お名前<span class="must">※</span></th>
-        <td><%= f.text_field :name, :size => 30 %>
+        <td><%= f.text_field :name, :size => 30 %></td>
       </tr>
       <tr>
         <th>メールアドレス <span class="must">※</span></th>
-        <td><%= f.text_field :email, :size => 50 %>
+        <td><%= f.text_field :email, :size => 50 %></td>
       </tr>
       <tr>
         <th>電話番号</th>
@@ -36,10 +35,10 @@
       </tr>
       <tr>
         <th>お問い合わせ内容 <span class="must">※</span></th>
-        <td><%= f.text_area :body, :cols => 50, :rows => 15 %>
+        <td><%= f.text_area :body, :cols => 50, :rows => 15 %></td>
         </tr>
       </table>
-      <div class=confirm>
+      <div class="confirm">
 	        内容をご確認の上、送信ボタンを押してください。<br />
 	        ページが表示されるまでにお時間がかかる場合がございます。<br />
 	        処理をしている間に「送信」を再度クリックすると二重送信になりますので、<br />
@@ -51,8 +50,7 @@
       </div>
 	  <br />
 	  <div class="my_btn">
-	  	<%= image_submit_tag("/images/common/btn01.gif", :width=>"101", :height=>"28", :alt=>"確認", :class=>"hoverImg") %>
+	  	<%= image_submit_tag("/images/common/btn01.gif", :alt=>"確認", :class=>"hoverImg") %>
 	  </div>
   <% end -%>
   <!-- /container -->
-</div>
