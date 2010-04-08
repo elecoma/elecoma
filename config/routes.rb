@@ -62,7 +62,9 @@ ActionController::Routing::Routes.draw do |map|
   # See how all your routes lay out with "rake routes"
 
   # Install the default routes as the lowest priority.
-  map.connect 'product/category/:category_id', :controller => 'product', :action => 'index'
+  map.connect 'products/category/:category_id', :controller => 'products', :action => 'index'
+  map.connect 'products/category/:category_id/order/:order', :controller => 'products', :action => 'index'
+  map.connect 'products/show/:id/category/:category_id', :controller => 'products', :action => 'show'
   map.connect 'image_resource/:action/:id/image.jpg', :controller => 'image_resource'
 
   map.connect 'admin/', :controller => '/admin/home', :action => 'index'
