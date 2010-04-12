@@ -1,0 +1,9 @@
+
+<%- @order_deliveries.each do |key, order_delivery| -%>
+  <%- order_delivery.attribute_names.each do |column| %>
+    <%- unless order_delivery[column].blank? or column == "use_point" or column == "payment_id" or column == "delivery_time_id" %>
+      <%= hidden_field_tag "order_deliveries[#{key}][#{column}]", order_delivery[column] %>
+    <%- end %>
+  <%- end %>
+<%- end -%>
+

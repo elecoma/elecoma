@@ -1,0 +1,18 @@
+<div>
+  <% carts.each do |cart| %>
+    <%= cart.product_style.product.name %><br />
+  <% end %>
+  <p>発送方法をお選びください</p>
+  <ul>
+    <% @delivery_traders[retailer_id].each do |delivery_trader| %>
+      <li>
+      <%= f.radio_button "delivery_trader[#{retailer_id}]", delivery_trader.id %>
+      <%= f.label "delivery_trader[#{retailer_id}]", delivery_trader.name %>
+      </li>
+    <% end %>
+  </ul>
+  <p>配達時間をお選びください</p>
+  <select id="delivery_time_<%= retailer_id %>" name="order_deliveries[<%= retailer_id %>][delivery_time_id]">
+    <%= render :action => 'select_delivery_time_with_retailer_id', :params => {:record => @order_deliveries[retailer_id]}, :method => 'get' %>
+  </select>
+</div>

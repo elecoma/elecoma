@@ -212,4 +212,16 @@ valid_product_product_id_15:
   created_at: 2009-11-01 00:00:00
   updated_at: 2009-11-01 00:00:00    
 
+#別ショップ
+valid_product_other_shop:  
+  id: 22
+  product_id: 24
+  code: OTHER002215
+  style_category_id1: 60
+  actual_count: 1000
+  sell_price: 10000
+  orderable_count: 100
+  created_at: 2009-11-01 00:00:00
+  updated_at: 2009-11-01 00:00:00    
+
         

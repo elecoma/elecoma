@@ -7,6 +7,7 @@ describe CartController do
 
   before do
     @dummy_carts = [carts(:cart_can_incriment).attributes]
+    @dummy_carts_with_other_shop = [carts(:cart_can_incriment).attributes, carts(:cart_with_othershop).attributes]
     @controller.class.skip_before_filter :start_transaction
     @controller.class.skip_after_filter :end_transaction
   end
@@ -198,6 +199,101 @@ describe CartController do
     end
   end
 
+  describe "GET 'delivery'" do
+    before do
+      session[:customer_id] = customers(:product_buyer).id
+    end
+    it "GET 禁止" do
+      session[:customer_id] = Customer.first.id
+      session[:carts] = @dummy_carts
+      get 'delivery'
+      response.should_not be_success
+    end
+  end
+
+  describe "POST 'delivery'" do 
+
+    before do
+      @customer = customers(:have_delivary_address)
+      session[:customer_id] = @customer.id
+      @temporary_customer = {
+        :first_name => '非会', :family_name => '員衛門',
+        :first_name_kana => 'ア', :family_name_kana => 'イ',
+        :prefecture_id => '1',
+        :zipcode01 => '999', :zipcode02 => '9999',
+        :address_city => '市', :address_detail => '丁目',
+        :tel01 => '001', :tel02 => '0002', :tel03 => '0003',
+        :email => 'udon@noodle.com',
+        :sex => System::MALE
+      }
+      @optional_address = {
+        :first_name => '配送先', :family_name => '住所',
+        :first_name_kana => 'ア', :family_name_kana => 'イ',
+        :prefecture_id => '1',
+        :zipcode01 => '999', :zipcode02 => '9999',
+        :address_city => '市', :address_detail => '丁目',
+        :tel01 => '001', :tel02 => '0002', :tel03 => '0003'
+      }
+      session[:carts] = @dummy_carts
+      delivery_address = DeliveryAddress.find(delivery_addresses(:optional_address3).id)      
+      delivery_address.customer_id = customers(:have_delivary_address).id
+      delivery_address.save!
+    end
+
+    # 配送先住所
+    it "会員・会員登録住所を使用" do
+      post 'delivery', :address_select => '0'
+      assigns[:delivery_address].attributes.each do | name, value |
+        value.should == @customer.basic_address[name]
+      end
+    end
+    it "会員・追加登録住所を使用" do
+      da = @customer.delivery_addresses[0]
+      post 'delivery', :address_select => da.id
+      assigns[:delivery_address].attributes.each do | name, value |
+        value.should == @customer.delivery_addresses[0][name]
+      end
+    end
+
+    it "@order_deliveries があること" do
+      post 'delivery', :address_select => 0
+      response.should be_success
+      assigns[:order_deliveries].should_not be_nil
+      assigns[:order_deliveries].count.should == 1
+    end
+
+    it "@order_deliveries が複数あること" do
+      session[:carts] = @dummy_carts_with_other_shop
+      post 'delivery', :address_select => 0
+      response.should be_success
+      assigns[:order_deliveries].should_not be_nil
+      assigns[:order_deliveries].count.should == 2
+      assigns[:carts_map].count.should == 2
+      assigns[:delivery_traders].count.should == 2
+    end
+    it "@order_deliveries があること" do
+      od = order_deliveries(:nobi)
+      order_deliveries = {"1"=> od.attributes, "2"=>od.attributes}
+      post 'delivery', :order_deliveries => order_deliveries
+      response.should be_success
+      assigns[:order_deliveries].should_not be_nil
+      assigns[:order_deliveries].count.should == 2
+      assigns[:order_deliveries].each do |key, order_delivery|
+        order_delivery.delivery_time_id.to_i.should == od.delivery_time_id
+        order_delivery.message.should == od.message
+      end
+      assigns[:delivery_traders].count.should == 1
+    end
+
+    it "住所を取得できない場合はエラー" do
+      post 'delivery', :address_select => 999999
+      assigns[:delivery_address].should be_nil
+      response.should_not be_success
+    end
+    
+
+  end
+
   describe "GET 'purchase'" do
     before do
       session[:customer_id] = customers(:product_buyer).id
@@ -209,6 +305,8 @@ describe CartController do
       response.should_not be_success
     end
   end
+
+
 
   describe "POST 'purchase'" do
     before do
@@ -347,7 +445,7 @@ describe CartController do
       Notifier.stub!(:deliver_buying_complete).and_return(nil)
       @customer = customers(:product_buyer)
       session[:customer_id] = @customer.id
-      session[:carts] = @customer.carts.map(&:attributes)
+      session[:carts] = @dummy_carts
 
       order_delivery = order_deliveries(:nobi)
       @params = {

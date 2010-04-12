@@ -21,7 +21,7 @@
     <p>JavaScriptが利用できない状態です。<br />一部のコンテンツが正常に動作しない可能性があります</p>
   </noscript>
   <p class="m_btm"><%= link_to_create_address('新しいお届け先を追加する') %></p>
-  <% form_tag({:action => 'purchase'}, {:name=>'form1'}) do %>
+  <% form_tag({:action => 'delivery'}, {:name=>'form1'}) do %>
     <%= render :partial => 'address_list' %>
     <div class="my_btn2">
       <%= link_to(image_tag('/images/cart/cart_btn05.gif', :width=>'101', :height=>'28', :alt=>'戻る', :class=>'hoverImg'), :action => 'show') %>

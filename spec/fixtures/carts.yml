@@ -88,3 +88,12 @@ valid_cart:
   position: 0
   quantity: 1
   product_style_id: 14
+
+
+cart_with_othershop:
+  id: 14
+  customer_id: 8
+  product_style_id: 22
+  position: 7
+  quantity: 1
+

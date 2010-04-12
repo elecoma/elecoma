@@ -2,10 +2,10 @@
 require 'timeout'
 require 'open-uri'
 class CartController < BaseController
-  before_filter :cart_check, :only => [:temporary_shipping,:shipping, :purchase,:purchase2, :confirm, :complete]
-  before_filter :login_divaricate ,:only =>[:purchase,:purchase2,:confirm, :complete]
+  before_filter :cart_check, :only => [:temporary_shipping,:shipping, :purchase,:purchase2, :confirm, :complete, :delivery]
+  before_filter :login_divaricate ,:only =>[:purchase,:purchase2,:confirm, :complete, :delivery]
   before_filter :login_check, :only => [:shipping]
-  before_filter :force_post, :only => [:purchase,:purchase2,:confirm, :complete]
+  before_filter :force_post, :only => [:delivery, :purchase,:purchase2,:confirm, :complete]
   after_filter :save_carts
   before_filter :verify_session_token, :except => :select_delivery_time
   
@@ -134,7 +134,82 @@ class CartController < BaseController
         convert(params[:order_delivery])
      end
   end
-  
+ 
+  def delivery
+    cookies.delete :back_from_deliv if cookies[:back_from_deliv]
+
+    #2.配送先の情報を取ってくる
+    if @login_customer
+      # 会員の場合
+      if params[:address_select].to_i.zero?
+        # 会員登録住所を使う
+        @delivery_address = @login_customer.basic_address
+      else
+        # 選ばれた配送先を使う
+        @delivery_address = DeliveryAddress.find_by_id_and_customer_id(params[:address_select], @login_customer.id)
+      end
+    elsif @not_login_customer
+      # 非会員
+      @temporary_customer = Customer.new(params[:temporary_customer])
+      @temporary_customer.from_cart = true
+      
+      # お届け先
+      #if params[:address_enable].nil?
+        @optional_address = DeliveryAddress.new(params[:optional_address])
+      #end
+      
+      # 確認画面から戻る時
+      if params[:back] == "1"
+        convert(params[:order_delivery])
+      end
+      # 入力チェック
+      # メールアドレス重複チェックを除き
+      @temporary_customer.activate = Customer::HIKAIIN
+      if !@temporary_customer.valid? or
+       (params[:address_enable].nil? and !@optional_address.valid?)
+        @error_back = true
+        render :action => "temporary_shipping"
+        return
+      end
+      
+      # お届け先設定
+      if params[:address_enable].nil?
+        @delivery_address = @optional_address        
+      else
+        @delivery_address = @temporary_customer.basic_address  
+      end
+    end
+    
+    # 住所を取得できないと、この先困るので、どこかに飛ばす
+    return redirect_to(:action => 'show') unless @delivery_address
+
+    @order_deliveries = Hash.new
+    unless params[:order_deliveries].nil?
+      params[:order_deliveries].each do |key, order_delivery|
+        @order_deliveries[key] = OrderDelivery.new(order_delivery)
+      end
+    end
+    if @order_deliveries.empty?
+      @carts.map(&:product_style).map(&:product).map(&:retailer).each do |retailer|
+        od = OrderDelivery.new
+        od.set_delivery_address(@delivery_address)
+        @order_deliveries[retailer.id] = od
+      end
+    end
+    @carts_map = Hash.new
+    @carts.each do |cart|
+      retailer_id = cart.product_style.product.retailer_id
+      @carts_map[retailer_id] = Array.new unless @carts_map.key? retailer_id
+      @carts_map[retailer_id] << cart
+    end
+    @delivery_traders = Hash.new
+    @carts.map(&:product_style).map(&:product).map(&:retailer).each do |retailer|
+      @delivery_traders[retailer.id] = select_delivery_trader_with_retailer_id(retailer.id)
+    end
+    render :action => 'delivery'
+  end
+
+
   # Order を作る
   def purchase
     cookies.delete :back_from_deliv if cookies[:back_from_deliv]
@@ -677,6 +752,10 @@ class CartController < BaseController
     ecommerce.trans = trans
     
     flash[:googleanalytics_ec] = ecommerce
+  end
+
+  def select_delivery_trader_with_retailer_id(retailer_id)
+    return DeliveryTrader.find(:all, :conditions => ["retailer_id = ?", retailer_id])
   end
 
 end
