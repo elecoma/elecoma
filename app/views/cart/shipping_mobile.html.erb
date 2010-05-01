@@ -9,7 +9,7 @@
 <br />
 
   <%= link_to_create_address %>
-  <% form_tag({:action => 'purchase'}, {:name=>'form1'}) do %>
+  <% form_tag({:action => 'delivery'}, {:name=>'form1'}) do %>
     <%= render :partial => 'address_list' %>
     <div style="text-align:center;">
       <br /><%= submit_tag '次へ' %>

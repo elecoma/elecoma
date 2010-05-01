@@ -1,0 +1,34 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+  <h2>販売元管理</h2>
+  <br />
+  <div class="btn_t">
+    <%= button_to '新規登録', new_admin_retailer_path ,:class =>"btn_s"%>
+  </div>
+  <br />
+  <%= flash[:notice] %>
+  <%= flash[:error] %>
+  <table class="data2" cellspacing="1">
+    <tr>
+      <th>名前</th>
+      <th>表示</th>
+      <th>非表示</th>
+      <th>編集</th>
+      <th>削除</th>
+    </tr>
+    <% unless @retailers.empty? -%>
+      <% @retailers.each_with_index do | record, index | -%>
+        <% @record = record -%>
+        <tr>
+          <td><%=h record.name %></td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td class="t_center"><%= link_to "編集", edit_admin_retailer_path(record) %></td>
+          <td class="t_center"><%= link_to "削除", admin_retailer_path(record), :confirm => "本当に削除しますか？", :method => :delete %></td>
+        </tr>
+      <% end -%>
+    <% end -%>
+  </table>
+</div><!-- メイン -->

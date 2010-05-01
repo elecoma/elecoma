@@ -1,5 +1,72 @@
 <%= render :partial => "base/title", :locals => {:title => "ご注文の確定"} %>
 
+<% @order_deliveries.each do |retailer_id, order_delivery| %>
+
+<% @order_details_map[retailer_id].each_with_index do | detail, i | %>
+商品名<%= link_to_product(detail.product, detail.product_style_name) %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+<div style="text-align:right;">単価：&yen;<%= number_with_delimiter detail.price %>
+ / 数量：<%= number_with_delimiter detail.quantity %>個<br />
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+計:&yen;<%= number_with_delimiter detail.subtotal %>（税込み価格）</div>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "5" %><br /></div>
+<% end %>
+
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+<div style="clear:both; background-color:#F3F3EC; text-align:center;"><%= image_tag_mobile "border", :width => "226", :height => "2" %><br /></div>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+
+<!-- 合計 -->
+小計（税込み価格）:<%= number_with_delimiter order_delivery.subtotal %>円
+<br/>
+送料:<%= number_with_delimiter order_delivery.deliv_fee %>円
+<br/>
+手数料:<%= number_with_delimiter order_delivery.charge %>円
+<br/>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
+<div style="text-align:center;">【 合計 <%= number_with_delimiter order_delivery.total %>円 】</div>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
+
+
+<!-- ポイント -->
+<% if @login_customer %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+<div style="clear:both; background-color:#F3F3EC; text-align:center;"><%= image_tag_mobile "border", :width => "226", :height => "2" %><br /></div>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+ご使用ポイント
+<br/>
+-<%= number_with_delimiter(order_delivery.use_point.to_i) %>Pt
+<br/>
+<% end %>
+
+
+ご注文前のポイント
+<br/>
+<%= number_with_delimiter(@login_customer.point.to_i) %>Pt
+<br/>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+
+<% end %>
+
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+今回加算されるポイント
+<br/>
++<%= number_with_delimiter(@cart_point.to_i) %>Pt
+<br/>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+ご注文完了後のポイント
+<br/>
+<%= number_with_delimiter(@point_after_operation.to_i) %>Pt
+<br/>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
+<div style="text-align:center;">【 支払金額  <%= number_with_delimiter @payment_total %>円 】</div>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
+
+<% if false %>
+
+
 <% @order_details.each_with_index do | detail, i | %>
 商品名<%= link_to_product(detail.product, detail.product_style_name) %>
 <div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
@@ -164,4 +231,6 @@ Tel. <%=h @order_delivery.deliv_tel01 %>-<%=h @order_delivery.deliv_tel02 %>-<%=
     <%= submit_tag '戻る' %>
     <br/>
 </div>
+<% end %>
+
 <% end %>

@@ -3,6 +3,48 @@
 <span style="color:#ff0000;"><%= flash[:notice] %></span>
 <span style="color:#ff0000;"><%= flash[:error] %></span>
 <%= @order_delivery && error_messages_for(:order_delivery) %>
+<% form_for :order_delivery, :url => {:action => :confirm}, :html => {:name => 'form1'} do | f | %>
+  <span style="color:#FF9775;">■</span> お支払い方法<br />
+  <% Payment::find_for_price(@cart_price).each do |payment| %>
+    <%= f.radio_button :payment_id, payment.id %>
+    <%= payment.name %>
+    <br />
+    <%= view_resource(payment.resource) %>
+  <% end %>
+  <% if @login_customer %>
+    <span style="color:#FF9775;">■</span> ポイント使用の指定<br />
+    <p>
+      1ポイントを1円として使用する事ができます。ポイントは販売店ごとに設定できます。
+    </p>
+    <p>
+      使用する場合は、「ポイントを使用する」にチェックを入れた後、使用するポイントをご記入ください。
+    </p>
+    <p>
+      <%=h @login_customer.family_name %><%=h @login_customer.first_name %>様の、
+      現在の所持ポイントは「
+      <%= @login_customer.point.to_i %>Pt」です。
+    </p>
+    <% @carts_map.each do |retailer_id, cart_array| %>
+      <%= render :partial => "set_point_each_retailer_mobile", :locals => {:carts => cart_array, :retailer_id => retailer_id, :f => f} %>
+    <% end %>
+  <% end %>
+
+
+  <div style="text-align:center;">
+    <%= render :partial=>'order_deliveries' %>
+    <%= submit_tag '次へ' -%>
+  </div>
+<% end %>
+
+<% form_tag :action => :delivery2 do %>
+  <%= render :partial=>'order_deliveries' %>
+  <%=hidden_field_tag "back","1" %>
+  <div style="text-align:center;">
+    <%= submit_tag '戻る' %>
+  </div>
+<% end %>
+
+<% if false %>
 <% form_for :order_delivery, :url =>{:action => 'purchase2'}, :html => {:name=>'form1'} do | f | %>
 <span style="color:#FF9775;">■</span> お支払い方法<br />
 <% @order_delivery.payment_candidates(@cart_price).each do | payment | %>
@@ -64,4 +106,5 @@
 <div style="text-align:center;">
     <%= submit_tag '戻る' %>
 </div>
+<% end %>
 <% end %>

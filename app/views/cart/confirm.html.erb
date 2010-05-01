@@ -4,6 +4,210 @@
 
 <h2 class="main_t">ショッピングカート</h2>
 <div id="cart">
+  <!-- ショッピングカート -->
+  <%= image_tag("cart/route03.gif", :width => "583", :height => "31", :alt => "ご購入の流れ", :class => "route") %>
+  <p class="tb_t">ご入力内容のご確認</p>
+  <p class="m_btm">下記ご注文内容で送信してもよろしいでしょうか？<br />
+  よろしければ、一番下の「ご注文完了ページへ」ボタンをクリックしてください。</p>
+
+  <% @order_deliveries.each do |retailer_id, order_delivery| %>
+    <table class="tb1 cntr">
+      <tr>
+        <th width="90">商品画像</th>
+        <th width="265">商品名</th>
+        <th width="90">単価(税込み)</th>
+        <th width="90">個数</th>
+        <th width="90">計</th>
+      </tr>
+      <% @order_details_map[retailer_id].each_with_index do | detail, i | %> 
+        <tr>
+          <td><%= link_to_product_image(detail.product, :small) %></td>
+          <td><%=h detail.product_name %></td>
+          <td><%= number_with_delimiter detail.price %>円</td>
+          <td><%= number_with_delimiter detail.quantity %>個</td>
+          <td><%= number_with_delimiter detail.subtotal %>円</td>
+        </tr>
+      <% end %>
+      <tr>
+        <td colspan="4" class="t_right">小計（税込み価格）</td>
+        <td><%= number_with_delimiter order_delivery.subtotal %>円</td>
+      </tr>
+      <tr>
+        <td colspan="4" class="t_right">送料</td>
+        <td><%= number_with_delimiter order_delivery.deliv_fee %>円</td>
+      </tr>
+      <tr>
+        <td colspan="4" class="t_right">手数料</td>
+        <td><%= number_with_delimiter order_delivery.charge %>円</td>
+      </tr>
+      <tr>
+        <td colspan="4" class="t_right">総計</td>
+        <td><%= number_with_delimiter order_delivery.total %>円</td>
+      </tr>
+      <% if @login_customer %>
+        <tr>
+          <td colspan="4" class="t_right">ご使用ポイント</td>
+          <td>-<%= number_with_delimiter(order_delivery.use_point.to_i) %>Pt</td>
+        </tr>
+      <% end %>
+      <tr>
+        <td colspan="4" class="t_right">お届け時間</td>
+        <td><%=h order_delivery.delivery_time_name %></td>
+      </tr>
+    </table>
+  <% end %>
+  <% if @login_customer %>
+    <table class="tb1 point_tb">
+      <tr>
+        <th>ご注文前のポイント</th>
+        <td width="90"><%= number_with_delimiter(@login_customer.point.to_i) %>Pt</td>
+        </tr>
+      <tr>
+        <th>ご使用ポイント</th>
+        <td>-<%= number_with_delimiter(@all_use_point.to_i) %>Pt</td>
+      </tr>
+      <tr>
+        <th>今回加算されるポイント</th>
+        <td>+<%= number_with_delimiter(@cart_point.to_i) %>Pt</td>
+      </tr>
+      <tr>
+        <th>ご注文完了後のポイント</th>
+        <td><%= number_with_delimiter(@point_after_operation.to_i) %>Pt</td>
+      </tr>
+    </table>
+  <% end %>
+  <table class="tb1 total2">
+    <tr>
+      <th>支払金額</th>
+      <td width="90"><%= number_with_delimiter @payment_total %>円</td>
+    </tr>
+  </table>
+  <% od = @order_deliveries.values.first %>
+  <% if @not_login_customer %>
+    <!-- 顧客情報 -->
+    <p class="tb_t">お客様情報</p>
+    <table class="tb2">
+      <tr>
+        <th width="130">お名前</th>
+        <td>
+          <%=h od.family_name %>
+          <%=h od.first_name %>
+        </td>
+      </tr>
+      <tr>
+        <th>お名前（フリガナ）</th>
+        <td>
+          <%=h od.family_name_kana %>
+          <%=h od.first_name_kana %>
+        </td>
+      </tr>
+      <tr>
+        <th>郵便番号</th>
+        <td>〒<%=h od.zipcode01 %>-<%=h od.zipcode02 %></td>
+      </tr>
+      <tr>
+        <th>住所</th>
+        <td>
+          <%=h od.prefecture.name %>
+          <%=h od.address_city %>
+          <%=h od.address_detail %>
+        </td>
+      </tr>
+      <tr>
+        <th>電話番号</th>
+        <td><%=h od.tel01 %>-<%=h od.tel02 %>-<%=h od.tel03 %></td>
+      </tr>
+      <tr>
+        <th>ファックス番号</th>
+        <td><%=h od.fax01 %>-<%=h od.fax02 %>-<%=h od.fax03 %></td>
+      </tr>
+      <tr>
+        <th>性別</th>
+        <td><%=h od.sex_name %></td>
+      </tr>
+      <tr>
+        <th>メールアドレス</th>
+        <td><%=h od.email %></td>
+      </tr>
+      <tr>
+        <th>生年月日</th>
+        <td><%=h od.birthday %></td>
+      </tr>
+      <tr>
+        <th>職業</th>
+        <td><%=h od.occupation && od.occupation.name %></td>
+      </tr>
+    </table>
+  <% end %>
+  <!-- お届け先 -->
+  <p class="tb_t">お届け先</p>
+  <table class="tb2">
+    <tr>
+      <th width="130">お名前</th>
+      <td>
+        <%=h od.deliv_family_name %>
+        <%=h od.deliv_first_name %>
+      </td>
+    </tr>
+    <tr>
+      <th>お名前（フリガナ）</th>
+      <td>
+        <%=h od.deliv_family_name_kana %>
+        <%=h od.deliv_first_name_kana %>
+      </td>
+    </tr>
+    <tr>
+      <th>郵便番号</th>
+      <td>〒<%=h od.deliv_zipcode01 %>-<%=h od.deliv_zipcode02 %></td>
+    </tr>
+    <tr>
+      <th>住所</th>
+      <td>
+        <%=h od.deliv_pref_name %>
+        <%=h od.deliv_address_city %>
+        <%=h od.deliv_address_detail %>
+      </td>
+    </tr>
+    <tr>
+      <th>電話番号</th>
+      <td><%=h od.deliv_tel01 %>-<%=h od.deliv_tel02 %>-<%=h od.deliv_tel03 %></td>
+    </tr>
+  </table>
+
+  <p class="tb_t">お支払方法・お届け時間</p>
+  <table class="tb2">
+    <tr>
+      <th width="130">お支払方法</th>
+      <td><%=h od.payment.name %></td>
+    </tr>
+  </table>
+  <% form_tag :action => @next do %>
+    <%= render :partial=>'order_deliveries' %>
+<%- @order_deliveries.each do |key, order_delivery| -%>
+  <%- order_delivery.attribute_names.each do |column| %>
+    <%- if order_delivery[column].blank? or column == "use_point" or column == "payment_id" or column == "delivery_time_id" %>
+      <%= hidden_field_tag "order_deliveries[#{key}][#{column}]", order_delivery[column] %>
+    <%- end %>
+  <%- end %>
+<%- end -%>
+    
+	  <%= hidden_field_tag "point_after_operation", @point_after_operation %>
+      <div class="cart_btn">
+	   <%=hidden_field_tag "back"%>
+	   <%= image_submit_tag '/images/cart/cart_btn03.gif', {:onClick => "this.form.action='/cart/purchase'; this.form.submit();document.getElementById('back').value=1",:width=>'135', :height=>'28', :alt=>'戻る', :class=>'hoverImg'} %>
+       <%= image_submit_tag '/images/cart/cart_btn04.gif', :width=>'135', :height=>'28', :alt=>'注文を確定する', :class=>'hoverImg' %>
+      </div>
+  <% end %>
+
+</div>
+
+<% if false %>
+<% content_for :head do %>
+  <%= stylesheet_link_tag "front/cart" %>
+<% end %>
+
+<h2 class="main_t">ショッピングカート</h2>
+<div id="cart">
 <!-- ショッピングカート -->
   <%= image_tag("cart/route03.gif", :width => "583", :height => "31", :alt => "ご購入の流れ", :class => "route") %>
   <p class="tb_t">ご入力内容のご確認</p>
@@ -191,3 +395,4 @@
       </div>
   <% end %>
 </div><!-- /cart -->
+<% end %>

@@ -1,0 +1,26 @@
+<% form_for :order_delivery, :url => {:action => :delivery2} do |f| %>
+  <span style="color:#FF9775;">■</span> 発送方法選択<br />
+  <% @carts_map.each do |retailer_id, cart_array| %>
+    <%= render :partial => "set_delivery_each_retailer_mobile", :locals => {:carts => cart_array, :retailer_id => retailer_id, :f => f} %>
+  <% end %>
+  <div style="text-align:center;">
+    <%= render :partial => "order_deliveries" %>
+    <%= submit_tag '次へ' -%>
+  </div> 
+<% end %>
+
+<% if @not_login_customer %>
+  <% go_back = "temporary_shipping" %>
+<% elsif @login_customer %>
+  <% go_back = "shipping" %>
+<% end %>
+
+<% form_tag :action => go_back do %>
+  <%= render :partial => "order_deliveries" %>
+  <%=hidden_field_tag "back","1" %>
+  <div style="text-align:center;">
+    <%= submit_tag '戻る' %>
+  </div>
+<% end %>
+
+

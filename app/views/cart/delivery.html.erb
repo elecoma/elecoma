@@ -1,5 +1,7 @@
 <% content_for :head do %>
   <%= stylesheet_link_tag "front/cart" %>
+  <%= javascript_include_tag :defaults %>
+  <%= javascript_include_tag 'cart_delivery' %>
 <% end %>
 
 <%# 発送選択 %>
@@ -11,5 +13,17 @@
       <%= render :partial => "set_delivery_each_retailer", :locals => {:carts => cart_array, :retailer_id => retailer_id, :f => f} %>
     <% end %>
     <%= render :partial => "order_deliveries" %>
+
+    <div class="my_btn2">
+      <%=hidden_field_tag "back"%>
+      <% if @not_login_customer%>
+        <%= image_submit_tag '/images/cart/cart_btn05.gif', {:onclick => "this.form.action='/cart/temporary_shipping'; this.form.submit();document.getElementById('back').value=1",:width=>'101', :height=>'28', :alt=>'戻る', :class=>'hoverImg'} %>
+      <% elsif @login_customer%>
+        <%= image_submit_tag '/images/cart/cart_btn05.gif', {:onclick => "this.form.action='/cart/shipping'; this.form.submit();document.getElementById('back').value=1",:width=>'101', :height=>'28', :alt=>'戻る', :class=>'hoverImg'} %>
+      <% end %>
+      <%= image_submit_tag '/images/entry/entry_btn3.gif', :width=>'101', :height=>'28', :alt=>'次へ', :class=>'hoverImg' %>
+    </div>
+
+
   <% end %>
 </div>

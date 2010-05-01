@@ -26,3 +26,15 @@ delivery_time_<%=idx%>:
   name: 適当に持っていく
   delivery_trader_id: 1
 <% end %>
+
+<% (2..4).each do |trader| %>
+<% (1..16).each do |tmp| %>
+<% idx = tmp + (16 * (trader - 1)) %>
+delivery_time_<%=idx%>:
+  id: <%= idx %>
+  position: <%=idx%>
+  name: 
+  delivery_trader_id: <%= trader %>
+<% end %>
+<% end %>
+

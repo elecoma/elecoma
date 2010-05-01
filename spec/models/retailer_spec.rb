@@ -14,5 +14,12 @@ describe Retailer do
       @retailer.name = "販売元テスト"
       @retailer.should be_valid
     end
+    it "販売元名称(カナ)はカタカナのみ受け付ける" do
+      @retailer.name = "販売元テスト"
+      @retailer.name_kana = "ハンバイモトテスト"
+      @retailer.should be_valid
+      @retailer.name_kana = "ハンバイモトテスト漢字入り"
+      @retailer.should_not be_valid
+    end
   end
 end

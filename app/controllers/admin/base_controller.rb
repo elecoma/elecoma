@@ -164,4 +164,13 @@ class Admin::BaseController < ApplicationController
     end
   end
 
+  def master_shop_check
+    current_user = session[:admin_user]
+    unless current_user.master_shop?
+      flash[:notice] = "メインのショップのみアクセス可能です"
+      redirect_to :controller => "home", :action => "index"
+      return false
+    end
+  end
+
 end

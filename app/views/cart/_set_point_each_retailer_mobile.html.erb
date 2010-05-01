@@ -1,0 +1,18 @@
+<% carts.each do |cart| %>
+  <%= cart.product_style.product.name %><br />
+<% end %>
+
+<p>
+  <%= radio_button_tag "points[#{retailer_id}][point_check]", 'true' %>
+  <label for="points[<%=h retailer_id %>][point_check]_true">
+    ポイントを使用する
+  </label>
+  <br/>
+  今回のお買い物で、<%= text_field_tag "order_deliveries[#{retailer_id}][use_point]", "", :size => 10,:style=>"height:14px;" %>ポイントを使用する。
+</p>
+<p>
+<%= radio_button_tag "points[#{retailer_id}][point_check]", 'false' %>
+    <label for="point_check_false">
+        ポイントを使用しない
+    </label>
+</p>

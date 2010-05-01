@@ -10,9 +10,11 @@
   <% if @product.arrival_expected_date && @product.arrival_expected_date < Date.today %>
     入荷未定
   <% else %>
-    入荷予定日:<%= date_jp(@product.arrival_expected_date) %> <br />
+    入荷予定日:<%= date_jp(@product.arrival_expected_date) %>
   <% end %>
 <% end %>
+<br />
+販売元: <%= show_retailer_shop(@product) %><br />
 <div style="text-align:right;">&yen; <%= @product.price_label %></div>
 
 <% @product.sub_products.each do | sub_product | %>

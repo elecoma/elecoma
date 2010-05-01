@@ -1,6 +1,50 @@
 <% content_for :head do -%>
   <%= stylesheet_link_tag "front/cart" %>
   <%= javascript_include_tag :defaults %>
+<% end %>
+
+
+<h2 class="main_t">ショッピングカート</h2>
+<div id="cart">
+<!-- ショッピングカート -->
+  <%= image_tag("cart/route03.gif", :width => "583", :height => "31", :alt => "ご購入の流れ", :class => "route") %>
+  <span class="must"><%= flash[:notice] %></span>
+  <span class="must"><%= flash[:error] %></span>
+  <%= @order_delivery && error_messages_for(:order_delivery) %>
+  <% form_for :order_delivery, :url =>{:action => 'confirm'}, :html => {:name=>'form1'} do | f | %>
+    <div>
+      <h3>お支払い方法選択</h3>
+      <p>支払方法をお選びください。</p> 
+      <ul>
+        <% Payment::find_for_price(@cart_price).each do |payment| %>
+          <li>
+            <%= f.radio_button :payment_id, payment.id %><%= f.label 'payment_id_%d' % payment.id, payment.name, :class => "radio_btn" %>
+            <%= payment_image_tag payment, {:controller => "/image_resource", :action => "show", :id => payment.id} %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+    <% unless @not_login_customer %>
+      <h3>ポイント設定</h3>
+      <p>ポイントは販売元ごとに設定できます</p>
+      <% @carts_map.each do |retailer_id, cart_array| %>
+        <%= render :partial => "set_point_each_retailer", :locals => {:carts => cart_array, :retailer_id => retailer_id, :f => f} %>
+      <% end %>
+    <% end %>
+    <%= render :partial => "order_deliveries" %>
+    <div class="my_btn2">
+      <%=hidden_field_tag "back"%>
+      <%= image_submit_tag '/images/cart/cart_btn05.gif', {:onclick => "this.form.action='/cart/delivery'; this.form.submit();document.getElementById('back').value=1",:width=>'101', :height=>'28', :alt=>'戻る', :class=>'hoverImg'} %>
+      <%= image_submit_tag '/images/entry/entry_btn3.gif', :width=>'101', :height=>'28', :alt=>'次へ', :class=>'hoverImg' %>
+    </div>
+
+  <% end %>
+</div>
+
+<% if false %>
+<% content_for :head do -%>
+  <%= stylesheet_link_tag "front/cart" %>
+  <%= javascript_include_tag :defaults %>
   <%= javascript_include_tag 'cart_purchase' %>
   <%= javascript_include_tag js_url(:action => "application") %>
 <% end %>
@@ -94,3 +138,4 @@
     </div>
   <% end %>
 </div><!-- /cart -->
+<% end %>
