@@ -8,6 +8,7 @@ describe Admin::NewInformationsController do
     session[:admin_user] = admin_users(:admin10)
     @controller.class.skip_before_filter @controller.class.before_filter
     @controller.class.skip_after_filter @controller.class.after_filter
+    @controller.class.before_filter :master_shop_check
   end
   #Delete this example and add some real ones
   it "should use Admin::NewInformationsController" do
@@ -19,6 +20,11 @@ describe Admin::NewInformationsController do
       get 'index'
       #assigns[:status].should == "create"
       response.should be_success
+    end
+    it "マスターショップ以外はアクセスできない" do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      get 'index'
+      response.should redirect_to(:controller => "home", :action => "index")
     end
   end
 

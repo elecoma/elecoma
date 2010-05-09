@@ -4,7 +4,7 @@
 <% end %>
 
 
-<h2 class="main_t">ショッピングカート</h2>
+<h2 class="main_t">お支払い方法選択</h2>
 <div id="cart">
 <!-- ショッピングカート -->
   <%= image_tag("cart/route03.gif", :width => "583", :height => "31", :alt => "ご購入の流れ", :class => "route") %>
@@ -12,8 +12,8 @@
   <span class="must"><%= flash[:error] %></span>
   <%= @order_delivery && error_messages_for(:order_delivery) %>
   <% form_for :order_delivery, :url =>{:action => 'confirm'}, :html => {:name=>'form1'} do | f | %>
-    <div>
-      <h3>お支払い方法選択</h3>
+    <div class="purchase_select">
+      <h3 class="tb_t">お支払い方法選択</h3>
       <p>支払方法をお選びください。</p> 
       <ul>
         <% Payment::find_for_price(@cart_price).each do |payment| %>
@@ -25,13 +25,40 @@
       </ul>
     </div>
     <% unless @not_login_customer %>
-      <h3>ポイント設定</h3>
-      <p>ポイントは販売元ごとに設定できます</p>
-      <% @carts_map.each do |retailer_id, cart_array| %>
-        <%= render :partial => "set_point_each_retailer", :locals => {:carts => cart_array, :retailer_id => retailer_id, :f => f} %>
-      <% end %>
+      <div class="point_select">
+        <table id="point_tb" class="tb1">
+          <tr>
+            <th colspan="2">ポイント使用の設定</th>
+          </tr>
+          <tr>
+            <td colspan="2">
+            1ポイントを1円として使用する事ができます。<br />
+            使用する場合は、「ポイントを使用する」にチェックを入れた後、使用するポイントをご記入ください。
+            </td>
+          </tr>
+          <tr>
+            <td class="t_right">
+              今回ご購入合計金額：
+              <%= number_with_delimiter(@cart_price) %>円（送料、手数料を含みません。）
+            </td>
+            <td>
+              現在の所持ポイント：
+              <strong><%= @login_customer.point.to_i%>Pt</strong>
+            </td>
+          </tr>
+        </table>
+        <% @carts_map.each do |retailer_id, cart_array| %>
+          <%= render :partial => "set_point_each_retailer", :locals => {:carts => cart_array, :retailer_id => retailer_id, :f => f} %>
+        <% end %>
+      </div>
     <% end %>
-    <%= render :partial => "order_deliveries" %>
+    <%- @order_deliveries.each do |key, order_delivery| -%>
+      <%- order_delivery.attribute_names.each do |column| %>
+    <%- unless order_delivery[column].blank? or column == "use_point" or column == "payment_id" %>
+      <%= hidden_field_tag "order_deliveries[#{key}][#{column}]", order_delivery[column] %>
+    <%- end %>
+      <%- end %>
+    <%- end -%>
     <div class="my_btn2">
       <%=hidden_field_tag "back"%>
       <%= image_submit_tag '/images/cart/cart_btn05.gif', {:onclick => "this.form.action='/cart/delivery'; this.form.submit();document.getElementById('back').value=1",:width=>'101', :height=>'28', :alt=>'戻る', :class=>'hoverImg'} %>

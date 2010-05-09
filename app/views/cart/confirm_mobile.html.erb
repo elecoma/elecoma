@@ -64,6 +64,117 @@
 <div style="text-align:center;">【 支払金額  <%= number_with_delimiter @payment_total %>円 】</div>
 <div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
 
+<!-- お客様情報 -->
+<% od = @order_deliveries.values.first %>
+<% if @not_login_customer %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+<div style="clear:both; background-color:#F3F3EC; text-align:center;"><%= image_tag_mobile "border", :width => "226", :height => "2" %><br /></div>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+<span style="color:#FF9775;">■</span> お客様情報<br />
+お名前
+<br/>
+<%=h od.family_name %>&nbsp;<%=h od.first_name %>
+<br/>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+お名前（フリガナ）
+<br/>
+<%=h od.family_name_kana %>&nbsp;<%=h od.first_name_kana %>
+<br/>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+郵便番号
+<br/>
+〒<%=h od.deliv_zipcode01 %>-<%=h od.deliv_zipcode02 %>
+<br/>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+住所
+<br/>
+<%=h od.prefecture.name %><%=h od.address_city %><%=h od.address_detail %>
+<br/>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+電話番号
+<br/>
+<%=h od.tel01 %>-<%=h od.tel02 %>-<%=h od.tel03 %>
+<br/>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+ファックス番号
+<br/>
+<%=h od.fax01 %>-<%=h od.fax02 %>-<%=h od.fax03 %>
+<br/>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+メールアドレス
+<br/>
+<%=h od.email %>
+<br/>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+性別
+<br/>
+<%=h od.sex_name %>
+<br/>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+生年月日
+<br/>
+<%=h od.birthday %>
+<br/>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+職業
+<br/>
+<%=h od.occupation && od.occupation.name %>
+<br/>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+<% end %>
+
+<!-- お届け先 -->
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+<div style="clear:both; background-color:#F3F3EC; text-align:center;"><%= image_tag_mobile "border", :width => "226", :height => "2" %><br /></div>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+<span style="color:#FF9775;">■</span> お届け先<br />
+〒<%=h od.deliv_zipcode01 %>-<%=h od.deliv_zipcode02 %>
+<br/>
+<%=h od.deliv_pref.name %><%=h od.deliv_address_city %><%=h od.deliv_address_detail %>
+<br/>
+<%=h od.deliv_family_name %>&nbsp;<%=h od.deliv_first_name %>
+<br/>
+Tel. <%=h od.deliv_tel01 %>-<%=h od.deliv_tel02 %>-<%=h od.deliv_tel03 %>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
+
+<!-- お支払方法・お届け時間 -->
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+<div style="clear:both; background-color:#F3F3EC; text-align:center;"><%= image_tag_mobile "border", :width => "226", :height => "2" %><br /></div>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
+
+<span style="color:#FF9775;">■</span> お支払方法・お届け時間<br />
+<%=h od.payment.name %>
+<br/>
+<%=h od.delivery_time_name %>
+<br/>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
+<div style="clear:both; background-color:#F3F3EC; text-align:center;"><%= image_tag_mobile "border", :width => "226", :height => "2" %><br /></div>
+<div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
+
+<% form_tag :action => @next do %>
+<div style="text-align:center;">
+    <%= render :partial=>'order_deliveries' %>
+    <%- @order_deliveries.each do |key, order_delivery| -%>
+      <%- order_delivery.attribute_names.each do |column| %>
+        <%= hidden_field_tag "order_deliveries[#{key}][#{column}]", order_delivery[column] %>
+      <%- end %>
+    <%- end -%>
+    <%= submit_tag '注文' %>
+</div>
+<% end %>
+<% form_tag :action => 'purchase' do %>
+<div style="text-align:center;">
+    <%= render :partial=>'order_deliveries' %>
+    <%- @order_deliveries.each do |key, order_delivery| -%>
+      <%- order_delivery.attribute_names.each do |column| %>
+        <%= hidden_field_tag "order_deliveries[#{key}][#{column}]", order_delivery[column] %>
+      <%- end %>
+    <%- end -%>
+    <%=hidden_field_tag "back","1" %>
+    <%= submit_tag '戻る' %>
+    <br/>
+</div>
+<% end %>
 <% if false %>
 
 

@@ -3,8 +3,10 @@
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', '<%= @system.googleanalytics_account_num %>']);
 _gaq.push(['_trackPageview']);
-<% unless flash[:googleanalytics_ec].nil? %>
-  <%= flash[:googleanalytics_ec].async %>
+<% unless flash[:googleanalytics_ecs].nil? %>
+  <% flash[:googleanalytics_ecs].each do |ga| %>
+    <%= ga.async %>
+  <% end %>
 <% end %>
 (function() {
 var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;

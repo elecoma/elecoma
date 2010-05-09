@@ -15,6 +15,11 @@ describe Admin::MailMagazineTemplatesController do
       response.should be_success
       assigns[:mail_magazine_template].id.should be_nil
     end
+    it "マスターショップ以外はアクセスできない" do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      get 'new'
+      response.should redirect_to(:controller => "home", :action => "index")
+    end
   end
 
   describe "GET 'edit'" do

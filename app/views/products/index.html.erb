@@ -6,11 +6,20 @@
 <div id="left_box" class="clearfix">
   <%= render :partial => '/base/left_sidebar' %>
   <div id="main"><!-- メイン -->
-    <ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ", "/" %></li><li><%= @category.nil? ? "商品一覧" : link_to("商品一覧", { :controller => "/products", :action => "index", :category_id => nil}) %> <%= ">> #{ @category.name }"  unless @category.nil? %></li></ol>
-    <h2 class="main_t"><%=h (@category.nil? ? "商品一覧" : @category.name) %></h2>
-    <% unless @category.nil? or @category.resource_id.blank? %>
-    <!--カテゴリ画像 -->
-    <%= view_resource_id @category.resource_id,{:width=>"530px",:height=>"213px",:class =>"m_btm"} %>
+    <% if @retailer.nil? %>
+      <ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ", "/" %></li><li><%= @category.nil? ? "商品一覧" : link_to("商品一覧", { :controller => "/products", :action => "index", :category_id => nil}) %> <%= ">> #{ @category.name }"  unless @category.nil? %></li></ol>
+      <h2 class="main_t"><%=h (@category.nil? ? "商品一覧" : @category.name) %></h2>
+      <% unless @category.nil? or @category.resource_id.blank? %>
+      <!--カテゴリ画像 -->
+      <%= view_resource_id @category.resource_id,{:width=>"530px",:height=>"213px",:class =>"m_btm"} %>
+      <% end %>
+    <% else %>
+      <ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ", "/" %></li><li><%= @retailer.nil? ? "商品一覧" : link_to("商品一覧", { :controller => "/products", :action => "index", :retailer_id => nil}) %> <%= ">> #{ @retailer.name }"  unless @retailer.nil? %></li></ol>
+      <h2 class="main_t"><%=h (@retailer.nil? ? "商品一覧" : @retailer.name) %></h2>
+      <% unless @retailer.nil? or @retailer.resource_id.blank? %>
+      <!--カテゴリ画像 -->
+      <%= view_resource_id @retailer.resource_id,{:width=>"530px",:height=>"213px",:class =>"m_btm"} %>
+      <% end %>
     <% end %>
     <div><%= image_tag("common/box_bg_top.gif", :width => "530", :height => "5", :alt => "") %></div>
     <div id="main_search" class="main_box">

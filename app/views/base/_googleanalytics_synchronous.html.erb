@@ -6,8 +6,10 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 try {
 var pageTracker = _gat._getTracker("<%= @system.googleanalytics_account_num %>");
 pageTracker._trackPageview();
-<% unless flash[:googleanalytics_ec].nil? %>
-  <%= flash[:googleanalytics_ec].sync %>
+<% unless flash[:googleanalytics_ecs].nil? %>
+  <% flash[:googleanalytics_ecs].each do |ga| %>
+    <%= ga.sync %>
+  <% end %>
 <% end %>
 } catch(err) {}
 </script>

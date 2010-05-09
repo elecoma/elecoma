@@ -25,4 +25,32 @@ describe Admin::RetailersController do
       response.should redirect_to(:controller=>"admin/home", :action=>"index")
     end
   end
+
+  
+  describe "GET 'edit'" do
+    it "メインショップは自分の販売元は編集できる" do
+      session[:admin_user] = @main_shop
+      get 'edit', :id => @main_shop.retailer_id
+      response.should be_success
+    end
+
+    it "メインショップはどの販売元も編集できる" do
+      session[:admin_user] = @main_shop
+      get 'edit', :id => @sub_shop.retailer_id
+      response.should be_success
+    end
+
+    it "サブショップは自分の販売元は編集できる" do
+      session[:admin_user] = @sub_shop
+      get 'edit', :id => @sub_shop.retailer_id
+      response.should be_success
+    end
+    
+    it "サブショップは別の販売元は編集できない" do
+      session[:admin_user] = @sub_shop
+      get 'edit', :id => @main_shop.retailer_id
+      response.should redirect_to(:controller => "home", :action => "index")
+    end
+  end
+
 end

@@ -2,7 +2,8 @@ class Admin::FeatureProductsController < Admin::BaseController
   #共通
   resource_controller
   before_filter :admin_permission_check_feature
-  
+  before_filter :master_shop_check
+
   #indexの前処理
   index.before do
     @feature = Feature.find_by_id(params[:feature_id])

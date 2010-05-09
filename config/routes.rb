@@ -65,6 +65,8 @@ ActionController::Routing::Routes.draw do |map|
   # Install the default routes as the lowest priority.
   map.connect 'products/category/:category_id', :controller => 'products', :action => 'index'
   map.connect 'products/category/:category_id/order/:order', :controller => 'products', :action => 'index'
+  map.connect 'products/retailer/:retailer_id', :controller => 'products', :action => 'index'
+  map.connect 'products/retailer/:retailer_id/order/:order', :controller => 'products', :action => 'index'
   map.connect 'products/show/:id/category/:category_id', :controller => 'products', :action => 'show'
   map.connect 'image_resource/:action/:id/image.jpg', :controller => 'image_resource'
 

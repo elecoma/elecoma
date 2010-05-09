@@ -1,6 +1,7 @@
 class Admin::RecommendProductsController < Admin::BaseController
   resource_controller
   before_filter :admin_permission_check_recommendation
+  before_filter :master_shop_check
 
   index.before do
     @recommend_products = RecommendProduct.find(:all,

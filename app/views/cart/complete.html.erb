@@ -23,7 +23,9 @@
 
 <div class="cart_complete">
   <% if @login_customer%>
-    <p><%= link_to '今回の購入履歴を確認', :controller => 'accounts', :action => 'history_show', :id => flash[:order_id] %></p>
+    <%- flash[:order_ids].each do |key, order_id| %>
+      <p><%= link_to '今回の購入履歴を確認', :controller => 'accounts', :action => 'history_show', :id => order_id %></p>
+    <% end %>
   <%end%>
   <p><%= link_to 'トップページへ', :controller => 'portal', :action => 'show' %></p>
 </div>

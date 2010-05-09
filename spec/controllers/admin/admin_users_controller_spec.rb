@@ -167,4 +167,27 @@ describe Admin::AdminUsersController do
     end
   end
 
+  describe "マスターショップ以外のチェック" do
+    before do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+    end
+    
+    it "GET 'index'" do
+      get 'index'
+      assigns[:admin_users].length.should == 1
+      assigns[:admin_users][0].should == admin_users(:admin18_retailer_id_is_another_shop)
+    end
+ 
+    it "編集データが取得できる" do
+      get 'edit', :id => admin_users(:admin18_retailer_id_is_another_shop).id
+      response.should be_success
+      assigns[:admin_user].should == admin_users(:admin18_retailer_id_is_another_shop)
+    end
+    it "編集データが取得できない" do
+      lambda { get 'edit', :id => 1 }.should raise_error(ActiveRecord::RecordNotFound)
+    end
+  
+  end
+
+
 end

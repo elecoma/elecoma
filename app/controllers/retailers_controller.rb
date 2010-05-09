@@ -9,5 +9,6 @@ class RetailersController < BaseController
       redirect_to :controller => :portal, :action => :show
       return
     end
+    @delivery_traders = DeliveryTrader.find(:all, :conditions => ["retailer_id = ?", params[:id]])
   end
 end

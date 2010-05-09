@@ -4,6 +4,7 @@ class Admin::CampaignsController < Admin::BaseController
   resource_controller
   before_filter :admin_permission_check_campaign
   before_filter :design_init, :only=>[:campaign_design, :campaign_design_update]
+  before_filter :master_shop_check
 
   PAGE_TYPE_PC_OPEN = "open_pc"
   PAGE_TYPE_PC_END = "end_pc"

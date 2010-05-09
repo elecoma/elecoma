@@ -17,7 +17,7 @@
 <%= @temporary_customer && error_messages_for(:temporary_customer) %>
 <%= @optional_address && error_messages_for(:optional_address) %>
 
-<% form_tag({:action => 'purchase'}, {:name=>'form1'}) do %>
+<% form_tag({:action => 'delivery'}, {:name=>'form1'}) do %>
   <% fields_for :temporary_customer do |f| %>
     <table class="tb2">
       <tr>

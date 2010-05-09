@@ -1,5 +1,6 @@
 class Admin::CategoriesController < Admin::BaseController
   resource_controller
+  before_filter :master_shop_check
 
   index.before do
     @category = Category.find_by_id(params[:id])

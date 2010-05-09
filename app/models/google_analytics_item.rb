@@ -18,17 +18,17 @@ class GoogleAnalyticsItem < ActiveForm
 
   def sync
     ret_value = "pageTracker._addItem(\""
-    ret_value << @order_id
+    ret_value << @order_id.to_s
     ret_value << '","'
-    ret_value << @sku
+    ret_value << @sku.to_s
     ret_value << "\", \""
-    ret_value << @product_name
+    ret_value << @product_name.to_s
     ret_value << "\", \""
-    ret_value << @category
+    ret_value << @category.to_s
     ret_value << "\", \""
-    ret_value << @price
+    ret_value << @price.to_s
     ret_value << "\", \""
-    ret_value << @quantity
+    ret_value << @quantity.to_s
     ret_value << "\");\n"
 
     return ret_value
@@ -36,17 +36,17 @@ class GoogleAnalyticsItem < ActiveForm
 
   def async
     ret_value = "_gaq.push(['_addItem','"
-    ret_value << @order_id
+    ret_value << @order_id.to_s
     ret_value << "','"
-    ret_value << @sku
+    ret_value << @sku.to_s
     ret_value << "','"
-    ret_value << @product_name
+    ret_value << @product_name.to_s
     ret_value << "', '"
-    ret_value << @category
+    ret_value << @category.to_s
     ret_value << "', '"
-    ret_value << @price
+    ret_value << @price.to_s
     ret_value << "', '"
-    ret_value << @quantity
+    ret_value << @quantity.to_s
     ret_value << "']);\n"
 
     return ret_value

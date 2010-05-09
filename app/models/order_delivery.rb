@@ -77,9 +77,6 @@ class OrderDelivery < ActiveRecord::Base
     update_commit_date!
     update_shipped_at!
     update_delivery_completed_at!
-    if payment
-      self.delivery_trader_id = payment.delivery_trader_id
-    end
   end
 
   validates_presence_of :deliv_family_name, :deliv_first_name,

@@ -1,18 +1,41 @@
 <div>
-  <% carts.each do |cart| %>
-    <%= cart.product_style.product.name %><br />
-  <% end %>
-  <p>発送方法をお選びください</p>
-  <ul>
-    <% @delivery_traders[retailer_id].each do |delivery_trader| %>
-      <li>
-      <%= f.radio_button "delivery_trader[#{retailer_id}]", delivery_trader.id, :class => 'radio_trader' %>
-      <%= f.label "delivery_trader[#{retailer_id}]", delivery_trader.name %>
-      </li>
-    <% end %>
-  </ul>
-  <p>配達時間をお選びください</p>
-  <select id="delivery_time_<%= retailer_id %>" name="order_deliveries[<%= retailer_id %>][delivery_time_id]">
-    <%= render :action => 'select_delivery_time_with_delivery_trader_id_ajax', :params => {:record => @order_deliveries[retailer_id]}, :method => 'get' %>
-  </select>
+  <h3 class="tb_t">配送情報: <%= Retailer.find(retailer_id).name %></h3>
+  <div class="delivery_trader_select">
+    <p>発送方法をお選びください</p>
+    <ul>
+      <% @delivery_traders[retailer_id].each do |delivery_trader| %>
+        <li>
+        <%= radio_button "order_deliveries[#{retailer_id}]", "delivery_trader_id", delivery_trader.id, :class => 'radio_trader' %>
+        <%= label "order_deliveries[#{retailer_id}]", "delivery_trader_id", delivery_trader.name %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="delivery_time_select">
+    <p>配達時間をお選びください</p>
+    <select id="delivery_time_<%= retailer_id %>" name="order_deliveries[<%= retailer_id %>][delivery_time_id]">
+      <option value="">指定なし</option>
+      <%= render :action => 'select_delivery_time_with_delivery_trader_id_ajax', :params => {:record => @order_deliveries[retailer_id]}, :method => 'get' %>
+    </select>
+  </div>
+
+  <div class="delivery_cart">
+    <table class="tb1 cntr">
+      <tr>
+        <th width="90">商品画像</th>
+        <th width="265">商品名</th>
+        <th width="90">単価(税込み)</th>
+        <th width="90">個数</th>
+      </tr>
+      <% carts.each do |cart| %>
+        <tr>
+          <td><%= link_to_product_image(cart.product_style.product :small) %></td>
+          <td><%=h cart.product_style.product.name %></td>
+          <td><%= number_with_delimiter cart.product_style.sell_price %>円</td>
+          <td><%= number_with_delimiter cart.quantity %>個</td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
 </div>

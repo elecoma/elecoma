@@ -3,6 +3,7 @@ class Admin::MailMagazineTemplatesController < Admin::BaseController
   mobile_filter
   emoticon_filter
   before_filter :admin_permission_check_template
+  before_filter :master_shop_check
 
   new_action.before do
 	  @mail_magazine_template.form = 2

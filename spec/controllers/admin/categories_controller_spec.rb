@@ -31,6 +31,12 @@ describe Admin::CategoriesController do
       assigns[:category].should_not be_nil
       assigns[:categories].should_not be_nil
     end
+
+    it "マスターショップ以外はアクセスできない" do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      get 'index'
+      response.should redirect_to(:controller => "home", :action => "index")
+    end
   end
    
   describe "POST 'create'" do

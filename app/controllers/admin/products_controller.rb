@@ -201,14 +201,13 @@ class Admin::ProductsController < Admin::BaseController
 
   def get_product
     @product = Product.find_by_id(params[:id].to_i) || Product.new
+    raise ActiveRecord::RecordNotFound if !@product.retailer_id.nil? and @product.retailer_id != session[:admin_user].retailer_id
     @product.attributes = params[:product]
   end
 
   def get_search_form(actual_flg=false)
-    unless session[:admin_user].master_shop?
-      addparam = {'retailer_id' => session[:admin_user].retailer_id}
-      params[:search].merge! addparam unless params[:search].nil?
-    end
+    addparam = {'retailer_id' => session[:admin_user].retailer_id}
+    params[:search].merge! addparam unless params[:search].nil?
     @search = SearchForm.new(params[:search])
     @search, @search_list = Product.get_conditions(@search, params, actual_flg)
   end

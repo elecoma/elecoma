@@ -181,22 +181,19 @@
       <td><%=h od.payment.name %></td>
     </tr>
   </table>
-  <% form_tag :action => @next do %>
-    <%= render :partial=>'order_deliveries' %>
-<%- @order_deliveries.each do |key, order_delivery| -%>
-  <%- order_delivery.attribute_names.each do |column| %>
-    <%- if order_delivery[column].blank? or column == "use_point" or column == "payment_id" or column == "delivery_time_id" %>
-      <%= hidden_field_tag "order_deliveries[#{key}][#{column}]", order_delivery[column] %>
-    <%- end %>
-  <%- end %>
-<%- end -%>
+  <% form_tag :action => :complete do %>
+    <%- @order_deliveries.each do |key, order_delivery| -%>
+      <%- order_delivery.attribute_names.each do |column| %>
+        <%= hidden_field_tag "order_deliveries[#{key}][#{column}]", order_delivery[column] %>
+      <%- end %>
+    <%- end -%>
     
 	  <%= hidden_field_tag "point_after_operation", @point_after_operation %>
-      <div class="cart_btn">
-	   <%=hidden_field_tag "back"%>
-	   <%= image_submit_tag '/images/cart/cart_btn03.gif', {:onClick => "this.form.action='/cart/purchase'; this.form.submit();document.getElementById('back').value=1",:width=>'135', :height=>'28', :alt=>'戻る', :class=>'hoverImg'} %>
-       <%= image_submit_tag '/images/cart/cart_btn04.gif', :width=>'135', :height=>'28', :alt=>'注文を確定する', :class=>'hoverImg' %>
-      </div>
+    <div class="cart_btn">
+      <%=hidden_field_tag "back"%>
+      <%= image_submit_tag '/images/cart/cart_btn03.gif', {:onClick => "this.form.action='/cart/purchase'; this.form.submit();document.getElementById('back').value=1",:width=>'135', :height=>'28', :alt=>'戻る', :class=>'hoverImg'} %>
+      <%= image_submit_tag '/images/cart/cart_btn04.gif', :width=>'135', :height=>'28', :alt=>'注文を確定する', :class=>'hoverImg' %>
+    </div>
   <% end %>
 
 </div>

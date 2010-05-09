@@ -2,6 +2,7 @@ class Admin::AuthoritiesController < Admin::BaseController
   #共通
   resource_controller
   before_filter :admin_permission_check_member
+  before_filter :master_shop_check
 
   #indexの前処理
   index.before do

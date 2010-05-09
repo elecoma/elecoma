@@ -6,6 +6,7 @@ describe Admin::FeatureProductsController do
     session[:admin_user] = admin_users(:admin10)
     @controller.class.skip_before_filter @controller.class.before_filter
     @controller.class.skip_after_filter @controller.class.after_filter
+    @controller.class.before_filter :master_shop_check
     @f = features(:permit)
     @f_product = feature_products(:feature1)
   end
@@ -24,6 +25,11 @@ describe Admin::FeatureProductsController do
       #指定の特集IDが存在しない場合
       lambda { get 'index',:feature_id =>1000 }.should raise_error
     end    
+    it "マスターショップ以外はアクセスできない" do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      get 'index',:feature_id =>@f.id
+      response.should redirect_to(:controller => "home", :action => "index")
+    end
   end
   describe "GET 'new'" do
     it "成功" do
@@ -133,7 +139,7 @@ describe Admin::FeatureProductsController do
       post 'product_search',:condition =>{:category_id =>'16',:searched=>'true'}
       #期待結果:1件ヒット
       assigns[:products].should_not be_nil
-      assigns[:products].length.should == 1
+      assigns[:products].length.should == 2
       assigns[:products][0].attributes.should == product_styles(:valid_product).attributes
     end
     it "商品検索4-keywordとcategory_idが渡されてる" do

@@ -31,13 +31,25 @@
 
 
   <div style="text-align:center;">
-    <%= render :partial=>'order_deliveries' %>
+    <%- @order_deliveries.each do |key, order_delivery| -%>
+      <%- order_delivery.attribute_names.each do |column| %>
+        <%- unless order_delivery[column].blank? or column == "use_point" or column == "payment_id" %>
+          <%= hidden_field_tag "order_deliveries[#{key}][#{column}]", order_delivery[column] %>
+        <%- end %>
+      <%- end %>
+    <%- end -%>
     <%= submit_tag '次へ' -%>
   </div>
 <% end %>
 
 <% form_tag :action => :delivery2 do %>
-  <%= render :partial=>'order_deliveries' %>
+    <%- @order_deliveries.each do |key, order_delivery| -%>
+      <%- order_delivery.attribute_names.each do |column| %>
+        <%- unless order_delivery[column].blank? or column == "use_point" or column == "payment_id" %>
+          <%= hidden_field_tag "order_deliveries[#{key}][#{column}]", order_delivery[column] %>
+        <%- end %>
+      <%- end %>
+    <%- end -%>
   <%=hidden_field_tag "back","1" %>
   <div style="text-align:center;">
     <%= submit_tag '戻る' %>

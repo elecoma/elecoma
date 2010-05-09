@@ -1,6 +1,7 @@
 class Admin::QuestionnairesController < Admin::BaseController
   resource_controller
   before_filter :admin_permission_check_enquete
+  before_filter :master_shop_check
   QUESTION_COUNT = Questionnaire::QUESTION_COUNT
   QUESTION_CHOICE_COUNT = Questionnaire::QUESTION_CHOICE_COUNT
 

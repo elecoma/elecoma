@@ -171,6 +171,11 @@ EOS
     sql_condition = <<-EOS
 from
 customers c
+#{if !condition.retailer_id.blank?
+    conditions << "#{condition.retailer_id}"
+    "join (select customer_id from orders where retailer_id = ? ) buycustomer on c.id = buycustomer.customer_id "
+  end}
+
 
 left join (select
 o.customer_id,
@@ -180,6 +185,10 @@ orders o,
 order_deliveries d
 where
 o.id=d.order_id
+#{if !condition.retailer_id.blank?
+    conditions << "#{condition.retailer_id}"
+    "and o.retailer_id = ? "
+  end}
 group by
 o.customer_id) sum_total on
 c.id=sum_total.customer_id
@@ -189,6 +198,10 @@ o.customer_id,
 count(o.customer_id) as order_count
 from
 orders o
+#{if !condition.retailer_id.blank?
+    conditions << "#{condition.retailer_id}"
+    "where o.retailer_id = ? "
+  end}
 group by
 o.customer_id) sum_order_count on
 c.id=sum_order_count.customer_id
@@ -198,6 +211,10 @@ o.customer_id,
 max(received_at) as last_order_at
 from
 orders o
+#{if !condition.retailer_id.blank?
+    conditions << "#{condition.retailer_id}"
+    "where o.retailer_id = ? "
+  end}
 group by o.customer_id) last_order on
 c.id=last_order.customer_id
 
@@ -220,6 +237,10 @@ and d.id=t.order_delivery_id
   end}
 #{if !condition.category_id.blank?
     "and t.product_category_id =#{condition.category_id}"
+  end}
+#{if !condition.retailer_id.blank?
+    conditions << "#{condition.retailer_id}"
+    "and o.retailer_id = ? "
   end}
 group by o.customer_id) product_info"
 end}

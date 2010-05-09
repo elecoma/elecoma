@@ -4,13 +4,25 @@ class Admin::AdminUsersController < Admin::BaseController
   before_filter :load_admin
  
   index.before do
-    @admin_users = AdminUser.find(:all,
-                                  :order => 'position')
+    if session[:admin_user].master_shop?
+      @admin_users = AdminUser.find(:all,
+                                    :order => 'position')
+    else
+      @admin_users = AdminUser.find(:all, 
+                                    :conditions => ["retailer_id = ?", session[:admin_user].retailer_id], 
+                                    :order => 'position')
+    end
   end
 
   [create, update].each do |action|
     action.wants.html do
       redirect_to :action => "index"
+    end
+  end
+
+  edit.before do
+    unless session[:admin_user].master_shop?
+      raise ActiveRecord::RecordNotFound if AdminUser.find(params[:id]).retailer_id != session[:admin_user].retailer_id
     end
   end
 

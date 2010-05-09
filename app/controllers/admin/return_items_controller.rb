@@ -18,6 +18,8 @@ class Admin::ReturnItemsController < Admin::BaseController
   new_action.wants.html do
     if @product_style.nil?
       redirect_to :action => :index
+    elsif @product_style.product.retailer_id != session[:admin_user].retailer_id
+      redirect_to :action => :index
     else
       render :action => :new
     end
@@ -31,6 +33,8 @@ class Admin::ReturnItemsController < Admin::BaseController
   edit.wants.html do
     if @product_style.nil?
       redirect_to :action => :history
+    elsif @product_style.product.retailer_id != session[:admin_user].retailer_id
+      redirect_to :action => :history
     else
       render :action => :edit
     end
@@ -40,6 +44,7 @@ class Admin::ReturnItemsController < Admin::BaseController
     action.before do
       @product_style = ProductStyle.find_by_id(params[:return_item][:product_style_id].to_i)
       @return_item.admin_user_id = session[:admin_user].id
+      raise ActiveRecord::RecordNotFound if @product_style.product.retailer_id != session[:admin_user].retailer_id
     end
     
   end  
@@ -156,19 +161,14 @@ class Admin::ReturnItemsController < Admin::BaseController
   end  
 
   def add_retailer_condition
-    unless session[:admin_user].master_shop?
-      addparam = {'retailer_id' => session[:admin_user].retailer_id}
-      params[:condition].merge! addparam unless params[:condition].nil?
-    end
+    addparam = {'retailer_id' => session[:admin_user].retailer_id}
+    params[:condition].merge! addparam unless params[:condition].nil?
   end
 
   def get_csv_condition
     condition = []
-    unless session[:admin_user].master_shop?
-      condition << ["products.retailer_id = ?", session[:admin_user].retailer_id]
-      return condition, "LEFT JOIN product_styles ON product_styles.id = return_items.product_style_id " + "LEFT JOIN products ON products.id = product_styles.product_id "
-    end
-    return condition, nil
+    condition << ["products.retailer_id = ?", session[:admin_user].retailer_id]
+    return condition, "LEFT JOIN product_styles ON product_styles.id = return_items.product_style_id " + "LEFT JOIN products ON products.id = product_styles.product_id "
   end
 
 end

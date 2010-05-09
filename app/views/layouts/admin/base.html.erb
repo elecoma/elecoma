@@ -20,7 +20,11 @@
     </div>
     <div id="head_m" class="clearfix">
       <ul id="con_menu" class="clearfix">
-        <li><%= link_to image_tag("store_btn.gif", :width => "122", :height => "51", :alt => "店舗管理", :class => "hoverImg"), {:controller => "shops", :action => "index"}, :id => "shop" %></li>
+        <% if session[:admin_user].master_shop? %>
+          <li><%= link_to image_tag("store_btn.gif", :width => "122", :height => "51", :alt => "店舗管理", :class => "hoverImg"), {:controller => "shops", :action => "index"}, :id => "shop" %></li>
+        <% else %>
+          <li><%= link_to image_tag("store_btn.gif", :width => "122", :height => "51", :alt => "店舗管理", :class => "hoverImg"), {:controller => "shops", :action => "delivery_index"}, :id => "shop" %></li>
+        <% end %>
         <li><%= link_to image_tag("goods_btn.gif", :width => "122", :height => "51", :alt => "商品管理", :class => "hoverImg"), {:controller => "products", :action => "index"}, :id => "product" %></li>
     <% if @system_supplier_use_flag %>
       <li><%= link_to image_tag("order_btn.gif", :width => "122", :height => "51", :alt => "発注出荷管理", :class => "hoverImg"), {:controller => "suppliers", :action => "index"}, :id => "depot" %></li>

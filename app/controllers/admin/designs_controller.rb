@@ -1,6 +1,7 @@
 class Admin::DesignsController < Admin::BaseController
   before_filter :admin_permission_check_pc_edit, :only => [:index, :pc, :update]
   before_filter :admin_permission_check_mobile_edit, :only => :mobile
+  before_filter :master_shop_check
 
   def index
     redirect_to :action => 'pc'

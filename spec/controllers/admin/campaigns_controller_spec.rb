@@ -8,6 +8,7 @@ describe Admin::CampaignsController do
     @controller.class.skip_before_filter @controller.class.before_filter
     @controller.class.skip_after_filter @controller.class.after_filter
     @controller.class.before_filter :design_init, :only => [:campaign_design, :campaign_design_update]
+    @controller.class.before_filter :master_shop_check
   end
 
   #Delete these examples and add some real ones
@@ -180,6 +181,36 @@ describe Admin::CampaignsController do
       post 'campaign_preview', :id => 1, :type => type, :campaign => campaign
       assigns[:free_spaces]["end_mobile_free_space_1"].should == "freespace1"
       response.should render_template("campaigns/show_mobile")
+    end
+  end
+
+  describe "マスターショップ以外はアクセスができない" do
+    before do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+    end
+
+    it "POST 'campaign_preview'" do
+      type = "end_mobile"
+      campaign = {:end_mobile_free_space_1 => "freespace1",
+        :end_mobile_free_space_2 => "freespace2",
+        :end_mobile_free_space_3 => "freespace3"}
+      post 'campaign_preview', :id => 1, :type => type, :campaign => campaign
+      response.should redirect_to(:controller => "home", :action => "index")
+    end
+
+    it "POST 'campaign_design_update'" do
+      type = "open_pc"
+      campaign = {:open_pc_free_space_1 => "freespace1",
+        :open_pc_free_space_2 => "freespace2",
+        :open_pc_free_space_3 => "freespace3",
+        :open_pc_free_space_4 => "freespace4"}
+      post 'campaign_design_update', :id => 1, :type => type, :campaign => campaign
+      response.should redirect_to(:controller => "home", :action => "index")
+    end
+
+    it "GET 'index'" do
+      get 'index'
+      response.should redirect_to(:controller => "home", :action => "index")
     end
   end
 

@@ -462,10 +462,16 @@ describe CartController do
       session[:customer_id] = @customer.id
       session[:carts] = @dummy_carts
 
-      order_delivery = order_deliveries(:nobi)
+#      order_delivery = order_deliveries(:nobi)
+#      @params = {
+#        :point_usable => 'false',
+#        :order_delivery => order_delivery.attributes
+#      }
+      order_deliveries = Hash.new
+      order_deliveries[carts(:cart_can_incriment).product_style.product.retailer_id] = order_deliveries(:nobi).attributes
       @params = {
         :point_usable => 'false',
-        :order_delivery => order_delivery.attributes
+        :order_deliveries => order_deliveries
       }
     end
 
@@ -487,7 +493,7 @@ describe CartController do
     end
 
     it "should not be successful" do
-      @params[:order_delivery] = {}
+      @params[:order_deliveries] = {}
       post 'complete', @params
       response.should render_template('purchase')
     end
@@ -500,10 +506,12 @@ describe CartController do
 
     it "受注の中身" do
       post 'complete', @params
-      assigns[:order].should_not be_nil
-      assigns[:order].customer_id.should == @customer.id
-      assigns[:order].received_at.should_not be_nil
-      assigns[:order].should have(1).order_deliveries
+      assigns[:orders].should_not be_nil
+      assigns[:orders].each do |key, order|
+        order.customer_id.should == @customer.id
+        order.received_at.should_not be_nil
+        order.should have(1).order_deliveries
+      end
     end
 
     it 'カートをクリアする' do
@@ -513,8 +521,21 @@ describe CartController do
 
     it 'メールを送る' do
       post 'complete', @params
-      flash[:order_id].should == assigns[:order].id
+      flash[:order_ids].each do |key, id|
+        check_id = assigns[:orders][key].id
+        id.should == check_id
+      end
+      #flash[:order_id].should == assigns[:order].id
     end
+
+    it 'GoogleAnalytics' do
+      post 'complete', @params
+      flash[:googleanalytics_ecs].should_not be_nil
+      flash[:googleanalytics_ecs].each do |ga|
+        ga.sync.should_not be_nil
+      end
+    end
+
   end
 
   describe "GET 'finish'" do

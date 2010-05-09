@@ -201,7 +201,7 @@ class CartController < BaseController
       @delivery_traders[retailer.id] = select_delivery_trader_with_retailer_id(retailer.id)
     end
     if @not_login_customer
-      @order_deliveries.each do |order_delivery|
+      @order_deliveries.each do |key, order_delivery|
         order_delivery.set_customer(@temporary_customer)
       end
     end
@@ -219,70 +219,16 @@ class CartController < BaseController
       #error
     end
     @delivery_time_options = Hash.new
-    p params
-    p params[:delivery_trader]
     @order_deliveries.each do |retailer_id, od|
-      delivery_trader_id = params[:order_delivery][:delivery_trader][retailer_id]
+      delivery_trader_id = od.delivery_trader_id
       option = select_delivery_time_with_delivery_trader_id(delivery_trader_id)
       @delivery_time_options[retailer_id] = option
     end
-    p @delivery_time_options
     render :action => 'delivery2'
   end
 
   # Order を作る
   def purchase
-#    cookies.delete :back_from_deliv if cookies[:back_from_deliv]
-#
-#    #2.配送先の情報を取ってくる
-#    if @login_customer
-#      # 会員の場合
-#      if params[:address_select].to_i.zero?
-#        # 会員登録住所を使う
-#        @delivery_address = @login_customer.basic_address
-#      else
-#        # 選ばれた配送先を使う
-#        @delivery_address = DeliveryAddress.find_by_id_and_customer_id(params[:address_select], @login_customer.id)
-#      end
-#    elsif @not_login_customer
-#      # 非会員
-#      @temporary_customer = Customer.new(params[:temporary_customer])
-#      @temporary_customer.from_cart = true
-#      
-#      # お届け先
-#      #if params[:address_enable].nil?
-#        @optional_address = DeliveryAddress.new(params[:optional_address])
-#      #end
-#      
-#      # 確認画面から戻る時
-#      if params[:back] == "1"
-#        convert(params[:order_delivery])
-#      end
-#      # 入力チェック
-#      # メールアドレス重複チェックを除き
-#      @temporary_customer.activate = Customer::HIKAIIN
-#      if !@temporary_customer.valid? or
-#       (params[:address_enable].nil? and !@optional_address.valid?)
-#        @error_back = true
-#        render :action => "temporary_shipping"
-#        return
-#      end
-#      
-#      # お届け先設定
-#      if params[:address_enable].nil?
-#        @delivery_address = @optional_address        
-#      else
-#        @delivery_address = @temporary_customer.basic_address  
-#      end
-#    end
-#    
-#    # 住所を取得できないと、この先困るので、どこかに飛ばす
-#    return redirect_to(:action => 'show') unless @delivery_address
-#
-#    # 確認ページから帰ってきた時は params[:order_delivery] があるはず
-#    @order_delivery = OrderDelivery.new(params[:order_delivery])
-
-
     @order_deliveries = Hash.new
     unless params[:order_deliveries].nil?
       params[:order_deliveries].each do |key, order_delivery|
@@ -292,38 +238,11 @@ class CartController < BaseController
       #error
     end
     
-#    #確認ページから帰ってきた時、ポイント使用有無ラジオボタン維持
-#    if @login_customer && params[:back] == "1"
-#      if !@order_delivery.use_point.blank? && @order_delivery.use_point > 0
-#        @point_check = true
-#      else
-#        @point_check = false
-#        @order_delivery.use_point = nil
-#      end        
-#    end
-#    # 「戻る」以外の時代入
-#    @order_delivery.address_select ||= params[:address_select].to_i
-#    if @order_delivery.deliv_zipcode01.blank?
-#      @order_delivery.set_delivery_address(@delivery_address)
-#    end
-#
-#    if params[:order_delivery]
-#      @order_delivery.target_columns = params[:order_delivery].keys.map(&:to_s)
-#    end
-#    #@payments = @order_delivery.payment_candidates(@cart_price)
-#    #配送時間取得・表示のAJAXははお支払方法押下時のみ行い、戻るボタンで戻る時、配送時間表示がおかしくないため、
-#    #支払方法を強制にクリア。モバイルはAJAXを使っていないので、そのまま
-#    @order_delivery.payment = nil unless request.mobile?
-#
-#    # 非会員フラグ追加
-#    # 非会員購入時の顧客情報セット
-#    if @not_login_customer
-#      @order_delivery.set_customer(@temporary_customer)
-#    end
     render :action => 'purchase'
   end
   
   #モバイルお届け時間選択
+  #現在未使用
   def purchase2
     @order_delivery = OrderDelivery.new(params[:order_delivery])
     unless @order_delivery.valid?
@@ -390,27 +309,11 @@ class CartController < BaseController
   def confirm
     init_order_deliveries
     @order_deliveries.each do |key, od|
-      p od
       unless od.valid?
         render :action => 'purchase'
         return
       end
     end
-    p @order_deliveries
-    p @order_details_map
-#    init_order_delivery
-#    unless @order_delivery.valid?
-#      @order_delivery.payment = nil unless request.mobile?
-#      if params[:point_check] == "true"
-#        @point_check = true
-#      end
-#      render :action => 'purchase'
-#      return
-#    end
-#    
-
-#TODODONE ポイントロジック    
-
 
     if @login_customer
       @all_use_point = 0
@@ -437,50 +340,12 @@ class CartController < BaseController
           return
         end
         
-        #TODODONE add_pointの処理
         od.attributes = {:add_point => total_points_each_cart(@carts_map[retailer_id.to_i])} 
       end
       @cart_point = total_points
       @point_after_operation = @login_customer.point.to_i - @all_use_point + @cart_point
       
     end
-#    # ポイント
-#    if @login_customer
-#      use_point = 0
-#      if params[:point_check] == "true"
-#        @point_check = true
-#        use_point = @order_delivery.use_point.to_i
-#        if use_point == 0
-#           flash.now[:error] = '使用ポイントをご入力ください。 '
-#           @order_delivery.payment = nil unless request.mobile?
-#           render :action => 'purchase'
-#           return
-#        end
-#        # ポイントの使いすぎをチェック
-#        if use_point > @cart_price
-#          flash.now[:error] = 'ご利用ポイントがご購入金額を超えています。'
-#          @order_delivery.payment = nil unless request.mobile?
-#          render :action => 'purchase'
-#          return
-#        end
-#        if use_point > @login_customer.point.to_i
-#          flash.now[:error] = 'ご利用ポイントが所持ポイントを超えています。'
-#          @order_delivery.payment = nil unless request.mobile?
-#          render :action => 'purchase'
-#          return
-#        end        
-#      else
-#        @point_check = false
-#        @order_delivery.attributes = {:use_point => 0}
-#      end
-#      
-#      @cart_point = total_points
-#      @point_after_operation = @login_customer.point.to_i - use_point + total_points
-#      #add_point追加
-#      @order_delivery.attributes = {:add_point => @cart_point}
-#    end
-
-#TODODONE 再計算がうまく行くかチェック
     
     @payment_total = 0
     @order_deliveries.each do |retailer_id, od |
@@ -489,17 +354,12 @@ class CartController < BaseController
       @payment_total = @payment_total + od.payment_total
     end
 
-#    #ポイントのことで再計算はここにする
-#    @order_delivery.calculate_charge!
-#    @order_delivery.calculate_total!
-#    
     @next = :complete
     render :action => 'confirm'
   end
 
   #完了画面
   def complete
-    #init_order_deliveries_for_complete
     unless @carts.all?(&:valid?)
       redirect_to :action => :show
       return
@@ -508,6 +368,7 @@ class CartController < BaseController
     @orders = Hash.new
     @order_deliveries = Hash.new
     @order_details = Hash.new
+    ids = Array.new
     params[:order_deliveries].each do |key, _od|
       order = nil
       if @not_login_customer
@@ -515,6 +376,7 @@ class CartController < BaseController
       else
         order = @login_customer.orders.build
       end
+      order.retailer_id = key.to_i
       order.received_at = DateTime.now
       od = order.order_deliveries.build(_od)
       od.set_customer(@login_customer) if @login_customer
@@ -523,93 +385,67 @@ class CartController < BaseController
       @order_deliveries[key] = od
       cart = @carts_map[key.to_i]
       @order_details[key] = od.details_build_from_carts(cart)
-    end
-      
+      od.calculate_charge!
+      od.calculate_total!
+      ids << @order_details[key].map{|o_d| o_d.product_style.product_id}
+    end  
 
-#    # 受注を作って受注可能数を減らす
-#          # 　非会員購入追加
-#    if @not_login_customer
-#      @order = Order.new
-#    elsif @login_customer
-#      @login_customer.point = params[:point_after_operation]
-#      @order = @login_customer.orders.build
-#    end
-#    @order.received_at = DateTime.now
-#    @order_delivery = @order.order_deliveries.build(params[:order_delivery])
-#    
-#    # 　非会員購入追加
-#    if @login_customer
-#      @order_delivery.set_customer(@login_customer)  
-#    end
-#  
-#    ## ステータス
-#    @order_delivery.status = OrderDelivery::JUTYUU
-#    # 受注発注商品が一つでもあるか
-#    product_styles = @carts.map(&:product_style)
-#    #販売可能数で判断
-#    if product_styles.any?{|ps| ps.orderable_count.to_i == 0}
-#      # 販売開始日が未来の物が一つでもあれば予約
-#      products = product_styles.map(&:product)
-#      today = Date.today
-#      if products.any?{|p| p.sale_start_at && p.sale_start_at > today}
-#        @order_delivery.status = OrderDelivery::YOYAKU_UKETSUKE
-#      else
-#        @order_delivery.status = OrderDelivery::JUTYUU_TOIAWASE
-#      end
-#    end
-#    @carts.each do |cart|
-#      cart.product_style.order(cart.quantity)
-#    end
-#    @order_details = @order_delivery.details_build_from_carts(@carts)
-#    @order_delivery.calculate_charge!
-#    @order_delivery.calculate_total!
-#
-#    unless @order_delivery.valid? and @order_details.all?(&:valid?)
-#      render :action => 'purchase'
-#      return
-#    end
-#    begin
-#      Order.transaction do
-#        @carts.each do | cart |
-#          if request.mobile?
-#            ProductAccessLog.create(:product_id => cart.product_style.product_id,
-#                                    :session_id => session.session_id,
-#                                    :customer_id => @login_customer && @login_customer.id,
-#                                    :docomo_flg => request.mobile == Jpmobile::Mobile::Docomo,
-#                                    :ident => request.mobile.ident,
-#                                   :complete_flg => true)
-#          end
-#          product_style = ProductStyle.find(cart.product_style_id, :lock=>true)
-#          product_style.order(cart.quantity)
-#          product_style.save!
-#          #会員のみキャンペーン処理
-#          if @login_customer
-#            cart.campaign_id and process_campaign(cart, @login_customer)  
-#          end
-#        end
-#        # 非会員購入対応
-#        if @login_customer
-#          @login_customer.carts.delete_all
-#          @login_customer.save!
-#        end
-#
-#        @order.save!
-#        flash[:completed] = true
-#        flash[:order_id] = @order.id
-#        # メールを送る
-#        Notifier::deliver_buying_complete(@order)
-#        flash[:googleanalytics_ec] = add_googleanalytics_ec(@order, @order_delivery, @order_details)
-#        @carts.clear
-#      end
-#    rescue => e
-#      flash.now[:error] = '失敗しました'
-#      logger.error(e.message)
-#      e.backtrace.each{|s|logger.error(s)}
-#      redirect_to :action => 'show'
-#      return
-#    end
-    render :action => 'purchase'
-    #redirect_to :action => :finish, :ids => @order_details.map{|o_d| o_d.product_style.product_id}
+    @order_deliveries.each do |key, od|
+      unless od.valid? and @order_details[key].all?(&:valid?)
+        render :action => 'purchase'
+        return 
+      end
+    end
+
+    if @order_deliveries.empty? or @order_details.empty?
+      render :action => 'purchase'
+      return
+    end
+
+    begin
+      Order.transaction do
+        @carts.each do | cart |
+          if request.mobile?
+            ProductAccessLog.create(:product_id => cart.product_style.product_id,
+                                    :session_id => session.session_id,
+                                    :customer_id => @login_customer && @login_customer.id,
+                                    :docomo_flg => request.mobile == Jpmobile::Mobile::Docomo,
+                                    :ident => request.mobile.ident,
+                                   :complete_flg => true)
+          end
+          product_style = ProductStyle.find(cart.product_style_id, :lock=>true)
+          product_style.order(cart.quantity)
+          product_style.save!
+          #会員のみキャンペーン処理
+          if @login_customer
+            cart.campaign_id and process_campaign(cart, @login_customer)  
+          end
+        end
+        # 非会員購入対応
+        if @login_customer
+          @login_customer.carts.delete_all
+          @login_customer.save!
+        end
+        
+        order_ids = Hash.new
+        @orders.each do |key, order|
+          order.save!
+          order_ids[key] = order.id
+          Notifier::deliver_buying_complete(order)
+        end
+        flash[:completed] = true
+        flash[:order_ids] = order_ids
+        flash[:googleanalytics_ecs] = add_googleanalytics_ecs(@orders, @order_deliveries, @order_details)
+        @carts.clear
+      end
+    rescue => e
+      flash.now[:error] = '失敗しました'
+      logger.error(e.message)
+      e.backtrace.each{|s|logger.error(s)}
+      redirect_to :action => 'show'
+      return
+    end
+    redirect_to :action => :finish, :ids => ids
   end
 
   def finish
@@ -814,15 +650,12 @@ class CartController < BaseController
   
   def init_order_deliveries
     @order_deliveries = Hash.new
-    p params[:order_delivery][:payment_id]
     params[:order_deliveries].each do |key, order_delivery|
       @order_deliveries[key] = OrderDelivery.new(order_delivery)
       @order_deliveries[key].set_customer(@login_customer) if @login_customer
       @order_deliveries[key].payment_id = params[:order_delivery][:payment_id]
     end
     @order_details_map = Hash.new
-    p @order_deliveries
-    p @carts_map
     @order_deliveries.each do |key, order_delivery|
       cart = @carts_map[key.to_i]
       @order_details_map[key] = order_delivery.details_build_from_carts(cart)
@@ -892,6 +725,16 @@ class CartController < BaseController
     @optional_address.address_detail = order_delivery.deliv_address_detail
   end
 
+  def add_googleanalytics_ecs(orders, deliveries, details_map)
+    googleanalytics_ecs = Array.new
+    orders.each do |key, order|
+      delivery = deliveries[key]
+      details = details_map[key]
+      googleanalytics_ecs << add_googleanalytics_ec(order, delivery, details)
+    end
+    return googleanalytics_ecs
+  end
+
   def add_googleanalytics_ec(order, delivery, details)
     ecommerce = GoogleAnalyticsEcommerce.new
     trans = GoogleAnalyticsTrans.new
@@ -917,7 +760,8 @@ class CartController < BaseController
 
     ecommerce.trans = trans
     
-    flash[:googleanalytics_ec] = ecommerce
+    #flash[:googleanalytics_ec] = ecommerce
+    return ecommerce
   end
 
   def select_delivery_trader_with_retailer_id(retailer_id)

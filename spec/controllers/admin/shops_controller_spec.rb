@@ -7,6 +7,7 @@ describe Admin::ShopsController do
     session[:admin_user] = admin_users(:load_by_admin_user_test_id_1)
     @controller.class.skip_before_filter @controller.class.before_filter
     @controller.class.skip_after_filter @controller.class.after_filter
+    @controller.class.before_filter :master_shop_check, :except => [:delivery_index, :delivery_new, :delivery_edit, :delivery_create, :delivery_update, :destroy, :sort]
   end
   
   #Delete this example and add some real ones
@@ -22,6 +23,12 @@ describe Admin::ShopsController do
       get 'index'
       response.should be_success
       assigns[:shop].should == Shop.find(:first)
+    end
+
+    it "マスターショップ以外はアクセスできない" do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      get 'index'
+      response.should redirect_to(:controller => "home", :action => "index")
     end
   end
   

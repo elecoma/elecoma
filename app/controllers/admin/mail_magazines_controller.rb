@@ -5,6 +5,7 @@ class Admin::MailMagazinesController < Admin::BaseController
   resource_controller
   before_filter :admin_permission_check_sending, :expect => :history
   before_filter :admin_permission_check_sending_log, :only => :history
+  before_filter :master_shop_check
 
   cattr_accessor :drb_uri
   #DEFAULT_DRB_URI = 'druby://0.0.0.0:9999'

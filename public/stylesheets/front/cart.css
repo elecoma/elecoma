@@ -230,3 +230,60 @@ border:  none;
   margin:0 auto;
   width: 135px;
 }
+
+.delivery_trader_select {
+  padding: 10px;
+}
+
+.delivery_trader_select p {
+  color: #e47911;
+  margin: 5px 0;
+}
+.delivery_trader_select ul {
+  margin: 5px 0;
+}
+
+.delivery_trader_select li {
+  padding-top: 5px;
+  margin: 0px 5px;
+}
+
+.delivery_time_select {
+  padding: 10px;
+}
+
+.delivery_time_select p {
+  color: #e47911;
+  margin: 5px 0;
+}
+
+.delivery_time_select select {
+  margin: 5px;
+}
+
+.delivery_cart {
+  padding: 10px;
+}
+
+.purchase_select {
+  padding: 10px;
+}
+
+.purchase_select p {
+  color: #e47911;
+  margin: 5px 0;
+}
+.purchase_select ul {
+  margin: 5px 0;
+}
+
+.purchase_select li {
+  padding-top: 5px;
+  margin: 0px 5px;
+}
+
+.point_select {
+  padding: 10px;
+}
+
+

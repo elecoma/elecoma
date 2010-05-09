@@ -1,23 +1,35 @@
-<div>
-  <% carts.each do |cart| %>
-    <%= cart.product_style.product.name %><br />
-  <% end %>
-  
-  <table>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-    <tr>
-      <td>test</td>
-      <td>
-        <%= radio_button_tag "points[#{retailer_id}][point_check]", 'true' %>
-        <label for="points[<%=h retailer_id %>][point_check]_true">ポイントを使用する</label>
-        <%= text_field_tag "order_deliveries[#{retailer_id}][use_point]" %>ポイント
-      </td>
-      <td>
-        <%= radio_button_tag "points[#{retailer_id}][point_check]_false", 'false' %>
-        <label for="points[<%=h retailer_id %>][point_check]_false">ポイントを使用しない</label>
-      </td>
-    </tr>
-  </table>
-</div>
+  <div class="point_cart">
+    <table class="tb1 cntr">
+      <tr>
+        <th width="90">商品画像</th>
+        <th width="265">商品名</th>
+        <th width="90">単価(税込み)</th>
+        <th width="90">個数</th>
+      </tr>
+      <% carts.each do |cart| %>
+        <tr>
+          <td><%= link_to_product_image(cart.product_style.product :small) %></td>
+          <td><%=h cart.product_style.product.name %></td>
+          <td><%= number_with_delimiter cart.product_style.sell_price %>円</td>
+          <td><%= number_with_delimiter cart.quantity %>個</td>
+        </tr>
+      <% end %> 
+      <tr>
+        <th>ポイント対象</th>
+        <th>ポイントを使用する</th>
+        <th colspan="2">使用しない</th>
+      </tr>
+      <tr>
+        <td><%= Retailer.find(retailer_id).name %></td>
+        <td>
+          <%= radio_button_tag "points[#{retailer_id}][point_check]", 'true' %>
+          <label for="points[<%=h retailer_id %>][point_check]_true">ポイントを使用する</label>
+          <%= text_field_tag "order_deliveries[#{retailer_id}][use_point]" %>ポイント
+        </td>
+        <td colspan="2">
+          <%= radio_button_tag "points[#{retailer_id}][point_check]", 'false' %>
+          <label for="points[<%=h retailer_id %>][point_check]_false">ポイントを使用しない</label>
+        </td>
+      </tr>
+    </table>
+  </div>

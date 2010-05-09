@@ -6,10 +6,8 @@ class Admin::StockBaseController < Admin::BaseController
   
   #検索
   def search
-    unless session[:admin_user].master_shop?
-      addparam = {'retailer_id' => session[:admin_user].retailer_id}
-      params[:condition].merge! addparam unless params[:condition].nil?
-    end
+    addparam = {'retailer_id' => session[:admin_user].retailer_id}
+    params[:condition].merge! addparam unless params[:condition].nil?
     @condition = StockSearchForm.new(params[:condition])
     unless @condition.valid?
       render :action => "index"
@@ -68,6 +66,7 @@ class Admin::StockBaseController < Admin::BaseController
       else      
         raise ActiveRecord::RecordNotFound
       end
+      raise ActiveRecord::RecordNotFound if @product_style.product.retailer_id != session[:admin_user].retailer_id
     else
       raise "Parameter Invalid"
     end

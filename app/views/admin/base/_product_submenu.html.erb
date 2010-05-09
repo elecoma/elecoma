@@ -12,7 +12,9 @@
       <li><%= link_to '商品マスタ管理', {:controller => 'products', :action => 'index'} %></li>
       <li><%= link_to '商品登録', {:controller => 'products', :action => 'new'} %></li>
       <li><%= link_to '規格管理', {:controller => 'styles', :action => 'index'} %></li>
-      <li><%= link_to 'カテゴリ管理', {:controller => 'categories', :action => 'index'} %></li>
+      <% if session[:admin_user].master_shop? %>
+        <li><%= link_to 'カテゴリ管理', {:controller => 'categories', :action => 'index'} %></li>
+      <% end %>  
       <li><%= link_to('在庫切れ一覧', {:controller => 'products', :action => 'actual_count_index'}) %></li>
     </ul>
 
@@ -30,12 +32,14 @@
       <li><%= link_to '顧客マスタ', {:controller => "customers", :action => 'index'} %></li>
     </ul>
 
-    <p><a href="JavaScript:onClick=Tree('display4');ImgC('img4');"><%= image_tag("menu_icon.gif", :width => "36", :height => "36", :alt => "", :id => "img4") %><span>メルマガ管理</span></a></p>
-    <ul id="display4" style="display:block">
-      <li><%= link_to '配信内容設定', {:controller => 'mail_magazines', :action => 'index'} %></li>
-      <li><%= link_to 'テンプレート設定', {:controller => 'mail_magazine_templates', :action => 'index'} %></li>
-      <li><%= link_to '配信履歴', {:controller => 'mail_magazines', :action => 'history'} %></li>
-    </ul>
+    <% if session[:admin_user].master_shop? %>
+      <p><a href="JavaScript:onClick=Tree('display4');ImgC('img4');"><%= image_tag("menu_icon.gif", :width => "36", :height => "36", :alt => "", :id => "img4") %><span>メルマガ管理</span></a></p>
+      <ul id="display4" style="display:block">
+        <li><%= link_to '配信内容設定', {:controller => 'mail_magazines', :action => 'index'} %></li>
+        <li><%= link_to 'テンプレート設定', {:controller => 'mail_magazine_templates', :action => 'index'} %></li>
+        <li><%= link_to '配信履歴', {:controller => 'mail_magazines', :action => 'history'} %></li>
+      </ul>
+    <% end %>
 
     <p><a href="JavaScript:onClick=Tree('display5');ImgC('img5');"><%= image_tag("menu_icon.gif", :width => "36", :height => "36", :alt => "", :id => "img5") %><span>受注管理</span></a></p>
     <ul id="display5" style="display:block">

@@ -4,7 +4,7 @@ Event.observe(window, 'load', function() {
   if (!radios.length) radios = [radios];
   $A(radios).each(function(radio) {
     Event.observe(radio, 'click', function(e) {
-      var retailer_id = radio.id.split('[')[1].split(']')[0];
+      var retailer_id = radio.id.split('_')[2];
       //console.log(retailer_id);
       var id = "delivery_time_" + retailer_id
       var params = $H({

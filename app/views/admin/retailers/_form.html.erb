@@ -1,6 +1,6 @@
 <%= error_messages_for :retailer %>
 
-<% form_for [:admin, @retailer] do |f| %>
+<% form_for [:admin, @retailer], :html => {:multipart => true} do |f| %>
   <p class="req"><span class="pnt">※</span>は必須入力です</p>
   <table class="data" cellspacing="1">
     <tr>
@@ -8,16 +8,68 @@
       <td><%= f.text_field :name, :class => "data_m" %></td>
     </tr>
     <tr>
-      <th>店名(カナ) <span class="pnt">※</span></th>
+      <th>店名(カナ)</th>
       <td><%= f.text_field :name_kana, :class => "data_m" %></td>
     </tr>
     <tr>
-      <th>会社名 <span class="pnt">※</span></th>
+      <th>会社名</th>
       <td><%= f.text_field :corp_name, :class => "data_m" %></td>
     </tr>
     <tr>
-      <th>会社名(カナ) <span class="pnt">※</span></th>
+      <th>会社名(カナ)</th>
       <td><%= f.text_field :corp_name_kana, :class => "data_m" %></td>
+    </tr>
+    <tr>
+      <th>郵便番号</th>
+      <td><%= f.text_field "zipcode01", :size => "3"  %>-&nbsp;&nbsp;<%= f.text_field "zipcode02" , :size => "4" %>
+        <input name="zipcode_input" value="住所入力" class="btn_s" onclick="address_by_zip('retailer_zipcode01','retailer_zipcode02', 'retailer_prefecture_id', 'retailer_address_city', 'retailer_address_detail', 'retailer_prefecture_id', 'admin/shops', '<%=h ActionController::Base.relative_url_root %>');" type="button" />
+      </td>
+    </tr>
+    <tr>
+      <th>SHOP住所</th>
+      <td><%= collection_select "retailer", "prefecture_id", Prefecture.find(:all, :order=>"position"), 'id', 'name', {:include_blank => true} %><br /><br />
+        <%= f.text_field "address_city", :class=>"data_m" %><br /><br />
+        <%= f.text_field "address_details", :class=>"data_l" %></td>
+    </tr>
+    <tr>
+      <th>TEL</th>
+      <td><%= f.text_field "tel01", :size => "6" %>-&nbsp;&nbsp;<%= f.text_field "tel02", :size => "6" %>-&nbsp;&nbsp;<%= f.text_field "tel03", :size => "6" %></td>
+    </tr>
+    <tr>
+      <th>FAX</th>
+      <td><%= f.text_field "fax01", :size => "6" %>-&nbsp;&nbsp;<%= f.text_field "fax02", :size => "6" %>-&nbsp;&nbsp;<%= f.text_field "fax03", :size => "6" %></td>
+    </tr>
+    <tr>
+      <th>店舗営業時間</th>
+      <td><%= f.text_field "businesstime", :class=>"data_m" %></td>
+    </tr>
+    <tr>
+      <th>問合受付メールアドレス</th>
+      <td><%= f.text_field "mail_faq", :class=>"data_m" %></td>
+    </tr>
+    <tr>
+      <th>メール送信元メールアドレス</th>
+      <td><%= f.text_field "mail_sender", :class=>"data_m" %></td>
+    </tr>
+    <tr>
+      <th>管理者メールアドレス</th>
+      <td><%= f.text_field "mail_admin", :class=>"data_m" %></td>
+    </tr>
+    <tr>
+      <th>取扱商品</th>
+      <td><%= f.text_area "trade_item", :class=>"data_l" %></td>
+    </tr>
+    <tr>
+      <th>メッセージ</th>
+      <td><%= f.text_area "introduction", :class=>"data_l" %></td>
+    </tr>
+    <tr>
+      <th>メイン画像</th>
+      <td><%= image_field :retailer, :resource %></td>
+    </tr>
+    <tr>
+      <th>メニュー画像</th>
+      <td><%= image_field :retailer, :menu_resource %></td>
     </tr>
   </table>
 

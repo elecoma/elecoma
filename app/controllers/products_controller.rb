@@ -40,6 +40,13 @@ class ProductsController < BaseController
         @category_name = @category.name
       end
     end
+
+    if (! params[:retailer_id].blank?  ) && params[:retailer_id] =~ /^[0-9]*$/ && params[:retailer_id].to_i < 2147483647
+      @retailer = Retailer.find(:first, :conditions => ["id = ?", params[:retailer_id] ] )
+      if @retailer
+        conditions << ["retailer_id = ? ", @retailer.id]
+      end
+    end
     
     order = params[:order] == "price" ? "product_price.max_price desc" : "products.updated_at desc"
     per_page = request.mobile? ? 10 : 16

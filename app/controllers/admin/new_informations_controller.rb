@@ -1,6 +1,7 @@
 class Admin::NewInformationsController < Admin::BaseController
   resource_controller
   before_filter :admin_permission_check_whats_new
+  before_filter :master_shop_check
 
 #  index.before do
 #    @new_informations = NewInformation.find(:all, :order => "position")

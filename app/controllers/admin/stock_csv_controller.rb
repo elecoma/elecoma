@@ -60,10 +60,7 @@ class Admin::StockCsvController < Admin::BaseController
 
   def get_condition
     condition = []
-    unless session[:admin_user].master_shop?
-      condition << ["products.retailer_id = ?", session[:admin_user].retailer_id]
-      return condition, "LEFT JOIN products ON products.id = product_styles.product_id "
-    end
-    return condition, nil
+    condition << ["products.retailer_id = ?", session[:admin_user].retailer_id]
+    return condition, "LEFT JOIN products ON products.id = product_styles.product_id "
   end
 end
