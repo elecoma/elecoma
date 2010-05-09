@@ -9,15 +9,6 @@ class CreateRetailers < ActiveRecord::Migration
       t.column :deleted_at, :datetime
       t.timestamps
     end
-    r = Retailer.new
-    s = Shop.find(:first)
-    unless s.nil?
-      r.name = s.name
-      r.name_kana = s.name_kana
-      r.corp_name = s.corp_name
-      r.corp_name_kana = s.corp_name_kana
-      r.save
-    end
   end
 
   def self.down

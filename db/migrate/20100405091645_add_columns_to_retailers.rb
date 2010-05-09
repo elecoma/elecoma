@@ -20,6 +20,15 @@ class AddColumnsToRetailers < ActiveRecord::Migration
     add_column :retailers, :prefecture_id, :integer, :comment => '都道府県ID'
     add_column :retailers, :resource_id, :integer, :comment => "画像ID"
     add_column :retailers, :menu_resource_id, :integer, :comment => "メニュー画像ID"
+    r = Retailer.new
+    s = Shop.find(:first)
+    unless s.nil?
+      r.name = s.name
+      r.name_kana = s.name_kana
+      r.corp_name = s.corp_name
+      r.corp_name_kana = s.corp_name_kana
+      r.save
+    end
   end
 
   def self.down
