@@ -6,6 +6,7 @@ describe Admin::RetailersController do
   before do
     @main_shop = admin_users(:load_by_admin_user_test_id_1)
     @sub_shop = admin_users(:admin18_retailer_id_is_another_shop)
+    @controller.class.skip_before_filter :admin_permission_check_member
   end
 
   it "should use Admin::RetailersController" do
