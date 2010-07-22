@@ -11,7 +11,7 @@
     <ul id="display1" style="display:block">
       <% if session[:admin_user].master_shop? %>
         <li><%= link_to 'SHOPマスタ', {:controller => 'shops', :action => 'index'} %></li>
-        <li><%= link_to '特定商取引法', {:controller => 'shops', :action => 'tradelaw_index'} %></li>
+        <li><%= link_to '特定商取引法', {:controller => 'laws', :action => 'index'} %></li>
       <% end %>
       <% unless session[:admin_user].master_shop? %>
         <li><%= link_to '販売元管理', {:controller => 'retailers', :action => 'edit', :id => session[:admin_user].retailer_id} %></li>

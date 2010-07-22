@@ -13,7 +13,7 @@ class Admin::ShopsController < Admin::BaseController
     :only => [:kiyaku_index, :kiyaku_create, :kiyaku_update, :destroy, :sort]
   before_filter :admin_permission_check_privacy, :only => [:privacy, :privacy_update]
   before_filter :admin_permission_check_setting, :only => [:settings, :settings_update]
-  before_filter :master_shop_check, :except => [:delivery_index, :delivery_new, :delivery_edit, :delivery_create, :delivery_update, :destroy, :sort]
+  before_filter :master_shop_check, :except => [:delivery_index, :delivery_new, :delivery_edit, :delivery_create, :delivery_update, :destroy, :sort, :get_address]
 
   def index
     @shop = Shop.find(:first)

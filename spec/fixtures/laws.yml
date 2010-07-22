@@ -28,3 +28,11 @@ shoutorihiki:
     payment_time_limit: 支払期限
     delivery_time: 引き渡し時期
     return_exchange: 返品・交換について
+    necessary_charge_mobile: 商品代金以外の必要料金
+    order_method_mobile: 注文方法
+    payment_method_mobile: 支払方法
+    payment_time_limit_mobile: 支払期限
+    delivery_time_mobile: 引き渡し時期
+    return_exchange_mobile: 返品・交換について
+    retailer_id: 1
+    render_type: 0

@@ -11,7 +11,17 @@ class PortalController < BaseController
   end
 
   def show_tradelaw
-    @law = Law.find(:first)
+    if params[:retailer_id]
+      @law = Law.find_by_retailer_id(params[:retailer_id])
+    end
+    unless @law
+      @law = Law.find_by_retailer_id(Retailer::DEFAULT_ID)
+    end
+    if @law.retailer_id == Retailer::DEFAULT_ID
+      @shopname = Shop.find(:first).name
+    else
+      @shopname = Retailer.find(@law.retailer_id).name
+    end
   end
 
   def privacy

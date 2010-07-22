@@ -3,12 +3,12 @@
   <%= stylesheet_link_tag "front/portal" %>
   <%= javascript_include_tag js_url(:action => "application") %>
 <% end %>
-  <ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ", :controller => 'portal', :action => 'show' %></li><li>特定商取引に関する法律に基づく表記</li></ol>
-  <p class="tb_t">特定商取引に関する法律に基づく表記</p>
-  <%- if false %>
-  <%# FIXME 当サイトについてみたいなロゴがあると幸せです　%>
-  <%= image_tag '/images/shop/about.gif', :size => "583x31", :alt => "当サイトについて", :class => "route" %> 
-  <%- end %>
+<ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ", :controller => 'portal', :action => 'show' %></li><li>特定商取引に関する法律に基づく表記</li></ol>
+<h2 class="main_t"><%= @shopname %>: 特定商取引に関する法律に基づく表記</h2>
+<%- if false %>
+<%# FIXME 当サイトについてみたいなロゴがあると幸せです　%>
+<%= image_tag '/images/shop/about.gif', :size => "583x31", :alt => "当サイトについて", :class => "route" %> 
+<%- end %>
 <%unless @law.blank?%>  
   <table class="tb2">
     <tr>
@@ -42,29 +42,57 @@
       <th>URL</th>
       <td><%=h @law.url %></td>
     </tr>
-    <tr>
-      <th>商品以外の必要代金</th>
-      <td><%=h_br @law.necessary_charge %></td>
-    </tr>
-    <tr>
-      <th>注文方法</th>
-      <td><%=h_br @law.order_method %></td>
-    </tr>
-    <tr>
-      <th>支払方法</th>
-      <td><%=h_br @law.payment_method %></td>
-    </tr>
-    <tr>
-      <th>支払期限</th>
-      <td><%=h_br @law.payment_time_limit %></td>
-    </tr>
-    <tr>
-      <th>引渡し時期</th>
-      <td><%=h_br @law.delivery_time %></td>
-    </tr>
-    <tr>
-      <th>返品・交換について</th>
-      <td><%=h_br @law.return_exchange %></td>
-    </tr>
+    <%- unless @law.html? %>
+      <tr>
+        <th>商品以外の必要代金</th>
+        <td><%=h_br @law.necessary_charge %></td>
+      </tr>
+      <tr>
+        <th>注文方法</th>
+        <td><%=h_br @law.order_method %></td>
+      </tr>
+      <tr>
+        <th>支払方法</th>
+        <td><%=h_br @law.payment_method %></td>
+      </tr>
+      <tr>
+        <th>支払期限</th>
+        <td><%=h_br @law.payment_time_limit %></td>
+      </tr>
+      <tr>
+        <th>引渡し時期</th>
+        <td><%=h_br @law.delivery_time %></td>
+      </tr>
+      <tr>
+        <th>返品・交換について</th>
+        <td><%=h_br @law.return_exchange %></td>
+      </tr>
+    <% end %>
   </table>
+  <%- if @law.html? %>
+    <h3 class="tb_t">商品以外の必要代金</h3>
+    <div class="law_info">
+      <%= render :inline => @law.necessary_charge %>
+    </div>
+    <h3 class="tb_t">注文方法</h3>
+    <div class="law_info">
+      <%= render :inline => @law.order_method %>
+    </div>
+    <h3 class="tb_t">支払方法</h3>
+    <div class="law_info">
+      <%= render :inline => @law.payment_method %>
+    </div>
+    <h3 class="tb_t">支払期限</h3>
+    <div class="law_info">
+      <%= render :inline => @law.payment_time_limit %>
+    </div>
+    <h3 class="tb_t">引渡し時期</h3>
+    <div class="law_info">
+      <%= render :inline => @law.delivery_time %>
+    </div>
+    <h3 class="tb_t">返品・交換について</h3>
+    <div class="law_info">
+      <%= render :inline => @law.return_exchange %>
+    </div>
+  <% end %>
 <%end%>

@@ -24,6 +24,7 @@
 ■URL<br />
 <%=h @law.url %><br /><br />
 
+<%- unless @law.html? %>
 ■商品以外の必要代金<br />
 <%=h_br @law.necessary_charge %><br /><br />
 
@@ -41,6 +42,27 @@
 
 ■返品・交換について<br />
 <%=h_br @law.return_exchange %><br /><br />
+<% else %>
+■商品以外の必要代金<br />
+<%= render :inline => @law.necessary_charge %><br /><br />
+
+■注文方法<br />
+<%= render :inline => @law.order_method %><br /><br />
+
+■支払方法<br />
+<%= render :inline => @law.payment_method %><br /><br />
+
+■支払期限<br />
+<%= render :inline => @law.payment_time_limit %><br /><br />
+
+■引渡し時期<br />
+<%= render :inline => @law.delivery_time %><br /><br />
+
+■返品・交換について<br />
+<%= render :inline => @law.return_exchange %><br /><br />
+
+<% end %>
+
 <%end%>
 →<%= link_to '戻る', {:controller => 'portal', :action => 'show'} %><br />
 
