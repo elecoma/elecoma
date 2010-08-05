@@ -27,8 +27,8 @@
 
 
 active-form
-  http://www.realityforge.org/svn/code/active-form/trunk/
-  rev: 2833
+  http://github.com/realityforge/rails-active-form.git
+  rev: f1e74bec3d87c23cfc05ca7df11925c08e55514f
 
 acts_as_list
   git://github.com/rails/acts_as_list.git
@@ -195,7 +195,7 @@ $ make
 $ sudo make install
 
 12. プラグインのインストール
-$ ruby script/plugin install http://www.realityforge.org/svn/code/active-form/trunk/
+$ ruby script/plugin install git://github.com/realityforge/rails-active-form.git
 $ ruby script/plugin install git://github.com/rails/acts_as_list.git
 $ ruby script/plugin install git://github.com/technoweenie/acts_as_paranoid.git
 $ ruby script/plugin install git://github.com/rails/acts_as_tree.git
