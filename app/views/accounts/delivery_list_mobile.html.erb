@@ -16,8 +16,8 @@
 <%= i+1 %><br />
 お届け先住所<br />
       〒<%= address.zipcode01 %>-<%= address.zipcode02 %><br />
-      <%= address.prefecture.name %><%= address.address_city %><br /><%= address.address_detail %><br />
-      <%= address.family_name %> <%= address.first_name %><br />
+      <%=h address.prefecture.name %><%=h address.address_city %><br /><%=h address.address_detail %><br />
+      <%=h address.family_name %> <%=h address.first_name %><br />
 <br />
 <div style="text-align:center;">
       <%= link_to '変更', :action => :delivery_edit, :id => address.id %>

@@ -28,8 +28,8 @@
               <td>お届け先住所</td>
               <td>
                 〒<%= address.zipcode01 %>-<%= address.zipcode02 %><br />
-                <%= address.prefecture.name %><%= address.address_city %><br /><%= address.address_detail %><br />
-                <%= address.family_name %> <%= address.first_name %>
+                <%=h address.prefecture.name %><%=h address.address_city %><br /><%=h address.address_detail %><br />
+                <%=h address.family_name %> <%=h address.first_name %>
               </td>
               <td class="buttom">
                 <%= link_to '変更', :action => :delivery_edit, :id => address.id %>
