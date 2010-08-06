@@ -27,8 +27,12 @@ class ApplicationController < ActionController::Base
   def get_address
     address = Zip.find(:first, :select => "prefecture_name, address_city, address_details, prefecture_id",
                        :conditions => ["zipcode01=? and zipcode02=?", params[:first], params[:second]])
-    data = address[:prefecture_name] + '/' + address[:address_city] + '/' + address[:address_details] + '/' + address[:prefecture_id].to_s
-    render :text => data
+    if address
+      data = address[:prefecture_name] + '/' + address[:address_city] + '/' + address[:address_details] + '/' + address[:prefecture_id].to_s
+      render :text => data
+    else
+      raise ActiveRecord::RecordNotFound
+    end
   end
 
 end
