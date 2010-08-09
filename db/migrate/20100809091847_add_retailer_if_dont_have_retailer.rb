@@ -4,9 +4,12 @@ class AddRetailerIfDontHaveRetailer < ActiveRecord::Migration
       r = Retailer.find(1)
     rescue ActiveRecord::RecordNotFound
       r = Retailer.new
-      r.id = 1
       r.name = "メイン販売元"
       r.save!
+      if r.id != 1
+        r.id = 1
+        r.save!
+      end
     rescue
       raise ActiveRecord::RecordNotFound
     end
