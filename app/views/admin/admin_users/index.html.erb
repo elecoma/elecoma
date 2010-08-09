@@ -35,7 +35,11 @@
     <td class="t_center"><%= radio_button_tag "activity_#{index}", "true", checked=record.activity==1, {:onclick=>"fnUpdateActivity(#{record.id}, 'true')"} %></td>
     <td class="t_center"><%= radio_button_tag "activity_#{index}", "false", checked=record.activity==0, {:onclick=>"fnUpdateActivity(#{record.id}, 'false')"} %></td>
     <td class="t_center"><%= link_to "編集", edit_admin_admin_user_path(record) %></td>
-    <td class="t_center"><%= link_to "削除", admin_admin_user_path(record), :confirm => "本当に削除しますか？", :method => :delete %></td>
+    <td class="t_center">
+      <% unless record.id == session[:admin_user].id %>
+        <%= link_to "削除", admin_admin_user_path(record), :confirm => "本当に削除しますか？", :method => :delete %>
+      <% end %>
+    </td>
     <td class="t_center">
       <% if index > 0 -%>
         <%= link_to '上へ', { :action => 'up', :id => record.id } %>

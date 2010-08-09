@@ -16,7 +16,21 @@ class Admin::AdminUsersController < Admin::BaseController
 
   [create, update].each do |action|
     action.wants.html do
-      redirect_to :action => "index"
+      if params[:id].to_i == session[:admin_user].id
+        if AdminUser.find(params[:id]).retailer_id != session[:admin_user].retailer_id
+          redirect_to :controller => "admin/accounts", :action => "logout"
+        else
+          redirect_to :action => "index"
+        end
+      else
+        redirect_to :action => "index"
+      end
+    end
+  end
+
+  destroy.before do
+    if session[:admin_user].id == params[:id].to_i
+      raise "You can't delete yourself"
     end
   end
 

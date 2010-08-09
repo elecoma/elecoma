@@ -3,7 +3,11 @@
 <div id="main"><!-- メイン -->
   <div id="category" class="clearfix"><!-- カテゴリ選択 -->
     <p id="category_info">編集したいカテゴリをクリックして下さい。</p>
-    <%= link_to image_tag("store_btn_l.gif", :width => "222", :height => "138", :alt => "店舗管理"), :controller => "shops", :action => "index" %>
+    <% if session[:admin_user].master_shop? %>
+      <%= link_to image_tag("store_btn_l.gif", :width => "222", :height => "138", :alt => "店舗管理"), :controller => "shops", :action => "index" %>
+    <% else %>
+      <%= link_to image_tag("store_btn_l.gif", :width => "222", :height => "138", :alt => "店舗管理"), :controller => "shops", :action => "delivery_index" %>
+    <% end %>
     <%= link_to image_tag("goods_btn_l.gif", :width => "222", :height => "138", :alt => "商品管理", :id => "category_img"), :controller => "products", :action => "index" %>
     <% if @system_supplier_use_flag %>
       <%= link_to image_tag("order_btn_l.gif", :width => "222", :height => "138", :alt => "発注・出荷管理"), :controller => "suppliers", :action => "index" %>
