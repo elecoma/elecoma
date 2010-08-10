@@ -3,7 +3,7 @@
   <%= javascript_include_tag 'admin/mail_magazine' %>
 	<script type="text/javascript">
 	  function textTypeChange(value){
-      writeRichText('mail_magazine_template[body]','<%=h_apos @mail_magazine_template.body %>', 400, 690, true, false, value, "<%=h ActionController::Base.relative_url_root + '/images/emoticons/' %>");
+      writeRichText('mail_magazine_template[body]','<%=h_apos @mail_magazine_template.body %>', 400, 690, true, false, value, "<%=h ActionController::Base.relative_url_root.to_s + '/images/emoticons/' %>");
 		}
 	  function toConfirm() {
 	  	if (document.getElementById('mail_magazine_template[body]').contentDocument != null) {
@@ -44,7 +44,7 @@
       <td colspan=2>
       	<div id='emoji_area_mail_magazine_template[body]'>
   		  <script type="text/javascript">
-          writeRichText('mail_magazine_template[body]','<%=h_apos @mail_magazine_template.body %>', 400, 690, true, false, '<%=h @mail_magazine_template.form %>', "<%=h ActionController::Base.relative_url_root + '/images/emoticons' %>");
+          writeRichText('mail_magazine_template[body]','<%=h_apos @mail_magazine_template.body %>', 400, 690, true, false, '<%=h @mail_magazine_template.form %>', "<%=h ActionController::Base.relative_url_root.to_s + '/images/emoticons' %>");
   		  </script>
   		</div>
       </td>
