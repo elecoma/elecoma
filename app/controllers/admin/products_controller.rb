@@ -201,7 +201,7 @@ class Admin::ProductsController < Admin::BaseController
 
   def get_product
     @product = Product.find_by_id(params[:id].to_i) || Product.new
-    raise ActiveRecord::RecordNotFound if !@product.retailer_id.nil? and @product.retailer_id != session[:admin_user].retailer_id
+    raise ActiveRecord::RecordNotFound if !@product.new_record? and @product.retailer_id != session[:admin_user].retailer_id
     @product.attributes = params[:product]
   end
 

@@ -116,6 +116,12 @@ describe Admin::ProductsController do
       get 'new', :id => 1, :copy => true
       assigns[:product].name.should == "商品1"
     end
+
+    it "retailer_id != 1のユーザのケース" do
+      session[:admin_user] = admin_users(:admin18_retailer_id_is_another_shop)
+      get 'new'
+      assigns[:product].should_not be_nil
+    end
   end
 
   describe "新規作成のケース" do
