@@ -187,6 +187,12 @@
         <%= hidden_field_tag "order_deliveries[#{key}][#{column}]", order_delivery[column] %>
       <%- end %>
     <%- end -%>
+    <% if @not_login_customer%>
+    <%=hidden_field_tag "temporary_customer_flag","1"%>
+      <% if !params[:address_enable].nil?%>
+        <%=hidden_field_tag "address_enable","1"%>
+      <% end%>  
+    <% end%>
     
 	  <%= hidden_field_tag "point_after_operation", @point_after_operation %>
     <div class="cart_btn">

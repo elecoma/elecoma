@@ -6,7 +6,7 @@
 <%= @temporary_customer && error_messages_for(:temporary_customer) %>
 <%= @optional_address && error_messages_for(:optional_address) %>
 
-<% form_tag({:action => 'purchase'}) do %>
+<% form_tag({:action => 'delivery'}) do %>
   <% fields_for :temporary_customer do |f| %>
 
 <span style="color:#ff0000;">※</span>お名前<br />

@@ -38,6 +38,12 @@
         <%- end %>
       <%- end %>
     <%- end -%>
+    <% if @not_login_customer%>
+    <%=hidden_field_tag "temporary_customer_flag","1"%>
+      <% if !params[:address_enable].nil?%>
+        <%=hidden_field_tag "address_enable","1"%>
+      <% end%>  
+    <% end%>
     <%= submit_tag '次へ' -%>
   </div>
 <% end %>
@@ -51,6 +57,12 @@
       <%- end %>
     <%- end -%>
   <%=hidden_field_tag "back","1" %>
+  <% if @not_login_customer%>
+  <%=hidden_field_tag "temporary_customer_flag","1"%>
+    <% if !params[:address_enable].nil?%>
+      <%=hidden_field_tag "address_enable","1"%>
+    <% end%>  
+  <% end%>
   <div style="text-align:center;">
     <%= submit_tag '戻る' %>
   </div>

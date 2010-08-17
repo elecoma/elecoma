@@ -18,7 +18,12 @@
       <ul>
         <% Payment::find_for_price(@cart_price).each do |payment| %>
           <li>
-            <%= f.radio_button :payment_id, payment.id %><%= f.label 'payment_id_%d' % payment.id, payment.name, :class => "radio_btn" %>
+            <%- if @payment_id == payment.id %>
+              <%= f.radio_button :payment_id, payment.id, :checked => "checked" %>
+            <%- else -%>
+              <%= f.radio_button :payment_id, payment.id %>
+            <%- end -%>
+              <%= f.label 'payment_id_%d' % payment.id, payment.name, :class => "radio_btn" %>
             <%= payment_image_tag payment, {:controller => "/image_resource", :action => "show", :id => payment.id} %>
           </li>
         <% end %>
@@ -61,6 +66,13 @@
     <%- end -%>
     <div class="my_btn2">
       <%=hidden_field_tag "back"%>
+      <% if @not_login_customer%>
+      <%=hidden_field_tag "temporary_customer_flag","1"%>
+        <% if !params[:address_enable].nil?%>
+          <%=hidden_field_tag "address_enable","1"%>
+        <% end%>  
+      <% end%>
+
       <%= image_submit_tag '/images/cart/cart_btn05.gif', {:onclick => "this.form.action='/cart/delivery'; this.form.submit();document.getElementById('back').value=1",:width=>'101', :height=>'28', :alt=>'戻る', :class=>'hoverImg'} %>
       <%= image_submit_tag '/images/entry/entry_btn3.gif', :width=>'101', :height=>'28', :alt=>'次へ', :class=>'hoverImg' %>
     </div>

@@ -12,6 +12,12 @@
 	<% if @login_customer && @order_delivery.use_point && @order_delivery.use_point > 0%>
 	<%=hidden_field_tag "point_check","true"%>
 	<% end %>
+  <% if @not_login_customer%>
+  <%=hidden_field_tag "temporary_customer_flag","1"%>
+    <% if !params[:address_enable].nil?%>
+      <%=hidden_field_tag "address_enable","1"%>
+    <% end%>  
+  <% end%>
 	<%=hidden_field :order_delivery,:payment_id%>
     <%=hidden_field :order_delivery,:use_point %>
     <%= submit_tag '次へ' %><br />
@@ -23,6 +29,12 @@
 	<% if @login_customer && @order_delivery.use_point && @order_delivery.use_point > 0%>
 	<%=hidden_field_tag "point_check","true"%>
 	<% end %>
+  <% if @not_login_customer%>
+  <%=hidden_field_tag "temporary_customer_flag","1"%>
+    <% if !params[:address_enable].nil?%>
+      <%=hidden_field_tag "address_enable","1"%>
+    <% end%>  
+  <% end%>
 	<%=hidden_field :order_delivery,:payment_id%>
     <%=hidden_field :order_delivery,:use_point %>
 	<%=hidden_field_tag "back","1"%>

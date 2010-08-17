@@ -3,7 +3,7 @@ require 'timeout'
 require 'open-uri'
 class CartController < BaseController
   before_filter :cart_check, :only => [:temporary_shipping,:shipping, :purchase,:purchase2, :confirm, :complete, :delivery, :delivery2]
-  before_filter :login_divaricate ,:only =>[:purchase,:purchase2,:confirm, :complete, :delivery]
+  before_filter :login_divaricate ,:only =>[:purchase,:purchase2,:confirm, :complete, :delivery, :delivery2]
   before_filter :login_check, :only => [:shipping]
   before_filter :force_post, :only => [:delivery, :purchase,:purchase2,:confirm, :complete]
   after_filter :save_carts
@@ -131,7 +131,8 @@ class CartController < BaseController
      @optional_address = DeliveryAddress.new(params[:optional_address])
      #戻るボタンから戻る時
       if params[:back] == "1"
-        convert(params[:order_delivery])
+        logger.debug params[:order_deliveries]["1"]
+        convert(params[:order_deliveries].first[1])
      end
   end
  
@@ -160,7 +161,7 @@ class CartController < BaseController
       
       # 確認画面から戻る時
       if params[:back] == "1"
-        convert(params[:order_delivery])
+        convert(params[:order_deliveries].first[1])
       end
       # 入力チェック
       # メールアドレス重複チェックを除き
@@ -237,7 +238,11 @@ class CartController < BaseController
     else
       #error
     end
-    
+   
+    if params[:back] == "1"
+      @payment_id = @order_deliveries.first[1].payment_id
+    end
+
     render :action => 'purchase'
   end
   

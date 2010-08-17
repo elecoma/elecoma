@@ -75,7 +75,11 @@
         <th>性別<span class="must">※</span></th>
         <td>
           <% [System::MALE, System::FEMALE].each do | value | %>
+            <%- if @temporary_customer.sex == value %>
+            <%= f.radio_button :sex, value, :checked => "checked" %>
+            <%- else %>
             <%= f.radio_button :sex, value %>
+            <%- end %>
             <%= content_tag :label, System::SEX_NAMES[value], :for => "customer_sex_%d" % value %>
           <% end %>
         </td>
