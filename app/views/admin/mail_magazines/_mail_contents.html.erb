@@ -14,7 +14,7 @@
       <% unless (params[:action] =~ /confirm/ && !@contents.body.blank?) %>
         <div id='emoji_area_contents[body]'>
             <script language="JavaScript" type="text/javascript">
-              writeRichText('contents[body]','<%=h_apos @contents.body %>', 400, 690, true, false, '<%= @contents.form_type %>', "<%=h ActionController::relative_url_root + '/images/emoticons/' %>");
+              writeRichText('contents[body]','<%=h_apos @contents.body %>', 400, 690, true, false, '<%= @contents.form_type %>', "<%=h ActionController::Base.relative_url_root.to_s + '/images/emoticons/' %>");
             </script>
         </div>
       <% else %>
