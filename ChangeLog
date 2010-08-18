@@ -1,3 +1,16 @@
+2010-08-18  Taro Matsuzawa  <tmatsuzawa _at_ kbmj.com>
+
+	* 2.0.1 Release
+	* [bugfix] 非会員で購入時に遷移ができない問題を修正
+	* [bugfix] #21680 画面に遷移した直後にエラーとなる問題を修正
+	* [bugfix] #21682 画面を遷移してもエラーにならないよう修正
+	* [bugfix] #21690 メイン販売元以外で登録に失敗する件を修正
+	* [bugfix] #21707 管理ユーザは自分自身を削除できないよう修正
+	* [bugfix] #21708 自分自身の販売元を編集した場合はログオフをするよう修正
+	* [bugfix] #21709 メイン販売元以外で店舗管理カテゴリへのアクセスがおかしい件を修正
+	* [bugfix] #21839 エスケープ漏れを修正
+	* [全般] active-formの配布元が変更になったため、READMEを修正
+
 2010-03-25  Taro Matsuzawa  <tmatsuzawa _at_ kbmj.com>
 
 	* 1.0.7 Release
