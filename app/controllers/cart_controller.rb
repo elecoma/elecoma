@@ -349,7 +349,7 @@ class CartController < BaseController
       end
       @cart_point = total_points
       @point_after_operation = @login_customer.point.to_i - @all_use_point + @cart_point
-      
+      session[:point_after_operation] = @point_after_operation
     end
     
     @payment_total = 0
@@ -369,7 +369,7 @@ class CartController < BaseController
       redirect_to :action => :show
       return
     end
-    @login_customer.point = params[:point_after_operation] if @login_customer
+    @login_customer.point = session[:point_after_operation] if @login_customer
     @orders = Hash.new
     @order_deliveries = Hash.new
     @order_details = Hash.new
@@ -458,6 +458,7 @@ class CartController < BaseController
       render :template => 'cart/405', :status => :method_not_allowed
       return
     end
+    session[:point_after_operation] = nil
     @recommend_buys = Recommend.recommend_get(params[:ids][0], Recommend::TYPE_BUY)
     @shop = Shop.find(:first)
     render :action => 'complete'
