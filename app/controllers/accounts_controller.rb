@@ -223,10 +223,6 @@ class AccountsController < BaseController
     @customer = Customer.find(@login_customer.id)
     if request.method == :get # 1 ページ目
       @customer.email_confirm = @customer.email
-      if request.mobile?
-        @customer.email_user, @customer.email_domain = @customer.email.split('@', 2)
-        @customer.email_user_confirm = @customer.email_user
-      end
     end
     if request.method == :post # 2 ページ目とか
       get_customer

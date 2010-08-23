@@ -12,16 +12,7 @@
 <%= text_field "inquiry", "name", :size=>30 %><br /><br />
 
 □メールアドレス<span style="color:#ff0000;">※</span><br />
-<%= text_field "inquiry", "email_user", :size=>50 %><br />
-<% if request.mobile.is_a? Jpmobile::Mobile::Softbank %>
-  <%= select_tag 'inquiry[email_domain]', constant_options(Constant::DOMAIN_SOFTBANK, @inquiry.email_domain) %>
-<% elsif request.mobile.is_a? Jpmobile::Mobile::Docomo %>
-  @docomo.ne.jp
-  <%= hidden_field_tag 'inquiry[email_domain]', 'docomo.ne.jp'%>
-<% elsif request.mobile.is_a? Jpmobile::Mobile::Au %>
-  @ezweb.ne.jp
-  <%= hidden_field_tag 'inquiry[email_domain]', 'ezweb.ne.jp'%>
-<%- end -%><br /><br />
+<%= text_field "inquiry", "email", :size=>50 %><br /><br />
 
 □電話番号<br />
 <%= text_field "inquiry", "tel", :size=>12 %><br /><br />

@@ -112,9 +112,8 @@ describe AccountsController do
       customer.attributes.each do | key, value |
         sjis_params[key] = value.to_s unless value.nil?
       end
-      sjis_params['email_user'] = 'spammer'
-      sjis_params['email_user_confirm'] = 'spammer'
-      sjis_params['email_domain'] = 'docomo.ne.jp'
+      sjis_params['email'] = 'spammer@docomo.ne.jp'
+      sjis_params['email_confirm'] = 'spammer@docomo.ne.jp'
       sjis_params['raw_password'] = 'password'
       sjis_params['password_confirm'] = 'password'
       post 'signup_confirm', :customer => sjis_params
@@ -354,12 +353,10 @@ describe AccountsController do
     it "モバイルメールアドレス確認" do
       request.user_agent = "DoCoMo/2.0 SH903i(c100;TB;W24H16)"
       get 'edit'
-      m = @customer.email.match(/^([^@]+)/)
-      email_user = m[1]
       response.should be_success
       response.should render_template('edit_mobile')
-      assigns[:customer].email_user.should == email_user
-      assigns[:customer].email_user_confirm.should == email_user
+      assigns[:customer].email.should == @customer.email
+      assigns[:customer].email_confirm.should == @customer.email
     end
 
     it "パスワード初期値無し" do

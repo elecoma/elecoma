@@ -6,7 +6,7 @@ class Customer < ActiveRecord::Base
   acts_as_paranoid
   attr_accessor :email_confirm, :editting
   attr_accessor :raw_password, :password_confirm
-  attr_accessor :email_user, :email_domain, :email_user_confirm
+  attr_accessor :email_user, :email_user_confirm #,:email_domain
   attr_accessor :excepted
   belongs_to :prefecture
   belongs_to :occupation
@@ -75,13 +75,6 @@ class Customer < ActiveRecord::Base
     super
     self.receive_mailmagazine ||= HTML_MAIL
     self.sex ||= System::MALE
-  end
-
-  def before_validation
-    unless email_domain.blank?
-      self.email = '%s@%s' % [email_user, email_domain]
-      self.email_confirm = '%s@%s' % [email_user_confirm, email_domain]
-    end
   end
 
   def validate

@@ -42,11 +42,6 @@ class InquiriesController < BaseController
     if params[:inquiry]
       @inquiry = Inquiry.new params[:inquiry]
       @inquiry.kind = params[:inquiry][:kind].to_i if params[:inquiry][:kind]
-      if request.mobile?
-        unless @inquiry.email_user.blank?
-          @inquiry.email = '%s@%s' % [@inquiry.email_user.to_s, @inquiry.email_domain.to_s]
-        end
-      end
     else
       @inquiry = Inquiry.new
       if request.mobile?

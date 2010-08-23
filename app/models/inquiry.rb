@@ -3,8 +3,6 @@ class Inquiry < ActiveRecord::Base
   acts_as_paranoid
   TABLE_NAME_JP = "お問い合わせ"
 
-  attr_accessor :email_user, :email_domain
-
   validates_presence_of :email
   validates_presence_of :body
   validates_presence_of :kind

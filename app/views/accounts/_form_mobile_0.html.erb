@@ -1,9 +1,7 @@
 <% fields_for :customer do |f| %>
  <span style="color:#ff0000;">※</span>メールアドレス<br />
- <%= f.text_field :email_user, {:size=>"30",:style=>"height:14px;"}.merge(mobile_input_mode(:alphabet)) %><br />
- <%= render :partial => 'mobile_domain_mobile', :locals => {:confirm => false}  %><br />
- <%= f.text_field :email_user_confirm, {:size=>"30",:style=>"height:14px;"}.merge(mobile_input_mode(:alphabet)) %><br />
- <%= render :partial => 'mobile_domain_mobile', :locals => {:confirm => true} %><br />
+ <%= f.text_field :email, {:size=>"30",:style=>"height:14px;"}.merge(mobile_input_mode(:alphabet)) %><br />
+ <%= f.text_field :email_confirm, {:size=>"30",:style=>"height:14px;"}.merge(mobile_input_mode(:alphabet)) %><br />
  確認のため 2 度入力してください。<br /><br />
 
  <span style="color:#ff0000;">※</span>希望するパスワード

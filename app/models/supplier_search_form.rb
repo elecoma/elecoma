@@ -25,7 +25,7 @@ class SupplierSearchForm < SearchForm
 from
 suppliers s
 where
-(s.deleted_at IS NULL OR s.deleted_at > '#{Time.now.gmtime.strftime("%Y-%m-%d %H:%M:%S")}') 
+(s.deleted_at IS NULL OR s.deleted_at > '#{Time.now.strftime("%Y-%m-%d %H:%M:%S")}') 
 #{unless condition.supplier_id.blank?
     conditions << condition.supplier_id.to_i
     "and s.id = ?"
