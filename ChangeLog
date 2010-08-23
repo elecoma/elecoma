@@ -1,3 +1,11 @@
+2010-08-23  Taro Matsuzawa  <tmatsuzawa _at_ kbmj.com>
+
+	* 2.0.2 Release
+	* [bugfix] ポイントを操作できてしまうバグを修正
+	* [bugfix] 余計なリンクを削除
+	* [bugfix] 携帯のメールアドレスを手動で入力するよう修正
+	* [bugfix] 削除フラグが正常に検索条件にひっかからない点を修正
+
 2010-08-18  Taro Matsuzawa  <tmatsuzawa _at_ kbmj.com>
 
 	* 2.0.1 Release

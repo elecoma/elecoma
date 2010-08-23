@@ -288,19 +288,6 @@ describe Customer do
     @customer.should_not be_valid
   end
   
-  it "モバイルのときにemail名とdomein名をつなげる" do
-    customer = customers :valid_signup
-    email_user = 'test'
-    email_domain = Customer::DOMAIN_DOCOMO
-
-    customer.email = ''
-    customer.should_not be_valid
-    customer.email_user = email_user
-    customer.email_domain = email_domain
-    customer.mobile_carrier = Customer::DOCOMO
-    customer.valid?
-    customer.email.should == '%s@%s' % [email_user, email_domain]
-  end
 
   it "メールアドレスは他の会員と同じではいけない" do
     customer1 = customers :valid_signup

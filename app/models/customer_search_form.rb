@@ -246,7 +246,7 @@ group by o.customer_id) product_info"
 end}
 
 where
-(c.deleted_at IS NULL OR c.deleted_at > '#{Time.now.gmtime.strftime("%Y-%m-%d %H:%M:%S")}')
+(c.deleted_at IS NULL OR c.deleted_at > '#{Time.now.strftime("%Y-%m-%d %H:%M:%S")}')
 #{if !condition.product_name.blank? || !condition.product_code.blank? || !condition.category_id.blank?
     "and c.id=product_info.customer_id"
   end}

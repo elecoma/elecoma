@@ -13,7 +13,7 @@
     <% [:zipcode01, :zipcode02, :tel01, :tel02, :tel03,
     :fax01, :fax02, :fax03, :sex, :occupation_id,
     :family_name, :first_name, :family_name_kana, :first_name_kana,
-    :email_user, :email_user_confirm, :email_domain, :address_city, :address_detail,
+    :email, :email_confirm, :address_city, :address_detail,
     :birthday, :raw_password, :password_confirm, :receive_mailmagazine, :prefecture_id].each do | column | %>
     <%= f.hidden_field column -%>
     <% end %>

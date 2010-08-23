@@ -41,7 +41,7 @@ class AdminUser < ActiveRecord::Base
         condition_params << record.send(:id)
       end
       
-      condition_sql << " AND (deleted_at IS NULL OR deleted_at > '#{Time.now.gmtime.strftime("%Y-%m-%d %H:%M:%S")}')"
+      condition_sql << " AND (deleted_at IS NULL OR deleted_at > '#{Time.now.strftime("%Y-%m-%d %H:%M:%S")}')"
       results = finder_class.with_exclusive_scope do
         connection.select_all(
           construct_finder_sql(

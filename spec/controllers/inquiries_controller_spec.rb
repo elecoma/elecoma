@@ -54,11 +54,9 @@ describe InquiriesController do
 
     it "should be successful(mobileのsoftbankの場合)" do
       inquiry = inquiries(:inquiry_test_id_1).attributes
-      inquiry["email"] = "test"
-      inquiry["email_user"] = "test"
-      inquiry["email_domain"] = "softbank.ne.jp"
+      inquiry["email"] = "test@softbank.ne.jp"
       request.user_agent = "SoftBank/1.0/910T/TJ001/SN123456789012345 Browser/NetFront/3.3 Profile/MIDP-2.0 Configuration/CLDC-1.1"
-      get 'confirm', :inquiry => inquiry, :email_domain => "softbank.ne.jp"
+      get 'confirm', :inquiry => inquiry
       assigns[:inquiry].email.should == "test@softbank.ne.jp"
       response.should be_success
     end

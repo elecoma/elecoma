@@ -92,7 +92,7 @@ group by o.customer_id) product_info"
 end}
 
 where
-(c.deleted_at IS NULL OR c.deleted_at > '#{Time.now.gmtime.strftime("%Y-%m-%d %H:%M:%S")}')
+(c.deleted_at IS NULL OR c.deleted_at > '#{Time.now.strftime("%Y-%m-%d %H:%M:%S")}')
 and c.activate = 2
 #{unless except_list.blank?
     "and c.id not in (#{except_list.join(",")})"
