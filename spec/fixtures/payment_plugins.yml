@@ -1,0 +1,5 @@
+load_normal_plugin:
+  id: 1
+  name: Normal Payment Plugin
+  model_name: NormalPaymentPlugin
+  detail: Normal Payment Plugin Detail

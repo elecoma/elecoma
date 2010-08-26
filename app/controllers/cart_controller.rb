@@ -453,6 +453,9 @@ class CartController < BaseController
     redirect_to :action => :finish, :ids => ids
   end
 
+  def before_finish
+  end
+
   def finish
     unless flash[:completed]
       render :template => 'cart/405', :status => :method_not_allowed

@@ -7,6 +7,7 @@ class Payment < ActiveRecord::Base
   belongs_to :resource, 
              :class_name => "ImageResource",
              :foreign_key => "resource_id"
+  belongs_to :payment_plugin
   has_many :orders
   
   validates_presence_of :name,:fee,:delivery_trader_id
