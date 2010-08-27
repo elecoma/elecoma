@@ -1,3 +1,4 @@
+# -*- coding: utf-8-hfs -*-
 # Filters added to this controller apply to all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 
@@ -16,7 +17,9 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
   include ActiveRecordHelper
-
+  
+  # セッションハイジャック対策を導入
+  include CheckSessionSignature
 
   def load_system
     @system = System.find(:first)
