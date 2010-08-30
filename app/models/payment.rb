@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Payment < ActiveRecord::Base
 
   acts_as_paranoid
@@ -12,6 +13,10 @@ class Payment < ActiveRecord::Base
   
   validates_presence_of :name,:fee,:delivery_trader_id
   
+  def get_plugin_instance
+    payment_plugin.get_plugin_instance
+  end
+
   def validate
     if !upper_limit.blank? && !lower_limit.blank? && upper_limit.to_i < lower_limit.to_i
       errors.add "","※ 利用条件(〜円以上)は利用条件(〜円以下)より大きい値を入力できません。"  

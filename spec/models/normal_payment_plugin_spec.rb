@@ -12,5 +12,20 @@ describe NormalPaymentPlugin do
     instance.should_not be_nil
     instance.should be_an_instance_of(NormalPaymentPlugin)
   end
+
+  describe "モジュールメソッドの確認" do
+    before do
+      @np = payment_plugins(:load_normal_plugin).get_plugin_instance
+    end
+
+    it "confirmメソッド" do
+      @np.complete.should == :before_finish
+    end
+
+    it "next_stepメソッド" do
+      @np.next_step(:complete).should == :before_finish
+      lambda{@np.next_step(:finish)}.should raise_error(RuntimeError, '遷移がありません')
+    end
+  end
 end
 

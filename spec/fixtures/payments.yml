@@ -6,6 +6,7 @@ cash:
   delivery_trader_id: 1
   fee: 10
   position: 1
+  payment_plugin_id: 1
   # 下限・上限無し
 food:
   id: 2
@@ -13,6 +14,7 @@ food:
   delivery_trader_id: 1
   fee: 0
   position: 2
+  payment_plugin_id: 1
 from1million:
   id: 3
   name: 百万円から
@@ -20,6 +22,7 @@ from1million:
   fee: 10000
   lower_limit: 1000000
   position: 4
+  payment_plugin_id: 1
 to1:
   id: 4
   name: 1円まで
@@ -27,6 +30,7 @@ to1:
   fee: 0
   upper_limit: 1
   position: 3
+  payment_plugin_id: 1
 from_million:
   id: 5
   name: 万円から
@@ -35,3 +39,4 @@ from_million:
   lower_limit: 10000
   upper_limit: 50000
   position: 5  
+  payment_plugin_id: 1

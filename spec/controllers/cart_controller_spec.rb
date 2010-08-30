@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe CartController do
   fixtures :systems, :customers, :carts, :products, :product_styles, :styles,
            :delivery_traders, :delivery_times, :payments, :delivery_addresses,
-           :delivery_fees, :order_deliveries, :shops
+           :delivery_fees, :order_deliveries, :shops, :payment_plugins
 
   before do
     @dummy_carts = [carts(:cart_can_incriment).attributes]

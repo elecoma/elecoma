@@ -373,7 +373,7 @@ class CartController < BaseController
     @orders = Hash.new
     @order_deliveries = Hash.new
     @order_details = Hash.new
-    ids = Array.new
+    @ids = Array.new
     params[:order_deliveries].each do |key, _od|
       order = nil
       if @not_login_customer
@@ -392,7 +392,7 @@ class CartController < BaseController
       @order_details[key] = od.details_build_from_carts(cart)
       od.calculate_charge!
       od.calculate_total!
-      ids << @order_details[key].map{|o_d| o_d.product_style.product_id}
+      @ids << @order_details[key].map{|o_d| o_d.product_style.product_id}
     end  
 
     @order_deliveries.each do |key, od|
@@ -407,6 +407,15 @@ class CartController < BaseController
       return
     end
 
+    # paymentロジックをプラグイン化するため、予めセッションに保存しておき画面遷移で引き回さないようにする
+    save_transaction_items_before_payment
+    payment_id =  @order_deliveries.first[1].payment_id
+    payment = Payment.find(payment_id)
+    payment_plugin = payment.get_plugin_instance
+    self.send payment_plugin.next_step(current_method_symbol)
+  end
+  def before_finish
+    restore_transaction_items_after_payment
     begin
       Order.transaction do
         @carts.each do | cart |
@@ -450,10 +459,8 @@ class CartController < BaseController
       redirect_to :action => 'show'
       return
     end
-    redirect_to :action => :finish, :ids => ids
-  end
-
-  def before_finish
+    redirect_to :action => :finish, :ids => @ids
+    
   end
 
   def finish
@@ -462,6 +469,7 @@ class CartController < BaseController
       return
     end
     session[:point_after_operation] = nil
+    session[:transaction_items] = nil
     @recommend_buys = Recommend.recommend_get(params[:ids][0], Recommend::TYPE_BUY)
     @shop = Shop.find(:first)
     render :action => 'complete'
@@ -785,5 +793,30 @@ class CartController < BaseController
     end)
     return options
   end
+  
+  def current_method_symbol
+    caller.first.scan(/`(.*)'/).to_s.intern
+  end
 
+  def save_transaction_items_before_payment
+    transaction_items = Hash.new
+    transaction_items[:carts] = @carts
+    transaction_items[:login_customer] = @login_customer
+    transaction_items[:orders] = @orders
+    transaction_items[:order_deliveries] = @order_deliveries
+    transaction_items[:order_details] = @order_details
+    transaction_items[:ids] = @ids
+    session[:transaction_items] = transaction_items
+  end
+
+  def restore_transaction_items_after_payment
+    transaction_items = session[:transaction_items]
+    @carts = transaction_items[:carts]
+    @login_customer = transaction_items[:login_customer]
+    @orders = transaction_items[:orders]
+    @order_deliveries = transaction_items[:order_deliveries]
+    @order_details = transaction_items[:order_details]
+    @ids = transaction_items[:ids]
+  end
+  
 end

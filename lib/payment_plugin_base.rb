@@ -1,12 +1,19 @@
+# -*- coding: utf-8 -*-
 module PaymentPluginBase
-  def confirm
+  def complete
     return nil
   end
 
-  def before_finish
-
+  def next_step(method_name)
+    raise '遷移がありません'
   end
 
-  def confirm_method?(method_name)
+  def priv_step(method_name)
+    raise '遷移がありません'
   end
+
+  def cart_complete?(method_name)
+    return false
+  end
+
 end
