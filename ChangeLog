@@ -1,3 +1,8 @@
+2010-08-30  Taro Matsuzawa  <tmatsuzawa _at_ kbmj.com>
+
+	* 2.0.3 Release
+	* [セキュリティ] 別端末からセッションハイジャックを防ぐ仕組みを導入
+
 2010-08-23  Taro Matsuzawa  <tmatsuzawa _at_ kbmj.com>
 
 	* 2.0.2 Release
