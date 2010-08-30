@@ -60,6 +60,7 @@ require 'rexml-expansion-fix'
 require 'create_fixtures'
 require 'security_token'
 require 'csv_util'
+require 'check_session_signature'
 
 list = Dir["app/models/*.rb"]
 list.each do |i|
