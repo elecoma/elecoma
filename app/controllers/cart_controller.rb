@@ -2,6 +2,8 @@
 require 'timeout'
 require 'open-uri'
 class CartController < BaseController
+  include CartControllerExtend
+
   before_filter :cart_check, :only => [:temporary_shipping,:shipping, :purchase,:purchase2, :confirm, :complete, :delivery, :delivery2]
   before_filter :login_divaricate ,:only =>[:purchase,:purchase2,:confirm, :complete, :delivery, :delivery2]
   before_filter :login_check, :only => [:shipping]
@@ -411,7 +413,9 @@ class CartController < BaseController
     save_transaction_items_before_payment
     payment_id =  @order_deliveries.first[1].payment_id
     payment = Payment.find(payment_id)
+    #p "plugin_id: " + payment.payment_plugin_id.to_s
     payment_plugin = payment.get_plugin_instance
+    #p payment_plugin.name
     self.send payment_plugin.next_step(current_method_symbol)
   end
   def before_finish
@@ -806,6 +810,7 @@ class CartController < BaseController
     transaction_items[:order_deliveries] = @order_deliveries
     transaction_items[:order_details] = @order_details
     transaction_items[:ids] = @ids
+    transaction_items[:not_login_customer] = @not_login_customer
     session[:transaction_items] = transaction_items
   end
 
@@ -817,6 +822,7 @@ class CartController < BaseController
     @order_deliveries = transaction_items[:order_deliveries]
     @order_details = transaction_items[:order_details]
     @ids = transaction_items[:ids]
+    @not_login_customer = transaction_items[:not_login_customer]
   end
   
 end

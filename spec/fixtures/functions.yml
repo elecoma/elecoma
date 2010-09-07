@@ -21,3 +21,8 @@ F1003:
   name: 環境設定
   code: "setting"
   position: 1003
+F1004:
+  id: 45
+  name: プラグイン設定
+  code: "plugins"
+  position: 1004

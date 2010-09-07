@@ -1,0 +1,25 @@
+<%= f.error_messages %>
+<p class="req"><span class="pnt">※</span>は必須入力です</p>
+<table class="data" cellspacing="1" cellpadding="0">
+  <tr>
+    <th>名称 <span class="pnt">※</span></th>
+    <td><%= confirm_tag :text_field, :payment_plugin, :name, :size =>100, :class =>"data_l" %></td>
+  </tr>
+  <tr>
+    <th>モデル名(クラス) <span class="pnt">※</span></th>
+    <td><%= confirm_tag :text_field, :payment_plugin, :model_name, :size =>100, :class =>"data_l" %><br />
+      <font color="red">必ずクラス名を入力してください(例: AnotherPaymentPlugin)</font>
+    </td>
+  </tr>
+  <tr>
+    <th>詳細 <span class="pnt">※</span></th>
+    <td><%= confirm_tag :text_area, :payment_plugin, :detail, :rows => "6", :cols => "50", :class =>"data_l" %>
+    </td>
+  </tr>
+  <tr>
+    <th>有効/無効 <span class="pnt">※</span></th>
+    <td><%= confirm_tag :select, :payment_plugin, :enable, PaymentPlugin.enable_select %>
+    </td>
+  </tr>
+  
+</table>

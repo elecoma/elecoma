@@ -16,4 +16,20 @@ module PaymentPluginBase
     return false
   end
 
+  def admin_controller
+    raise '実装してください'
+  end
+
+  def user_setting_controller
+    raise '実装してください'
+  end
+
+  def has_config?
+    raise '実装してください'
+  end
+  
+  def config
+    raise '実装してください'
+  end
+
 end

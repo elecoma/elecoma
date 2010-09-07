@@ -3,3 +3,10 @@ load_normal_plugin:
   name: Normal Payment Plugin
   model_name: NormalPaymentPlugin
   detail: Normal Payment Plugin Detail
+  enable: true
+disable_normal_plugin:
+  id: 2
+  name: Disable Normal Payment Plugin
+  model_name: NormalPaymentPlugin
+  detail: Disable Normal Payment Plugin Detail
+  enable: false

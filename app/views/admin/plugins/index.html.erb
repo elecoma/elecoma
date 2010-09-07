@@ -1,0 +1,44 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+  
+  <h2>プラグイン設定</h2>
+  
+  <h3>支払いプラグイン</h3>
+  <br />
+  <div class="btn_t">
+    <%= button_to 'プラグイン追加', new_payment_plugin_admin_plugins_path, :class => "btn_s" %>
+  </div>
+  <br />
+  <%= flash[:notice] %>
+  <%= flash[:error] %>
+  
+  <table class="data2">
+    <tr>
+      <th>プラグイン名</th>
+      <th>有効/無効</th>
+      <th>編集</th>
+      <th>プラグイン設定</th>
+    </tr>
+    <% unless @payment_plugins.empty? -%>
+      <% @payment_plugins.each do |record| -%>
+	<tr>
+	  <td><%=h record.name %></td>
+	  <td>
+	    <% if record.enable -%>
+	      有効
+	    <% else -%>
+	      無効
+	    <% end -%>
+	  </td>
+	  <td class="t_center">
+	    <%= link_to "編集", {:action => "edit_payment_plugin", :id => record.id } %>
+	  </td>
+	  <td class="t_center">
+	  </td>
+	</tr>
+      <% end -%>
+    <% end -%>
+  </table>
+  
+</div><!-- メイン -->

@@ -9,4 +9,8 @@ class NormalPaymentPlugin < ActiveForm
     return :before_finish if method_name == :complete
     super
   end
+
+  def has_config?
+    false
+  end
 end
