@@ -24,7 +24,7 @@
         <td>
           <%= radio_button_tag "points[#{retailer_id}][point_check]", 'true' %>
           <label for="points[<%=h retailer_id %>][point_check]_true">ポイントを使用する</label>
-          <%= text_field_tag "order_deliveries[#{retailer_id}][use_point]" %>ポイント
+          <%= text_field_tag "order_deliveries[#{retailer_id}][use_point]", nil, {:size => 5} %>ポイント
         </td>
         <td colspan="2">
           <%= radio_button_tag "points[#{retailer_id}][point_check]", 'false' %>
