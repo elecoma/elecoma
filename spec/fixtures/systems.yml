@@ -7,3 +7,4 @@ load_by_system_test_id_1:
   googleanalytics_use_flag: true
   googleanalytics_account_num: UA-00000-1
   tracking_code: "<script></script>"
+  use_ssl: false

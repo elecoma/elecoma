@@ -21,6 +21,9 @@ class ApplicationController < ActionController::Base
   # セッションハイジャック対策を導入
   include CheckSessionSignature
 
+  include SslRequirement
+  ssl_allowed :get_address
+
   def load_system
     @system = System.find(:first)
     @system_supplier_use_flag = true if @system && @system.supplier_use_flag
@@ -38,5 +41,24 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  private
+  #sslの有効無効をuse_sslで決定する
+  def ensure_proper_protocol
+    return true unless @system #specでload_systemが通らない問題に対応するため
+    return true unless @system.use_ssl
+    return true if ssl_allowed?
+    
+    if ssl_required? && !request.ssl?
+      redirect_to "https://" + request.host + request.request_uri
+      flash.keep
+      return false
+    elsif request.ssl? && !ssl_required?
+      redirect_to "http://" + request.host + request.request_uri
+      flash.keep
+      return false
+    end
+  end
+
+    
 end
 
