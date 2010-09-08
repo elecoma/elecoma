@@ -1,7 +1,12 @@
+# -*- coding: utf-8 -*-
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Admin::AccountsController do
   fixtures :admin_users
+
+  before do
+    @controller.class.before_filter :load_system
+  end
 
   #Delete these examples and add some real ones
   it "should use Admin::AccountsController" do
