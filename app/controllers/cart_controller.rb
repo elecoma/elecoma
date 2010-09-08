@@ -423,41 +423,7 @@ class CartController < BaseController
   def before_finish
     restore_transaction_items_after_payment
     begin
-      Order.transaction do
-        @carts.each do | cart |
-          if request.mobile?
-            ProductAccessLog.create(:product_id => cart.product_style.product_id,
-                                    :session_id => session.session_id,
-                                    :customer_id => @login_customer && @login_customer.id,
-                                    :docomo_flg => request.mobile == Jpmobile::Mobile::Docomo,
-                                    :ident => request.mobile.ident,
-                                   :complete_flg => true)
-          end
-          product_style = ProductStyle.find(cart.product_style_id, :lock=>true)
-          product_style.order(cart.quantity)
-          product_style.save!
-          #会員のみキャンペーン処理
-          if @login_customer
-            cart.campaign_id and process_campaign(cart, @login_customer)  
-          end
-        end
-        # 非会員購入対応
-        if @login_customer
-          @login_customer.carts.delete_all
-          @login_customer.save!
-        end
-        
-        order_ids = Hash.new
-        @orders.each do |key, order|
-          order.save!
-          order_ids[key] = order.id
-          Notifier::deliver_buying_complete(order)
-        end
-        flash[:completed] = true
-        flash[:order_ids] = order_ids
-        flash[:googleanalytics_ecs] = add_googleanalytics_ecs(@orders, @order_deliveries, @order_details)
-        @carts.clear
-      end
+      save_before_finish
     rescue => e
       flash.now[:error] = '失敗しました'
       logger.error(e.message)
@@ -468,6 +434,7 @@ class CartController < BaseController
     redirect_to :action => :finish, :ids => @ids
     
   end
+
 
   def finish
     unless flash[:completed]
@@ -561,6 +528,45 @@ class CartController < BaseController
   end
 
   private
+
+  def save_before_finish
+    Order.transaction do
+      @carts.each do | cart |
+        if request.mobile?
+          ProductAccessLog.create(:product_id => cart.product_style.product_id,
+                                  :session_id => session.session_id,
+                                  :customer_id => @login_customer && @login_customer.id,
+                                  :docomo_flg => request.mobile == Jpmobile::Mobile::Docomo,
+                                  :ident => request.mobile.ident,
+                                  :complete_flg => true)
+        end
+        product_style = ProductStyle.find(cart.product_style_id, :lock=>true)
+        product_style.order(cart.quantity)
+        product_style.save!
+        #会員のみキャンペーン処理
+        if @login_customer
+          cart.campaign_id and process_campaign(cart, @login_customer)  
+        end
+      end
+      # 非会員購入対応
+      if @login_customer
+        @login_customer.carts.delete_all
+        @login_customer.save!
+      end
+      
+      order_ids = Hash.new
+      @orders.each do |key, order|
+        order.save!
+        order_ids[key] = order.id
+        Notifier::deliver_buying_complete(order)
+      end
+      flash[:completed] = true
+      flash[:order_ids] = order_ids
+      flash[:googleanalytics_ecs] = add_googleanalytics_ecs(@orders, @order_deliveries, @order_details)
+      @carts.clear
+    end
+  end
+
 
 =begin rdoc
   * INFO
