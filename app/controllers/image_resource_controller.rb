@@ -1,5 +1,6 @@
 class ImageResourceController < BaseController
 
+  ssl_allowed :show, :thumbnail
   #caches_page :show
   def show
     if params[:filename] 
