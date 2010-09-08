@@ -4,7 +4,7 @@ require 'open-uri'
 class CartController < BaseController
   include CartControllerExtend
 
-  ssl_required :temporary_shipping, :shipping, :purchase, :purchase2, :purchase_confirm, :confirm, :complete, :before_finish, :finish, :select_delivery_time, :select_delivery_time_with_delivery_trader_id_ajax
+  ssl_required :temporary_shipping, :shipping, :delivery, :delivery2, :purchase, :purchase2, :purchase_confirm, :confirm, :complete, :before_finish, :finish, :select_delivery_time, :select_delivery_time_with_delivery_trader_id_ajax
 
   before_filter :cart_check, :only => [:temporary_shipping,:shipping, :purchase,:purchase2, :confirm, :complete, :delivery, :delivery2]
   before_filter :login_divaricate ,:only =>[:purchase,:purchase2,:confirm, :complete, :delivery, :delivery2]
