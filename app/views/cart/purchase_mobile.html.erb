@@ -9,7 +9,8 @@
     <%= f.radio_button :payment_id, payment.id %>
     <%= payment.name %>
     <br />
-    <%= view_resource(payment.resource) %>
+    <% options = {:width => 120, :height => 120} %>
+    <%= view_resource(payment.resource, options) %>
   <% end %>
   <% if @login_customer %>
     <span style="color:#FF9775;">■</span> ポイント使用の指定<br />

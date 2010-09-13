@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module BaseHelper
 
   def show_retailer_shop(product)
@@ -96,7 +97,7 @@ module BaseHelper
   def view_resource(resource, options={})
     return options[:alt] || '' if resource.nil?
     if resource
-      view_resource_id(resource.id)
+      view_resource_id(resource.id, options)
     else
       image_tag "/images/no_image.gif", options
     end
