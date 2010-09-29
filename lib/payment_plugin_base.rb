@@ -28,7 +28,36 @@ module PaymentPluginBase
     raise '実装してください'
   end
   
+  # 管理画面の設定画面に飛ぶactionを返す
   def config
+    # 例:
+    # return :foobar_plugin_config
+    raise '実装してください'
+  end
+
+  def has_data_management?
+    raise '実装してください'
+  end
+  
+  # 管理画面の設定画面に飛ぶactionを返す
+  def data_management
+    # 例:
+    # return :foobar_plugin_data_management
+    raise '実装してください'
+  end
+
+  def has_info?
+    raise '実装してください'
+  end
+
+  def info
+    raise '実装してください'
+  end
+
+  def before_order_delivery_destroy
+    # 実装の際は返り値に有効無効かと、渡すメッセージを送ってください。
+    # return true, nil
+    # return false, "クレジット情報(xxxx)の取消処理をしてください"
     raise '実装してください'
   end
 

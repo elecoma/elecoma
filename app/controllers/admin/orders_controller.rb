@@ -63,7 +63,7 @@ class Admin::OrdersController < Admin::BaseController
 
   def destroy
     # 親と子も消す
-    order_delivery = OrderDelivery.find(:first, :conditions => ["id=?", params[:id]])
+    order_delivery = OrderDelivery.find(:first, :conditions => ["order_id=?", params[:id]])
     begin
       raise if order_delivery.nil? || order_delivery.order.retailer_id != session[:admin_user].retailer_id
       order_delivery.order_details.each(&:destroy)

@@ -10,15 +10,13 @@
     <%= button_to 'プラグイン追加', new_payment_plugin_admin_plugins_path, :class => "btn_s" %>
   </div>
   <br />
-  <%= flash[:notice] %>
-  <%= flash[:error] %>
-  
   <table class="data2">
     <tr>
       <th>プラグイン名</th>
       <th>有効/無効</th>
       <th>編集</th>
       <th>プラグイン設定</th>
+      <th>データ管理</th>
     </tr>
     <% unless @payment_plugins.empty? -%>
       <% @payment_plugins.each do |record| -%>
@@ -35,6 +33,10 @@
 	    <%= link_to "編集", {:action => "edit_payment_plugin", :id => record.id } %>
 	  </td>
 	  <td class="t_center">
+	    <%= link_to "設定", {:action => "payment_plugin_config", :id => record.id } %>
+	  </td>
+	  <td class="t_center">
+	    <%= link_to "データ管理", {:action => "payment_plugin_data_management", :id => record.id } %>
 	  </td>
 	</tr>
       <% end -%>

@@ -35,6 +35,7 @@ class Admin::PluginsController < Admin::BaseController
       else
         render :action => "edit_payment_plugin"
       end
+      return
     end
   end
 
@@ -65,7 +66,60 @@ class Admin::PluginsController < Admin::BaseController
     redirect_to(:action => next_action)
   end
 
+  def payment_plugin_data_management
+    unless get_plugin_instance(params[:id])
+      redirect_to(:action => :index)
+      return
+    end
+    unless @payment_plugin_instance.has_data_management?
+      flash[:notice] = "データ管理はありません"
+      redirect_to(:action => :index)
+      return
+    end
+    next_action = @payment_plugin_instance.data_management
+    redirect_to(:action => next_action, :id => 1)
+  end    
+
+  def payment_plugin_config
+    unless get_plugin_instance(params[:id])
+      redirect_to(:action => :index)
+      return
+    end
+    unless @payment_plugin_instance.has_config?
+      flash[:notice] = "データ管理はありません"
+      redirect_to(:action => :index)
+      return
+    end
+    next_action = @payment_plugin_instance.config
+    redirect_to(:action => next_action, :id => 1)
+  end
+
+  def payment_plugin_info
+    unless get_plugin_instance(params[:id])
+      redirect_to(:action => :index)
+      return
+    end
+    unless @payment_plugin_instance.has_info?
+      flash[:notice] = "データ管理はありません"
+      redirect_to(:action => :index)
+      return
+    end
+    next_action = @payment_plugin_instance.info
+    redirect_to(:action => next_action, :id => 1)
+  end
   private
+
+  def get_plugin_instance(id)
+    @payment_plugin = PaymentPlugin.find_by_id(id)
+    if @payment_plugin.nil?
+      return false
+    end
+    @payment_plugin_instance = @payment_plugin.get_plugin_instance
+    if @payment_plugin_instance.nil?
+      return false
+    end
+    return true
+  end
   
   def save_payment_plugin(type)
     if type == :create
