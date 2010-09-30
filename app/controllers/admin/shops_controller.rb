@@ -471,7 +471,7 @@ class Admin::ShopsController < Admin::BaseController
       elsif !resource_id.blank? && params[:payment]["resource"]
         return
       else
-        @payment["resource_id".intern] = resource_id unless @product["resource_id".intern]
+        @payment["resource_id".intern] = resource_id unless @payment["resource_id".intern]
       end
     end
   end
