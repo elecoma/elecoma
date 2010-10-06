@@ -1,3 +1,4 @@
+# -*- coding: undecided -*-
 class NormalPaymentPlugin < ActiveForm
   include PaymentPluginBase
 
@@ -13,4 +14,11 @@ class NormalPaymentPlugin < ActiveForm
   def has_config?
     false
   end
+
+  def payment_validate(payment)
+    return false, "は共通の発送は選べません" if payment.common_delivery?
+    return true, ""
+  end
+
+
 end

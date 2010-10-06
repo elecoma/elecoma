@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe Admin::ShopsController do
@@ -342,7 +343,7 @@ describe Admin::ShopsController do
   
   describe "GET 'payment_create'" do
     before do
-      @record = {:name => "追加", :fee => 1, :delivery_trader_id => 1}
+      @record = {:name => "追加", :fee => 1}
     end
     
     it "新規作成" do

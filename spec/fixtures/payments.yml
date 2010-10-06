@@ -3,7 +3,6 @@
 cash:
   id: 1
   name: 現金払い
-  delivery_trader_id: 1
   fee: 10
   position: 1
   payment_plugin_id: 1
@@ -11,14 +10,12 @@ cash:
 food:
   id: 2
   name: 食べ物
-  delivery_trader_id: 1
   fee: 0
   position: 2
   payment_plugin_id: 1
 from1million:
   id: 3
   name: 百万円から
-  delivery_trader_id: 1
   fee: 10000
   lower_limit: 1000000
   position: 4
@@ -26,7 +23,6 @@ from1million:
 to1:
   id: 4
   name: 1円まで
-  delivery_trader_id: 1
   fee: 0
   upper_limit: 1
   position: 3
@@ -34,7 +30,6 @@ to1:
 from_million:
   id: 5
   name: 万円から
-  delivery_trader_id: 1
   fee: 100
   lower_limit: 10000
   upper_limit: 50000

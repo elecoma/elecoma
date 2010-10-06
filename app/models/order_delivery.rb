@@ -233,8 +233,7 @@ class OrderDelivery < ActiveRecord::Base
     end
     # 都道府県別の送料を求める
     # 都道府県ID = nilの場合、離島であることとして
-    delivery_fee = DeliveryFee.find_by_delivery_trader_id_and_prefecture_id(
-      payment && payment.delivery_trader_id, prefecture_id)
+    delivery_fee = DeliveryFee.find_by_delivery_trader_id_and_prefecture_id(delivery_trader_id, prefecture_id)
     delivery_fee && delivery_fee.price
   end
 

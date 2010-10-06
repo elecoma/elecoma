@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Payment do
@@ -31,15 +32,7 @@ describe Payment do
       @payment.should_not be_valid
       
     end
-    
-    it "配送サービス " do
-      #必須チェック
-      @payment.delivery_trader_id  = ""
-      @payment.should_not be_valid
-      @payment.delivery_trader_id  = 1
-      @payment.should be_valid
-    end
-    
+        
     it "利用条件 0円以上" do
       @payment.upper_limit  = -1
       @payment.should_not be_valid

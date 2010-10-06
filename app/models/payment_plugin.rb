@@ -28,6 +28,21 @@ class PaymentPlugin < ActiveRecord::Base
       ret = Object.const_get(class_name).new
       errors.add(:model_name, "はPaymentPluginBaseをMix-inしたクラスを指定してください") if ret.methods.grep(/next_step/).length < 1
     end
+    if self.enable
+      unless Object.const_defined?(class_name)
+        errors.add("インスタンス化できないクラスを指定した場合は有効にできません", "")
+      else
+        obj = Object.const_get(class_name).new
+        if obj.methods.grep(/next_step/).length < 1
+          errors.add("PaymentPluginBaseをMix-inしたクラス以外の場合は有効にできません", "")
+        else
+          ret, reason = obj.check_enable
+          unless ret
+            errors.add(reason, "")
+          end
+        end
+      end
+    end
   end
 
 end

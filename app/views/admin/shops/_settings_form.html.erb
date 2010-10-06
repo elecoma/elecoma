@@ -22,6 +22,31 @@
   </div>
 </div>
 <% end %>
+
+<div class="clearfix" style="padding-bottom:10px;"></div>
+<%=h flash[:ssl_update] %>
+<%=h flash[:ssl_error] %>
+<% form_for :system, :url =>{:action => "settings_update"} do |f|%>
+<div>
+<h3>SSL</h3>
+<table cellspacing="1" cellpadding="0" class="data" >
+  <tr>
+    <th>SSLを有効にしますか？</th>
+    <td><%= f.radio_button :use_ssl , false%>使用しない	<%= f.radio_button :use_ssl , true%>使用する<br />
+<p style="color: red; margin: 10px;">
+  SSLを有効にする場合は必ずSSLがサーバ上で設定されている事を確認してください。SSLがサーバ上で無効の場合、管理画面にアクセスできなくなってしまいます。復旧が必要な場合はエレコマのREADMEファイルをご覧ください。
+</p>
+</td>
+  </tr>
+</table>
+  <div class="btn_box">
+  <%= hidden_field_tag "set_id","3"%>
+  <%= submit_tag "この内容で登録する", :onclick => "return #{confirm_javascript_function("SSLの設定を変更します。必ずSSLがサーバ上で動作する事を確認の上、有効にしてください。")}", :class=>"btn" %>
+  <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
+  </div>
+</div>
+<% end %>
+
 <div class="clearfix" style="padding-bottom:10px;"></div>
 <% form_for :system, :url =>{:action => "settings_update"} do |f|%>
 <%=h flash[:notice_google] %>

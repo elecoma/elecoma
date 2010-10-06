@@ -14,10 +14,6 @@
     <td colspan="2"><%= f.text_field "lower_limit" ,:class=>"number"  %>円～<%= f.text_field "upper_limit" ,:class=>"number"  %>円</td>
   </tr>
   <tr>
-    <th>配送サービス <span class="pnt">※</span></th>
-    <td colspan="2"><%= f.collection_select "delivery_trader_id", DeliveryTrader.find(:all, :order=>"position"), 'id', 'name', {:include_blank => true} %></td>
-  </tr>
-  <tr>
     <th>支払いプラグイン</th>
     <td colspan="2"><%= f.collection_select "payment_plugin_id", PaymentPlugin.find(:all, :order=>"id"), 'id', 'name', {:include_blank => false} %></td>
   </tr>

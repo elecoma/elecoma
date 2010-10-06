@@ -455,6 +455,8 @@ class Admin::ShopsController < Admin::BaseController
       supplier_update
     when 2
       googleanalytics_update
+    when 3
+      ssl_update
     else
       #将来何か追加したい場合、ここで追加してください
       render :action => "settings"
@@ -487,6 +489,28 @@ class Admin::ShopsController < Admin::BaseController
 
     @kiyakus = Kiyaku.find(:all, :order=>"position")
   end
+
+  #SSLを使用するかどうか設定
+  def ssl_update
+    @system ||= System.new
+    @system.attributes = params[:system]
+    if @system.save
+      if @system.use_ssl
+        flash[:ssl_update] = "SSLを有効にしました"
+        redirect_to :controller => "shops",:action => "settings"
+        return
+      else
+        flash[:ssl_update] = "SSLを無効にしました"
+        redirect_to :controller => "shops",:action => "settings"
+        return
+      end
+    else
+      flash.now[:error] = "設定に失敗しました"
+      render :action => "settings"
+      return
+    end
+  end
+
   #仕入先を使用するかどうか設定
   def supplier_update
     @system ||= System.new

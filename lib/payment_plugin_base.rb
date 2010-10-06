@@ -61,4 +61,12 @@ module PaymentPluginBase
     raise '実装してください'
   end
 
+  def check_enable
+    return true, ""
+  end
+
+  def payment_validate(payment)
+    return true, ""
+  end
+
 end
