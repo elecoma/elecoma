@@ -15,6 +15,7 @@
       <th>プラグイン名</th>
       <th>有効/無効</th>
       <th>編集</th>
+      <th>詳細</th>
       <th>プラグイン設定</th>
       <th>データ管理</th>
     </tr>
@@ -31,6 +32,9 @@
 	  </td>
 	  <td class="t_center">
 	    <%= link_to "編集", {:action => "edit_payment_plugin", :id => record.id } %>
+	  </td>
+	  <td class="t_center">
+	    <%= link_to "詳細", {:action => "payment_plugin_info", :id => record.id } %>
 	  </td>
 	  <td class="t_center">
 	    <%= link_to "設定", {:action => "payment_plugin_config", :id => record.id } %>
