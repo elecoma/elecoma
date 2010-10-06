@@ -15,10 +15,16 @@ class NormalPaymentPlugin < ActiveForm
     false
   end
 
-  def payment_validate(payment)
-    return false, "は共通の発送は選べません" if payment.common_delivery?
-    return true, ""
+  def has_info?
+    false
   end
 
+  def has_data_management?
+    false
+  end
+
+  def payment_validate(payment)
+    return true, ""
+  end
 
 end

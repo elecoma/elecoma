@@ -5,8 +5,8 @@ class PaymentPlugin < ActiveRecord::Base
 
   validates_presence_of :name, :model_name, :detail
 
-  def get_plugin_instance
-    return nil unless self.enable
+  def get_plugin_instance(disable = false)
+    return nil unless self.enable || disable
     ret = nil
     class_name = self.model_name.classify
     if Object.const_defined?(class_name)

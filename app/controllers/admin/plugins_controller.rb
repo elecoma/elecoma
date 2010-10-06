@@ -68,11 +68,12 @@ class Admin::PluginsController < Admin::BaseController
 
   def payment_plugin_data_management
     unless get_plugin_instance(params[:id])
+      flash[:notice] = "このプラグインのインスタンスが取得できません。無効になっているか確認してください。"
       redirect_to(:action => :index)
       return
     end
     unless @payment_plugin_instance.has_data_management?
-      flash[:notice] = "データ管理はありません"
+      flash[:notice] = "このプラグインにデータ管理はありません"
       redirect_to(:action => :index)
       return
     end
@@ -82,11 +83,12 @@ class Admin::PluginsController < Admin::BaseController
 
   def payment_plugin_config
     unless get_plugin_instance(params[:id])
+      flash.now[:notice] = "このプラグインのインスタンスが取得できません。無効になっているか確認してください。"
       redirect_to(:action => :index)
       return
     end
     unless @payment_plugin_instance.has_config?
-      flash[:notice] = "データ管理はありません"
+      flash.now[:notice] = "このプラグインに設定ページはありません"
       redirect_to(:action => :index)
       return
     end
@@ -95,12 +97,13 @@ class Admin::PluginsController < Admin::BaseController
   end
 
   def payment_plugin_info
-    unless get_plugin_instance(params[:id])
+    unless get_plugin_instance(params[:id], true)
+      flash.now[:notice] = "このプラグインのインスタンスが取得できません。クラスが正しく設定されているか確認してください。"
       redirect_to(:action => :index)
       return
     end
     unless @payment_plugin_instance.has_info?
-      flash[:notice] = "データ管理はありません"
+      flash.now[:notice] = "このプラグインに詳細ページはありません"
       redirect_to(:action => :index)
       return
     end
@@ -109,12 +112,12 @@ class Admin::PluginsController < Admin::BaseController
   end
   private
 
-  def get_plugin_instance(id)
+  def get_plugin_instance(id, disable_flg = false)
     @payment_plugin = PaymentPlugin.find_by_id(id)
     if @payment_plugin.nil?
       return false
     end
-    @payment_plugin_instance = @payment_plugin.get_plugin_instance
+    @payment_plugin_instance = @payment_plugin.get_plugin_instance(disable_flg)
     if @payment_plugin_instance.nil?
       return false
     end
