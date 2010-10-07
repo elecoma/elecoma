@@ -82,7 +82,7 @@ class Admin::PluginsController < Admin::BaseController
   end    
 
   def payment_plugin_config
-    unless get_plugin_instance(params[:id])
+    unless get_plugin_instance(params[:id], true)
       flash.now[:notice] = "このプラグインのインスタンスが取得できません。無効になっているか確認してください。"
       redirect_to(:action => :index)
       return

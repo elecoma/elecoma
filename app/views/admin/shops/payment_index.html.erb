@@ -15,7 +15,6 @@
    <th>支払方法</th>
    <th>手数料（円）</th>
    <th>利用条件</th>
-   <th>配送サービス</th>
    <th>編集</th>
    <th>削除</th>
    <th>移動</th>
@@ -25,11 +24,6 @@
     <td><%=h  payment.name  %></td>
     <td class="t_right"><%=h  payment.fee  %></td>
     <td class="t_right"><%=h  payment.lower_limit.to_i  %>円～<%if payment.upper_limit.blank? || payment.upper_limit <=0 %>無制限<%else%><%=h  payment.upper_limit  %>円<%end%></td>
-    <td>
-      <% if payment.delivery_trader %>
-        <%=h  payment.delivery_trader.name  %>
-      <% end %>
-    </td>
     <td class="t_center"><%= link_to('編集', :action =>'payment_edit', :id => payment.id) %></td>
     <td class="t_center"><%= link_to '削除', {:action => 'destroy', :id => payment.id, :model => @model_name,:return_act=>"payment_index"}, :confirm=>"本当に削除しますか？", :method => :delete %></td>
     <td class="t_center">
