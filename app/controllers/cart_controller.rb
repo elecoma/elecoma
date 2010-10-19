@@ -327,7 +327,7 @@ class CartController < BaseController
     if @login_customer
       @all_use_point = 0
       @order_deliveries.each do |retailer_id, od|
-        if params[:points][retailer_id][:point_check] == "true"
+        if !params[:points].nil? && !params[:points][retailer_id].nil? && params[:points][retailer_id][:point_check] == "true"
           use_point = od.use_point.to_i
           if use_point <= 0
             flash.now[:error] = '使用ポイントをご入力ください。'
