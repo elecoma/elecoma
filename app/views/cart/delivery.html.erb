@@ -8,6 +8,11 @@
 <h2 class="main_t">発送方法選択</h2>
 <div id="cart">
   <%= image_tag("cart/route03.gif", :width => "583", :height => "31", :alt => "ご購入の流れ", :class => "route") %>
+  <%- if flash.now[:error] %>
+    <div class="errorExplanation" id="errorExplanation">
+      <p><%=h flash[:error] %></p>
+    </div>
+  <% end %>
   <% form_for :order_delivery, :url => {:action => :purchase} do |f| %>
     <% @carts_map.each do |retailer_id, cart_array| %>
       <%= render :partial => "set_delivery_each_retailer", :locals => {:carts => cart_array, :retailer_id => retailer_id, :f => f} %>

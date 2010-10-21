@@ -9,7 +9,11 @@
 <!-- ショッピングカート -->
   <%= image_tag("cart/route03.gif", :width => "583", :height => "31", :alt => "ご購入の流れ", :class => "route") %>
   <span class="must"><%= flash[:notice] %></span>
-  <span class="must"><%= flash[:error] %></span>
+  <%- if flash.now[:error] %>
+    <div class="errorExplanation" id="errorExplanation">
+      <p><%=h flash.now[:error] %></p>
+    </div>
+  <% end %>
   <%= @order_delivery && error_messages_for(:order_delivery) %>
   <% form_for :order_delivery, :url =>{:action => 'confirm'}, :html => {:name=>'form1'} do | f | %>
     <div class="purchase_select">

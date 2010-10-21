@@ -1,3 +1,5 @@
+<span style="color:#ff0000;"><%= flash[:notice] %></span>
+<span style="color:#ff0000;"><%= flash[:error] %></span>
 <% form_for :order_delivery, :url => {:action => :delivery2} do |f| %>
   <span style="color:#FF9775;">■</span> 発送方法選択<br />
   <% @carts_map.each do |retailer_id, cart_array| %>

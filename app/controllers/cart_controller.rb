@@ -225,6 +225,11 @@ class CartController < BaseController
     end
     @delivery_time_options = Hash.new
     @order_deliveries.each do |retailer_id, od|
+      if od.delivery_trader_id.blank?
+        flash.now[:error] = "発送方法が選択されていません"
+        delivery
+        return
+      end
       delivery_trader_id = od.delivery_trader_id
       option = select_delivery_time_with_delivery_trader_id(delivery_trader_id)
       @delivery_time_options[retailer_id] = option
@@ -242,7 +247,24 @@ class CartController < BaseController
     else
       #error
     end
-   
+
+    @order_deliveries.each do |key, value|
+      if value.delivery_trader_id.blank? 
+        flash.now[:error] = "発送方法が選択されていません"
+      elsif value.delivery_time_id.blank?
+        flash.now[:error] = "配達時間が選択されていません"
+      end
+      if flash.now[:error]
+        if request.mobile?
+          delivery2
+        else
+          params[:back] = "1"
+          delivery
+        end
+        return
+      end
+    end
+
     if params[:back] == "1"
       @payment_id = @order_deliveries.first[1].payment_id
     end
@@ -317,6 +339,11 @@ class CartController < BaseController
   #確認画面へ
   def confirm
     init_order_deliveries
+    if params[:order_delivery].nil? || params[:order_delivery][:payment_id].blank?
+      flash.now[:error] = "支払い方法が選択されていません"
+      render :action => 'purchase'
+      return
+    end
     @order_deliveries.each do |key, od|
       unless od.valid?
         render :action => 'purchase'
@@ -682,7 +709,7 @@ class CartController < BaseController
     params[:order_deliveries].each do |key, order_delivery|
       @order_deliveries[key] = OrderDelivery.new(order_delivery)
       @order_deliveries[key].set_customer(@login_customer) if @login_customer
-      @order_deliveries[key].payment_id = params[:order_delivery][:payment_id]
+      @order_deliveries[key].payment_id = params[:order_delivery][:payment_id] unless params[:order_delivery].nil?
     end
     @order_details_map = Hash.new
     @order_deliveries.each do |key, order_delivery|
