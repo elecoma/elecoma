@@ -43,7 +43,15 @@
       <td><%= date(order_delivery.received_at) %></td>
       <td><%= order_delivery.order_code %></td>
       <td><%=h order_delivery.family_name %> <%=h order_delivery.first_name %></td>
-      <td><%= order_delivery.payment && order_delivery.payment.name %></td>
+      <td>
+	<% if order_delivery.payment %>
+	  <% if order_delivery.payment.order_has_datamanagement %>
+	    <%= link_to order_delivery.payment.name, url_for(order_delivery.payment.get_datamanagement_by_order(order_delivery.order_code)), {:method => :post} %>
+	  <% else %>
+	    <%= order_delivery.payment.name %>
+	  <% end %>
+	<% end %>
+      </td>
       <td><%= number_with_delimiter(order_delivery.total) %></td>
       <td><%= date(order_delivery.shipped_at) || '未発送' %></td>
       <td><%= order_delivery.status_view %></td>

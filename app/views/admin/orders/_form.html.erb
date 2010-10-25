@@ -148,6 +148,9 @@
   <tr>
    <td colspan="6">
      <%=h @order_delivery.payment_name %>
+     <% if @order_delivery.payment.order_has_datamanagement %>
+       (<%= link_to "データ管理", url_for(@order_delivery.payment.get_datamanagement_by_order(@order_delivery.order_code)), {:method => :post} %>)
+     <% end %>
    </td>
   </tr>
   <tr>

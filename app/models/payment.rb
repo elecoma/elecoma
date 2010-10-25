@@ -28,6 +28,25 @@ class Payment < ActiveRecord::Base
     payment_plugin.get_plugin_instance
   end
 
+  def order_has_datamanagement
+    obj = self.get_plugin_instance
+    if obj
+      return obj.order_has_datamanagement
+    else
+      return false
+    end
+  end
+
+  def get_datamanagement_by_order(order_code) 
+    obj = self.get_plugin_instance
+    if obj
+      return obj.get_datamanagement_by_order(order_code)
+    else
+      return nil
+    end
+  end
+   
+
   def common_delivery?
     return true if delivery_trader_id == COMMON_DELIVERY_TRADER_ID
     return false

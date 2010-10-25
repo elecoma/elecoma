@@ -448,7 +448,11 @@ class CartController < BaseController
     self.send payment_plugin.next_step(current_method_symbol)
   end
   def before_finish
-    restore_transaction_items_after_payment
+    unless restore_transaction_items_after_payment
+      flash.now[:error] = '失敗しました'
+      redirect_to :action => 'show'
+      return
+    end
     begin
       save_before_finish
     rescue => e
@@ -851,6 +855,7 @@ class CartController < BaseController
 
   def restore_transaction_items_after_payment
     transaction_items = session[:transaction_items]
+    return false if transaction_items.nil?
     @carts = transaction_items[:carts]
     @login_customer = transaction_items[:login_customer]
     @orders = transaction_items[:orders]
@@ -858,6 +863,7 @@ class CartController < BaseController
     @order_details = transaction_items[:order_details]
     @ids = transaction_items[:ids]
     @not_login_customer = transaction_items[:not_login_customer]
+    return true
   end
   
 end

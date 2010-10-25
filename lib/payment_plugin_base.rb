@@ -69,4 +69,13 @@ module PaymentPluginBase
     return true, ""
   end
 
+  def order_has_datamanagement
+    return false
+  end
+
+  # paramsを返す
+  def get_datamanagement_by_order(order_code)
+    raise "実装してください"
+  end
+
 end
