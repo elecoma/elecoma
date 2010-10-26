@@ -5,4 +5,7 @@
   <dd><%= link_to image_tag("/images/mypage/mymenu_2.gif", :width=>"170", :height=>"40", :alt=>"会員登録内容変更", :class=>"hoverImg"), :controller=>'accounts', :action=>'edit' %></dd>
   <dd><%= link_to image_tag("/images/mypage/mymenu_3.gif", :width=>"170", :height=>"40", :alt=>"お届け先追加・変更", :class=>"hoverImg"), :controller=>'accounts', :action=>'delivery' %></dd>
   <dd><%= link_to image_tag("/images/mypage/mymenu_4.gif", :width=>"170", :height=>"40", :alt=>"退会手続き", :class=>"hoverImg"), :controller=>'accounts', :action=>'withdraw' %></dd>
+  <% @user_navigation_list.each do |navi| %>
+    <%= render :partial => navi %>
+  <% end %>
 </dl>

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 class AccountsController < BaseController
+  include AccountsControllerExtend
   before_filter :login_check, :except => [
     :activate, :kiyaku, :kiyaku_intro, :login, :logout, :reminder,
     :reminder_complete, :reminder_hint, :salvage, :salvage_complete,
@@ -10,6 +11,7 @@ class AccountsController < BaseController
   before_filter :redirect_for_login_user, :only => [
     :login, :signup, :signup_confirm, :signup_complete, :kiyaku, :kiyaku_intro, :salvage, :salvage_complete
   ]
+  before_filter :get_user_navigation_list
 
   EMAIL_PATTERN = /^(([^@\s]+)@((?:[-a-z0-9]+\.)*[a-z]{2,})|)$/i
 
@@ -520,6 +522,17 @@ class AccountsController < BaseController
 
   def redirect_for_login_user
     redirect_to :controller => :portal, :action => :show if @login_customer
+  end
+
+  def get_user_navigation_list
+    plugins = PaymentPlugin.find(:all, :conditions => ["enable = ? ", true], :order => :id)
+    @user_navigation_list = Array.new
+    plugins.each do |plugin|
+      obj = plugin.get_plugin_instance
+      @user_navigation_list << obj.user_navigation_list
+    end
+    logger.debug @user_navigation_list
+    @user_navigation_list.flatten!
   end
 
 end

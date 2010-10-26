@@ -8,4 +8,7 @@
 <%= link_to '登録内容変更', {:controller => 'accounts', :action => 'edit'} %><br />
 <%= link_to 'お届け先追加・変更', :controller=>'accounts', :action=>'delivery' %><br />
 <%= link_to '退会', {:controller => 'accounts', :action => 'withdraw'} %><br />
+<% @user_navigation_list.each do |navi| %>
+  <%= render :partial => navi %>
+<% end %>
 

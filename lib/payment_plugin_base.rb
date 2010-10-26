@@ -78,4 +78,8 @@ module PaymentPluginBase
     raise "実装してください"
   end
 
+  def user_navigation_list
+    return Array.new
+  end
+
 end
