@@ -28,7 +28,11 @@
           <tr>
             <td><%= date_time(order.received_at) %></td>
             <td><%= order.code %></td>
-            <td><%= order_delivery.payment.name %></td>
+            <td>
+	      <% if order_delivery.payment %>
+		<%= order_delivery.payment.name %>
+	      <% end %>
+	    </td>
             <td><%= number_with_delimiter(order.total) %>円</td>
             <td><%= link_to '詳細を見る', :action => 'history_show', :id => order.id %></td>
           </tr>
