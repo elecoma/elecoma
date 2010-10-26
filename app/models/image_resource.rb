@@ -10,6 +10,13 @@ class ImageResource < ActiveRecord::Base
     resource_data.content
   end
 
+  def view_with_format(format)
+    image = read_image(content_data)
+    data = image_data(image, format)
+    run_gc
+    data
+  end
+
   def content_data
     resource_data = ResourceData.find_by_resource_id(self.id)
     resource_data.content
@@ -24,7 +31,7 @@ class ImageResource < ActiveRecord::Base
     resource
   end
 
-  def scaled_image(width, height)
+  def scaled_image(width, height, format)
     image = read_image(content_data)
     image.change_geometry("#{width}x#{height}") do |cols,rows,img|
       rows = 1 if rows == 0
@@ -36,7 +43,7 @@ class ImageResource < ActiveRecord::Base
         img.resize!(cols, rows)
       end
     end
-    data = image_data(image)
+    data = image_data(image, format)
     run_gc
     data
   end
@@ -59,13 +66,22 @@ class ImageResource < ActiveRecord::Base
     end
   end
 
-  def image_data(image)
+  def image_data(image, format = nil)
     temp_filename do |filename|
-      image.write(filename)
+      if format
+        logger.debug "image.write " + get_format(format) + filename
+        image.write(get_format(format) + filename)
+      else
+        image.write(filename)
+      end
       File.open(filename, "rb") do |file|
         file.read
       end
     end
+  end
+
+  def get_format(format)
+    format.to_s + ":"
   end
 
   def run_gc

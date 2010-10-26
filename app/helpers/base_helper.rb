@@ -105,7 +105,21 @@ module BaseHelper
 
   def view_resource_id(resource_id, options = {})
     if resource_id && resource_id != 0
-      image_tag url_for(:controller => "/image_resource", :action => "show", :id => resource_id, :height=>options[:height], :width=>options[:width]), options
+      if request.mobile?
+        format = nil
+        if request.mobile.instance_of?(Jpmobile::Mobile::Docomo)
+          format = :gif
+        elsif request.mobile.instance_of?(Jpmobile::Mobile::Au)
+          format = :gif
+        elsif request.mobile.instance_of?(Jpmobile::Mobile::Softbank)
+          format = :png
+        else
+          format = :jpg
+        end
+        image_tag url_for(:controller => "/image_resource", :action => "show", :id => resource_id, :format => format, :height => options[:height], :width => options[:width]), options
+      else
+        image_tag url_for(:controller => "/image_resource", :action => "show", :id => resource_id, :height=>options[:height], :width=>options[:width]), options
+      end
     elsif resource_id == 0
       ""
     else
