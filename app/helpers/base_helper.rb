@@ -116,7 +116,8 @@ module BaseHelper
         else
           format = :jpg
         end
-        image_tag url_for(:controller => "/image_resource", :action => "show", :id => resource_id, :format => format, :height => options[:height], :width => options[:width]), options
+        #image_tag url_for(:controller => "/image_resource", :action => "show", :id => resource_id, :format => format, :height => options[:height], :width => options[:width]), options
+        image_tag url_for(:controller => "/image_resource", :action => "show", :id => resource_id, :format => format, :height => options[:height], :width => options[:width]), options.merge({:height => nil})
       else
         image_tag url_for(:controller => "/image_resource", :action => "show", :id => resource_id, :height=>options[:height], :width=>options[:width]), options
       end
