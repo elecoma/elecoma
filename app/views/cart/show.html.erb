@@ -11,7 +11,10 @@
 <!-- ショッピングカート -->
   <%= image_tag("cart/route01.gif", :width => "583", :height => "31", :alt => "ご購入の流れ", :class => "route") %>
 
-  <p><%= flash[:notice] %><%= flash[:error] %><%= flash[:cart_add_product] %>&nbsp;</p>
+  <p><%= flash[:notice] %><%= flash[:cart_add_product] %>&nbsp;</p>
+  <% if flash[:error] %>
+    <p class="error_mes"><%= flash[:error] %></p>
+  <% end %>
 
   <%- if @carts.blank? then -%>
     <p class="cntr">※ 現在カート内に商品はございません。</p><br /><br /><br /><br />
