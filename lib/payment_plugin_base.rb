@@ -82,4 +82,12 @@ module PaymentPluginBase
     return Array.new
   end
 
+  def admin_customer_payment_list
+    return Array.new
+  end
+
+  def admin_customer_payment_result(customer_id)
+    return nil, nil
+  end
+
 end

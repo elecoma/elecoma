@@ -41,6 +41,7 @@ class Admin::CustomersController < Admin::BaseController
     @order_count = Order.count(:conditions => ["customer_id=?", params[:id]])
     @orders = Order.find(:all, :conditions => ["customer_id=?", params[:id]],
       :include => :order_deliveries, :order => "orders.id,order_deliveries.id")
+    get_admin_customer_payment
   end
 
   def confirm
@@ -98,6 +99,21 @@ class Admin::CustomersController < Admin::BaseController
   def get_customer
     @customer = Customer.find_by_id(params[:id])
     @customer.attributes = params[:customer]
+  end
+
+  def get_admin_customer_payment
+    plugins = PaymentPlugin.find(:all, :conditions => ["enable = ? ", true], :order => :id)
+    @admin_customer_payment_list = Array.new
+    @admin_customer_payment_result = Hash.new
+    plugins.each do |plugin|
+      obj = plugin.get_plugin_instance
+      key, value = obj.admin_customer_payment_result(@customer.id)
+      if key
+        @admin_customer_payment_list << obj.admin_customer_payment_list
+        @admin_customer_payment_result[key] = value
+      end
+    end
+    @admin_customer_payment_list.flatten!
   end
 
 end

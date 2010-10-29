@@ -34,5 +34,8 @@
   <% end %>
 </table>
 
+<% @admin_customer_payment_list.each do |list| %>
+  <%= render :partial => list %>
+<% end %>
 
 </div><!-- /メイン -->
