@@ -456,7 +456,7 @@ class CartController < BaseController
     begin
       save_before_finish
     rescue => e
-      flash.now[:error] = '失敗しました'
+      flash.now[:error] = 'データの保存に失敗しました。商品の在庫が切れた可能性があります。'
       logger.error(e.message)
       e.backtrace.each{|s|logger.error(s)}
       redirect_to :action => 'show'
