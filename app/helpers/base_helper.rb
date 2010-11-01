@@ -103,6 +103,16 @@ module BaseHelper
     end
   end
 
+  def view_resource_mobile(resource, options={})
+    if request.mobile?
+      width = request.mobile.display.width
+      if width
+        options[:width] = width - 10
+      end
+    end
+    view_resource(resource, options)
+  end
+
   def view_resource_id(resource_id, options = {})
     if resource_id && resource_id != 0
       if request.mobile?

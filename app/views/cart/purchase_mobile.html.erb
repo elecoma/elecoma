@@ -9,8 +9,8 @@
     <%= f.radio_button :payment_id, payment.id %>
     <%= payment.name %>
     <br />
-    <% options = {:width => 120, :height => 120} %>
-    <%= view_resource(payment.resource, options) %>
+    <% options = {:width => 200, :height => 120} %>
+    <%= view_resource_mobile(payment.resource, options) %>
     <br />
   <% end %>
   <% if @login_customer %>
