@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 class AccountsController < BaseController
   include AccountsControllerExtend
+  ssl_required :login, :signup, :signup_confirm, :signup_complete, :history, :history_list, :history_show, :edit, :edit_confirm, :edit_complete, :delivery, :delivery_list, :delivery_new, :delivery_new_popup, :delivery_create, :delivery_edit, :delivery_edit_popup, :delivery_update, :delivery_complete, :delivery_destroy, :activate, :withdraw, :withdraw_confirm, :withdraw_complete, :reminder, :salvage, :salvage_complete
   before_filter :login_check, :except => [
     :activate, :kiyaku, :kiyaku_intro, :login, :logout, :reminder,
     :reminder_complete, :reminder_hint, :salvage, :salvage_complete,
