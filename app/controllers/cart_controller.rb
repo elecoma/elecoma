@@ -19,7 +19,11 @@ class CartController < BaseController
   # カートの中を見る。Loginの可否、カート内容の有無で動的に変動。カート操作全般はここから行う。
   def show
     unless @carts.all?(&:valid?)
-      flash.now[:error] = cart_errors(@carts)
+      if flash.now[:error]
+        flash.now[:error] = flash.now[:error] + cart_errors(@carts)
+      else
+        flash.now[:error] = cart_errors(@carts)
+      end
     end
     @cart_point = total_points
     if @carts.last

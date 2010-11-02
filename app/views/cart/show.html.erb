@@ -15,6 +15,9 @@
   <% if flash[:error] %>
     <p class="error_mes"><%= flash[:error] %></p>
   <% end %>
+  <% if flash.now[:error] %>
+    <p class="error_mes"><%= flash.now[:error] %></p>
+  <% end %>
 
   <%- if @carts.blank? then -%>
     <p class="cntr">※ 現在カート内に商品はございません。</p><br /><br /><br /><br />
