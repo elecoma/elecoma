@@ -27,7 +27,7 @@
 
 
 active-form
-  http://github.com/realityforge/rails-active-form.git
+  git://github.com/realityforge/rails-active-form.git
   rev: f1e74bec3d87c23cfc05ca7df11925c08e55514f
 
 acts_as_list
@@ -62,6 +62,10 @@ resource_controller
   git://github.com/jamesgolick/resource_controller.git
   rev: 48359daa1e01c47f1d7b5f37441742123d395e11 
 
+ssl_requirement
+  git://github.com/rails/ssl_requirement.git
+  rev: 34a9a138c4093bd7d5678822f8f1e62c31d47299
+
 will_paginate
   git://github.com/mislav/will_paginate.git
   rev: 839d821041a4cfaa4dfbcc5719ea17ff196189c7
@@ -70,6 +74,13 @@ yaml_waml
   git://github.com/kakutani/yaml_waml.git
   rev: 1b292b3e0df9a7e69ed90eebdca327a0888b0a12
 
+double_submit_protection
+  git://github.com/DianthuDia/double_submit_protection.git
+  rev: 7fc2e629b9fccb1736be7ea9da63e578f835a307
+
+image_submit_tag_ext
+  git://github.com/champierre/image_submit_tag_ext.git
+  rev: 572ce5ce5d40ee1494ddd0a121483e8791bb2184
 
 ================================================================================
   エレコマ インストール手順
@@ -117,6 +128,8 @@ $ sudo gem install gruff -v 0.3.6
 $ sudo gem install rspec-rails -v 1.2.9
 $ wget http://www.artonx.org/data/lhalib/lhalib-0.8.1.gem
 $ sudo gem install lhalib-0.8.1.gem
+$ sudo gem install webmock -v 1.3.4
+$ sudo gem install thoughtbot-factory_girl -v 1.2.2 --source http://gems.github.com
 
 6. PostgreSQLのインストール
 $ sudo yum install postgresql-devel
@@ -212,6 +225,9 @@ $ cd ../../..
 $ ruby script/plugin install git://github.com/jamesgolick/resource_controller.git
 $ ruby script/plugin install git://github.com/mislav/will_paginate.git
 $ ruby script/plugin install git://github.com/kakutani/yaml_waml.git
+$ ruby script/plugin install git://github.com/rails/ssl_requirement.git
+$ ruby script/plugin install git://github.com/DianthuDia/double_submit_protection.git
+$ ruby script/plugin install git://github.com/champierre/image_submit_tag_ext.git
 
 13. passengerのインストール
 $ sudo yum install gcc-c++
@@ -263,6 +279,22 @@ $ rake db:fixtures:load FIXTURES=admin_users RAILS_ENV=production
 ユーザーを登録した後、管理画面：http://サイトドメイン/adminにアクセスすると、
 ログイン画面が表示されますので、RAILS_ROOT/test/fixtures/admin_users.ymlで指定した
 登録したログインIDとパスワードでログインしてください。
+なお、初期状態ではSHOPマスタの情報が入っておりませんので、
+SHOPマスタ登録にて初期情報を入力してください。
+
+================================================================================
+* SSLの切り替え
+================================================================================
+エレコマではSSLの設定をデータベースに保存しています。
+そのため、万が一管理画面にアクセスできなくなった場合は、
+以下のようにして手動で切替えてください。
+
+$ script/console production
+>> system = System.first
+>> system.use_ssl = false
+>> system.save
+
+use_sslの値はtrueの時にSSLを利用し、falseの時にSSLを利用しなくなります。
 
 ================================================================================
 * エレコマの住所マスタ更新

@@ -31,7 +31,7 @@ class ImageResource < ActiveRecord::Base
     resource
   end
 
-  def scaled_image(width, height, format)
+  def scaled_image(width, height, format = nil)
     image = read_image(content_data)
     image.change_geometry("#{width}x#{height}") do |cols,rows,img|
       rows = 1 if rows == 0

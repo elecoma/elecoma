@@ -1,3 +1,11 @@
+2010-11-04  Taro Matsuzawa  <tmatsuzawa _at_ kbmj.com>
+
+	* 2.1.0 Release
+	* [全般] 決済モジュールに対応しました
+	* [全般] 標準でSSLが利用できるようにしました
+	* [bugfix] カート画面で遷移した時のエラーチェックを強化しました
+	* [bugfix] 横幅が正確に取得できない端末向けの制御を追加しました
+
 2010-08-30  Taro Matsuzawa  <tmatsuzawa _at_ kbmj.com>
 
 	* 2.0.3 Release
