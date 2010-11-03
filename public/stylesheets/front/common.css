@@ -440,7 +440,7 @@ body > #wrapper {
   padding: 6px;
   border: 1px solid #999999;
   background-color: #fdc2c9;
-  vertical-align: center;
+  vertical-align: middle;
   text-align: center;
 }
 
@@ -448,7 +448,7 @@ body > #wrapper {
   padding: 6px;
   border: 1px solid #999999;
   background-color: #fdc2c9;
-  vertical-align: center;
+  vertical-align: middle;
   text-align: left;
 }
 
@@ -457,7 +457,7 @@ body > #wrapper {
   padding: 6px;
   background-color: #ffffff;
   border: 1px solid #999999;
-  vertical-align: center;
+  vertical-align: middle;
 }
 
 .cntr {
@@ -541,6 +541,6 @@ body > #wrapper {
 #entry .my_btn input,
 #entry .my_btn2 input,
 #mypage_main .my_btn input,
-#mypage_main .my_btn2 input,{
+#mypage_main .my_btn2 input {
 border:  none;
 }

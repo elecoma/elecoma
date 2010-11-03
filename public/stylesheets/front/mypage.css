@@ -54,7 +54,7 @@
   padding: 6px;
   border: 1px solid #999999;
   background-color: #fdc2c9;
-  vertical-align: center;
+  vertical-align: middle;
   text-align: center;
 }
 
@@ -62,7 +62,7 @@
   padding: 6px;
   border: 1px solid #999999;
   background-color: #fdc2c9;
-  vertical-align: center;
+  vertical-align: middle;
   text-align: left;
 }
 
@@ -153,7 +153,7 @@
 }
 
 .m_left {
-  margin-leftt: 5px;
+  margin-left: 5px;
 }
 
 .deli_t {
