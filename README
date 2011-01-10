@@ -263,7 +263,7 @@ $ ./script/mail_restart.sh -e production
 (メールマガジン送信用のプロセスを立ち上げます)
 
 ※webrickでの起動も可能です。
-$ ruby ./script/server -p production
+$ ruby ./script/server -e production
 
 
 
