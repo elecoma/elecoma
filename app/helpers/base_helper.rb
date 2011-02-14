@@ -387,9 +387,10 @@ def each_product_styles(product)
 end
 
 def image_tag_mobile(prefix, options={})
-  width = request.mobile.display.width
+  width = request.mobile.display.width if request.mobile and request.mobile.display
+  width = options[:width] if options[:width]
   size = 'q' # q = QVGA, v = VGA
-  size = 'v' if !width.blank? && width >= 480
+  size = 'v' if !width.blank? && width.to_i >= 480
   format = 'gif'
   #キャリア毎に変更するなら以下を利用する（今は使わないのでコメントアウト
   #format = 'gif' if request.mobile.is_a?(Jpmobile::Mobile::Docomo)

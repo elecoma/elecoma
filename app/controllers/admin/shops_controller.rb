@@ -414,9 +414,9 @@ class Admin::ShopsController < Admin::BaseController
     @preview_id = params[:preview_id]
     @privacy = Privacy.new params[:privacy]
     if @preview_id == "1" || @preview_id == "3"
-      render :template => '/admin/shops/privacy_preview_mobile', :layout => '/admin/preview_base_mobile'
+      render :template => '/admin/shops/privacy_preview_mobile', :layout => 'admin/preview_base_mobile'
     else
-      render :template => '/admin/shops/privacy_preview', :layout => '/admin/preview_base'
+      render :template => '/admin/shops/privacy_preview', :layout => 'admin/preview_base'
     end    
   end
   
