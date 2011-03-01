@@ -234,7 +234,7 @@ class Admin::ShopsController < Admin::BaseController
   end
 
   def tradelaw_index
-    @law = Law.find(:first)
+    @law = Law.find_by_retailer_id(session[:admin_user].retailer_id)
     if @law
       @status = "update"
       @id=@law.id
@@ -246,10 +246,11 @@ class Admin::ShopsController < Admin::BaseController
 
   def tradelaw_update
     if !params[:id].blank?
-      @law = Law.find(:first)
+      @law = Law.find_by_retailer_id(session[:admin_user].retailer_id)
       @law.attributes = params[:law]
     else
       @law = Law.new params[:law]
+      @law.retailer_id = session[:admin_user].retailer_id
     end
 
     unless @law.valid?
