@@ -111,6 +111,7 @@ $ sudo ruby setup.rb
 3. ImageMagickのインストール
 $ sudo yum install libjpeg-devel libpng-devel gd-devel freetype-devel
 $ wget ftp://ftp.kddlabs.co.jp/graphics/ImageMagick/ImageMagick-6.5.8-4.tar.gz
+$ tar zxf ImageMagick-6.5.8-4.tar.gz
 $ cd ImageMagick-6.5.8-4
 $ ./configure
 $ make
