@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe Admin::MailMagazinesController do
-  fixtures :authorities, :functions, :admin_users, :mail_magazine_templates, :customers, :mail_magazines
+  fixtures :authorities, :functions, :admin_users, :mail_magazine_templates, :customers, :mail_magazines, :mails
   fixtures :orders, :order_deliveries, :order_details
   fixtures :campaigns_customers
 

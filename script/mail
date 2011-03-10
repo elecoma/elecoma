@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
 # -*- ruby -*-
 
 # メールを
@@ -17,7 +18,9 @@ THRESHOLD = 5
 
 def logger
   l = (ActionMailer::Base.logger || ActionController::Base.logger)
-  l.auto_flushing = true
+  if defined? l.auto_flushing
+    l.auto_flushing = true 
+  end
   l
 end
 

@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
   private
   #sslの有効無効をuse_sslで決定する
   def ensure_proper_protocol
-    #return true unless @system #specでload_systemが通らない問題に対応するため
+    return true unless @system #specでload_systemが通らない問題に対応するため
     #return false
     return true unless @system.use_ssl
     return true if ssl_allowed?

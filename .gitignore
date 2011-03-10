@@ -1,0 +1,11 @@
+.DS_Store
+*~
+log/*
+!log/.gitkeep
+tmp/*
+!tmp/.gitkeep
+db/schema.rb
+vendor/plugins/*
+!vendor/plugins/.gitkeep
+var/run/*
+!var/run/.gitkeep

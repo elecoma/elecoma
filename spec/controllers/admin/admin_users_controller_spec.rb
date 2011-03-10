@@ -2,7 +2,7 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe Admin::AdminUsersController do
-  fixtures :admin_users
+  fixtures :admin_users, :retailers
 
   before do
     session[:admin_user] = admin_users(:admin10)

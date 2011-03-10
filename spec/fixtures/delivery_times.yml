@@ -33,7 +33,7 @@ delivery_time_<%=idx%>:
 delivery_time_<%=idx%>:
   id: <%= idx %>
   position: <%=idx%>
-  name: 
+  name: a<%= idx %>
   delivery_trader_id: <%= trader %>
 <% end %>
 <% end %>

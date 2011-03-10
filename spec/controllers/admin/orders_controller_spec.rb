@@ -20,6 +20,7 @@ describe Admin::OrdersController, "/admin/order" do
   fixtures :functions, :authorities, :authorities_functions
   fixtures :products
   fixtures :retailers
+  fixtures :customers
 
   before do
     @order = orders(:one)
