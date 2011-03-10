@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Admin::RetailersController do
-  fixtures :admin_users, :retailers
+  fixtures :admin_users, :retailers, :shops
 
   before do
     @main_shop = admin_users(:load_by_admin_user_test_id_1)

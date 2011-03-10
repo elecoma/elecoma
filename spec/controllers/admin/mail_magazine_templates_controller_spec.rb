@@ -2,7 +2,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Admin::MailMagazineTemplatesController do
-  fixtures :mail_magazine_templates, :admin_users
+  fixtures :mail_magazine_templates, :admin_users, :shops
 
   before do
     session[:admin_user] = admin_users(:admin10)

@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe Admin::HomeController do
-  fixtures :admin_users, :customers, :order_deliveries
+  fixtures :admin_users, :customers, :order_deliveries, :shops
   before(:each) do
     session[:admin_user] = admin_users(:load_by_admin_user_test_id_1)
   end

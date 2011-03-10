@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
 require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe Admin::CategoriesController do
   fixtures :admin_users
   fixtures :categories
+  fixtures :shops
 
   before do
     session[:admin_user] = admin_users(:admin10)
