@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ImageResourceController do
-  fixtures :image_resources, :resource_datas
+  fixtures :image_resources, :resource_datas, :shops
 
   before do
     @controller.class.skip_before_filter :start_transaction
