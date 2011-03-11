@@ -2,7 +2,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Admin::AccountsController do
-  fixtures :admin_users
+  fixtures :admin_users, :systems
 
   before do
     @controller.class.before_filter :load_system

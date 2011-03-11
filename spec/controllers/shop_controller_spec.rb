@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe ShopController do
-  fixtures :shops
+  fixtures :shops, :systems
 
   before do
     @controller.class.skip_before_filter :start_transaction

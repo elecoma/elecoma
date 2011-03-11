@@ -2,7 +2,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe FeaturesController do
-  fixtures :features, :feature_products, :shops
+  fixtures :features, :feature_products, :systems
 
   before do
     @controller.class.skip_before_filter :start_transaction
