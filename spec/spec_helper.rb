@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This file is copied to ~/spec when you run 'ruby script/generate rspec'
 # from the project root directory.
 ENV["RAILS_ENV"] = 'test'
@@ -12,7 +13,7 @@ Spec::Runner.configure do |config|
   config.use_transactional_fixtures = true
   config.use_instantiated_fixtures  = false
   config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
-  config.global_fixtures = :authorities, :functions, :authorities_functions
+  config.global_fixtures = :authorities, :functions, :authorities_functions, :systems
   # == Fixtures
   #
   # You can declare fixtures for each example_group like this:
