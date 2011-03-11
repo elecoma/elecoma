@@ -2,7 +2,7 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe Admin::ShopsController do
-  fixtures :authorities, :functions, :admin_users , :shops, :retailers, :delivery_traders, :delivery_times
+  fixtures :authorities, :functions, :admin_users , :shops, :retailers, :delivery_traders, :delivery_times, :delivery_fees
   
   before(:each) do
     session[:admin_user] = admin_users(:load_by_admin_user_test_id_1)
