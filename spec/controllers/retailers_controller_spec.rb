@@ -2,7 +2,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe RetailersController do
-  fixtures :retailers
+  fixtures :retailers, :shops
 
   before do
   end
