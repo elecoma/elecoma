@@ -131,7 +131,7 @@ $ sudo gem install rmagick -v 2.12.2
 $ unalias sudo
 
 5. 依存するgemのインストール
-$ sudo gem install rails -v 2.3.2
+$ sudo gem install rails -v 2.3.5
 $ sudo gem install gettext -v 2.1.0
 $ sudo gem install gruff -v 0.3.6
 $ wget http://www.artonx.org/data/lhalib/lhalib-0.8.1.gem
