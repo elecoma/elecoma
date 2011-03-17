@@ -3,7 +3,7 @@ class Mail < ActiveRecord::Base
   THRESHOLD = 5
   def self.post_all_mail
     mails = Mail.find(:all, :conditions=>'sent_at is null', :order=>'created_at')
-    mails = mails.find_all do |m|
+    mails = mails.each do |m|
       customer = Customer.find_by_email_and_activate(m.to_address, Customer::TOUROKU)
       customer && customer.reachable
     end

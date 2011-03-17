@@ -2,5 +2,5 @@
 one:
   id: 1
   from_address: "from@kbmj.com"
-  to_address: "to@kbmj.com"
+  to_address: "sho-chan@example.com"
   message: "mailTest"
