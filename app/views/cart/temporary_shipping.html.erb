@@ -97,8 +97,8 @@
   <% end %>
 
   <p id="delivary"><span id="bold" class="tb_t">配送先を指定 </span><br/>
-  <p class="m_top m_btm"><%= check_box_tag 'address_enable', "1", ((params[:back] == "1" or @error_back)&& params[:address_enable].nil?)?false:true %>
-  <em class="required"> ※</em>上記に入力されたご住所と同一の場合は省略可能です。</p></p>
+  <p class="m_top m_btm"><%= check_box_tag 'address_enable', "1", ((params[:back] == "1" or @error_back)&& !params[:address_enable].nil?)?true:false %>
+  <em class="required"> ※</em>上記に入力されたご住所と同一の場合はチェックをいれると省略可能です。</p></p>
   <% fields_for :optional_address do |f| %>
     <table class="tb2">
       <tr>

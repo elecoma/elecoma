@@ -54,8 +54,8 @@ FAX<br />
 <div style="clear:both; background-color:#F3F3EC; text-align:center;"><%= image_tag_mobile "border", :width => "226", :height => "2" %><br /></div>
 <div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
 
-配送先を指定<%= check_box_tag 'address_enable', "1", ((params[:back] == "1" or @error_back)&& params[:address_enable].nil?)?false:true,:tabindex => 20 %><br />
-<span style="color:#ff0000;">※</span>上記に入力されたご住所と同一の場合は省略可能です。<br /><br />
+配送先を指定<%= check_box_tag 'address_enable', "1", ((params[:back] == "1" or @error_back)&& !params[:address_enable].nil?)?true:false,:tabindex => 20 %><br />
+<span style="color:#ff0000;">※</span>上記に入力されたご住所と同一の場合はチェックをいれると省略可能です。<br /><br />
 
 <% fields_for :optional_address do |f| %>
 <span style="color:#ff0000;">※</span>お名前<br />
