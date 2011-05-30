@@ -1,0 +1,26 @@
+<script>
+  function update_form_template(text){
+    var json;
+    eval('json='+text);
+    insert_template(json);
+  }
+
+  function insert_template(json){
+    if(json['name']) {
+      document.getElementById('service_cooperation_name').value = json['name'];
+    }
+    if(json['url_file_name']){
+      document.getElementById('service_cooperation_url_file_name').value = json['url_file_name'];
+    }
+    document.getElementById('service_cooperation_file_type').value = json['file_type'];
+    document.getElementById('service_cooperation_encode').value = json['encode'];
+    document.getElementById('service_cooperation_newline_character').value = json['newline_character'];
+    if(json['field_items']){
+      document.getElementById('service_cooperation_field_items').value = json['field_items'];
+    }
+    if(json['sql']){
+      document.getElementById('service_cooperation_sql').value = json['sql'];
+    }
+  }
+
+</script>

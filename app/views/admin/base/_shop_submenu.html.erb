@@ -53,7 +53,9 @@
         <li><%= link_to 'メンバー管理', {:controller => 'admin_users', :action => 'index'} %></li>
         <li><%= link_to '管理者権限管理', {:controller => 'authorities', :action => 'index'} %></li>
         <li><%= link_to '環境設定', {:controller => 'shops', :action => 'settings'} %></li>
-	<li><%= link_to 'プラグイン設定', {:controller => 'plugins', :action => 'index'} %></li>
+        <li><%= link_to 'プラグイン設定', {:controller => 'plugins', :action => 'index'} %></li>
+        <li><%= link_to 'アイテムマスタ設定', {:controller => 'service_cooperations', :action => 'index'} %></li>
+        <li><%= link_to 'アイテムマスタテンプレート', {:controller => 'service_cooperations_templates', :action => 'index'} %></li>
       </ul>
     <% end %>
   </div><!-- /g_menu -->

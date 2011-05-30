@@ -1,0 +1,37 @@
+<%= render :partial => "submenu" %>
+
+<%= javascript_include_tag(:defaults)%>
+
+<%= render :partial => "insert_template" %>
+
+<div id="main"><!-- メイン -->
+  
+  <h2>アイテムマスタ出力設定</h2>
+
+  <h3>サービスの編集</h3>
+  <br />
+  <table class="data" cellspacing="1" cellpadding="0">
+    <tr>
+      <th>テンプレート</th>
+      <td>
+        <%= select_tag('items', options_for_select(ServiceCooperationsTemplate.select_service_cooperations_templates)) %>
+        <br/>
+        <%= button_to_remote "挿入",
+            :url => {:action => 'get_template_ajax' },
+            :with => "'id='+document.getElementById('items').value",
+            :success => "update_form_template(request.responseText)" %>
+      </td>
+    </tr>
+  </table>
+  <br />
+  <% form_for @service_cooperation, :url=>{:action=>"confirm"} do |f| %>
+    <div id="service_cooperation_edit">
+      <%= render :partial => "form", :locals => {:f => f} %>
+      <%= hidden_field_tag :id, params[:id] %>
+    </div>
+    <div class="btn_box">
+      <%= f.submit "確認する", :class=>"btn" %>
+      <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
+    </div>
+  <% end %>
+</div>

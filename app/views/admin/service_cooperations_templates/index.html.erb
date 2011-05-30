@@ -1,0 +1,42 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+  
+  <h2>アイテムマスタ設定テンプレート</h2>
+  
+  <h3>テンプレート一覧</h3>
+
+  <%=h flash[:notice] %>
+  <%=h flash[:errors] %>
+
+  <br />
+  <div class="btn_t">
+    <%= button_to 'テンプレート追加',:action => "new" %>
+  </div>
+  <br />
+  <table class="data2">
+    <tr>
+      <th>テンプレート名</th>
+      <th>サービス名</th>
+      <th>説明</th>
+      <th>編集</th>
+      <th>削除</th>
+    </tr>
+    <% unless @templates.empty? -%>
+      <% @templates.each do |record| -%>
+      	<tr>
+          <td><%=h record.template_name %></td>
+          <td><%=h record.service_name %></td>
+          <td><%=h record.description %></td>
+	        <td class="t_center">
+	          <%= link_to "編集", {:action => "edit", :id => record.id } %>
+	        </td>
+	        <td class="t_center">
+	          <%= link_to "削除", {:action => "destroy", :id => record.id } %>
+	        </td>
+	      </tr>
+      <% end -%>
+    <% end -%>
+  </table>
+  
+</div><!-- メイン -->

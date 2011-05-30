@@ -1,0 +1,41 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: TestASP
+  enable: true
+  url_file_name: testfile
+  file_type: 1
+  encode: 0
+  newline_character: 2
+  sql: SELECT name,id FROM products WHERE id > 5 ORDER BY id
+  field_items: ABCDE,FGHIJ,KLM,N,O
+
+two:
+  name: Name
+  enable: true
+  url_file_name: MyString
+  file_type: 1
+  encode: 1
+  newline_character: 1
+  sql: MyText
+  field_items: MyString
+
+close_service: 
+  name: close_service
+  enable: false
+  url_file_name: close_service
+  file_type: 1
+  encode: 1
+  newline_character: 1
+  sql: SELECT name,id FROM products WHERE id > 5 ORDER BY id
+  field_items: ABCDE,FGHIJ,KLM,N,O
+
+sql_test:
+  name: sql_not_found
+  enable: true
+  url_file_name: test
+  file_type: 1
+  encode: 1
+  newline_character: 1
+  sql: SELECT abc FROM aaaaaaa
+  field_items: MyString

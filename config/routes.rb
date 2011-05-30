@@ -63,6 +63,9 @@ ActionController::Routing::Routes.draw do |map|
 
   # See how all your routes lay out with "rake routes"
 
+  # ServiceCooperations
+  map.connect 'service_cooperations/export/:url_file_name', :controller => 'service_cooperations', :action => 'export'
+
   # Install the default routes as the lowest priority.
   map.connect 'products/category/:category_id', :controller => 'products', :action => 'index'
   map.connect 'products/category/:category_id/order/:order', :controller => 'products', :action => 'index'

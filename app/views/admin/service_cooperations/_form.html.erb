@@ -1,0 +1,47 @@
+<%= flash[:notice] %>
+<%= flash[:errors] %>
+<%= f.error_messages %>
+<p class="req"><span class="pnt">※</span>は必須入力です</p>
+<table class="data" cellspacing="1" cellpadding="0">
+  <tr>
+    <th>サービス名称 <span class="pnt">※</span></th>
+    <td><%= confirm_tag :text_field, :service_cooperation , :name, :size =>100, :class =>"data_l" %></td>
+  </tr>
+  <tr>
+    <th>有効・無効 <span class="pnt">※</span></th>
+    <td><%= confirm_tag :select, :service_cooperation, :enable, ServiceCooperation.select_enable %>
+  </tr>
+  <tr>
+    <th>出力ファイル名 <span class="pnt">※</span></th>
+    <td><%= confirm_tag :text_field, :service_cooperation, :url_file_name, :size =>100, :class =>"data_l" %><br />
+      <font color="red">拡張子を除いたユニークなファイル名を入力してください</font>
+    </td>
+  </tr>
+  <tr>
+    <th>ファイル形式 <span class="pnt">※</span></th>
+    <td><%= confirm_tag :select, :service_cooperation, :file_type, ServiceCooperation.select_file_type %>
+    </td>
+  </tr>
+  <tr>
+    <th>エンコード形式 <span class="pnt">※</span></th>
+    <td><%= confirm_tag :select, :service_cooperation, :encode, ServiceCooperation.select_encode %>
+    </td>
+  </tr>
+  <tr>
+    <th>改行文字 <span class="pnt">※</span></th>
+    <td><%= confirm_tag :select, :service_cooperation, :newline_character , ServiceCooperation.select_newline_character %>
+    </td>
+  </tr>
+  <tr>
+    <th>アイテムフィールド <span class="pnt">※</span></th>
+    <td><%= confirm_tag :text_field, :service_cooperation, :field_items, :size =>100, :class =>"data_l" %></td>
+  </tr>
+  <tr>
+    <th>SQL <span class="pnt">※</span></th>
+    <td><%= confirm_tag :text_area, :service_cooperation, :sql , :rows => 20, :class => "data_l" %></td>
+  </tr>
+
+
+
+  
+</table>
