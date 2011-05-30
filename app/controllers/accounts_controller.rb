@@ -530,7 +530,7 @@ class AccountsController < BaseController
     @user_navigation_list = Array.new
     plugins.each do |plugin|
       obj = plugin.get_plugin_instance
-      @user_navigation_list << obj.user_navigation_list
+      @user_navigation_list << obj.user_navigation_list if obj
     end
     logger.debug @user_navigation_list
     @user_navigation_list.flatten!
