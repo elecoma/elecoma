@@ -90,4 +90,8 @@ module PaymentPluginBase
     return nil, nil
   end
 
+  def use_mobile?
+    return true
+  end
+
 end

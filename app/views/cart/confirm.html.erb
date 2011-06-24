@@ -10,6 +10,10 @@
   <p class="m_btm">下記ご注文内容で送信してもよろしいでしょうか？<br />
   よろしければ、一番下の「ご注文完了ページへ」ボタンをクリックしてください。</p>
 
+  <% if flash.now[:error] %>
+    <p class="error_mes"><%= flash.now[:error] %></p>
+  <% end %>
+
   <% @order_deliveries.each do |retailer_id, order_delivery| %>
     <table class="tb1 cntr">
       <tr>

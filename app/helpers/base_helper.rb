@@ -284,9 +284,10 @@ EJS
     options = ({
       :alt => payment.name
     }).merge(options)
-    id = payment.resource_id
-    if id
-      view_resource_id(id, options)
+    if payment.use_remote_resource
+      image_tag(payment.resource_url, options) unless payment.resource_url.blank?
+    elsif payment.resource_id
+      view_resource_id(payment.resource_id, options)
     else
       ''
     end
@@ -319,6 +320,20 @@ EJS
     else
       ""
     end
+  end
+
+  def logo_without_text(payment)
+    if payment.use_remote_resource
+      if !payment.resource_url.blank? && payment.without_text
+        true
+      else
+        false
+      end
+    elsif payment.resource_id && payment.without_text
+      true
+    else
+      false
+    end 
   end
 
 =begin rdoc
