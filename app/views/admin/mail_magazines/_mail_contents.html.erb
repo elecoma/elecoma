@@ -24,4 +24,6 @@
   </tr>
 </table>
 <%= hidden_field :contents, :form_type %>
+<% unless params[:action] =~ /confirm/ %>
 <%= hidden_field :contents, :body %>
+<% end %>

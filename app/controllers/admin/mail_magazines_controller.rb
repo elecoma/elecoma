@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'pp'
 require 'drb'
 
@@ -10,7 +11,12 @@ class Admin::MailMagazinesController < Admin::BaseController
   cattr_accessor :drb_uri
   #DEFAULT_DRB_URI = 'druby://0.0.0.0:9999'
 
+  NEED_SANITIZE_HTML_POST = Regexp.new('(NEED_SANITIZE_START)(.*)(NEED_SANITIZE_END_TO_POST)', Regexp::MULTILINE).freeze
+  NEED_SANITIZE_HTML_SEARCH = Regexp.new('(NEED_SANITIZE_START)(.*)(NEED_SANITIZE_END_TO_SEARCH)', Regexp::MULTILINE).freeze
+
   emoticon_filter
+
+  after_filter :sanitize_html, :only => :confirm
 
   index.before do
     @condition = MailMagazineSearchForm.new({})
@@ -238,7 +244,27 @@ class Admin::MailMagazinesController < Admin::BaseController
     redirect_to :action => "history"
   end
 
+  protected
+  def sanitize_html
+    body = response.body
+    logger.debug("test!!!!!!")
+    body.gsub!(NEED_SANITIZE_HTML_POST) do 
+      prefix, value, suffix = $1, $2, $3
+      html_escape_without_amp $2
+    end
+    body.gsub!(NEED_SANITIZE_HTML_SEARCH) do
+      prefix, value, suffix = $1, $2, $3
+      html_escape_without_amp $2
+    end
+    response.body = body
+  end
+
   private
+
+  def html_escape_without_amp(s)
+    s.to_s.gsub(/\"/, "&quot;").gsub(/>/, "&gt;").gsub(/</, "&lt;")
+  end
+
   class MailMagazineCondition
     attr_accessor :customer_name_kanji, :customer_name_kana, :prefecture_id, :tel_no
     attr_accessor :sex_male, :sex_female, :birth_month, :form_type

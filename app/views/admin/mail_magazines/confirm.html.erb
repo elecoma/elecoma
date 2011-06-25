@@ -9,7 +9,7 @@
 <div class="btn_box">
   <% form_for :contents, :url => {:action => 'complete'}, :html => {:multipart=>true} do |f| %>
     <%= f.hidden_field :subject %>
-    <%= f.hidden_field :body %>
+    <%= hidden_field_tag "contents[body]", "NEED_SANITIZE_START" + @contents.body + "NEED_SANITIZE_END_TO_POST" %>
     <%= hidden_field_tag 'customer_ids', @customer_ids %>
     <%= render :partial => "mail_contents", :locals => {:f => f} %>
     <%= f.submit '配信する', :class=>"btn" %>
@@ -19,7 +19,7 @@
   <% form_for :contents, :url => {:action => 'template_search'} do |f| %>
     <%= f.hidden_field :form_type %>
     <%= f.hidden_field :subject %>
-    <%= f.hidden_field :body %>
+    <%= hidden_field_tag "contents[body]", "NEED_SANITIZE_START" + @contents.body + "NEED_SANITIZE_END_TO_SEARCH" %>
     <%= hidden_field_tag 'customer_ids', @customer_ids %>
     <%= f.submit 'テンプレート設定画面に戻る', :class=>"btn" %>
     <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
