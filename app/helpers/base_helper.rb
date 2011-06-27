@@ -361,7 +361,7 @@ def product_category_image_tag(product)
 end
 
 def category_image_tag(category)
-  default = image_tag('title_cat00.jpg', :alt=>"カテゴリー")
+  default = image_tag('title_cat00.gif', :alt=>"カテゴリー")
   category or return default
   category.resource_id.blank? and return default
   view_resource_id(category.menu_resource_id, :alt=>category.name)
