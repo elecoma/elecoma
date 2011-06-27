@@ -6,12 +6,15 @@
 <% form_for :order_delivery, :url => {:action => :confirm}, :html => {:name => 'form1'} do | f | %>
   <span style="color:#FF9775;">■</span> お支払い方法<br />
   <% Payment::find_for_price(@cart_price).each do |payment| %>
-    <%= f.radio_button :payment_id, payment.id %>
-    <%= payment.name %>
-    <br />
-    <% options = {:width => 200, :height => 120} %>
-    <%= view_resource_mobile(payment.resource, options) %>
-    <br />
+    <% if payment.get_plugin_instance.use_mobile? %>
+      <%= f.radio_button :payment_id, payment.id %>
+      <%= payment.name unless logo_without_text(payment) %>
+      <br />
+      <% options = {:width => 200, :height => 120} %>
+      <%#= view_resource_mobile(payment.resource, options) %>
+      <%= payment_image_tag(payment, options) %>
+      <br />
+    <% end %>
   <% end %>
   <% if @login_customer %>
     <span style="color:#FF9775;">■</span> ポイント使用の指定<br />
@@ -74,10 +77,12 @@
 <% form_for :order_delivery, :url =>{:action => 'purchase2'}, :html => {:name=>'form1'} do | f | %>
 <span style="color:#FF9775;">■</span> お支払い方法<br />
 <% @order_delivery.payment_candidates(@cart_price).each do | payment | %>
+<% if payment.get_plugin_instance.use_mobile? %>
 <%= f.radio_button :payment_id, payment.id %>
 <%= payment.name %>
 <br/>
 <%= view_resource(payment.resource) %>
+<% end %>
 <% end %>
 <div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
 <div style="clear:both; background-color:#F3F3EC; text-align:center;"><%= image_tag_mobile "border", :width => "226", :height => "2" %><br /></div>

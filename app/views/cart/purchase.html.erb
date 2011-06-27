@@ -27,7 +27,9 @@
             <%- else -%>
               <%= f.radio_button :payment_id, payment.id %>
             <%- end -%>
+            <% unless logo_without_text(payment) %>
               <%= f.label 'payment_id_%d' % payment.id, payment.name, :class => "radio_btn" %>
+            <% end %>
             <%= payment_image_tag payment, {:controller => "/image_resource", :action => "show", :id => payment.id} %>
           </li>
         <% end %>

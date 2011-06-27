@@ -18,8 +18,14 @@
     <td colspan="2"><%= f.collection_select "payment_plugin_id", PaymentPlugin.find(:all, :order=>"id"), 'id', 'name', {:include_blank => false} %></td>
   </tr>
   <tr>
-    <th>ロゴ画像</th>
-    <td><%= image_field "payment", "resource" %></td>
+    <th rowspan="3">ロゴ画像</th>
+    <td><%= f.radio_button :use_remote_resource, false %><%= image_field "payment", "resource" %></td>
+  </tr>
+  <tr>
+    <td><%= f.radio_button :use_remote_resource, true %>画像URL （画像をローカルに保存しない場合）<br /><%= f.text_field "resource_url", :class=>"data_m" %></td>
+  </tr>
+  <tr>
+    <td><%= f.check_box(:without_text) %>ロゴ画像表示時にテキスト（支払方法）を表示しない</td>
   </tr>
 </table>
 <div class="btn_box">
