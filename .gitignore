@@ -9,3 +9,4 @@ vendor/plugins/*
 !vendor/plugins/.gitkeep
 var/run/*
 !var/run/.gitkeep
+config/database.yml
