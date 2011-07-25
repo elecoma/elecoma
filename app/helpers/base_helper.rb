@@ -431,20 +431,20 @@ def link_to_mobile(name, options = {}, html_options = nil)
       9 => '&#xe6ea;',
       0 => '&#xe6eb;',
     }
-    if request.mobile.is_a?(Jpmobile::Mobile::Softbank)
-      h = {
-        1 => '$F<',
-        2 => '$F=',
-        3 => '$F>',
-        4 => '$F?',
-        5 => '$F@',
-        6 => '$FA',
-        7 => '$FB',
-        8 => '$FC',
-        9 => '$FD',
-        0 => '$FE',
-      }
-    end
+#    if request.mobile.is_a?(Jpmobile::Mobile::Softbank)
+#      h = {
+#        1 => '$F<',
+#        2 => '$F=',
+#        3 => '$F>',
+#        4 => '$F?',
+#        5 => '$F@',
+#        6 => '$FA',
+#        7 => '$FB',
+#        8 => '$FC',
+#        9 => '$FD',
+#        0 => '$FE',
+#      }
+#   end
     h[accesskey] + link_to(name, options, html_options)
   else
     link_to(name, options, html_options)
