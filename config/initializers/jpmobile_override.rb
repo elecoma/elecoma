@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 # override vender/plugins/jpmobile/lib/jpmobile/filter.rb
 module Jpmobile
@@ -5,7 +6,7 @@ module Jpmobile
     module Emoticon
       class Outer < Base
         include ApplyOnlyForMobile
-        def to_external(str, controller, use_webcode=true)
+        def to_external(str, controller, use_webcode=false)
           table = nil
           to_sjis = false
           case controller.request.mobile

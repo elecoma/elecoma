@@ -13,7 +13,7 @@ module CheckSessionSignature
     signature = Zlib.crc32([request.env['HTTP_USER_AGENT'].to_s,
                             request.env['HTTP_X_MSIM_USE'].to_s,
                             request.env['HTTP_X_UP_SUBNO'].to_s,
-                            request.env['HTTP_X_JPHONE_UID'].to_s,
+                            #request.env['HTTP_X_JPHONE_UID'].to_s,
                             ].join('\1'))
     session[:_signature] ||= signature
     session_key = ActionController::Base.session_options.merge(request.session_options || {})[:key]
