@@ -382,8 +382,8 @@ class AccountsController < BaseController
     key = params[:activation_key]
     unless key.blank?
       @customer = Customer.activate_email(key)
-      @customer.reachable = true
       if @customer
+        @customer.reachable = true
         save_carts(@customer.carts)
         @customer.carts.clear
       end
