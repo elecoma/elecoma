@@ -107,7 +107,7 @@ class Admin::CustomersController < Admin::BaseController
     @admin_customer_payment_result = Hash.new
     plugins.each do |plugin|
       obj = plugin.get_plugin_instance
-      key, value = obj.admin_customer_payment_result(@customer.id)
+      key, value = obj.admin_customer_payment_result(@customer.id) if obj
       if key
         @admin_customer_payment_list << obj.admin_customer_payment_list
         @admin_customer_payment_result[key] = value
