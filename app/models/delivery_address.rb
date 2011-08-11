@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class DeliveryAddress < ActiveRecord::Base
 
   acts_as_paranoid
@@ -20,6 +21,9 @@ class DeliveryAddress < ActiveRecord::Base
   validates_format_of :first_name_kana, :with => System::KATAKANA_PATTERN
 
   def validate
+    unless prefecture
+      errors.add :prefecture_id, 'が指定されていないか、不正な値になっています'
+    end
     strip_errors
   end
 

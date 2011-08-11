@@ -236,6 +236,7 @@ ja:
         old_updated_at: "旧更新日"
         cookie: "クッキー"
         reachable: "登録メール到達可能フラグ"
+        prefecture_id: "都道府県"
       delivery_address:
         zipcode01: "郵便番号(前半)"
         zipcode02: "郵便番号(後半)"

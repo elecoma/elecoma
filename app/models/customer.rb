@@ -123,6 +123,9 @@ class Customer < ActiveRecord::Base
         end
       end
     end
+    unless prefecture
+      errors.add :prefecture_id, 'が指定されていないか、不正な値になっています'
+    end
     strip_errors
   end
 

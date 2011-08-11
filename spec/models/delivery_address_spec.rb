@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe DeliveryAddress do
@@ -99,6 +100,11 @@ describe DeliveryAddress do
     
     it "都道府県：　数字のみ" do
       @valid_address.prefecture_id = 'う'
+      @valid_address.should_not be_valid
+    end
+
+    it "都道府県：　範囲外" do
+      @valid_address.prefecture_id = 48
       @valid_address.should_not be_valid
     end
     

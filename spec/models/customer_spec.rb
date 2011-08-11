@@ -120,6 +120,11 @@ describe Customer do
     @customer.should_not be_valid
   end
 
+  it "都道府県: 範囲外" do
+    @customer.prefecture_id = 48
+    @customer.should_not be_valid
+  end
+
   it "住所1: 必須" do
     @customer.address_city = nil
     @customer.should_not be_valid
