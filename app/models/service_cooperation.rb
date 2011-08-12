@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'csv'
 require 'nkf'
 
@@ -86,6 +87,7 @@ class ServiceCooperation < ActiveRecord::Base
     begin
       lists = ActiveRecord::Base.connection.execute(sql)
       return nil if lists.nil?
+      logger.debug lists.class
       # ファイル形式によって異なる処理
       # CSV - TSV
       return csv_tsv_generate(lists)
@@ -97,18 +99,19 @@ class ServiceCooperation < ActiveRecord::Base
 private
   # CSV,TSVの出力を行う
   def csv_tsv_generate(lists)
+    logger.debug lists
     f = StringIO.new('','w')
     CSV::Writer.generate(f, FILE_TYPES[file_type][:delimiter], NEWLINE_CHARACTERS[newline_character][:code]) do | writer |
       # カラム名を挿入
       writer << field_items.split(",")
       logger.debug field_items.split(",")
       lists.each do | items |
-        columns = []
-        items.each do | item |
-          logger.debug item
-          columns << item
+        # ResultSetがHashのケースとArrayのケースがある
+        if items.respond_to?('values')
+          writer << items.values
+        else
+          writer << items
         end
-        writer << columns
       end
       return NKF.nkf(ENCODE_TYPES[encode][:option] ,f.string)
     end
