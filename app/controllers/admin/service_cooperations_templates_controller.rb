@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 class Admin::ServiceCooperationsTemplatesController < Admin::BaseController
+  before_filter :admin_permission_check_service_cooperation
 
   def index
     @templates = ServiceCooperationsTemplate.all

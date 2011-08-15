@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 require "json"
 
 class Admin::ServiceCooperationsController < Admin::BaseController
+  before_filter :admin_permission_check_service_cooperation
 
   def index
     @services = ServiceCooperation.all
@@ -42,6 +44,8 @@ class Admin::ServiceCooperationsController < Admin::BaseController
         json = JSON::pretty_generate(data)
         render :text => json.to_s
       end
+    else
+      render :text => ""
     end
   end
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'spec_helper'
 
 describe Admin::ServiceCooperationsController do
@@ -5,7 +6,7 @@ describe Admin::ServiceCooperationsController do
   
   before do
     session[:admin_user] = admin_users(:admin10)
-    @controller.class.skip_before_filter :admin_permission_check_template
+    @controller.class.skip_before_filter :admin_permission_check_service_cooperation
   end
 
   describe "GET 'index'管理画面サービス一覧ページ" do
