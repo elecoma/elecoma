@@ -2,6 +2,7 @@ class ProductsController < BaseController
   before_filter :load_product, :only => %w(show stock_table)
   before_filter :load_recommend_products, :only => %w(show)
   before_filter :load_recommend_ranking_products, :only => %w(show index)
+  before_filter :check_search, :only => %w(index search)
   
   def show
     load_seo_products_detail
@@ -110,6 +111,13 @@ class ProductsController < BaseController
   
   def load_recommend_ranking_products
     @recommend_xmls = Recommend.ranking_get(4)    
+  end
+
+  def check_search
+    if params[:search] && params[:search].length > 100
+      params[:search] = params[:search][0, 100]
+      redirect_to :action => params[:action], :params => params
+    end
   end
 
 end
