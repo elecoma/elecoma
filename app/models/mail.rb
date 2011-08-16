@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 class Mail < ActiveRecord::Base
   THRESHOLD = 5
+  SLEEP = 60
   def self.post_all_mail
-    mails = Mail.find(:all, :conditions=>'sent_at is null', :order=>'created_at')
+    mails = Mail.find(:all, :conditions=>'sent_at is null', :order=>'created_at', :limit=>100)
     mails = mails.each do |m|
       customer = Customer.find_by_email_and_activate(m.to_address, Customer::TOUROKU)
       customer && customer.reachable
@@ -51,6 +52,13 @@ class Mail < ActiveRecord::Base
       newmail.save
     end
     customer.save
+  end
+
+  def self.do_daemon
+    loop do
+      post_all_mail
+      sleep SLEEP
+    end
   end
 
 end
