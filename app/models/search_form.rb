@@ -99,6 +99,18 @@ class SearchForm < ActiveForm
       selected_time = true
     end
 
+    if not year.blank? and year.to_i <= 0
+      return
+    end
+
+    if not month.blank? and (month.to_i < 1 or month.to_i > 12)
+      return
+    end
+
+    if not day.blank? and (day.to_i < 1 or day.to_i > 31)
+      return
+    end
+
     now = DateTime.now
     if selected_date
       if year.blank?

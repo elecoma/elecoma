@@ -106,6 +106,34 @@ describe Admin::ProductsController do
     end
   end
 
+  describe "GET 'search' でエラーになるケース" do
+    before do
+      @minus_value_start = ["-2000", "3", "24"]
+      @minus_value_end = ["-1999", "3", "24"]
+      @old_value_start = ["1800", "3", "24"]
+      @old_value_end = ["1801", "3", "24"]
+    end
+
+    it "sale_start_atにマイナスの日付" do
+      search = {}
+      search.merge! array_to_time(@minus_value_start, 'sale_start_at_start')
+      search.merge! array_to_time(@minus_value_end, 'sale_start_at_end')
+      get "search", :search => search
+    end
+    it "sale_start_atに古すぎる日付" do
+      search = {}
+      search.merge! array_to_time(@old_value_start, 'sale_start_at_start')
+      search.merge! array_to_time(@old_value_end, 'sale_start_at_end')
+      get "search", :search => search
+    end
+    
+    after do
+      response.should be_success
+    end
+
+  end
+
+
   describe "GET 'new'" do
     it "normal" do
       get 'new'

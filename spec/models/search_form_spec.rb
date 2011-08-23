@@ -43,6 +43,11 @@ describe SearchForm do
       search_form.month.should_not be_nil
       search_form.month.should == Time.parse("2009-01-01 00:00:00")
     end
+    it "データセット(検索用年月日) 空文字でも正常に対応できるか確認" do
+      search_form = SearchForm.new({"month(1i)"=>"2009", "month(2i)" => ""})
+      search_form.month.should_not be_nil
+      search_form.month.should == Time.parse("2009-01-01 00:00:00")
+    end
     it "その他" do
       TestForm.human_attribute_name("customer_id").should == "顧客コード"
       TestForm.field_names.should == {"customer_id" => "顧客コード","customer_name" => "顧客名"}

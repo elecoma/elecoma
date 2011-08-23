@@ -79,4 +79,11 @@ def datetime_to_select datetime, name
   }
 end
 
+def array_to_time array, name
+  {
+    name+'(1i)' => array[0],
+    name+'(2i)' => array[1],
+    name+'(3i)' => array[2]
+  }
+end
 
