@@ -4,15 +4,14 @@ class ServiceCooperationsTemplate < ActiveRecord::Base
 
   validates_length_of :template_name, :service_name, :maximum => 200, :allow_nil => true
   validates_length_of :url_file_name, :maximum => 30, :allow_nil => true
-  validates_length_of :sql, :maximum => 2000, :allow_nil => true
   validates_length_of :description, :maximum => 9999, :allow_nil => true
   validates_format_of :url_file_name, :with => /^[a-zA-Z0-9_]*$/, :message => "に使用できるのは英数字と'_'になります", :allow_nil => true
 
   validate :valid_file_type, :valid_encode, :valid_newline_character, :valid_sql_dangerous_word
 
   def valid_sql_dangerous_word
-    if /(\s|\A)(ALTER|CREATE|DROP|DELETE|ANALYZE|COMMIT|COPY|END)(\s|\Z)/i =~ sql
-      errors.add :sql, "に'ALTER','CREATE','DROP','DELETE','ANALYZE','COMMIT','COPY','END' は使用しないで下さい。"
+    if /(\s|\A)(ALTER|CREATE|DROP|DELETE|ANALYZE|COMMIT|COPY)(\s|\Z)/i =~ sql
+      errors.add :sql, "に'ALTER','CREATE','DROP','DELETE','ANALYZE','COMMIT','COPY' は使用しないで下さい。"
     end
   end
 
