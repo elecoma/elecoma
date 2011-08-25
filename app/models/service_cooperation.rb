@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 require 'csv'
 require 'nkf'
 
@@ -33,12 +32,10 @@ class ServiceCooperation < ActiveRecord::Base
 
   validates_length_of :name, :maximum => 200
   validates_length_of :url_file_name, :maximum => 30
-  validates_length_of :sql, :maximum => 2000
-  validates_length_of :field_items, :maximum => 300
 
   def valid_sql_dangerous_word
-    if /(\s|\A)(ALTER|CREATE|DROP|DELETE|ANALYZE|COMMIT|COPY|END)(\s|\Z)/i =~ sql
-      errors.add :sql, "に'ALTER','CREATE','DROP','DELETE','ANALYZE','COMMIT','COPY','END' は使用しないで下さい。"
+    if /(\s|\A)(ALTER|CREATE|DROP|DELETE|ANALYZE|COMMIT|COPY)(\s|\Z)/i =~ sql
+      errors.add :sql, "に'ALTER','CREATE','DROP','DELETE','ANALYZE','COMMIT','COPY' は使用しないで下さい。"
     end
   end
 
@@ -99,14 +96,12 @@ class ServiceCooperation < ActiveRecord::Base
 private
   # CSV,TSVの出力を行う
   def csv_tsv_generate(lists)
-    logger.debug lists
     f = StringIO.new('','w')
     CSV::Writer.generate(f, FILE_TYPES[file_type][:delimiter], NEWLINE_CHARACTERS[newline_character][:code]) do | writer |
       # カラム名を挿入
       writer << field_items.split(",")
       logger.debug field_items.split(",")
       lists.each do | items |
-        # ResultSetがHashのケースとArrayのケースがある
         if items.respond_to?('values')
           writer << items.values
         else

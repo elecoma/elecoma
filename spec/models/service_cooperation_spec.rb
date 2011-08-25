@@ -136,7 +136,6 @@ describe ServiceCooperation do
       "ANALYZE non_actual",
       "COMMIT",
       "COMMIT PREPARED 'foober'",
-      "END",
       "COPY name FROM products ORDER BY id",
       "copy name from products order by id"
     ]
