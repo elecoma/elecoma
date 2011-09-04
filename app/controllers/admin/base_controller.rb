@@ -174,4 +174,9 @@ class Admin::BaseController < ApplicationController
     end
   end
 
+  protected
+  def ssl_required?
+    true
+  end
+
 end
