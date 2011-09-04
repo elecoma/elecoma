@@ -228,6 +228,16 @@ describe Admin::ShopsController do
       get 'delivery_create', :delivery_trader=>delivery_trader,:delivery_time=>@delivery_time,:delivery_fee=>@delivery_fee
       response.should redirect_to(:action=>:delivery_index)
     end
+
+    it "マイナスの配送料は登録できない" do
+      delivery_fee_error = {}
+      DeliveryFee::MAX_SIZE.times do |i|
+        delivery_fee_error["#{i}"]={:price=> "-100"}
+      end
+      get 'delivery_create', :delivery_trader=>@delivery_trader,:delivery_time=>@delivery_time,:delivery_fee=>delivery_fee_error
+      response.should render_template("admin/shops/delivery_new.html.erb")
+    end
+
   end
   
   

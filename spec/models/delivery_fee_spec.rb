@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe DeliveryFee do
@@ -21,6 +22,11 @@ describe DeliveryFee do
       @delivery_fee.price = '123'
       @delivery_fee.should be_valid
       @delivery_fee.price = 'abc'
+      @delivery_fee.should_not be_valid
+    end
+
+    it "金額  マイナス不許可" do
+      @delivery_fee.price = '-123'
       @delivery_fee.should_not be_valid
     end
   end
