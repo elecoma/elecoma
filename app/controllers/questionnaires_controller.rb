@@ -1,4 +1,4 @@
-#class QuestionnairesController < ApplicationController
+# -*- coding: utf-8 -*-
 class QuestionnairesController < BaseController
   before_filter :get_questionnaire
 
@@ -113,8 +113,8 @@ class QuestionnairesController < BaseController
   #アンケートを取得
   def get_questionnaire
     begin
-      @questionnaire = Questionnaire.find(params[:id])
-      @questions = Question.find(:all, :conditions=>["questionnaire_id=? and content is not null and question_choice_id <> 0", params[:id]], :order=>"position")
+      @questionnaire = Questionnaire.find(params[:id].to_i)
+      @questions = Question.find(:all, :conditions=>["questionnaire_id=? and content is not null and question_choice_id <> 0", params[:id].to_i], :order=>"position")
     rescue
       false
     end

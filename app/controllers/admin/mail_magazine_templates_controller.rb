@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Admin::MailMagazineTemplatesController < Admin::BaseController
   resource_controller
   mobile_filter
@@ -16,7 +17,7 @@ class Admin::MailMagazineTemplatesController < Admin::BaseController
   end
 
   def preview
-    @mail_magazine_template = MailMagazineTemplate.find_by_id(params[:id]) || MailMagazineTemplate.new
+    @mail_magazine_template = MailMagazineTemplate.find_by_id(params[:id].to_i) || MailMagazineTemplate.new
     unless @mail_magazine_template.id
       flash.now[:error] = "データがありません"
     end

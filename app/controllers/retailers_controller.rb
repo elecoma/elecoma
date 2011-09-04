@@ -4,11 +4,11 @@ class RetailersController < BaseController
       redirect_to :controller => :portal, :action => :show
       return
     end
-    @retailer = Retailer.find_by_id(params[:id])
+    @retailer = Retailer.find_by_id(params[:id].to_i)
     unless @retailer
       redirect_to :controller => :portal, :action => :show
       return
     end
-    @delivery_traders = DeliveryTrader.find(:all, :conditions => ["retailer_id = ?", params[:id]])
+    @delivery_traders = DeliveryTrader.find(:all, :conditions => ["retailer_id = ?", params[:id].to_i])
   end
 end

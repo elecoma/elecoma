@@ -12,7 +12,7 @@ class Admin::NewInformationsController < Admin::BaseController
   end
 
   def confirm
-    @new_information = NewInformation.find_by_id(params[:id]) || NewInformation.new
+    @new_information = NewInformation.find_by_id(params[:id].to_i) || NewInformation.new
     @new_information.attributes = params[:new_information]
     unless @new_information.valid?
       #redirect_to :action => (params[:id].blank? ? "new" : "edit")
@@ -34,9 +34,10 @@ class Admin::NewInformationsController < Admin::BaseController
     #params[:id] = params[:id] || params[:new_information][:id]
     #p params[:id]
     unless params[:new_information].blank?
-      @new_information = NewInformation.find_by_id(params[:new_information][:id])
+      @new_information = NewInformation.find_by_id(params[:new_information][:id].to_i)
+      raise ActiveRecord::RecordNotFound unless @new_information
       @new_information.attributes = params[:new_information]
-      params[:id] = params[:new_information][:id]
+      params[:id] = params[:new_information][:id].to_i
     end
   end
 

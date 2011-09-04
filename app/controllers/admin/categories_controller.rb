@@ -3,7 +3,7 @@ class Admin::CategoriesController < Admin::BaseController
   before_filter :master_shop_check
 
   index.before do
-    @category = Category.find_by_id(params[:id])
+    @category = Category.find_by_id(params[:id].to_i)
     if @category
       params[:category_id] ||= @category.parent_id 
     end

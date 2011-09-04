@@ -214,7 +214,7 @@ class AccountsController < BaseController
   end
 
   def history_show
-    @order = @login_customer.orders.find_by_id(params[:id])
+    @order = @login_customer.orders.find_by_id(params[:id].to_i)
     raise ActiveRecord::RecordNotFound unless @order
     @order_delivery = @order.order_deliveries[0]
   end
@@ -301,7 +301,7 @@ class AccountsController < BaseController
     @stage = (params[:stage] || 0).to_i
     params[:done] && !params[:back] and return delivery_update
     @id = params[:id].to_i
-    @delivery_address = find_delivery_address @login_customer, params[:id]
+    @delivery_address = find_delivery_address @login_customer, params[:id].to_i
     if request.method == :post
       get_delivery_address
     end
@@ -317,7 +317,7 @@ class AccountsController < BaseController
   def delivery_update
     @popup = !params[:popup].blank? && params[:popup] == "true"
     @id = params[:id].to_i
-    @delivery_address = find_delivery_address @login_customer, params[:id]
+    @delivery_address = find_delivery_address @login_customer, params[:id].to_i
     @delivery_address.attributes = params[:delivery_address]
     unless @delivery_address.valid?
       return render(:action => 'delivery_edit')
@@ -345,7 +345,7 @@ class AccountsController < BaseController
       if params[:back]
         return (@popup ? delivery_edit_popup : delivery_edit)
       end
-      @delivery_address = find_delivery_address @login_customer, params[:id]
+      @delivery_address = find_delivery_address @login_customer, params[:id].to_i
     end
     @delivery_address.attributes = params[:delivery_address] if @delivery_address
     if @delivery_address && @delivery_address.save
@@ -365,7 +365,7 @@ class AccountsController < BaseController
   end
 
   def delivery_destroy
-    @delivery_address = find_delivery_address @login_customer, params[:id]
+    @delivery_address = find_delivery_address @login_customer, params[:id].to_i
     if @delivery_address and @delivery_address.destroy
       flash.now[:notice] = '削除しました。'
     else

@@ -188,12 +188,12 @@ describe Admin::ServiceCooperationsTemplatesController do
     end
     it "レコードが１つ減ったか" do
       services_length = (ServiceCooperationsTemplate.all).length
-      get 'destroy',:id => service_cooperations_templates(:one)
+      get 'destroy',:id => service_cooperations_templates(:one).id
       services_length.should == (ServiceCooperationsTemplate.all).length + 1
     end
     it "意図したレコードが削除されたか" do
       ServiceCooperationsTemplate.find_by_id(service_cooperations_templates(:one)).should_not be_nil
-      get 'destroy',:id => service_cooperations_templates(:one)
+      get 'destroy',:id => service_cooperations_templates(:one).id
       ServiceCooperationsTemplate.find_by_id(service_cooperations_templates(:one)).should be_nil
     end
     it "無効なidの場合はレコード数は増減しない" do
@@ -223,7 +223,7 @@ def service_cooperations_template_new_before_do
 end
 
 def service_cooperations_template_edit_before_do
-  get 'edit', :id => service_cooperations_templates(:one)
+  get 'edit', :id => service_cooperations_templates(:one).id
   @service_template = assigns[:service_cooperations_template]
   @service_template.template_name = 'test_update_template'
   @service_template.description = '設定'

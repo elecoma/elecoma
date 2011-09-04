@@ -225,14 +225,14 @@ class Admin::MailMagazinesController < Admin::BaseController
   end
 
   def preview
-    mm = MailMagazine.find(params[:id])
+    mm = MailMagazine.find(params[:id].to_i)
     @subject = mm.subject
     @body = mm.body.gsub(/\n/,'<br/>') if mm.body
     render :layout=>false
   end
 
   def condition_view
-    mm = MailMagazine.find(params[:id])
+    mm = MailMagazine.find(params[:id].to_i)
     @condition = {}
     if mm && mm.condition
       @condition = YAML.load(mm.condition)

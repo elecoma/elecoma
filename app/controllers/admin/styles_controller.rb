@@ -4,7 +4,7 @@ class Admin::StylesController < Admin::BaseController
   
   index.before do
     @styles = Style.find(:all, :conditions=>["retailer_id = ? ", session[:admin_user].retailer_id], :order => "position")
-    @style = Style.find(:last, :conditions=>["id = ? and retailer_id = ? ", params[:id], session[:admin_user].retailer_id]) || Style.new
+    @style = Style.find(:last, :conditions=>["id = ? and retailer_id = ? ", params[:id].to_i, session[:admin_user].retailer_id]) || Style.new
   end
   
   new_action.wants.html do
@@ -34,7 +34,7 @@ class Admin::StylesController < Admin::BaseController
 
   private
   def object
-    @object ||= Style.find(:last, :conditions => ["id = ? and retailer_id = ? ", params[:id], session[:admin_user].retailer_id])
+    @object ||= Style.find(:last, :conditions => ["id = ? and retailer_id = ? ", params[:id].to_i, session[:admin_user].retailer_id])
   end
 
 end

@@ -31,7 +31,7 @@ class Admin::ProductsController < Admin::BaseController
     get_product_status_by_params
     get_sub_product_by_params
     if params[:copy]
-      @old_product = Product.find_by_id(params[:id])
+      @old_product = Product.find_by_id(params[:id].to_i)
       @old_product.id = nil
       params[:id] = nil
       @product = Product.new @old_product.attributes.reject{ |key, value| key.to_s == "id" }
@@ -64,7 +64,7 @@ class Admin::ProductsController < Admin::BaseController
   edit.before do
     get_product
 
-    @product_statuses = ProductStatus.find(:all, :conditions=>["product_id=?", params[:id]])
+    @product_statuses = ProductStatus.find(:all, :conditions=>["product_id=?", params[:id].to_i])
     get_sub_product_by_params
     get_product_status_by_params
   end

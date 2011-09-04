@@ -1,15 +1,16 @@
+# -*- coding: utf-8 -*-
 class Admin::ProductStylesController < Admin::BaseController
   before_filter :admin_permission_check_product,
     :only => [:create, :new]
   
   def new
-    @product = Product.find_by_id(params[:id])
-    set_product_styles(params[:id])
+    @product = Product.find_by_id(params[:id].to_i)
+    set_product_styles(params[:id].to_i)
     set_style_category
   end
 
   def create_form
-    @product = Product.find_by_id(params[:id])
+    @product = Product.find_by_id(params[:id].to_i)
     set_style_category
     if @style1.nil? && ! @style2.nil?
       @error_message = "規格1が無い状態で規格 2を登録出来ません。"
@@ -47,7 +48,7 @@ class Admin::ProductStylesController < Admin::BaseController
   
   #在庫管理履歴プレビュー
   def stock_histories
-    product_style_id = params[:id]
+    product_style_id = params[:id].to_i
     if !product_style_id.blank? && product_style_id=~ /^\d*$/
       @product_style = ProductStyle.find_by_id(product_style_id.to_i)
       if !@product_style.blank?
@@ -63,8 +64,8 @@ class Admin::ProductStylesController < Admin::BaseController
   def set_style_category
     @product_product_styles ||= []
     if params[:style_id1]
-      @style1 = Style.find_by_id(params[:style_id1]) unless params[:style_id1].blank?
-      @style2 = Style.find_by_id(params[:style_id2]) unless params[:style_id2].blank?
+      @style1 = Style.find_by_id(params[:style_id1].to_i) unless params[:style_id1].blank?
+      @style2 = Style.find_by_id(params[:style_id2].to_i) unless params[:style_id2].blank?
       if @product_product_styles.blank?
         @product.product_styles.each do | p_s |
           @product_product_styles << p_s
@@ -94,7 +95,7 @@ class Admin::ProductStylesController < Admin::BaseController
     end
   end
 
-  def set_product_styles(id = params[:product_id])
+  def set_product_styles(id = params[:product_id].to_i)
     @product = Product.find_by_id(id)
     if params[:product_styles]
       @product_styles = []

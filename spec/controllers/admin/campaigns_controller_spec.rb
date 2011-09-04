@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe Admin::CampaignsController do
@@ -75,6 +76,11 @@ describe Admin::CampaignsController do
       get 'csv_download', :id => 1
       response.headers['Content-Type'].should =~ %r(^application/octet-stream)
     end
+    
+    it "should raise error" do
+      lambda { get 'csv_download', :id => 0 }.should raise_error(ActiveRecord::RecordNotFound)
+    end
+
   end
 
   describe "POST 'campaign_design'" do

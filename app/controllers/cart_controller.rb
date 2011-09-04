@@ -515,7 +515,7 @@ class CartController < BaseController
     @carts ||= []
     product_style =
       if params[:product_style_id]
-        ProductStyle.find_by_id(params[:product_style_id])
+        ProductStyle.find_by_id(params[:product_style_id].to_i)
       else
         ProductStyle.find_by_product_id_and_style_category_id1_and_style_category_id2(params[:product_id], params[:style_category_id1], params[:style_category_id2])
       end

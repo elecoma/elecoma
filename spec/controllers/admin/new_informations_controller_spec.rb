@@ -64,7 +64,7 @@ describe Admin::NewInformationsController do
       assigns[:new_information].id.should == new_informations(:success_validates_2).id
       assigns[:new_information].date.should == DateTime.parse("2008-01-01")
       #assigns[:status].should == "confirm"
-      response.should redirect_to("admin/new_informations")
+      response.should redirect_to(:action => :index)
     end
 
     it "recordのvalidateが通らなかったらstatusはupdateになる" do
@@ -163,6 +163,11 @@ describe Admin::NewInformationsController do
     it "編集画面に遷移できない場合" do
       lambda { get 'edit', :id => 100 }.should raise_error(ActiveRecord::RecordNotFound)
     end
+
+    it "new_informationに不正な値をいれてみるとエラーになる" do
+      lambda { get 'edit', :id => 1, :new_information => {"id" => "0", "date" => "2009-11-13 15:42:00 +0900", "name" => 'test', "new_window" => 0, "body" => ''} }.should raise_error(ActiveRecord::RecordNotFound)
+    end
+
   end
 
   describe "POST 'confirm'" do

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CampaignsController < BaseController
   before_filter :login_check, :only => [:complete, :show]
   def show
@@ -42,7 +43,7 @@ class CampaignsController < BaseController
 
   #応募人数の更新とcampaign_entryにレコードを追加
   def complete
-    @id = params[:id]
+    @id = params[:id].to_i
     @campaign = Campaign.find(@id)
     @campaign.application_count = 0 if @campaign.application_count.blank?
 

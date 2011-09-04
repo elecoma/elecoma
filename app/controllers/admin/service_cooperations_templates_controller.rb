@@ -11,7 +11,7 @@ class Admin::ServiceCooperationsTemplatesController < Admin::BaseController
   end
 
   def edit
-    @service_cooperations_template = ServiceCooperationsTemplate.find_by_id(params[:id])
+    @service_cooperations_template = ServiceCooperationsTemplate.find_by_id(params[:id].to_i)
     if @service_cooperations_template.nil?
       flash[:notice] = '無効なidが渡されました'
       redirect_to :action => 'index'
@@ -19,7 +19,7 @@ class Admin::ServiceCooperationsTemplatesController < Admin::BaseController
   end
 
   def confirm
-    @service_cooperations_template = ServiceCooperationsTemplate.find_by_id(params[:id]) || ServiceCooperationsTemplate.new
+    @service_cooperations_template = ServiceCooperationsTemplate.find_by_id(params[:id].to_i) || ServiceCooperationsTemplate.new
     @service_cooperations_template.attributes = params[:service_cooperations_template]
     unless @service_cooperations_template.valid?
       if params[:id].blank?
@@ -44,7 +44,7 @@ class Admin::ServiceCooperationsTemplatesController < Admin::BaseController
   end
 
   def update
-    @service_cooperations_template = ServiceCooperationsTemplate.find_by_id(params[:id])
+    @service_cooperations_template = ServiceCooperationsTemplate.find_by_id(params[:id].to_i)
     @service_cooperations_template.attributes = params[:service_cooperations_template]
     if @service_cooperations_template.save
       flash[:notice] = 'テンプレートは正常に更新されました'
@@ -56,7 +56,7 @@ class Admin::ServiceCooperationsTemplatesController < Admin::BaseController
   end
 
   def destroy
-    service_template = ServiceCooperationsTemplate.find_by_id(params[:id])
+    service_template = ServiceCooperationsTemplate.find_by_id(params[:id].to_i)
     if service_template
       service_template.destroy
     else

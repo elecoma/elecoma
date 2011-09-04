@@ -186,7 +186,7 @@ describe Admin::ServiceCooperationsController do
   describe "GET 'destroy'" do
     it "レコードが１つ減ったか" do
       services_length = (ServiceCooperation.all).length
-      get 'destroy', :id => service_cooperations(:one)
+      get 'destroy', :id => service_cooperations(:one).id
       services_length.should == (ServiceCooperation.all).length + 1
     end
     it "意図したレコードが削除されたか" do

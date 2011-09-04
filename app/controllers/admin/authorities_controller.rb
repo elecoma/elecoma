@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Admin::AuthoritiesController < Admin::BaseController
   #共通
   resource_controller
@@ -41,7 +42,7 @@ class Admin::AuthoritiesController < Admin::BaseController
 
     if type
       back_to = "edit"
-      @authority = Authority.find_by_id(params[:id])
+      @authority = Authority.find_by_id(params[:id].to_i)
       @authority.attributes = params[:authority]
     else
       back_to = "new"

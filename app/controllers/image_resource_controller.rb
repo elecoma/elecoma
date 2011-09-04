@@ -7,7 +7,7 @@ class ImageResourceController < BaseController
       @res = ImageResource.find_by_name(params[:filename])
     end
     if params[:id]
-      @res ||= ImageResource.find_by_id(params[:id])
+      @res ||= ImageResource.find_by_id(params[:id].to_i)
     end
     raise ActiveRecord::RecordNotFound unless @res
     if request.mobile?

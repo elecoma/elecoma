@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Admin::FeatureProductsController < Admin::BaseController
   #共通
   resource_controller
@@ -6,7 +7,7 @@ class Admin::FeatureProductsController < Admin::BaseController
 
   #indexの前処理
   index.before do
-    @feature = Feature.find_by_id(params[:feature_id])
+    @feature = Feature.find_by_id(params[:feature_id].to_i)
     if @feature
       @feature_products = @feature.feature_products
     else
@@ -17,8 +18,8 @@ class Admin::FeatureProductsController < Admin::BaseController
   
   #newの前処理
   new_action.before do
-    #@feature = Feature.find_by_id(params[:feature_id])
-    @feature_product = FeatureProduct.new({:feature_id => params[:feature_id]})
+    #@feature = Feature.find_by_id(params[:feature_id].to_i)
+    @feature_product = FeatureProduct.new({:feature_id => params[:feature_id].to_i})
     @feature_product.attributes = params[:feature_product]
   end
   
@@ -75,7 +76,7 @@ class Admin::FeatureProductsController < Admin::BaseController
   def set_resource_old
     #画像入力欄に選択された場合のみ=>選択した画像
     #それ以外、商品一覧の画像で表示・登録
-    product = Product.find_by_id(params[:feature_product][:product_id]) 
+    product = Product.find_by_id(params[:feature_product][:product_id].to_i) 
     small_resource = product.small_resource if product
     if params[:feature_product_image_resource_old_id] && params[:feature_product_image_resource_old_id] == 0.to_s && params[:feature_product][:image_resource].blank?
       @feature_product[:image_resource_id] = small_resource.id

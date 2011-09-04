@@ -15,7 +15,7 @@ class Admin::OrdersController < Admin::BaseController
   end
 
   def edit
-    order_delivery = OrderDelivery.find_by_order_id(params[:id])
+    order_delivery = OrderDelivery.find_by_order_id(params[:id].to_i)
     raise ActiveRecord::RecordNotFound if order_delivery.nil? || order_delivery.order.retailer_id != session[:admin_user].retailer_id
     if params[:recalculate]
       recalculate
@@ -25,7 +25,7 @@ class Admin::OrdersController < Admin::BaseController
       update
       return
     end
-    @order_delivery = OrderDelivery.find_by_order_id(params[:id])
+    @order_delivery = OrderDelivery.find_by_order_id(params[:id].to_i)
     @order_delivery_ticket = @order_delivery.ticket_code
     select_delivery_time
   end
@@ -40,7 +40,7 @@ class Admin::OrdersController < Admin::BaseController
 
   def update
     get_order_delivery
-    #@order_delivery = OrderDelivery.find_by_order_id(params[:id])
+    #@order_delivery = OrderDelivery.find_by_order_id(params[:id].to_i)
     if @order_delivery.nil? || @order_delivery.order.retailer_id != session[:admin_user].retailer_id
       raise ActiveRecord::RecordNotFound
     end
@@ -53,7 +53,7 @@ class Admin::OrdersController < Admin::BaseController
         redirect_to :action => 'index'
       end
     rescue => e
-      @order_delivery = OrderDelivery.find_by_order_id(params[:id])
+      @order_delivery = OrderDelivery.find_by_order_id(params[:id].to_i)
       @order_delivery_ticket = @order_delivery.ticket_code
       select_delivery_time
       flash.now[:error] = "保存に失敗しました"
@@ -63,7 +63,7 @@ class Admin::OrdersController < Admin::BaseController
 
   def destroy
     # 親と子も消す
-    order_delivery = OrderDelivery.find(:first, :conditions => ["order_id=?", params[:id]])
+    order_delivery = OrderDelivery.find(:first, :conditions => ["order_id=?", params[:id].to_i])
     begin
       raise if order_delivery.nil? || order_delivery.order.retailer_id != session[:admin_user].retailer_id
       order_delivery.order_details.each(&:destroy)
@@ -110,7 +110,7 @@ class Admin::OrdersController < Admin::BaseController
   end
 
   def get_order_delivery
-    @order_delivery = OrderDelivery.find_by_order_id(params[:id])
+    @order_delivery = OrderDelivery.find_by_order_id(params[:id].to_i)
     @order_delivery.attributes = params[:order_delivery]
   end
 

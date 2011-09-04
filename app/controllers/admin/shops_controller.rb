@@ -66,7 +66,7 @@ class Admin::ShopsController < Admin::BaseController
   end
 
   def delivery_edit
-    @delivery_trader = DeliveryTrader.find(params[:id])
+    @delivery_trader = DeliveryTrader.find(params[:id].to_i)
     @delivery_time = @delivery_trader.delivery_times
     @delivery_fee = @delivery_trader.delivery_fees
   end
@@ -115,7 +115,7 @@ class Admin::ShopsController < Admin::BaseController
   end
 
   def delivery_update
-    @delivery_trader = DeliveryTrader.find(params[:id])
+    @delivery_trader = DeliveryTrader.find(params[:id].to_i)
     @delivery_time = @delivery_trader.delivery_times
     @delivery_fee =@delivery_trader.delivery_fees
     DeliveryTime::MAX_SIZE.times do |index|
@@ -139,7 +139,7 @@ class Admin::ShopsController < Admin::BaseController
     DeliveryTrader.transaction do
       if @delivery_trader.delivery_times << @delivery_time && @delivery_trader.delivery_fees << @delivery_fee&& @delivery_trader.save
         flash.now[:notice] = "データを保存しました"
-        redirect_to :action => "delivery_index",:id=>params[:id]
+        redirect_to :action => "delivery_index",:id=>params[:id].to_i
       else
         flash.now[:error] = "保存に失敗しました"
         render :action => "delivery_edit"
@@ -189,7 +189,7 @@ class Admin::ShopsController < Admin::BaseController
   end
 
   def payment_edit
-    @payment = Payment.find(params[:id])
+    @payment = Payment.find(params[:id].to_i)
     if !@payment.id
       flash.now[:error] = "該当するデータがありませんでした"
       redirect_to :action=>:payment_new
@@ -214,7 +214,7 @@ class Admin::ShopsController < Admin::BaseController
   end
 
   def payment_update
-    @payment = Payment.find(params[:id])
+    @payment = Payment.find(params[:id].to_i)
     @payment.attributes = params[:payment]
     set_payment_resource_old
     unless @payment.valid?
@@ -336,7 +336,7 @@ class Admin::ShopsController < Admin::BaseController
   def kiyaku_index
     kiyaku_list
     if params[:id]
-      @kiyaku = Kiyaku.find_by_id(params[:id])
+      @kiyaku = Kiyaku.find_by_id(params[:id].to_i)
     else
       @kiyaku = Kiyaku.new
     end
@@ -362,7 +362,7 @@ class Admin::ShopsController < Admin::BaseController
   end
 
   def kiyaku_update
-    @kiyaku = Kiyaku.find(params[:kiyaku][:id])
+    @kiyaku = Kiyaku.find(params[:kiyaku][:id].to_i)
     @kiyaku.attributes = params[:kiyaku]
     unless @kiyaku.valid?
       kiyaku_list

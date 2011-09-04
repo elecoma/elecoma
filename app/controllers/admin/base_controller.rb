@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Admin::BaseController < ApplicationController
   before_filter :load_system
   before_filter :load_admin
@@ -10,21 +11,21 @@ class Admin::BaseController < ApplicationController
   }
   def up
     get_model(params[:model])
-    @record = @model.find_by_id(params[:id])
+    @record = @model.find_by_id(params[:id].to_i)
     @record.move_higher
     @record.save
   end
 
   def down
     get_model(params[:model])
-    @record = @model.find_by_id(params[:id])
+    @record = @model.find_by_id(params[:id].to_i)
     @record.move_lower
     @record.save
   end
 
   def change_position
     get_model
-    @record = @model.find_by_id(params[:id])
+    @record = @model.find_by_id(params[:id].to_i)
     @record.insert_at(params[:position])
     @record.save
   end

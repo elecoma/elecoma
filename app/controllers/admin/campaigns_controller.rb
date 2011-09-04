@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'kconv'
 
 class Admin::CampaignsController < Admin::BaseController
@@ -26,9 +27,9 @@ class Admin::CampaignsController < Admin::BaseController
   end
 
   def csv_download
-    campaign = Campaign.find(params[:id])
+    campaign = Campaign.find(params[:id].to_i)
     result = Campaign.csv(campaign)
-    filename = "campaign#{params[:id]}_#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"
+    filename = "campaign#{params[:id].to_i}_#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"
     headers['Content-Type'] = "application/octet-stream; name=#{filename}"
     headers['Content-Disposition'] = "attachment; filename=#{filename}"
     render :text => Iconv.conv('cp932', 'UTF-8', result)
@@ -36,14 +37,14 @@ class Admin::CampaignsController < Admin::BaseController
 
   def campaign_design
     @type = params[:type]
-    @id = params[:id]
+    @id = params[:id].to_i
     @campaign = Campaign.find(:first, :conditions=>["id=?", @id])
     get_form_names(@type)
   end
 
   def campaign_design_update
     @campaign.attributes = params[:campaign]
-    @id = params[:id]
+    @id = params[:id].to_i
     @type = params[:type]
 
     get_form_names(@type)
@@ -57,7 +58,7 @@ class Admin::CampaignsController < Admin::BaseController
   end
 
   def campaign_preview
-    @id = params[:id]
+    @id = params[:id].to_i
     @type = params[:type]
     @campaign = Campaign.find(:first, :conditions=>["id=?", @id])
     unless @campaign.product_id.blank?
@@ -106,7 +107,7 @@ class Admin::CampaignsController < Admin::BaseController
   private
 
   def design_init
-    @campaign = Campaign.find_by_id(params[:id])
+    @campaign = Campaign.find_by_id(params[:id].to_i)
   end
 
   def get_form_names(type)

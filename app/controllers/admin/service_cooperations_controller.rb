@@ -13,7 +13,7 @@ class Admin::ServiceCooperationsController < Admin::BaseController
   end
 
   def edit
-    @service_cooperation = ServiceCooperation.find_by_id(params[:id])
+    @service_cooperation = ServiceCooperation.find_by_id(params[:id].to_i)
     if @service_cooperation.nil?
       flash[:notice] = '無効なidが渡されました'
       redirect_to :action => "index"
@@ -21,7 +21,7 @@ class Admin::ServiceCooperationsController < Admin::BaseController
   end
 
   def get_template_ajax
-    template_id = params[:id]
+    template_id = params[:id].to_i
     unless template_id.blank?
       service_template = ServiceCooperationsTemplate.find_by_id(template_id)
       unless service_template.nil?
@@ -50,7 +50,7 @@ class Admin::ServiceCooperationsController < Admin::BaseController
   end
 
   def confirm
-    @service_cooperation = ServiceCooperation.find_by_id(params[:id]) || ServiceCooperation.new
+    @service_cooperation = ServiceCooperation.find_by_id(params[:id].to_i) || ServiceCooperation.new
     @service_cooperation.attributes = params[:service_cooperation]
 
     unless @service_cooperation.valid?
@@ -75,7 +75,7 @@ class Admin::ServiceCooperationsController < Admin::BaseController
   end
 
   def update
-    @service_cooperation = ServiceCooperation.find_by_id(params[:id])
+    @service_cooperation = ServiceCooperation.find_by_id(params[:id].to_i)
     @service_cooperation.attributes = params[:service_cooperation]
     if @service_cooperation.save
       flash[:notice] = 'サービスは正常に更新されました'
@@ -87,7 +87,7 @@ class Admin::ServiceCooperationsController < Admin::BaseController
   end
 
   def destroy
-    service = ServiceCooperation.find_by_id(params[:id])
+    service = ServiceCooperation.find_by_id(params[:id].to_i)
     if service
       service.destroy
     else

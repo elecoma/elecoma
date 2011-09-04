@@ -59,7 +59,7 @@ class ProductsController < BaseController
 
   def show_image
     unless params[:id].blank?
-      @product = Product.find(:first, :conditions => ["products.id = ? and permit = ? and ? >= products.sale_start_at",  params[:id], true, Date.today],
+      @product = Product.find(:first, :conditions => ["products.id = ? and permit = ? and ? >= products.sale_start_at",  params[:id].to_i, true, Date.today],
                               :include => Product::DEFAULT_INCLUDE)
     end
     render :layout => false
@@ -81,7 +81,7 @@ class ProductsController < BaseController
   private
   def load_product
     unless params[:id].blank?
-      @product = Product.find(:first, :conditions => ["products.id = ? and permit = ? and ? >= products.public_start_at",  params[:id], true, Date.today],
+      @product = Product.find(:first, :conditions => ["products.id = ? and permit = ? and ? >= products.public_start_at",  params[:id].to_i, true, Date.today],
                               :include => Product::DEFAULT_INCLUDE)
     end
     if @product

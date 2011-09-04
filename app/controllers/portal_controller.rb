@@ -12,7 +12,7 @@ class PortalController < BaseController
 
   def show_tradelaw
     if params[:retailer_id]
-      @law = Law.find_by_retailer_id(params[:retailer_id])
+      @law = Law.find_by_retailer_id(params[:retailer_id].to_i)
     end
     unless @law
       @law = Law.find_by_retailer_id(Retailer::DEFAULT_ID)

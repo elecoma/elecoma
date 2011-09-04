@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Admin::AdminUsersController < Admin::BaseController
   resource_controller
   before_filter :admin_permission_check_member
@@ -17,7 +18,7 @@ class Admin::AdminUsersController < Admin::BaseController
   [create, update].each do |action|
     action.wants.html do
       if params[:id].to_i == session[:admin_user].id
-        if AdminUser.find(params[:id]).retailer_id != session[:admin_user].retailer_id
+        if AdminUser.find(params[:id].to_i).retailer_id != session[:admin_user].retailer_id
           redirect_to :controller => "admin/accounts", :action => "logout"
         else
           redirect_to :action => "index"
@@ -36,7 +37,7 @@ class Admin::AdminUsersController < Admin::BaseController
 
   edit.before do
     unless session[:admin_user].master_shop?
-      raise ActiveRecord::RecordNotFound if AdminUser.find(params[:id]).retailer_id != session[:admin_user].retailer_id
+      raise ActiveRecord::RecordNotFound if AdminUser.find(params[:id].to_i).retailer_id != session[:admin_user].retailer_id
     end
   end
 
@@ -51,7 +52,7 @@ class Admin::AdminUsersController < Admin::BaseController
 
   #稼働/非稼働チェック(Ajax)
   def update_activity
-    record = AdminUser.find_by_id(params[:id])
+    record = AdminUser.find_by_id(params[:id].to_i)
     if params[:activity] == "true"
       record.update_attribute(:activity, true)
     elsif params[:activity] == "false"

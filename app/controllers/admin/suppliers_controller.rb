@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Admin::SuppliersController < Admin::BaseController
   #共通
   resource_controller
@@ -74,7 +75,7 @@ class Admin::SuppliersController < Admin::BaseController
   end
   private
   def get_supplier
-      @supplier = Supplier.find_by_id(params[:id])
+      @supplier = Supplier.find_by_id(params[:id].to_i)
       @supplier.attributes = params[:supplier]    
   end  
 end

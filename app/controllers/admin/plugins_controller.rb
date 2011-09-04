@@ -16,18 +16,18 @@ class Admin::PluginsController < Admin::BaseController
 
   def edit_payment_plugin
     unless params[:id].blank?
-      @payment_plugin = PaymentPlugin.find_by_id(params[:id])
+      @payment_plugin = PaymentPlugin.find_by_id(params[:id].to_i)
     end
     unless params[:payment_plugin].blank?
-      @payment_plugin = PaymentPlugin.find_by_id(params[:payment_plugin][:id])
+      @payment_plugin = PaymentPlugin.find_by_id(params[:payment_plugin][:id].to_i)
       @payment_plugin.attributes = params[:payment_plugin]
-      params[:id] = params[:payment_plugin][:id]
+      params[:id] = params[:payment_plugin][:id].to_i
     end
     redirect_to :action => "index" if @payment_plugin.nil?
   end
 
   def confirm_payment_plugin
-    @payment_plugin = PaymentPlugin.find_by_id(params[:id]) || PaymentPlugin.new
+    @payment_plugin = PaymentPlugin.find_by_id(params[:id].to_i) || PaymentPlugin.new
     @payment_plugin.attributes = params[:payment_plugin]
     unless @payment_plugin.valid?
       if params[:id].blank? and params[:payment_plugin][:id].blank?
@@ -48,7 +48,7 @@ class Admin::PluginsController < Admin::BaseController
   end
 
   def edit_payment_plugin_config
-    @payment_plugin = PaymentPlugin.find_by_id(params[:id])
+    @payment_plugin = PaymentPlugin.find_by_id(params[:id].to_i)
     if @payment_plugin.nil?
       redirect_to(:action => :index)
       return
@@ -67,7 +67,7 @@ class Admin::PluginsController < Admin::BaseController
   end
 
   def payment_plugin_data_management
-    unless get_plugin_instance(params[:id])
+    unless get_plugin_instance(params[:id].to_i)
       flash[:notice] = "このプラグインのインスタンスが取得できません。無効になっているか確認してください。"
       redirect_to(:action => :index)
       return
@@ -82,7 +82,7 @@ class Admin::PluginsController < Admin::BaseController
   end    
 
   def payment_plugin_config
-    unless get_plugin_instance(params[:id], true)
+    unless get_plugin_instance(params[:id].to_i, true)
       flash.now[:notice] = "このプラグインのインスタンスが取得できません。無効になっているか確認してください。"
       redirect_to(:action => :index)
       return
@@ -97,7 +97,7 @@ class Admin::PluginsController < Admin::BaseController
   end
 
   def payment_plugin_info
-    unless get_plugin_instance(params[:id], true)
+    unless get_plugin_instance(params[:id].to_i, true)
       flash.now[:notice] = "このプラグインのインスタンスが取得できません。クラスが正しく設定されているか確認してください。"
       redirect_to(:action => :index)
       return
@@ -130,7 +130,7 @@ class Admin::PluginsController < Admin::BaseController
       @payment_plugin = PaymentPlugin.new(params[:payment_plugin])
     elsif type == :update
       back_to = :edit_payment_plugin
-      @payment_plugin = PaymentPlugin.find_by_id(params[:payment_plugin][:id])
+      @payment_plugin = PaymentPlugin.find_by_id(params[:payment_plugin][:id].to_i)
       @payment_plugin.attributes = params[:payment_plugin]
     else
       raise "不正な遷移"

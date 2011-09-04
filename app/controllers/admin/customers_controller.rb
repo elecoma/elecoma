@@ -38,8 +38,8 @@ class Admin::CustomersController < Admin::BaseController
   edit.before do
     get_customer
 
-    @order_count = Order.count(:conditions => ["customer_id=?", params[:id]])
-    @orders = Order.find(:all, :conditions => ["customer_id=?", params[:id]],
+    @order_count = Order.count(:conditions => ["customer_id=?", params[:id].to_i])
+    @orders = Order.find(:all, :conditions => ["customer_id=?", params[:id].to_i],
       :include => :order_deliveries, :order => "orders.id,order_deliveries.id")
     get_admin_customer_payment
   end
@@ -97,7 +97,7 @@ class Admin::CustomersController < Admin::BaseController
   private
 
   def get_customer
-    @customer = Customer.find_by_id(params[:id])
+    @customer = Customer.find_by_id(params[:id].to_i)
     @customer.attributes = params[:customer]
   end
 

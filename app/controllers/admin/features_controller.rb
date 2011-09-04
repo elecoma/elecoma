@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Admin::FeaturesController < Admin::BaseController
   #共通
   resource_controller
@@ -30,7 +31,7 @@ class Admin::FeaturesController < Admin::BaseController
   #確認画面
   def confirm
     if params[:id]
-      @feature = Feature.find_by_id(params[:id])
+      @feature = Feature.find_by_id(params[:id].to_i)
       @feature.attributes = params[:feature]
     else  
       @feature = Feature.new(params[:feature])
