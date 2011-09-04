@@ -61,54 +61,80 @@ describe InquiriesController do
       assigns[:inquiry].email.should == "test@softbank.ne.jp"
       response.should be_success
     end
+
+    it "newに戻る場合（validateに引っかかる）" do
+      inquiry = inquiries(:inquiry_test_id_1)
+      inquiry.name = ""
+      get 'confirm', :inquiry => inquiry.attributes
+      response.should render_template("inquiries/new.html.erb")
+    end
+
+    it "newに戻る場合（bodyの文字数制限）" do
+      inquiry = inquiries(:inquiry_test_id_1)
+      inquiry.body = "あ" * 43568
+      get 'confirm', :inquiry => inquiry.attributes
+      response.should render_template("inquiries/new.html.erb")
+    end
+
   end
 
-  it "newに戻る場合（validateに引っかかる）" do
-    inquiry = inquiries(:inquiry_test_id_1)
-    inquiry.name = ""
-    get 'confirm', :inquiry => inquiry.attributes
-    response.should render_template("inquiries/new.html.erb")
-  end
 
   describe "GET 'complete'" do
     it "should be successful" do
-    inquiry = inquiries(:inquiry_test_id_1)
+      inquiry = inquiries(:inquiry_test_id_1)
       get 'complete', :inquiry => inquiry.attributes
       response.should be_success
     end
-  end
 
-  it "newに戻る場合（validateに引っかかる）" do
-    inquiry = inquiries(:inquiry_test_id_1)
-    inquiry.name = ""
-    get 'complete', :inquiry => inquiry.attributes
-    response.should render_template("inquiries/new.html.erb")
-  end
+    it "newに戻る場合（validateに引っかかる）" do
+      inquiry = inquiries(:inquiry_test_id_1)
+      inquiry.name = ""
+      get 'complete', :inquiry => inquiry.attributes
+      response.should render_template("inquiries/new.html.erb")
+    end
 
-  it "newに戻る場合（validateに引っかかる）(mobile)" do
-    inquiry = inquiries(:inquiry_test_id_1)
-    inquiry.name = ""
-    get 'complete', :inquiry => inquiry.attributes
-    response.should render_template("inquiries/new.html.erb")
-  end
+    it "newに戻る場合（bodyの文字数制限）" do
+      inquiry = inquiries(:inquiry_test_id_1)
+      inquiry.body = "あ" * 43568
+      get 'complete', :inquiry => inquiry.attributes
+      response.should render_template("inquiries/new.html.erb")
+    end
 
-  it "お問い合わせが完了する場合" do
-    Notifier.stub!(:deliver_pc_inquiry).and_return(nil)
-    Notifier.stub!(:deliver_received_inquiry).and_return(nil)
-    old_date_num = Inquiry.count
-    inquiry = inquiries(:inquiry_test_id_1)
-    get 'complete', :inquiry => inquiry.attributes
-    Inquiry.count.should == old_date_num + 1
-  end
+    it "正常のケース" do
+      inquiry = inquiries(:inquiry_test_id_1)
+      inquiry.body = "あ" * 3000
+      get 'complete', :inquiry => inquiry.attributes
+      response.should be_success
+    end
 
-  it "お問い合わせが完了する場合(mobile)" do
-    request.user_agent = "DoCoMo/2.0 SH903i(c100;TB;W24H16)"
-    Notifier.stub!(:deliver_mobile_inquiry).and_return(nil)
-    Notifier.stub!(:deliver_received_inquiry).and_return(nil)
-    old_date_num = Inquiry.count
-    inquiry = inquiries(:inquiry_test_id_1)
-    get 'complete', :inquiry => inquiry.attributes
-    Inquiry.count.should == old_date_num + 1
+
+    it "newに戻る場合（validateに引っかかる）(mobile)" do
+      inquiry = inquiries(:inquiry_test_id_1)
+      inquiry.name = ""
+      get 'complete', :inquiry => inquiry.attributes
+      response.should render_template("inquiries/new.html.erb")
+    end
+
+    it "お問い合わせが完了する場合" do
+      Notifier.stub!(:deliver_pc_inquiry).and_return(nil)
+      Notifier.stub!(:deliver_received_inquiry).and_return(nil)
+      old_date_num = Inquiry.count
+      inquiry = inquiries(:inquiry_test_id_1)
+      get 'complete', :inquiry => inquiry.attributes
+      Inquiry.count.should == old_date_num + 1
+    end
+
+    it "お問い合わせが完了する場合(mobile)" do
+      request.user_agent = "DoCoMo/2.0 SH903i(c100;TB;W24H16)"
+      Notifier.stub!(:deliver_mobile_inquiry).and_return(nil)
+      Notifier.stub!(:deliver_received_inquiry).and_return(nil)
+      old_date_num = Inquiry.count
+      inquiry = inquiries(:inquiry_test_id_1)
+      get 'complete', :inquiry => inquiry.attributes
+      Inquiry.count.should == old_date_num + 1
+    end
+
+
   end
 
   describe "GET 'show'" do

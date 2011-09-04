@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Inquiry < ActiveRecord::Base
 
   acts_as_paranoid
@@ -7,6 +8,9 @@ class Inquiry < ActiveRecord::Base
   validates_presence_of :body
   validates_presence_of :kind
   validates_presence_of :name
+
+  validates_length_of :body, :maximum => 3000
+  validates_length_of :name, :maximum => 100
 
   #validates_format_of :email, :with => /^(([^@\s]+)@((?:[-a-z0-9]+\.)*[a-z]{2,})|)$/i
   validates_format_of :tel, :with => /^[0-9()-]*$/, :allow_nil => true, :message => "の書式が不正です"
