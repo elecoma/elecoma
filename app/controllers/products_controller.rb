@@ -33,8 +33,10 @@ class ProductsController < BaseController
       end
     end
 
-    if (! params[:category_id].blank?  ) && params[:category_id] =~ /^[0-9]*$/ && params[:category_id].to_i < 2147483647
-      @category = Category.find(:first, :conditions => ["id = ?", params[:category_id] ] )
+    category_id = params[:category_id].to_i if !params[:category_id].blank?
+
+    if category_id && category_id < 2147483647
+      @category = Category.find(:first, :conditions => ["id = ?", category_id ] )
       if @category
         ids = @category.get_child_category_ids
         conditions << ["category_id IN (#{ids.join(",")})" ]
