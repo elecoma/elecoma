@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ProductStyle do
@@ -31,6 +32,9 @@ describe ProductStyle do
       @product_style.sell_price = 9999999999
       @product_style.should be_valid
       @product_style.sell_price = 10000000000
+      @product_style.should_not be_valid
+      #マイナス
+      @product_style.sell_price = -1
       @product_style.should_not be_valid
     end
     it "規格" do

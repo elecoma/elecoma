@@ -57,8 +57,10 @@ class ProductStyle < ActiveRecord::Base
     if sell_price.to_s.length > 10
       self.errors.add :sell_price, "数値が大き過ぎます。" 
     end
-    if sell_price.blank? || sell_price == 0
+    if sell_price.blank? || sell_price.to_i == 0
       self.errors.add :sell_price, "を入力して下さい" 
+    elsif sell_price.to_i < 0
+      self.errors.add :sell_price, "は0以上の数字を入力して下さい"
     end
   end
 
