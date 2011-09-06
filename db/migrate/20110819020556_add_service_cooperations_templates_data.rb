@@ -1,7 +1,6 @@
+# -*- coding: utf-8 -*-
 class AddServiceCooperationsTemplatesData < ActiveRecord::Migration
   def self.up
-    change_column :service_cooperations, :field_items, :text
-    change_column :service_cooperations_templates, :field_items, :text
     ServiceCooperationsTemplate.create(
       :template_name      => 'AdvantageSearchTemplate',
       :service_name       => 'AdvantageSearch',
@@ -14,25 +13,25 @@ class AddServiceCooperationsTemplatesData < ActiveRecord::Migration
       :newline_character  => 2,
       :field_items        => 'id,title,text,url,permit,description,key_word,point_granted_rate,image_url,size_txt,material,origin_country,weight,sale_start_at,sale_end_at,public_start_at,public_end_at,price_max,price_mini,icon_states,category1,category2,category3,category4,category5',
       :sql                => %{SELECT
-  products.id,
-  products.name,
-  products.introduction,
-  '/products/show/'|| products.id,
+  products.id AS id,
+  products.name AS title,
+  products.introduction AS text,
+  '/products/show/'|| products.id AS url,
   CASE WHEN products.permit THEN '1' ELSE '0' END AS permit,
-  products.description,
-  products.key_word,
-  products.point_granted_rate,
-  '/image_resource/show/' || products.small_resource_id,
-  products.size_txt,
-  products.material,
-  products.origin_country,
-  products.weight,
-  products.sale_start_at,
-  products.sale_end_at,
-  products.public_start_at,
-  products.public_end_at,
-  p_style.price_max,
-  p_style.price_min,
+  products.description AS description,
+  products.key_word AS key_word,
+  products.point_granted_rate AS point_granted_rate,
+  '/image_resource/show/' || products.small_resource_id AS image_url,
+  products.size_txt AS size_txt,
+  products.material AS material,
+  products.origin_country AS origin_country,
+  products.weight AS weight,
+  products.sale_start_at AS sale_start_at,
+  products.sale_end_at AS sale_end_at,
+  products.public_start_at AS public_start_at,
+  products.public_end_at AS public_end_at,
+  p_style.price_max AS price_max,
+  p_style.price_min AS price_mini,
   ARRAY_TO_STRING(ARRAY(
       SELECT
         statuses.name
@@ -42,12 +41,12 @@ class AddServiceCooperationsTemplatesData < ActiveRecord::Migration
         WHERE
           product_statuses.product_id = products.id
       ),E'\n'
-    ),
-  categories_table.category1,
-  categories_table.category2,
-  categories_table.category3,
-  categories_table.category4,
-  categories_table.category5
+    ) AS icon_states,
+  categories_table.category1 AS category1,
+  categories_table.category2 AS category2,
+  categories_table.category3 AS category3,
+  categories_table.category4 AS category4,
+  categories_table.category5 AS category5
  FROM products LEFT OUTER JOIN (
    SELECT
      product_id AS id, MAX(sell_price) AS price_max, MIN(sell_price) AS price_min
@@ -101,33 +100,33 @@ class AddServiceCooperationsTemplatesData < ActiveRecord::Migration
       :file_type          => 0,
       :encode             => 0,
       :newline_character  => 2,
-      :field_items        => 'id,title,text,url,permit,no_limit_flag,introduction,description,key_word,point_granted_rate,image_url,size_txt,material,origin_country,weight,sale_start_at,sale_end_at,public_start_at,public_end_at,price_max,price_min,selfcategories,p1_categories,p2_categories,p3_categories,p4_categories,icon_status',
+      :field_items        => 'id,title,text,url,permit,no_limit_flag,description,key_word,point_granted_rate,image_url,size_txt,material,origin_country,weight,sale_start_at,sale_end_at,public_start_at,public_end_at,price_max,price_min,selfcategories,p1_categories,p2_categories,p3_categories,p4_categories,icon_status',
       :sql                => %{SELECT
-  products.id,
-  products.name,
-  products.introduction,
-  '/products/show/'|| products.id,
-  products.permit,
-  products.no_limit_flag,
-  products.description,
-  products.key_word,
-  products.point_granted_rate,
-  '/image_resource/show/' || products.small_resource_id,
-  products.size_txt,
-  products.material,
-  products.origin_country,
-  products.weight,
-  products.sale_start_at,
-  products.sale_end_at,
-  products.public_start_at,
-  products.public_end_at,
-  p_style.price_max,
-  p_style.price_min,
-  selfcategories.name,
-  p1_categories.name,
-  p2_categories.name,
-  p3_categories.name,
-  p4_categories.name,
+  products.id AS id,
+  products.name AS title,
+  products.introduction AS text,
+  '/products/show/'|| products.id AS url,
+  products.permit AS permit,
+  products.no_limit_flag AS no_limit_flag,
+  products.description AS description,
+  products.key_word AS key_word,
+  products.point_granted_rate AS point_granted_rate,
+  '/image_resource/show/' || products.small_resource_id AS image_url,
+  products.size_txt AS size_txt,
+  products.material AS material,
+  products.origin_country AS origin_country,
+  products.weight AS weight,
+  products.sale_start_at AS sale_start_at,
+  products.sale_end_at AS sale_end_at,
+  products.public_start_at AS public_start_at,
+  products.public_end_at AS public_end_at,
+  p_style.price_max AS price_max,
+  p_style.price_min AS price_min,
+  selfcategories.name AS selfcategories,
+  p1_categories.name AS p1_categories,
+  p2_categories.name AS p2_categories,
+  p3_categories.name AS p3_categories,
+  p4_categories.name AS p4_categories,
   ARRAY_TO_STRING(ARRAY(
     SELECT
       statuses.name
@@ -135,7 +134,7 @@ class AddServiceCooperationsTemplatesData < ActiveRecord::Migration
        product_statuses LEFT OUTER JOIN statuses ON product_statuses.status_id = statuses.id
       WHERE
         product_statuses.product_id = products.id), ','
-  )
+  ) AS icon_status
  FROM
   products LEFT OUTER JOIN (
     SELECT
@@ -157,18 +156,6 @@ class AddServiceCooperationsTemplatesData < ActiveRecord::Migration
 
   def self.down
     
-    p "field_itemsの項目の型が'text' → 'string' にレベルダウンしました"
-    p "それに伴って、field_itemsの文字数が255文字を超えるものにはnullが入ります"
-    p "お手数ですが再設定お願いします"
-
-    ServiceCooperationsTemplate.find(:all).each do |item|
-      item.update_attribute(:field_items, "")
-    end
-    ServiceCooperation.find(:all).each do |item|
-      item.update_attribute(:field_items, "")
-    end
-    change_column :service_cooperations, :field_items, :string
-    change_column :service_cooperations_templates, :field_items, :string
     ServiceCooperationsTemplate.find_all_by_template_name('AdvantageSearchTemplate').each do | item |
       item.delete
     end

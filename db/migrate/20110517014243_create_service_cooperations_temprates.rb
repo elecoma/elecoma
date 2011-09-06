@@ -8,7 +8,7 @@ class CreateServiceCooperationsTemprates < ActiveRecord::Migration
       t.integer :encode
       t.integer :newline_character
       t.text :sql
-      t.string :field_items
+      t.text :field_items
       t.text :description
 
       t.timestamps

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'csv'
 require 'nkf'
 
@@ -100,10 +101,14 @@ private
     CSV::Writer.generate(f, FILE_TYPES[file_type][:delimiter], NEWLINE_CHARACTERS[newline_character][:code]) do | writer |
       # カラム名を挿入
       writer << field_items.split(",")
-      logger.debug field_items.split(",")
+      field_array = field_items.split(",")
       lists.each do | items |
         if items.respond_to?('values')
-          writer << items.values
+          write_array = []
+          field_array.each do |key|
+            write_array << items[key]
+          end
+          writer << write_array
         else
           writer << items
         end
