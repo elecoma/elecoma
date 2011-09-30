@@ -19,8 +19,8 @@
        <%= product_image_tag recommend_xml.recommend, :small,
                              :width=>nil, :height=>90, :class=>'itemImage' %>
        <dl>
-         <dt><%= link_to_product recommend_xml.recommend, recommend_xml.name %></dt>
-         <dd>&yen;<%=h recommend_xml.recommend.price_label %></dd>
+         <dt><%= link_to_product recommend_xml.product, recommend_xml.name %></dt>
+         <dd>&yen;<%=h recommend_xml.product.price_label %></dd>
        </dl>
     </li>
     <% end %>
