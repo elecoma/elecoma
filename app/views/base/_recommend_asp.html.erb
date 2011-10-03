@@ -13,14 +13,15 @@
    <ul class="clearfix">
     <li class="move lt"><a id="reco-<%=key%>-back" style="cursor:pointer;visibility:hidden"><%= image_tag "/images/item/lt.gif", :alt=>"←" %></a></li>
     <% list.each_with_index do | recommend_xml, i | %>
+      <% next unless recommend_xml.recommend %>
     <%# 最初の 4個以外非表示にする %>
     <% style = i >= size ? 'display:none' : ''  %>
     <li class="products" id="reco-<%=key%><%=i%>" style="<%= style %>">
        <%= product_image_tag recommend_xml.recommend, :small,
                              :width=>nil, :height=>90, :class=>'itemImage' %>
        <dl>
-         <dt><%= link_to_product recommend_xml.product, recommend_xml.name %></dt>
-         <dd>&yen;<%=h recommend_xml.product.price_label %></dd>
+         <dt><%= link_to_product recommend_xml.recommend, recommend_xml.name %></dt>
+         <dd>&yen;<%=h recommend_xml.recommend.price_label %></dd>
        </dl>
     </li>
     <% end %>

@@ -6,6 +6,7 @@
  <div style="text-align:center;"><%= image_tag_mobile "border", :width => "226", :height => "2", :style => "margin-top:4px; margin-bottom:2px;" %></div>
  <div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
   <% @recommend_views[0..2].each_with_index do | recommend_xml, i | %>
+    <% next unless recommend_xml.recommend %>
 <%- if false %>
    <div style="text-align:center;"><%= product_image_tag recommend_xml.recommend , :small %></div>
 <% end -%>
