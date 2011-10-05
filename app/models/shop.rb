@@ -3,6 +3,7 @@ class Shop < ActiveRecord::Base
   acts_as_paranoid
 
   belongs_to :prefecture
+  has_one :social
 
   validates_presence_of :name, :corp_name
   validates_length_of :name,:name_kana,:corp_name,:corp_name_kana, :maximum => 50

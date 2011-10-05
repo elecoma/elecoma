@@ -1,0 +1,11 @@
+<%= render :partial => "submenu" %>
+
+<div id="main">
+
+<h2>ソーシャル連携設定</h2>
+<% form_tag :action => "update" do %>
+  <%= hidden_field :social, :shop_id, :value => @shop.id %>
+  <%= render :partial => "form" %>
+<% end %>
+
+</div>

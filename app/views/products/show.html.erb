@@ -1,3 +1,5 @@
+<% require 'cgi' %>
+
 <% content_for :head do %>
   <%= stylesheet_link_tag "front/item" %>
   <%= stylesheet_link_tag "thickbox" %>
@@ -7,6 +9,21 @@
   <%= javascript_include_tag js_url(:action => "thickbox") %>
   <%= javascript_include_tag "recommender_details" %>
   <%= javascript_include_tag js_url(:action => "application") %>
+
+  <% if @social_flag %>
+    <% if @social.gree || @social.facebook -%>
+      <meta property="og:title" content="<%= content_title_tag(["K&B style", @product_name, @categoly_name, @campaign_name]) %>"/>
+      <meta property="og:url" content="<%= request.url %>"/>
+      <meta property="og:image" content="<%= url_for(:only_path => false, :controller => "/image_resource", :action => "show", :id => (@product.large_resource_id || @product.medium_resource_id),:format => "png", :height => 640, :width => 480) %>" /> 
+      <meta property="og:site_name" content="K&B style"/>
+    <% end %>
+    <% if @social.mixi_check || @social.mixi_like -%>
+      <meta property="og:description" content="<%= @social.mixi_description %>"/>
+    <% end %>
+    <% if @social.google -%>
+      <script type="text/javascript" src="https://apis.google.com/js/plusone.js">{lang: 'ja'}</script>
+    <% end %>
+  <% end %>
 <% end %>
 
 <div id="left_box" class="clearfix">
@@ -95,6 +112,51 @@
   <%= ("【その他、仕様】<br />" + h_br(@product.other) + "<br />" ) unless @product.other.blank? %>
   <%= ("【入荷日】<br />" + h_br(@product.arrival_date) + "<br />" ) unless @product.arrival_date.blank? %>
   </p>
+
+  <% if @social_flag %>
+  <div class="main_hr"><hr /></div>
+
+  <div class="social">
+  <% if @social.google %>
+    <g:plusone size="medium"></g:plusone>
+  <% end %>
+
+  <% if @social.twitter %>
+    <a href="http://twitter.com/share" class="twitter-share-button" data-count="harizon" data-lang="ja" data-via="<%= @social.twitter_user %>">ツイート</a>
+    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+  <% end %>
+
+  <% if @social.hatena %>
+    <a href="http://b.hatena.ne.jp/entry/<%= request.url %>" class="hatena-bookmark-button" data-hatena-bookmark-title="<%= content_title_tag(['K&B style', @product_name, @categoly_name, @campaign_name]) %>"  data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+    <script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+  <% end %>
+
+  <% if @social.gree %>
+    <iframe src="http://share.gree.jp/share?url=<%= CGI.escape(request.url) %>&type=0&height=20" scrolling="no" frameborder="0" marginwidth="0" marginheight="0" style="border:none; overflow:hidden; width:70px; height:20px;" allowTransparency="true"></iframe>
+  <% end %>
+
+  <% if @social.evernote %>
+    <script type="text/javascript" src="http://static.evernote.com/noteit.js"></script>
+    <a href="#" onclick="Evernote.doClip({contentId:'main', styling:'full'}); return false;"><img src="http://static.evernote.com/article-clipper.png" alt="Clip to Evernote" /></a>
+  <% end %>
+
+  <% if @social.facebook %>
+    <div id="fb-root"></div>
+    <script src="http://connect.facebook.net/ja_JP/all.js#xfbml=1"></script>
+    <fb:like href="<%= request.url %>" send="true" layout="button_count" width="130" show_faces="false" action="like" font=""></fb:like>
+  <% end %>
+
+  <% if @social.mixi_check %>
+    <a href="http://mixi.jp/share.pl" class="mixi-check-button" data-key="<%= @social.mixi_key %>">mixiチェック</a>
+    <script type="text/javascript" src="http://static.mixi.jp/js/share.js"></script>
+  <% end %>
+
+  <% if @social.mixi_like %>
+    <iframe src="http://plugins.mixi.jp/favorite.pl?href=<%= CGI.escape(request.url) %>&service_key=<%= @social.mixi_key %>" scrolling="no" frameborder="0" allowTransparency="true" style="border:0; overflow:hidden; width:450px; height:80px;"></iframe>
+  <% end %>
+
+  </div>
+  <% end %>
 
   </div><!-- /item_box -->
   <div class="m_btm"><%= image_tag("common/box_bg_btm.gif", :width => "530", :height => "5", :alt => "") %></div>

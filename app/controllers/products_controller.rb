@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 class ProductsController < BaseController
   before_filter :load_product, :only => %w(show stock_table)
   before_filter :load_recommend_products, :only => %w(show)
@@ -8,6 +9,9 @@ class ProductsController < BaseController
     load_seo_products_detail
     @recommend_buys = Recommend.recommend_get(@product.id, Recommend::TYPE_BUY) || []
     @recommend_views = Recommend.recommend_get(@product.id, Recommend::TYPE_VIEW) || []
+    @shop = Shop.find(:first)
+    @social = @shop.social
+    @social_flag = (@social.google || @social.facebook || @social.mixi_check || @social.mixi_like || @social.evernote || @social.gree || @social.hatena || @social.twitter) if @social
     if request.mobile?
       ProductAccessLog.create(:product_id => @product.id,
                               :session_id => session.session_id,

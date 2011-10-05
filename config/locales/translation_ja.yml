@@ -85,6 +85,7 @@ ja:
       input: "入力内容"
       return item: "返品情報"
       retailer: "販売元"
+      social: "ソーシャル連携設定"
     attributes:
       admin_user:
         name: "名前"
@@ -845,6 +846,20 @@ ja:
         deleted_at: "で削除"
         isolation_type: "離島タイプ"
         can_daibiki: "代引きフラグ"
+      social:
+        google: "google +1"
+        twitter: "Twitter"
+        twitter_user: "Twitterおすすめアカウント"
+        facebook: "Facebook"
+        gree: "GREE"
+        evernote: "Evernote"
+        hatena: "はてなブックマーク"
+        mixi_check: "mixi チェック"
+        mixi_like: "mixi イイネ！"
+        mixi_description: "mixi 説明文"
+        mixi_key: "mixi チェックキー"
+        created_at: "で作成された"
+        updated_at: "で更新"
     errors:
       messages:
         record_invalid: "Validation failed: {{errors}}"

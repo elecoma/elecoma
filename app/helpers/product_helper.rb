@@ -49,4 +49,8 @@ module ProductHelper
     end
     mark
   end
+
+  def content_title_tag(parts)
+    parts.reject(&:nil?).join(' - ')
+  end
 end

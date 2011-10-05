@@ -24,6 +24,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :return_items, :collection => {:search => [:get], :history => [:get], :history_search => [:get], :new_csv => [:get], :csv_index => [:get], :csv => [:get]}
     admin.resources :retailers
     admin.resources :plugins, :collection => {:new_payment_plugin => [:get], :edit_payment_plugin => [:get]}
+    admin.resources :socials, :only => [:update, :index]
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
