@@ -94,4 +94,8 @@ module PaymentPluginBase
     return true
   end
 
+  def use_smartphone?
+    return false
+  end
+
 end

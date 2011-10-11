@@ -1,0 +1,53 @@
+<div class="sectionHeader">当サイトについて</div>
+
+<table class="tb2">
+      <tr><td>店名</td></tr>
+    <tr>
+      <td><%=h @shop.try(:name) %></td>
+    </tr>
+	<tr><td>運用会社</td></tr>
+    <tr>
+      <td><%=h @shop.try(:corp_name) %></td>
+    </tr>
+    <tr><td>住所</td></tr>
+    <tr>
+      <td>
+        〒<%=h @shop.try(:zipcode) %><br />
+        <%=h @shop.try(:address) %>
+      </td>
+    </tr>
+    <% if @shop.tel.blank? %>
+    <tr><td>電話番号</td></tr>
+    <tr>
+      <td><%=h @shop.try(:tel) %></td>
+    </tr>
+    <% end %>
+    <% if @shop.fax.blank? %>
+    <tr><td>FAX番号</td></tr>
+    <tr>
+      <td><%=h @shop.try(:fax) %></td>
+    </tr>
+    <% end %>
+    <tr><td>お問い合わせメールアドレス</td></tr>
+    <tr>
+      <td><%=h @shop.try(:mail_faq) %></td>
+    </tr>
+    <% unless @shop.trade_item.blank? %>
+    <tr><td>取り扱い商品</td></tr>
+    <tr>
+      <td><%=h @shop.try(:trade_item) %></td>
+    </tr>
+    <% end %>
+    <% unless @shop.businesstime.blank? %>
+    <tr><td>営業時間</td></tr>
+    <tr>
+      <td><%=h @shop.try(:businesstime) %></td>
+    </tr>
+    <% end %>
+    <% unless @shop.introduction.blank? %>
+     <tr><td>メッセージ</td></tr>
+    <tr>
+      <td class="no_bg"><%=h @shop.try(:introduction) %></td>
+    </tr>
+    <% end %>
+  </table>

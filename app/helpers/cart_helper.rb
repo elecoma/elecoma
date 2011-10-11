@@ -6,7 +6,11 @@ module CartHelper
            :action => 'inc',
            :id => cart.product_style_id}
     str = request.mobile? ? "増やす" : " ＋ "
-    link_to str, url_for(uri), {:class => 'product_incriment'}
+    if request.mobile.respond_to?('smartphone?')
+	link_to str, url_for(uri), {:class => 'rosy small_button'}
+    else
+	link_to str, url_for(uri), {:class => 'product_incriment'}
+    end
   end
 
   # カートを渡すと、カート内の商品への減算用リンクを生成します。
@@ -15,7 +19,11 @@ module CartHelper
            :action => 'dec',
            :id => cart.product_style_id}
     str = request.mobile? ? "減らす" : " － "
-    link_to str, url_for(uri), {:class => 'product_decriment'}
+      if request.mobile.respond_to?('smartphone?')
+	link_to str, url_for(uri), {:class => 'rosy small_button'}
+    else
+	link_to str, url_for(uri), {:class => 'product_decriment'}
+    end
   end
 
   # 非会員用お届け先追加のJavaScript
@@ -144,9 +152,9 @@ EJS
       Customer#basic_address
 
 =end
-  def link_to_edit_address(address)
+  def link_to_edit_address(address, custom_class = 'delivery_edit')
     address.frozen? and return nil
-    link_to('変更', {:controller => :accounts, :action => :delivery_edit_popup, :id => address.id}, :class => 'delivery_edit')
+    link_to('変更', {:controller => :accounts, :action => :delivery_edit_popup, :id => address.id}, :class => custom_class)
   end
 
 =begin rdoc
@@ -163,7 +171,7 @@ EJS
       Customer#basic_address
 
 =end
-  def link_to_delete_address(address)
+  def link_to_delete_address(address, custom_class = nil)
     link_to('削除',
       {
         :controller => 'accounts',
@@ -171,7 +179,7 @@ EJS
         :id => address.id,
         :backurl => url_for({:controller => 'cart', :action => 'shipping'})
       },
-      {:confirm => "一度削除したデータは元には戻せません。\n削除してもよろしいですか？"}
+      {:confirm => "一度削除したデータは元には戻せません。\n削除してもよろしいですか？", :class => custom_class}
     ) unless address.frozen?
   end
 

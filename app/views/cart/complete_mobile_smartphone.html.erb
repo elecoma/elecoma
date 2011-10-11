@@ -1,0 +1,16 @@
+<div class="sectionHeader">ご注文の完了</div>
+
+<div class="purchaseComplete">ご注文ありがとうございました。</div>
+
+<div class="completeMessage">
+	只今、ご注文の確認メールをお送りさせていただきました。<br />
+	万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではありますが
+	もう一度お問い合わせ頂くか、お電話にてお問い合わせくださいませ。<br />
+	今後ともご愛願賜りますようよろしくお願い申し上げます。
+</div>
+
+<div class="historyButton">
+<% if @login_customer%>
+	<%= link_to '今回の購入履歴を確認', {:controller => 'accounts', :action => 'history_list'}, :id => flash[:order_id], :class => "rosy button" %>
+<%end%>
+</div>

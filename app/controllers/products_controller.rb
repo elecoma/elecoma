@@ -6,6 +6,7 @@ class ProductsController < BaseController
   before_filter :check_search, :only => %w(index search)
   
   def show
+    stock_table
     load_seo_products_detail
     @recommend_buys = Recommend.recommend_get(@product.id, Recommend::TYPE_BUY) || []
     @recommend_views = Recommend.recommend_get(@product.id, Recommend::TYPE_VIEW) || []

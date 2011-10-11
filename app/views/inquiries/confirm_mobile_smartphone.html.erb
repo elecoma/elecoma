@@ -1,0 +1,47 @@
+<% content_for :head do %>
+  <%= javascript_include_tag :defaults %>
+  <%= javascript_include_tag js_url(:action => "application") %>
+<% end %>
+
+
+<div class="sectionHeader">お問い合わせ</div>
+
+<table class="tb2"> 
+    <tr><td>お名前<span class="must">※</span></td></tr>
+    <tr>
+      <td><%=h @inquiry.name %></td>
+    </tr>
+    <tr><td>メールアドレス<span class="must">※</span></td></tr>
+    <tr>
+      <td><%=h @inquiry.email %></td>
+    </tr>
+    <tr><td>電話番号</td></tr>
+    <tr>
+      <td><%=h @inquiry.tel %></td>
+    </tr> 
+    <tr><td>受注番号</td></tr>
+    <tr>
+      <td><%=h @inquiry.order_number %></td>
+    </tr>
+    <tr><td>お問合わせ種別<span class="must">※</span></td></tr>
+    <tr>
+      <td><%=h Inquiry::KIND_NAMES[@inquiry.kind] %></td>
+    </tr>
+    <tr><td>お問い合わせ内容<span class="must">※</span></td></tr>
+    <tr>
+      <td><%=h_br @inquiry.body %></td>
+    </tr>
+  </table>
+  <% form_for :inquiry, :url => {:action => "complete"} do |f| %>
+    <%= f.hidden_field :name %>
+    <%= f.hidden_field :tel %>
+    <%= f.hidden_field :email %>
+    <%= f.hidden_field :body %>
+    <%= f.hidden_field :order_number %>
+    <%= f.hidden_field :kind %>
+    <div class="my_btn4">
+    <%= submit_tag '戻る', :onclick => "this.form.action='/inquiries/new'; this.form.submit();",  :class=>'rosy button' %>
+	<%= submit_tag "送信", :class=>"rosy button" %>
+	</div>
+  <% end %>
+

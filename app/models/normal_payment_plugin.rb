@@ -27,4 +27,8 @@ class NormalPaymentPlugin < ActiveForm
     return true, ""
   end
 
+  def use_smartphone?
+    return true
+  end
+
 end

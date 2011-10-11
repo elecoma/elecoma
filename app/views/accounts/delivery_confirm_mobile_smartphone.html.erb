@@ -1,0 +1,55 @@
+<div class="sectionHeader">お届け先の確認</div>
+
+
+<table class="tb2">
+  
+    <tr><td>お名前</td></tr>
+    <tr>
+    <td>
+      <%=h @delivery_address.family_name %>
+      <%=h @delivery_address.first_name %>
+    </td>
+  </tr>
+  
+    <tr><td>お名前フリガナ</td></tr>
+    <tr>
+    <td>
+      <%=h @delivery_address.family_name_kana %>
+      <%=h @delivery_address.first_name_kana %>
+    </td>
+  </tr>
+  
+    <tr><td>郵便番号</td></tr>
+    <tr>
+    <td>〒<%=h @delivery_address.zipcode01 -%>-<%=h @delivery_address.zipcode02 %></td>
+  </tr>
+  
+    <tr><td>住所</td></tr>
+    <tr>
+    <td>
+      <%=h @delivery_address.prefecture && @delivery_address.prefecture.name %>
+      <%=h @delivery_address.address_city %>
+      <%=h @delivery_address.address_detail %>
+    </td>
+  </tr>
+  
+    <tr><td>電話番号</td></tr>
+    <tr>
+    <td><%=h @delivery_address.tel01 %>-<%=h @delivery_address.tel02 %>-<%=h @delivery_address.tel03 %></td>
+  </tr>
+</table>
+  
+   <% form_for :delivery_address, :url => {:action => 'delivery_complete', :id=>@id} do | f |%>
+        <div id="submit">
+          <% [:family_name, :first_name, :family_name_kana, :first_name_kana,
+             :zipcode01, :zipcode02, :prefecture_id, :address_city,
+             :address_detail, :tel01, :tel02, :tel03].each do | column | %>
+            <%= f.hidden_field column %>
+          <% end %>
+          <%= hidden_field_tag 'popup', @popup %>
+          <div class="my_btn4">
+            <%= link_to_function "戻る", 'history.back()', :class => 'rosy button submitInputSize' %>
+            <%= submit_tag('送信', :class=>"rosy button") %>
+          </div>
+        </div>
+      <% end %>

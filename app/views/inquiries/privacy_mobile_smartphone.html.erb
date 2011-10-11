@@ -1,0 +1,15 @@
+<div class="sectionHeader">問合せ個人情報の取扱いについて</div>
+
+<div class="text">
+  <div class="agreement_box">
+	<%if (!@privacy.blank? && !@privacy.content_collect.blank?)%>
+	<%= @privacy.content_collect %>
+	<%end%>
+  </div>
+  <div class="my_btn4">
+    <%= link_to "戻る", {:controller=>'inquiries', :action=>'show'}, :class => 'rosy button' %>
+    </div>
+    <div class="my_btn4">
+    <%= link_to "個人情報の取り扱いについて同意した上でお問い合わせ", {:controller=>'inquiries', :action=>'new'}, :class => 'rosy button' %>
+  </div>
+</div>

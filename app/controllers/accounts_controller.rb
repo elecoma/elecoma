@@ -80,7 +80,11 @@ class AccountsController < BaseController
         else
           # 普通に来た場合
           if request.mobile?
-            redirect_to :controller => "accounts", :action=>"myindex_mobile"# '/account/myindex_mobile'
+            if request.mobile.respond_to?('smartphone?')
+              redirect_to :controller => "accounts", :action=>"myindex"# '/account/myindex_mobile'
+            else
+              redirect_to :controller => "accounts", :action=>"myindex_mobile"
+            end
           else
             redirect_to :controller => "portal", :action => "show"
           end
@@ -108,11 +112,11 @@ class AccountsController < BaseController
 
   # モバイル専用規約入口
   def kiyaku_intro
-    redirect_to :action => :kiyaku unless request.mobile?
+    redirect_to :action => :kiyaku unless request.mobile? && !request.mobile.respond_to?('smartphone?')
   end
 
   def kiyaku
-    params[:position] ||= 1 if request.mobile?
+    params[:position] ||= 1 if request.mobile? && !request.mobile.respond_to?('smartphone?')
     # 章を指定されたらそこだけ出す。さもなくば全て。
     if params[:position]
       kiyaku = Kiyaku.find_by_position(params[:position])
@@ -141,7 +145,7 @@ class AccountsController < BaseController
   def signup_confirm
     @customer = Customer.new
     get_customer
-    @customer.editting = false if request.mobile?
+    @customer.editting = false if request.mobile? && !request.mobile.respond_to?('smartphone?')
     unless @customer.valid?
       render :action => :signup
       return

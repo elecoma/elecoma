@@ -1,0 +1,47 @@
+<!--件数・ソート-->
+<div id="numEntries">
+<% if @products.total_entries > 0%>
+  <%=h ((@products.current_page-1)*@products.per_page)+1 %>～<%=h paginate_item_count(@products.current_page, @products.per_page, @products.total_entries) %>&nbsp;(<%=h @products.total_entries %>件中)
+<% end %>
+</div>
+<div class="listOrder"><%= link_order "price" %>│<%= link_order "update" %></div>
+
+<%- unless @category.blank? %>
+	<div class="sectionHeader"><%= @category.name %></div>
+<% else %>
+	<div class="sectionHeader">商品一覧</div>
+<% end -%>
+
+<%- unless @products.blank? %>
+  <% @products.each do | product | %>
+    <div class="productListing">
+    <%= link_to( "<span class='link'></span>", {:controller => "/products", :action => "show", :id => (product.id),:category_id => product.category_id}) %>
+    <%= product_image_tag(product, :small ,{:width=>"70",:height=>"70",:align=>"left",:style=>"vertical-align:middle; float:left; margin:4px;"}) %>
+    <div><%= product.name %></div>
+	<div>&yen;<%= product.price_label %></div>
+	<div><%=h_br product.introduction %></div>
+	<br clear="all" />
+	</div>
+  <% end %>
+
+  <!-- ページング -->
+  <%param_datas = {}%>
+  <%params.each{ |key, value| param_datas[key.to_sym] = ((request.mobile? && !request.mobile.is_a?(Jpmobile::Mobile::Softbank)) ? value.tosjis : value) }%>
+<!--  page numbers -->
+  <div id="pages">  <%= will_paginate(@products,:params=>param_datas) %></div>
+  <div class="listOrder"><%= link_order "price" %>│<%= link_order "update" %></div>
+
+<% else %>
+<div>該当商品が見つかりませんでした</div>
+<% end %>
+
+<!-- 検索 -->
+<div id="searchFooter">
+	<% form_tag({:controller=>:products, :action=>:search, :only_path=>false}, {:method=>"get", :id=>'bottomsearchform'}) do %>
+		<%= text_field_tag "search", params[:search], :id=>'bottomsearchbox', :class=>"rounded" %>
+		<%= submit_tag "検索", :id=> "bottomsearch", :class=>"button rosy" %>
+	<% end %>
+	<br clear="all" />
+</div>
+
+

@@ -5,9 +5,11 @@ class PortalController < BaseController
     load_new_information
     load_recommend_product
     load_seo
-    load_new_product unless request.mobile?
+    load_new_product unless request.mobile? && 
+		!request.mobile.respond_to?('smartphone?')
     @recommend_xmls = Recommend.ranking_get(3)
-		render :layout => false if request.mobile?
+		render :layout => false if request.mobile? && 
+		!request.mobile.respond_to?('smartphone?')
   end
 
   def show_tradelaw

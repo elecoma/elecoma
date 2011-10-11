@@ -1,0 +1,24 @@
+<div class="sectionHeader">お問い合わせ</div>
+
+<div class="text">
+  <p class="center">ご意見やご感想、ご質問はこちらで受けております。</p>
+  <hr noshade="noshade" style="color: pink"/>
+  <div class="agreement_box">
+	<%= link_to '問合せ個人情報の取扱いについて', :action=>:privacy %><br /><br />
+	
+	<span style="color:#FF9775;">●</span> <%=h @shop.corp_name %><br /><br />
+	<span style="color:#FF9775;">●</span>【電話でのお問い合わせ】<br />
+	<div class="contactDetail">
+		営業時間：<%=h @shop.businesstime %><br />
+		電話番号：<%= link_to h(@shop.tel), 'tel:'+@shop.tel.gsub(/\D/,'') %>
+	</div>
+	<br />
+	<span style="color:#FF9775;">●</span>【E-mailでのお問い合わせ】<br />
+	<div class="contactDetail">
+		<%= link_to h(@shop.mail_faq), 'mailto:'+@shop.mail_faq %>
+	</div>
+	<br />
+	
+	お問い合わせは<%= link_to 'こちらへ', :controller => "inquiries", :action => "new" %>
+  </div>
+</div><!-- /entry -->

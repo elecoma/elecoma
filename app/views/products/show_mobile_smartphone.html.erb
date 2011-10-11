@@ -1,0 +1,104 @@
+<% content_for :head do %>
+	<%= javascript_include_tag "smartphone/jquery.tools.min.js" %>
+	<%= javascript_include_tag "smartphone/scrollable.js" %>
+	<%= stylesheet_link_tag "smartphone/scrollableMin.css" %>
+	<%= stylesheet_link_tag "smartphone/scrollable-buttons.css" %>
+	<script type="text/javascript">
+		$.noConflict();
+	</script>
+<% end -%>
+
+<div class="sectionHeader"> <%= @product.name %> </div>
+
+<%- if @product.sub_products.empty? -%>
+	<div><%= product_image_tag(@product, :medium, {:width=>"220",:height=>"220",:style=>"margin:2px;"}) %></div>
+<%- else -%>
+	<div class="scrollableOuter">
+		<div class="centerScrollable">
+		
+			<!-- "previous page" action -->
+			<a class="prev browse left big"></a>
+
+			<!-- root element for scrollable -->
+			<div class="scrollable big">   
+			   
+			   <!-- root element for the items -->
+			   <div id="scrollableContents" class="items">
+				<div><%= product_image_tag(@product, :medium, {:width=>"220",:height=>"220",:style=>"margin:2px;"}) %></div>
+				<%- @product.sub_products.each do | sub_product | -%>
+					<%- if sub_product.medium_resource_id -%>
+						<div>
+							<%= sub_product_image_tag(sub_product, :width=>220)  %>
+						</div>
+					<%- end -%>
+				<%- end -%>
+			   </div>
+			   
+			</div>
+
+			<!-- "next page" action -->
+			<a class="next browse right big"></a>
+
+			<br clear="all" /> 
+			
+		</div>
+	</div>
+<%- end -%>
+
+<div class="details">
+	<div class="statuses">
+  <%- @product.product_statuses.each do | product_status | -%>
+      <div class="rounded rosy2 floatLeft"><%= h_br product_status.status && product_status.status.name %></div>
+  <%- end -%>
+	</div>
+  
+  <dl id="itemDetails">
+      <dd>価格：<%=h @product.price_label %>円</dd>
+      <dd>販売期間：<%=h print_date(@product.sale_start_at) %> ～ <%=h print_date(@product.sale_end_at) %></dd>
+            <% if @product.product_styles && @product.product_styles.detect(nil){ |p_s| p_s.orderable_count.to_i > 0} -%>
+              <%- unless @product.delivery_dates_label.blank? %>
+              <dd>お届け：<%= @product.delivery_dates_label %></dd>
+              <%- end %>
+            <%- else -%>
+              <%- if @product.arrival_expected_date && @product.arrival_expected_date < Date.today -%>
+                <dd>入荷未定</dd>
+            <%- else -%>
+                <dd>入荷予定日：<%= date_jp(@product.arrival_expected_date) %></dd>
+              <%- end -%>
+          <%- end -%>
+          <dd>販売元: <%= show_retailer_shop(@product) %></dd>
+    </dl>
+  
+  <hr />
+  
+  <%- if @product.have_zaiko? -%>
+    <%= render :partial => "base/add_cart", :locals => {:product => @product} %>
+   　　   <%- have_style = @product.product_styles.any?(&:style_category1) -%>
+     <%- if have_style -%>
+	<div>
+	<div class="centerCart">
+     <div id="stock_table" >
+	   <%= render :partial => 'stock_table' %>
+	 </div>
+	 </div>
+	 </div>
+	 <%- end -%>						
+    <%- else -%>
+    <div class="leftMargin">品切れ中</div>
+    <%- end -%>
+    
+<hr />
+  
+  <div id='comment'>
+	<%=h_br @product.description %>
+  </div>
+  <br />
+  <%= ("<div class='sectionSubheader'>サイズ</div><div id='comment'>" + h_br(@product.size_txt) + "</div>" ) unless @product.size_txt.blank? %>
+  <%= ("<div class='sectionSubheader'>素材</div><div id='comment'>" + h_br(@product.material) + "</div>" ) unless @product.material.blank? %>
+  <%= ("<div class='sectionSubheader'>原産国</div><div id='comment'>" + h_br(@product.origin_country) + "</div>" ) unless @product.origin_country.blank? %>
+  <%= ("<div class='sectionSubheader'>重さ</div><div id='comment'>" + h_br(@product.weight) + "</div>" ) unless @product.weight.blank? %>
+  <%= ("<div class='sectionSubheader'>その他、仕様</div><div id='comment'>" + h_br(@product.other) + "</div>" ) unless @product.other.blank? %>
+  <%= ("<div class='sectionSubheader'>入荷日</div><div id='comment'>" + h_br(@product.arrival_date) + "</div>" ) unless @product.arrival_date.blank? %>
+  </div>
+
+</div>

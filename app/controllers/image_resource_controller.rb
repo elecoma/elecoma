@@ -10,7 +10,7 @@ class ImageResourceController < BaseController
       @res ||= ImageResource.find_by_id(params[:id].to_i)
     end
     raise ActiveRecord::RecordNotFound unless @res
-    if request.mobile?
+    if request.mobile? && !request.mobile.respond_to?('smartphone?')
       format = nil
       if request.mobile.instance_of?(Jpmobile::Mobile::Docomo)
         format = :gif

@@ -30,6 +30,12 @@ module BaseHelper
       else
         return_str = link_to h(category.name), :controller => "/products" ,:action => "index", :category_id => category.id
       end
+    elsif type == "SMARTPHONE"
+      if params[:category_id] && params[:category_id].to_s == category.id.to_s
+        return_str = ""
+      else
+        return_str = '<option value="/products/category/' + category.id.to_s + '">' + category.name + '</option>'
+      end
     else
       if params[:category_id] && params[:category_id].to_s == category.id.to_s
         return_str = image_flg ? category_image_tag(category) : h(category.name)
@@ -53,7 +59,7 @@ module BaseHelper
     id = params[:category_id] || 0
     return_array = []
     Category.find(:all, :conditions => ["parent_id is null"], :order => "position" ).each do |category|
-     unless type == "MOBILE" && !category.get_child_category_ids.include?(id.to_i) && id != 0
+     unless (type == "MOBILE") && !category.get_child_category_ids.include?(id.to_i) && id != 0
          return_str = category_list_view_child(category, id, image_flg, type)
      end
       return_array <<   return_str unless return_str.blank?
@@ -69,7 +75,7 @@ module BaseHelper
     return "" unless category.product_count > 0
     return_str =""
     return_array = []
-    if type == "MOBILE"
+    if type == "MOBILE" || type == "SMARTPHONE"
       return_str += link_to_category(category, type)
       return_str += ' '
     else
@@ -115,7 +121,7 @@ module BaseHelper
 
   def view_resource_id(resource_id, options = {})
     if resource_id && resource_id != 0
-      if request.mobile?
+      if request.mobile? && !request.mobile.respond_to?('smartphone?')
         format = nil
         if request.mobile.instance_of?(Jpmobile::Mobile::Docomo)
           format = :gif
@@ -187,9 +193,9 @@ EJS
   end
 
   #  * INFO 追加お届け先が20件未満の場合、お届け先追加アクション用のリンクを生成する
-  def link_to_create_address(str = '新規登録')
+  def link_to_create_address(str = '新規登録', custom_class = 'delivery_edit')
     @address_size < DeliveryAddress::MAXIMUM_POSITION or return nil
-    link_to(str, {:controller => :accounts, :action => :delivery_new_popup}, :class => 'delivery_edit')
+    link_to(str, {:controller => :accounts, :action => :delivery_new_popup}, :class => custom_class)
     #    link_to_function(str, "popdelivery('/account/delivery_new_popup', 'create_deliv', '600', '640')") if @address_size < DeliveryAddress::MAXIMUM_POSITION
   end
 
@@ -271,6 +277,9 @@ EJS
     when :small
       id = product.small_resource_id
       options = ({:width=>120}).merge(options)
+    when :smartphone
+      id = product.small_resource_id
+      options = ({:width=>50, :height=>50}).merge(options)
     end
     if id
       view_resource_id(id, options)
@@ -431,20 +440,6 @@ def link_to_mobile(name, options = {}, html_options = nil)
       9 => '&#xe6ea;',
       0 => '&#xe6eb;',
     }
-#    if request.mobile.is_a?(Jpmobile::Mobile::Softbank)
-#      h = {
-#        1 => '$F<',
-#        2 => '$F=',
-#        3 => '$F>',
-#        4 => '$F?',
-#        5 => '$F@',
-#        6 => '$FA',
-#        7 => '$FB',
-#        8 => '$FC',
-#        9 => '$FD',
-#        0 => '$FE',
-#      }
-#   end
     h[accesskey] + link_to(name, options, html_options)
   else
     link_to(name, options, html_options)

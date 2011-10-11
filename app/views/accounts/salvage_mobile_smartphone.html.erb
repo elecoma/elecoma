@@ -1,0 +1,32 @@
+<div class="sectionHeader">パスワードを忘れた方</div>
+
+<p class="text">
+  ウェブショップ用パスワードを忘れた方は、当ページより再度パスワードを設定いただけます。<br />
+  ご登録頂いている内容を入力して下さい。
+</p>
+<p class="highlightError text"><%= flash[:notice] %></p>
+<%= error_messages_for(:input) if @input %>
+<% form_for :input, :url => {:action => 'salvage_complete'} do |f| %>
+  <table class="tb2">
+  <tr><td>メールアドレス</td></tr>
+    <tr>
+      <td><%= f.text_field :email, {:class=>"form_m",:style=>"ime-mode:inactive"} %></td>
+    </tr>
+     <tr><td>お名前(漢字)</td></tr>
+    <tr>
+      <td>
+        姓<%= f.text_field :family_name, {:class=>"form_m m_left",:style=>"ime-mode:active"} %><br />
+        名<%= f.text_field :first_name, {:class=>"form_m m_left",:style=>"ime-mode:active"} %>
+      </td>
+    </tr>
+     <tr><td>生年月日</td></tr>
+    <tr>
+      <td><%= f.birthday_select :birthday , :use_month_numbers => true,:start_year =>Time.now.year-70,:end_year=>Time.now.year-10,:default=>{:year=>1980,:month=>1,:day=>1}%></td>
+    </tr>
+    <tr><td>電話番号</td></tr>
+    <tr>
+      <td><%= f.text_field :tel01, {:class=>"form_s",:style=>"ime-mode:inactive"} %>-<%= f.text_field :tel02, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} %>-<%= f.text_field :tel03, {:class=>"form_s m_left",:style=>"ime-mode:inactive"} %></td>
+    </tr>
+  </table>
+  <div class="my_btn4"><%= submit_tag "送信", :class=>"rosy button" %></div>
+<% end %>

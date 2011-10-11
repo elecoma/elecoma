@@ -259,7 +259,7 @@ class CartController < BaseController
         flash.now[:error] = "配達時間が選択されていません"
       end
       if flash.now[:error]
-        if request.mobile?
+        if request.mobile? && !request.mobile.respond_to?('smartphone?')
           delivery2
         else
           params[:back] = "1"
@@ -321,7 +321,7 @@ class CartController < BaseController
   def select_delivery_time_with_delivery_trader_id_ajax
     delivery_trader_id = params[:delivery_trader_id]
     @options = select_delivery_time_with_delivery_trader_id(delivery_trader_id)
-    render :layout => false unless request.mobile?
+    render :layout => false unless request.mobile? && !request.mobile.respond_to?('smartphone?')
   end
 
 

@@ -1,0 +1,15 @@
+<div class="sectionHeader">MYページTOP</div>
+
+<div class="topMessage">
+<%= h([@login_customer.family_name, @login_customer.first_name].join(' '))%>様<br />
+いつもご利用いただきありがとうございます。<br/>
+現在のポイント<%= @login_customer.point.to_i %>pt
+</div>
+
+<div class="rosy banner">購入履歴一覧<%= link_to "<span class='link'></span>", {:controller => 'accounts', :action => 'history_list'} %></div>
+<div class="rosy banner">登録内容変更<%= link_to "<span class='link'></span>", {:controller => 'accounts', :action => 'edit'} %></div>
+<div class="rosy banner">お届け先追加・変更<%= link_to "<span class='link'></span>", :controller=>'accounts', :action=>'delivery' %></div>
+<div class="rosy banner">退会<%= link_to "<span class='link'></span>", {:controller => 'accounts', :action => 'withdraw'} %></div>
+<% @user_navigation_list.each do |navi| %>
+  <%= render :partial => navi %>
+<% end %>

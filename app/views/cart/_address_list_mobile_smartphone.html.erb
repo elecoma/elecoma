@@ -1,0 +1,10 @@
+ <%- @addresses.each do |address| %>
+	<div class="sectionSubheader">選択<%= address_button(address) %></div>
+	<div class="addressEntry">
+		住所種類<%= address_type_to_s(address) %><br />
+		お届け先<%= address_detail(address) %><br />
+		<%= link_to_edit_address(address, 'rosy small_button delivery_edit') %>
+		<%= link_to_delete_address(address, 'rosy small_button') %>
+	</div>
+ <%- end -%>
+ <div class="addressEndList"></div>

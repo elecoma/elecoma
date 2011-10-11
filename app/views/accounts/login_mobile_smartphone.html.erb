@@ -1,0 +1,15 @@
+<div class="sectionHeader">ログイン</div>
+
+<div class="text"><span style="color:#ff0000;"><%= flash[:notice] %></span></div>
+<% form_for(:customer, :url => { :action => "login" } ) do |f| -%>
+ <div id="loginForm">
+	<span style="color:#FF9775;">●</span> メールアドレス<br /><%= f.text_field("email",{:size => "30", :style => "height : 14px;", :class => "rounded"}.merge(mobile_input_mode(:alphabet))) %><br />
+	<span style="color:#FF9775;">●</span> パスワード<br /><%= f.password_field("password",:size => "30", :style => "height : 14px;", :class => "rounded") %><br />
+ </div>
+<%= f.submit 'ログイン', :class=>'rosy button text' %>
+<% end %>
+<div id="loginLinks">
+<div><span style="color:#FF9775;">⇒</span> <%= link_to 'パスワードをお忘れの方はこちら', {:controller => 'accounts', :action => 'salvage'} %></div>
+<div><span style="color:#FF9775;">⇒</span> <%= link_to("新規会員登録はコチラ", { :controller => "accounts", :action => "kiyaku_intro" } ) %></div>
+<div><span style="color:#FF9775;">⇒</span> <%= link_to("購入を引き続き", { :controller => "cart", :action => "temporary_shipping" } ) %></div>
+</div>

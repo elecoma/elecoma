@@ -1,0 +1,12 @@
+<div class="sectionHeader">お届け先の編集</div>
+
+<div class="addressMessage">
+	<span style="color:#ff0000;">※</span>は必須項目です。
+</div>
+
+<%= error_messages_for :delivery_address %>
+
+<% form_for :delivery_address, :url => {:action => 'delivery_update', :id=> @id} do |f| %>
+        <%= render :partial => 'delivery_form', :locals => {:f => f} %>
+        <%= hidden_field_tag 'popup', @popup %>
+      <% end %>

@@ -1,0 +1,28 @@
+<div class="sectionHeader">購入履歴一覧</div>
+
+<% if @orders && !@orders.empty? %>
+	<% @orders.each do | order | %>
+		<%- order_delivery = order.order_deliveries[0] -%>
+
+		<div class="sectionSubheader">
+			<%= date_time(order.received_at) %>
+		</div>
+		
+		<div class="historyEntry">
+			注文番号:<%=h order.code %>
+			<br/>
+			合計金額:<%=number_with_delimiter order.total %>円
+		</div>
+		<div class="showHistoryButton">
+			    <%= button_to '詳細', {:action => 'history_show', :id => order.id}, :class => 'rosy small_button' %>
+			</div>
+		<br clear="all" />
+	<% end %>
+	<%= will_paginate @orders %>
+	
+<% else %>
+	<div style="text-align:center;">
+	    購入履歴はありません。
+	</div>
+<% end %>
+

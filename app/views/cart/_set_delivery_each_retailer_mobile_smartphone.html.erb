@@ -1,0 +1,27 @@
+<div class="text">
+  <h3 class="tb_t">配送情報: <%= Retailer.find(retailer_id).name %></h3>
+  <div class="delivery_trader_select">
+    <p>発送方法をお選びください</p>
+    <ul>
+      <% @delivery_traders[retailer_id].each do |delivery_trader| %>
+        <li>
+        <%= radio_button "order_deliveries[#{retailer_id}]", "delivery_trader_id", delivery_trader.id, :class => 'radio_trader' %>
+        <%= label "order_deliveries[#{retailer_id}]", "delivery_trader_id", delivery_trader.name %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="delivery_time_select">
+    <p>配達時間をお選びください</p>
+    <select id="delivery_time_<%= retailer_id %>" name="order_deliveries[<%= retailer_id %>][delivery_time_id]">
+      <option value="">指定なし</option>
+      <%= render :action => 'select_delivery_time_with_delivery_trader_id_ajax', :params => {:record => @order_deliveries[retailer_id]}, :method => 'get' %>
+    </select>
+  </div>
+
+</div>
+
+  <div class="delivery_cart">
+	<%= render :partial  => 'cart_items_smartphone', :locals  => { :details => false, :buttons => false} %>
+  </div>
