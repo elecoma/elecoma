@@ -39,6 +39,7 @@ h2.clearfix span.more {
   float: left;
   width: 119px;
   padding: 5px;
+  height: 140px;
 }
 
 * html #new_item li {
