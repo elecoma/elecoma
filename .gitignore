@@ -10,3 +10,5 @@ vendor/plugins/*
 var/run/*
 !var/run/.gitkeep
 config/database.yml
+.rvmrc
+public/js/application.js
