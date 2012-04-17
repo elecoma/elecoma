@@ -49,7 +49,7 @@ class Admin::ProductStylesController < Admin::BaseController
   #在庫管理履歴プレビュー
   def stock_histories
     product_style_id = params[:id].to_i
-    if !product_style_id.blank? && product_style_id=~ /^\d*$/
+    if !product_style_id.blank? && product_style_id.to_s =~ /^\d*$/
       @product_style = ProductStyle.find_by_id(product_style_id.to_i)
       if !@product_style.blank?
         @stock_histories = @product_style.stock_histories
