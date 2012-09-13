@@ -11,8 +11,8 @@ c.prefecture_id,
 c.sex,
 c.receive_mailmagazine,
 #{MergeAdapterUtil.convert_time_to_mm('c.birthday')} as birth_month,
-c.family_name || c.first_name as name_kanji,
-c.family_name_kana || c.first_name_kana as name_kana,
+#{MergeAdapterUtil.concat('c.family_name', 'c.first_name')} as name_kanji,
+#{MergeAdapterUtil.concat('c.family_name_kana', 'c.first_name_kana')} as name_kana,
 c.birthday,
 c.email,
 c.occupation_id,
@@ -119,11 +119,11 @@ and c.activate = 2
   end}
 #{unless condition.customer_name_kanji.blank?
     conditions << "%#{condition.customer_name_kanji}%"
-    "and (c.family_name || c.first_name) like ? "
+    "and #{MergeAdapterUtil.concat('c.family_name', 'c.first_name')} like ? "
   end}
 #{unless condition.customer_name_kana.blank?
     condition << "%#{condition.customer_name_kana}%"
-    "and (c.family_name_kana || c.first_name_kana) like ? "
+    "and #{MergeAdapterUtil.concat('c.family_name_kana', 'c.first_name_kana')} like ? "
   end}
 #{if condition.sex_male == "1" && condition.sex_female == "0"
     "and c.sex=1"
@@ -153,7 +153,7 @@ and c.activate = 2
   end}
 #{unless condition.tel_no.blank?
     conditions << "%#{condition.tel_no}%"
-    "and (c.tel01 || c.tel02 || c.tel03) like ? "
+    "and #{MergeAdapterUtil.concat('c.tel01', 'c.tel02', 'c.tel03')} like ? "
   end}
 #{unless condition.occupation_id.blank?
     "and c.occupation_id in ('" << condition.occupation_id.join("','") << "')"
