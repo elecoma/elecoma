@@ -118,7 +118,7 @@ $ sudo ruby setup.rb
 
 3. ImageMagickのインストール
 $ sudo yum install libjpeg-devel libpng-devel gd-devel freetype-devel
-$ wget ftp://ftp.kddlabs.co.jp/graphics/ImageMagick/ImageMagick-6.5.8-4.tar.gz
+$ wget http://ftp.nl.netbsd.org/pub/pub/ImageMagick/ImageMagick-6.5.8-4.tar.gz
 $ tar zxf ImageMagick-6.5.8-4.tar.gz
 $ cd ImageMagick-6.5.8-4
 $ ./configure
@@ -153,8 +153,7 @@ $ sudo gem install postgres
 
 8. アプリケーションの展開
 # cd /usr/local
-# tar zxf (DOWNLOAD_PATH)/elecoma-<version>.tar.gz
-# mv elecoma-<version> ec
+# git clone git://github.com/elecoma/elecoma.git ec
 # chown -R ec:ec /usr/local/ec
 
 9. postgresqlのセットアップ
@@ -335,12 +334,12 @@ http://www.artonx.org/collabo/backyard/?LhaLibEn
 
 2. 商品の登録
 --------------------------------------------------------------------------------
-商品登録には、カテゴリ、規格が必要となります。
+商品登録には、カテゴリ、規格、在庫の設定が必要となります。
 >> カテゴリの登録
- -管理画面の商品管理 -> カテゴリ管理 よりカテゴリを登録する
+ - 管理画面の商品管理 -> カテゴリ管理 よりカテゴリを登録する
 
 >> 規格の管理
- -管理画面の商品管理 -> 規格管理 より規格を登録する
+ - 管理画面の商品管理 -> 規格管理 より規格を登録する
 
 >> 商品の登録
 >>>> 1つずつ登録する場合
@@ -352,7 +351,10 @@ http://www.artonx.org/collabo/backyard/?LhaLibEn
 商品登録後、商品の規格を設定します。
 >> 商品規格の登録
  1. 商品登録完了画面もしくは商品マスタの商品一覧 -> 規格登録 から規格を選択し「表示する」ボタンを押下する
- 2. 規格リストが表示されるので、必要な規格の登録項目にチェックを入れ、商品コード、在庫数、価格を入力し、登録を行う
+ 2. 規格リストが表示されるので、必要な規格の登録項目にチェックを入れ、商品コード、価格を入力し、登録を行う
+
+>> 在庫の登録
+ - 管理画面の発注・出荷管理 -> 在庫管理 より対象商品の在庫数を登録する
 
 以上で、商品がフロント画面に表示されるようになります
 
