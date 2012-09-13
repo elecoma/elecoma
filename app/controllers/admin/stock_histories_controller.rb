@@ -16,7 +16,8 @@ class Admin::StockHistoriesController < Admin::BaseController
     find_options = {
       :page => params[:page],
       :per_page => @condition.per_page || 10,
-      :conditions => flatten_conditions(@search_list),
+      :conditions => ['product_styles.deleted_at IS NULL'] + flatten_conditions(@search_list),
+      :joins => :product_style,
       :include => [:product],
       :order => "stock_histories.id"
     }
