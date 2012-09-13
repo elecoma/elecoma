@@ -152,11 +152,11 @@ c.prefecture_id,
 c.sex,
 c.activate,
 #{MergeAdapterUtil.convert_time_to_mm('c.birthday')} as birth_month,
-#{MergeAdapterUtil.concat(['c.family_name', 'c.first_name'])} as name_kanji,
-#{MergeAdapterUtil.concat(['c.family_name_kana', 'c.first_name_kana'])} as name_kana,
+#{MergeAdapterUtil.concat('c.family_name', 'c.first_name')} as name_kanji,
+#{MergeAdapterUtil.concat('c.family_name_kana', 'c.first_name_kana')} as name_kana,
 c.birthday,
 c.email,
-#{MergeAdapterUtil.concat(['c.tel01', "'-'", 'c.tel02', "'-'", 'c.tel03'])} as tel_no,
+#{MergeAdapterUtil.concat('c.tel01', "'-'", 'c.tel02', "'-'", 'c.tel03')} as tel_no,
 c.occupation_id,
 coalesce(sum_total.total,0) as total,
 coalesce(sum_order_count.order_count,0) as order_count,
@@ -259,11 +259,11 @@ where
   end}
 #{unless condition.customer_name_kanji.blank?
     conditions << "%#{condition.customer_name_kanji}%"
-    "and (#{MergeAdapterUtil.concat(['c.family_name', 'c.first_name'])}) like ? "
+    "and (#{MergeAdapterUtil.concat('c.family_name', 'c.first_name')}) like ? "
   end}
 #{unless condition.customer_name_kana.blank?
     conditions << "%#{condition.customer_name_kana}%"
-    "and (#{MergeAdapterUtil.concat(['c.family_name_kana', 'c.first_name_kana'])}) like ?"
+    "and (#{MergeAdapterUtil.concat('c.family_name_kana', 'c.first_name_kana')}) like ?"
   end}
 #{if condition.sex_male == "1" && condition.sex_female == "0"
     "and c.sex=1"
@@ -296,7 +296,7 @@ where
   end}  
 #{unless condition.tel_no.blank?
     conditions << "%#{condition.tel_no}%"
-    "and (#{MergeAdapterUtil.concat(['c.tel01', 'c.tel02', 'c.tel03'])}) like ? "
+    "and (#{MergeAdapterUtil.concat('c.tel01', 'c.tel02', 'c.tel03')}) like ? "
   end}
 #{unless condition.occupation_id.blank?
     "and c.occupation_id in ('" << condition.occupation_id.join("','") << "')"

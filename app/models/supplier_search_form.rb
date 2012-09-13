@@ -40,11 +40,11 @@ where
   end}
 #{unless condition.tel_no.blank?
     conditions << "%#{condition.tel_no}%"
-    "and (#{MergeAdapterUtil.concat(['s.tel01', 's.tel02', 's.tel03'])}) like ? "
+    "and (#{MergeAdapterUtil.concat('s.tel01', 's.tel02', 's.tel03')}) like ? "
   end}
 #{unless condition.fax_no.blank?
     conditions << "%#{condition.fax_no}%"
-    "and (#{MergeAdapterUtil.concat(['s.fax01', 's.fax02', 's.fax03'])}) like ? "
+    "and (#{MergeAdapterUtil.concat('s.fax01', 's.fax02', 's.fax03')}) like ? "
   end}  
 #{unless condition.email.blank?
     conditions << "%#{condition.email}%"

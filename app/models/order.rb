@@ -41,10 +41,10 @@ class Order < ActiveRecord::Base
 
     if search
       unless search.customer_name.blank?
-        search_list << [MergeAdapterUtil.concat(["order_deliveries.family_name", "order_deliveries.first_name"]) + " like ?", "%#{search.customer_name}%"]
+        search_list << [MergeAdapterUtil.concat("order_deliveries.family_name", "order_deliveries.first_name") + " like ?", "%#{search.customer_name}%"]
       end
       unless search.customer_name_kana.blank?
-        search_list << [MergeAdapterUtil.concat(["order_deliveries.family_name_kana", "order_deliveries.first_name_kana"]) + " like ?", "%#{search.customer_name_kana}%"]
+        search_list << [MergeAdapterUtil.concat("order_deliveries.family_name_kana", "order_deliveries.first_name_kana") + " like ?", "%#{search.customer_name_kana}%"]
       end
       unless search.order_code_from.blank?
         search_list << ["orders.code >= ?", search.order_code_from]
@@ -59,7 +59,7 @@ class Order < ActiveRecord::Base
         search_list << ["order_deliveries.email like ?", "%#{search.email}%"]
       end
       unless search.tel.blank?
-        search_list << [MergeAdapterUtil.concat(["order_deliveries.tel01", "order_deliveries.tel02", "order_deliveries.tel03"]) + " like ?", "%#{search.tel}%"]
+        search_list << [MergeAdapterUtil.concat("order_deliveries.tel01", "order_deliveries.tel02", "order_deliveries.tel03") + " like ?", "%#{search.tel}%"]
       end
       unless search.search_birth_from.blank?
         search_list << ["order_deliveries.birthday >= ?", search.search_birth_from]
