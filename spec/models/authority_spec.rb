@@ -33,14 +33,14 @@ describe Authority do
       select_funtions ={
         functions(:F100).id =>functions(:F100).name,
         functions(:F102).id =>functions(:F102).name,
-        functions(:F103).id =>functions(:F102).name
+        functions(:F103).id =>functions(:F103).name
       }
       @authority.save
       #権限ファンクションセット前
       @authority.functions.collect{|f| f.id}.should be_empty
       @authority.chang_functions(select_funtions)
       #権限ファンクションセット後
-      @authority.functions.collect{|f| f.id}.should == select_funtions.keys.collect {|key| key.to_i}
+      @authority.functions.collect(&:id).sort.should == select_funtions.keys.sort
     end
   end
 end

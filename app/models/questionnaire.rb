@@ -2,7 +2,7 @@ class Questionnaire < ActiveRecord::Base
 
   acts_as_paranoid
 
-  has_many :questions, :dependent => :destroy, :validate => false
+  has_many :questions, :dependent => :destroy, :validate => false, :order => 'position ASC'
   has_many :questionnaire_answers
 
   validates_presence_of :name

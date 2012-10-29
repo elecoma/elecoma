@@ -286,17 +286,17 @@ describe Admin::TotalsController do
     end
 
     it "販売開始期間を指定して集計" do
-      search = {
-        'month(1i)'=>2008, 'month(2i)'=>8, :by_month => 'x',
-        'sale_start_from(1i)' => '2008',
-        'sale_start_from(2i)' => '08',
-        'sale_start_from(3i)' => '01',
-        'sale_start_to(1i)' => '2008',
-        'sale_start_to(2i)' => '08',
-        'sale_start_to(3i)' => '02'
-      }
       start_from = Date.new(2008, 8, 1)
-      start_to = Date.new(2008, 8, 2)
+      start_to = Date.today
+      search = {
+        'month(1i)'=>start_from.year, 'month(2i)'=>start_from.month, :by_month => 'x',
+        'sale_start_from(1i)' => start_from.year.to_s,
+        'sale_start_from(2i)' => start_from.month.to_s,
+        'sale_start_from(3i)' => start_from.day.to_s,
+        'sale_start_to(1i)' => start_to.year.to_s,
+        'sale_start_to(2i)' => start_to.month.to_s,
+        'sale_start_to(3i)' => start_to.day.to_s
+      }
       post 'index', :page => 'product', :type => 'all', :search => search
       assigns[:sale_start_enabled].should be_true
       assigns[:records].should_not be_empty

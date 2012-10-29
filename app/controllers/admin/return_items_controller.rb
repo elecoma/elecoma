@@ -146,10 +146,11 @@ class Admin::ReturnItemsController < Admin::BaseController
       return
     end
     @search_list = ReturnItemSearchForm.get_conditions(@condition)
+    @search_list << [ 'product_styles.deleted_at IS NULL' ]
     find_options = {
       :page => params[:page], 
       :per_page => @condition.per_page || 10,
-      :conditions => ['product_styles.deleted_at IS NULL'] + flatten_conditions(@search_list),
+      :conditions => flatten_conditions(@search_list),
       :joins=> :product_style,
       :include => [:product],
       :order => "return_items.id"

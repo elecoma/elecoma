@@ -50,7 +50,7 @@ describe Campaign do
       Campaign.new(:name=>@campaign_entry.name,:dir_name=>"test").should_not be_valid
       
       #前後チェック
-      @campaign_entry.opened_at = DateTime.new(2012, 1, 1)
+      @campaign_entry.opened_at = DateTime.now + 3.years
       @campaign_entry.closed_at = DateTime.now
       @campaign_entry.should_not be_valid
     end
@@ -74,12 +74,12 @@ describe Campaign do
   describe "公開期間中かをチェック" do
     it "公開期間中かをチェック" do
       #公開期間外
-      @campaign_entry.opened_at = DateTime.new(2012, 1, 1)
-      @campaign_entry.closed_at = DateTime.new(2012, 10, 1)
+      @campaign_entry.opened_at = DateTime.now + 3.years
+      @campaign_entry.closed_at = DateTime.now + 3.years + 6.months
       @campaign_entry.check_term.should be_false
       #公開期間内
-      @campaign_entry.opened_at = DateTime.new(2009, 1, 1)
-      @campaign_entry.closed_at = DateTime.new(2012, 10, 1)
+      @campaign_entry.opened_at = DateTime.now - 1.years
+      @campaign_entry.closed_at = DateTime.now + 3.years
       @campaign_entry.check_term.should be_true
       #本日の時間
       now = DateTime.now

@@ -591,8 +591,9 @@ describe Admin::ShopsController do
   
   describe "GET 'destroy'" do
     it "削除に成功する" do
-      get 'destroy', :model => "kiyakus", :id => 1,:return_act=>"kiyaku_index"
-      Kiyaku.find(:first).id.should == 2
+      lambda {
+        get 'destroy', :model => "kiyakus", :id => 1,:return_act=>"kiyaku_index"
+      }.should change(Kiyaku, :count).by(-1)
       response.should redirect_to(:action => "kiyaku_index")
     end
     it "削除に失敗する場合" do

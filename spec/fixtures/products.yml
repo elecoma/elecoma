@@ -7,10 +7,10 @@ test<%= idx %>:
   permit: true
   point_granted_rate: 10
   category_id: <%= idx %>
-  sale_start_at: 2008-08-01
-  sale_end_at: 2012-08-31
-  public_start_at: 2008-08-01
-  public_end_at: 2012-08-31
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
+  public_start_at: <%= DateTime.now - 1.year %>
+  public_end_at: <%= DateTime.now + 1.month %>
   have_product_style: true
   introduction: テスト
 <% end %>
@@ -21,10 +21,10 @@ permit_false:
   permit: false
   small_resource_id: 1
   point_granted_rate: 10
-  sale_start_at: 2008-08-01
-  sale_end_at: 2012-08-31
-  public_start_at: 2008-08-01
-  public_end_at: 2012-08-31
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
+  public_start_at: <%= DateTime.now - 1.year %>
+  public_end_at: <%= DateTime.now + 1.month %>
   introduction: テスト
   category_id: 4
 
@@ -36,10 +36,10 @@ can_incriment:
   no_limit_flag: false
   point_granted_rate: 10
   style_id: 3
-  sale_start_at: 2008-08-01
-  sale_end_at: 2012-08-31
-  public_start_at: 2008-08-01
-  public_end_at: 2012-08-31
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
+  public_start_at: <%= DateTime.now - 1.year %>
+  public_end_at: <%= DateTime.now + 1.month %>
   introduction: テスト
 
 can_not_incriment:
@@ -50,10 +50,10 @@ can_not_incriment:
   no_limit_flag: false
   point_granted_rate: 10
   style_id: 1
-  sale_start_at: 2008-08-01
-  sale_end_at: 2012-08-31
-  public_start_at: 2008-08-01
-  public_end_at: 2012-08-31
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
+  public_start_at: <%= DateTime.now - 1.year %>
+  public_end_at: <%= DateTime.now + 1.month %>
   introduction: テスト
   category_id: 1
 
@@ -65,10 +65,10 @@ can_decriment:
   no_limit_flag: false
   point_granted_rate: 10
   style_id: 4
-  sale_start_at: 2008-08-01
-  sale_end_at: 2012-08-31
-  public_start_at: 2008-08-01
-  public_end_at: 2012-08-31
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
+  public_start_at: <%= DateTime.now - 1.year %>
+  public_end_at: <%= DateTime.now + 1.month %>
   introduction: テスト
   category_id: 1
 
@@ -80,10 +80,10 @@ can_not_decriment:
   no_limit_flag: false
   point_granted_rate: 10
   style_id: 2
-  sale_start_at: 2008-08-01
-  sale_end_at: 2012-08-31
-  public_start_at: 2008-08-01
-  public_end_at: 2012-08-31
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
+  public_start_at: <%= DateTime.now - 1.year %>
+  public_end_at: <%= DateTime.now + 1.month %>
   introduction: テスト
   category_id: 1
 
@@ -94,10 +94,10 @@ trying_sell_limit:
   no_limit_flag: false
   point_granted_rate: 10
   style_id: 2
-  sale_start_at: 2008-08-01
-  sale_end_at: 2012-08-31
-  public_start_at: 2008-08-01
-  public_end_at: 2012-08-31
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
+  public_start_at: <%= DateTime.now - 1.year %>
+  public_end_at: <%= DateTime.now + 1.month %>
   introduction: テスト
 
 trying_no_limit_flag:
@@ -108,10 +108,10 @@ trying_no_limit_flag:
   no_limit_flag: true
   point_granted_rate: 10
   style_id: 3
-  sale_start_at: 2008-08-01
-  sale_end_at: 2012-08-31
-  public_start_at: 2008-08-01
-  public_end_at: 2012-08-31
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
+  public_start_at: <%= DateTime.now - 1.year %>
+  public_end_at: <%= DateTime.now + 1.month %>
   introduction: テスト
 
 limited_in_summer:
@@ -122,8 +122,8 @@ limited_in_summer:
   no_limit_flag: true
   point_granted_rate: 10
   style_id: 1
-  sale_start_at: 2008-08-01
-  sale_end_at: 2012-08-31
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
   introduction: テスト
   category_id: 1
 
@@ -135,8 +135,8 @@ limited_in_winter:
   no_limit_flag: true
   point_granted_rate: 10
   style_id: 1
-  sale_start_at: 2009-01-01
-  sale_end_at: 2012-01-31
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
   introduction: テスト
 
 have_style_id1_and_nothave_style_id2:
@@ -146,10 +146,10 @@ have_style_id1_and_nothave_style_id2:
   no_limit_flag: false
   point_granted_rate: 10
   style_id: 6
-  sale_start_at: 2008-01-01
-  sale_end_at: 2012-01-01
-  public_start_at: 2008-01-01
-  public_end_at: 2012-01-01
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
+  public_start_at: <%= DateTime.now - 1.year %>
+  public_end_at: <%= DateTime.now + 1.month %>
   permit: true
   category_id: 1
   have_product_style: true
@@ -162,8 +162,8 @@ have_base_price:
   no_limit_flag: false
   point_granted_rate: 10
   style_id: 1
-  sale_start_at: 2008-01-01
-  sale_end_at: 2012-01-01
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
   price: 1000
   introduction: テスト
 
@@ -175,8 +175,8 @@ limited_in_sep:
   no_limit_flag: true
   point_granted_rate: 10
   style_id: 2
-  sale_start_at: 2008-09-01
-  sale_end_at: 2008-12-23
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
   introduction: テスト
   
 #通常商品  
@@ -193,14 +193,14 @@ valid_product:
   category_id: 16
   delivery_dates: 3
   have_product_style: true
-  sale_start_at: 2009-10-01 00:00:00
-  sale_end_at: 2012-10-01 00:00:00
-  public_start_at: 2009-10-01 00:00:00
-  public_end_at: 2012-10-01 00:00:00
-  arrival_expected_date: 2009-10-01 00:00:00
+  sale_start_at: <%= DateTime.now - 3.years %>
+  sale_end_at: <%= DateTime.now + 1.month %>
+  public_start_at: <%= DateTime.now - 3.years %>
+  public_end_at: <%= DateTime.now + 1.month %>
+  arrival_expected_date: <%= DateTime.now + 3.days %>
   style_id: 7
-  created_at: 2009-10-01 00:00:00
-  updated_at: 2009-10-01 00:00:00
+  created_at: <%= DateTime.now - 3.years %>
+  updated_at: <%= DateTime.now - 3.years %>
   supplier_id: 2
   retailer_id: 1
 #未公開商品   ＋CSVアップロード元データとして使用
@@ -217,11 +217,11 @@ not_permit_product:
   category_id: 1
   delivery_dates: 3
   have_product_style: true
-  sale_start_at: 2009-10-01 00:00:00
-  sale_end_at: 2012-10-01 00:00:00
-  public_start_at: 2009-10-01 00:00:00
-  public_end_at: 2012-10-01 00:00:00
-  arrival_expected_date: 2009-10-01 00:00:00  
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
+  public_start_at: <%= DateTime.now - 1.year %>
+  public_end_at: <%= DateTime.now + 1.month %>
+  arrival_expected_date: <%= DateTime.now + 3.days %>
 #キャンペーン付き商品＋送料無料
 campaign_product:
   id: 18
@@ -236,11 +236,11 @@ campaign_product:
   category_id: 1
   delivery_dates: 3
   have_product_style: true
-  sale_start_at: 2009-10-01 00:00:00
-  sale_end_at: 2012-10-01 00:00:00
-  public_start_at: 2009-10-01 00:00:00
-  public_end_at: 2012-10-01 00:00:00
-  arrival_expected_date: 2009-10-01 00:00:00
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
+  public_start_at: <%= DateTime.now - 1.year %>
+  public_end_at: <%= DateTime.now + 1.month %>
+  arrival_expected_date: <%= DateTime.now + 3.days %>
 #販売終了商品  
 sell_stop_product:
   id: 19
@@ -255,11 +255,11 @@ sell_stop_product:
   category_id: 1
   delivery_dates: 3
   have_product_style: true
-  sale_start_at: 2009-10-01 00:00:00
-  sale_end_at: 2009-10-30 00:00:00
-  public_start_at: 2009-10-01 00:00:00
-  public_end_at: 2009-10-30 00:00:00
-  arrival_expected_date: 2009-10-01 00:00:00
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now - 1.month %>
+  public_start_at: <%= DateTime.now - 1.year %>
+  public_end_at: <%= DateTime.now - 1.month %>
+  arrival_expected_date: <%= DateTime.now + 3.days %>
 #複数スタイルを持っている商品  
 multi_styles_product:
   id: 20
@@ -274,11 +274,11 @@ multi_styles_product:
   category_id: 1
   delivery_dates: 3
   have_product_style: true
-  sale_start_at: 2009-10-01 00:00:00
-  sale_end_at: 2012-10-30 00:00:00
-  public_start_at: 2009-10-01 00:00:00
-  public_end_at: 2012-10-30 00:00:00
-  arrival_expected_date: 2009-10-01 00:00:00
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
+  public_start_at: <%= DateTime.now - 1.year %>
+  public_end_at: <%= DateTime.now + 1.month %>
+  arrival_expected_date: <%= DateTime.now + 3.days %>
 #CSVアップロード比較用
 csv_upload_product_1:
   id: 21
@@ -296,11 +296,11 @@ csv_upload_product_1:
   origin_country: japan
   delivery_dates: 3
   have_product_style: true
-  sale_start_at: 2009-10-01 00:00:00
-  sale_end_at: 2012-10-30 00:00:00
-  public_start_at: 2009-10-01 00:00:00
-  public_end_at: 2012-10-30 00:00:00
-  arrival_expected_date: 2009-10-01 00:00:00
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
+  public_start_at: <%= DateTime.now - 1.year %>
+  public_end_at: <%= DateTime.now + 1.month %>
+  arrival_expected_date: <%= DateTime.now + 3.days %>
 csv_upload_product_2:
   id: 22
   name: ロングコート
@@ -315,11 +315,11 @@ csv_upload_product_2:
   category_id: 1
   origin_country: english
   have_product_style: true
-  sale_start_at: 2009-10-01 00:00:00
-  sale_end_at: 2012-10-30 00:00:00
-  public_start_at: 2009-10-01 00:00:00
-  public_end_at: 2012-10-30 00:00:00
-  arrival_expected_date: 2009-10-01 00:00:00
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
+  public_start_at: <%= DateTime.now - 1.year %>
+  public_end_at: <%= DateTime.now + 1.month %>
+  arrival_expected_date: <%= DateTime.now + 3.days %>
 product_style_test:
   id: 23
   name: 規格登録テスト
@@ -334,11 +334,11 @@ product_style_test:
   category_id: 1
   origin_country: english
   have_product_style: true
-  sale_start_at: 2009-10-01 00:00:00
-  sale_end_at: 2012-10-30 00:00:00
-  public_start_at: 2009-10-01 00:00:00
-  public_end_at: 2012-10-30 00:00:00
-  arrival_expected_date: 2009-10-01 00:00:00
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
+  public_start_at: <%= DateTime.now - 1.year %>
+  public_end_at: <%= DateTime.now + 1.month %>
+  arrival_expected_date: <%= DateTime.now + 3.days %>
 #通常商品  
 valid_product_other_shop:
   id: 24
@@ -353,14 +353,14 @@ valid_product_other_shop:
   category_id: 16
   delivery_dates: 3
   have_product_style: true
-  sale_start_at: 2009-10-01 00:00:00
-  sale_end_at: 2012-10-01 00:00:00
-  public_start_at: 2009-10-01 00:00:00
-  public_end_at: 2012-10-01 00:00:00
-  arrival_expected_date: 2009-10-01 00:00:00
+  sale_start_at: <%= DateTime.now - 1.year %>
+  sale_end_at: <%= DateTime.now + 1.month %>
+  public_start_at: <%= DateTime.now - 1.year %>
+  public_end_at: <%= DateTime.now + 1.month %>
+  arrival_expected_date: <%= DateTime.now + 3.days %>
   style_id: 7
-  created_at: 2009-10-01 00:00:00
-  updated_at: 2009-10-01 00:00:00
+  created_at: <%= DateTime.now %>
+  updated_at: <%= DateTime.now %>
   supplier_id: 2
   retailer_id: 2
 
