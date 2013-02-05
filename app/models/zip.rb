@@ -50,7 +50,8 @@ class Zip < ActiveRecord::Base
                 :prefecture_name => line[6],
                 :address_city => line[7],
                 :address_details => line[8]).save!
-        puts "#{idx+1}/#{cnt}"
+        # 進行状況を出力（すべてだと負荷が高くなるので一部を出力）
+        puts "#{idx+1}/#{cnt}" if (idx % 1000) == 0 || idx+1 == cnt
         STDOUT.flush
       end
     end
@@ -90,7 +91,8 @@ class Zip < ActiveRecord::Base
                 :prefecture_name => line[3],
                 :address_city => line[4],
                 :address_details => line[5]+line[6]).save!
-        puts "#{idx+1}/#{cnt}"
+        # 進行状況を出力（すべてだと負荷が高くなるので一部を出力）
+        puts "#{idx+1}/#{cnt}" if (idx % 1000) == 0 || idx+1 == cnt
         STDOUT.flush
       end
     end
