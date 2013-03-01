@@ -20,11 +20,20 @@
     <%- end -%>
     <br />
     <p>&gt;&gt;検索結果一覧&nbsp;<%=@order_deliveries.total_entries %>件&nbsp;が該当しました</p>
+
     <div class="btn_box space20_bottom">
       <%= submit_tag 'CSV DOWNLOAD', :class=>"btn" %>
       <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
     </div>
-  <% end %>
+    <% end %>
+
+  <% form_tag :action => 'picking_list' do %>
+  <div class="btn_box space20_bottom">
+      <%= submit_tag 'ピッキングリスト', :class=>"btn" %>
+      <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
+  </div>
+     <% end %>
+
   <table class="data2 clear" cellspacing="1">
    <tr>
     <th>受注日</th>
@@ -36,6 +45,7 @@
     <th>対応状況</th>
     <th>編集</th>
     <th>メール</th>
+    <th>納品書</th>
     <th>削除</th>
    </tr>
    <% @order_deliveries.each do | order_delivery | %>
@@ -62,10 +72,13 @@
  mailto = 'mailto:%s?body=%s' % [order_delivery.email, URI.encode(body)]
  -%>
       <td><%= link_to '作成', mailto %></td>
-      <td><%= link_to "削除", { :action => "destroy", :id => order_delivery.id }, :confirm => "本当に削除しますか？", :method=>"delete" %></td>
-     </tr>
+　　　<td><%= link_to '納品書',{ :action => "statement", :id => order_delivery.id }  %></td>
+      
+<td><%= link_to "削除", { :action => "destroy", :id => order_delivery.id }, :confirm => "本当に削除しますか？", :method=>"delete" %></td>
    <% end %>
+</tr>
   </table>
+
   <%= will_paginate @order_deliveries, :params => params %>
 <% end %>
 

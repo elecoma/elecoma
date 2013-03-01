@@ -61,6 +61,22 @@ class Admin::OrdersController < Admin::BaseController
     end
   end
 
+  def statement
+      @order_delivery = OrderDelivery.find_by_order_id(params[:id].to_i)
+      @order_delivery.update_ticket(params[:order_delivery_ticket])
+      @shop = Shop.find(:first)
+  end
+
+  def statement_only
+      @order_delivery = OrderDelivery.find_by_order_id(params[:id].to_i)
+      @shop = Shop.find(:first)
+      render :layout => "admin/statement"
+  end
+
+  def picking_list
+      @order_deliveries = OrderDelivery.find(:all)
+  end
+
   def destroy
     # 親と子も消す
     order_delivery = OrderDelivery.find(:first, :conditions => ["order_id=?", params[:id].to_i])

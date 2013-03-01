@@ -1,0 +1,90 @@
+<div id="statement"><!-- メイン -->
+ <h2>納品書</h2><br />
+ <table cellspacing="1" class="data">
+<tbody> <tr>
+ <th>発行日</th><td><%=h Time.now.strftime('%Y/%m/%d')%></td>
+ </tr>
+ <tr>
+ <th>受注日</th><td><%=h date(@order_delivery.received_at) %></td>
+ </tr>
+ <tr>
+ <th>お客様氏名</th><td><%=h @order_delivery.family_name %> <%=h @order_delivery.first_name %> 様</td>
+ </tr>
+  <tr>
+  <th>受注コード</th><td><%=h @order_delivery.order_code %></td></tr>
+  <tr>
+   <th>住所</th>
+   <td colspan="3">
+     〒<%=h @order_delivery.zipcode01 %>-<%=h @order_delivery.zipcode02 %><br />
+     <%=h @order_delivery.prefecture_name %> <%=h @order_delivery.address_city %> <%=h @order_delivery.address_detail %>
+   </td>
+   </tr>
+    <tr>
+    <th colspan="2">会社情報</th></tr>
+    <tr>
+    <th>会社名</th><td><%=h @shop.try(:corp_name) %></td></tr>
+    <tr>
+    <th>住所</th><td>〒<%=h @shop.try(:zipcode) %><br />
+                   <%=h @shop.try(:address) %></td></tr>
+    <tr>
+    <th>TEL</th><td><%=h @shop.try(:tel) %></td></tr>
+   </tbody> </table>    
+
+<h3>毎度お買い上げいただき誠にありがとうございます。下記の通りに納品いたします。</h3> <br />
+<table cellspacing="1" class="data2">  
+<tr>
+<th colspan="6">受付商品情報</th></tr>
+<tr>
+   <th class="center">商品コード</th><th class="center">商品名/<br />規格1/<br />規格2</th><th class="center">単価</th><th class="center">数量</th><th class="ce
+nter">税込み価格</th><th class="center">小計</th>
+  </tr>
+  <% @order_delivery.order_details.each do | detail | %>
+   <tr>
+    <td><%=h detail.product_code %></td>
+    <td><%=h detail.product_name %>/<br /><%=h detail.style_category_name1 %>/<br /><%=h detail.style_category_name2 %></td>
+    <td><%=h detail.price %>円</td>
+    <td><%=h detail.quantity %></td>
+    <td><%= number_with_delimiter(detail.price_with_tax) %>円</td>
+    <td><%= number_with_delimiter(detail.subtotal) %>円</td>
+   </tr>
+  <% end %>
+  <tr>
+   <th colspan="5">小計</th>
+   <td><%=h number_with_delimiter(@order_delivery.subtotal) %>円</td>
+  </tr>
+  <% unless @order_delivery.discount.blank? %>
+  <tr>
+   <th colspan="5">値引</th>
+   <td><%=h @order_delivery.discount %>円</td>
+  </tr>
+  <% end %>
+  <tr>
+   <th colspan="5">送料</th>
+   <td><%=h @order_delivery.deliv_fee %>円</td>
+  </tr>
+  <tr>
+   <th colspan="5">手数料</th>
+   <td><%=h @order_delivery.charge %>円</td>
+  </tr>
+  <tr>
+<th colspan="5">合計</th>
+   <td><%=h number_with_delimiter(@order_delivery.total) %>円</td>
+  </tr>
+  <% unless @order_delivery.use_point.blank? %>
+  <tr>
+   <th colspan="5">使用ポイント</th>
+   <td><%=h number_with_delimiter(@order_delivery.use_point) %>ポイント</td>
+  </tr>
+  <% end %>
+  <% unless @order_delivery.add_point.blank? %>
+  <tr>
+   <th colspan="5">追加ポイント</th>
+   <td><%=h number_with_delimiter(@order_delivery.add_point) %>ポイント</td>
+  </tr>
+  <% end %>
+  <tr>
+   <th colspan="5">お支払い合計</th>
+   <td><%=h number_with_delimiter(@order_delivery.payment_total) %>円</td>
+  </tr>
+</table>
+</div>

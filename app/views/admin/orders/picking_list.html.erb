@@ -1,0 +1,31 @@
+<%=h flash[:notice] %>
+<%=h flash[:error] %>
+<%= render :partial => "submenu" %>
+
+ <div id="main"><!-- メイン -->
+ <h2>ピッキングチェック表</h2></br>
+
+<table cellspacing="1" class="data2">
+<tr>
+<th colspan="8">受付商品情報</th></tr>
+<tr>
+  <th class="center">受注コード</th><th class="center">お客様氏名</th><th class="center">商品コード</th><th class="center">商品名/<br />規格1/<br />規格2</th><th class="center">単価</th><th class="center">数量</th><th class="ce
+nter">税込み価格</th><th class="center">小計</th>
+  </tr>
+<% @order_deliveries.each do | order_delivery | %>
+  <% order_delivery.order_details.each do | detail | %>
+　<tr>
+    <td><%=h order_delivery.order_code %> </td>
+    <td><%=h order_delivery.family_name %> <%=h order_delivery.first_name %> 様</td>
+
+    <td><%=h detail.product_code %></td>
+    <td><%=h detail.product_name %>/<br /><%=h detail.style_category_name1 %>/<br /><%=h detail.style_category_name2 %></td>
+    <td><%=h detail.price %>円</td>
+    <td><%=h detail.quantity %></td>
+    <td><%= number_with_delimiter(detail.price_with_tax) %>円</td>
+    <td><%= number_with_delimiter(detail.subtotal) %>円</td>
+   <% end %>
+<% end %>
+   </tr>
+
+</div>

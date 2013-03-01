@@ -14,7 +14,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :feature_products, :collection => {:product_search => [:get]}
     admin.resources :mobile_devices, :collection => {:search => [:get]}
     admin.resources :customers, :collection => {:get_address => [:get], :search => [:get]}
-    admin.resources :orders, :collection => {:get_address => [:get], :search => [:get]}, :member => {:edit => [:get, :put]}
+    admin.resources :orders, :collection => {:get_address => [:get], :search => [:get],:picking_list =>[:get]}, :member => {:edit => [:get, :put],:statement =>[:get]}
     admin.resources :order_statuses
     admin.resources :products, :collection => {:search => [:get], :actual_count_index => [:get], :actual_count_search => [:get]}
     admin.resources :product_styles
