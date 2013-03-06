@@ -3,6 +3,14 @@
   <% fields_for :search do |f| %>
    <table class="data" cellspacing="1">
     <tr>
+     <th>受注日</th>
+       <td class="td1" colspan="3">
+        <%= f.date_select "created_at_from",
+            :use_month_numbers => true, :include_blank=>true %>
+         ～ <%= f.date_select "created_at_to", :use_month_numbers => true, :include_blank=>true %>
+     </td>
+    </tr>
+    <tr>
      <th>受注番号</th>
      <td><%= f.text_field :order_code_from, :size => 15 %> ～ <%= f.text_field :order_code_to, :size => 15 %></td>
      <th>対応状況</th>

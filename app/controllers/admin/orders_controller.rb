@@ -74,7 +74,18 @@ class Admin::OrdersController < Admin::BaseController
   end
 
   def picking_list
-      @order_deliveries = OrderDelivery.find(:all)
+   get_search_form
+   
+   @order_deliveries = OrderDelivery.find(:all,
+                         :conditions => flatten_conditions(@search_list),
+                         :include => OrderDelivery::DEFAULT_INCLUDE,
+                         :order => "order_deliveries.id desc")
+  end
+
+  def picking_list_only
+      @order_deliveries = OrderDelivery.find(:all,:order => "order_deliveries.id desc", 
+                                     :conditions =>{ :id => params[:order_deliveries] })
+      render :layout => "admin/statement"
   end
 
   def destroy

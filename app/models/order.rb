@@ -46,6 +46,12 @@ class Order < ActiveRecord::Base
       unless search.customer_name_kana.blank?
         search_list << [MergeAdapterUtil.concat("order_deliveries.family_name_kana", "order_deliveries.first_name_kana") + " like ?", "%#{search.customer_name_kana}%"]
       end
+      unless search.created_at_from.blank?
+        search_list << ["orders.created_at >= ?", search.created_at_from]
+      end
+      unless search.created_at_to.blank?
+        search_list << ["orders.created_at < ?",search.created_at_to  + 1 * 60 * 60 * 24 ]
+      end
       unless search.order_code_from.blank?
         search_list << ["orders.code >= ?", search.order_code_from]
       end

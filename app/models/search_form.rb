@@ -77,6 +77,19 @@ class SearchForm < ActiveForm
     end
   end
 
+  def to_params
+    self.attributes.inject({}) do |params,(key,value)|
+      if value.is_a? Time
+        params["#{key}(1i)"] = value.year
+        params["#{key}(2i)"] = value.month
+        params["#{key}(3i)"] = value.day
+      else
+        params[key] = value
+      end
+      params
+    end
+  end
+
   private
 
   def parse_date_select(params, name)

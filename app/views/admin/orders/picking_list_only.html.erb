@@ -1,22 +1,10 @@
-<%=h flash[:notice] %>
-<%=h flash[:error] %>
-<%= render :partial => "submenu" %>
-
- <div id="main"><!-- メイン -->
+ <div id="statement"><!-- メイン -->
  <h2>ピッキングチェック表</h2></br>
 <%counter = 0%>
 <% @order_deliveries.each do | order_delivery | %>
   <% order_delivery.order_details.each do | detail | %>
     <%counter += 1%>
   <%end%>
-<%end%>
-<p><%= counter %>件&nbsp;が該当しました</p>
-
-<% form_tag({:action => 'picking_list_only',:order_deliveries => @order_deliveries },:target=>["_blank"])do  %>
-  <div class="btn_box space20_bottom">
-      <%= submit_tag '全体表示', :class=>"btn" %>
-      <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
-  </div>
 <%end%>
 
 <table cellspacing="1" class="data2">
