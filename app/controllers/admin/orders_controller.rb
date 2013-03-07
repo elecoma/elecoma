@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 require 'csv'
+require 'thinreports'
+include ActionView::Helpers::NumberHelper
 
 class Admin::OrdersController < Admin::BaseController
   before_filter :admin_permission_check_receive
@@ -62,30 +64,116 @@ class Admin::OrdersController < Admin::BaseController
   end
 
   def statement
-      @order_delivery = OrderDelivery.find_by_order_id(params[:id].to_i)
-      @order_delivery.update_ticket(params[:order_delivery_ticket])
-      @shop = Shop.find(:first)
+    @order_delivery = OrderDelivery.find_by_order_id(params[:id].to_i)
+    @order_delivery.update_ticket(params[:order_delivery_ticket])
+    @shop = Shop.find(:first)
   end
 
-  def statement_only
-      @order_delivery = OrderDelivery.find_by_order_id(params[:id].to_i)
-      @shop = Shop.find(:first)
-      render :layout => "admin/statement"
+  def statement_download
+    @order_delivery = OrderDelivery.find_by_order_id(params[:id].to_i)
+    @shop = Shop.find(:first)
+    
+    report = ThinReports::Report.create do |r|
+      r.use_layout "#{RAILS_ROOT}/public/admin/pdf_layout/statement" do |config|
+        config.list(:product) do |c|
+          c.events.on :footer_insert do |e|
+            e.section.item(:subtotal).value(number_with_delimiter(@order_delivery.subtotal))
+            e.section.item(:discount).value(number_with_delimiter(@order_delivery.discount) || 0)
+            e.section.item(:deliv_fee).value(number_with_delimiter(@order_delivery.deliv_fee))
+            e.section.item(:charge).value(number_with_delimiter(@order_delivery.charge))
+            e.section.item(:delivery_total).value(number_with_delimiter(@order_delivery.total))
+            e.section.item(:use_point).value(number_with_delimiter(@order_delivery.use_point))
+            e.section.item(:add_point).value(number_with_delimiter(@order_delivery.add_point))
+            e.section.item(:payment_total).value(number_with_delimiter(@order_delivery.payment_total))
+          end
+        end
+      end
+
+      r.events.on :page_create do |e|
+        e.page.item(:page).value(e.page.no)
+      end
+
+      r.events.on :generate do |e|
+        e.pages.each do |page|
+          page.item(:page_total).value(e.report.page_count)
+        end
+      end
+      
+      r.start_new_page
+
+      r.page.values(:recieve_date     => @order_delivery.received_at,
+                    :order_code       => @order_delivery.order_code,
+                    :create_date      => Time.now.strftime('%Y%m%d').to_date,
+                    :customer_zipcode => "#{@order_delivery.zipcode01}-#{@order_delivery.zipcode02}",
+                    :customer_address => "#{@order_delivery.prefecture_name}#{@order_delivery.address_city}#{@order_delivery.address_detail}",
+                    :customer_name    => "#{@order_delivery.family_name} #{@order_delivery.first_name}",
+                    :shop_zipcode     => @shop.try(:zipcode),
+                    :shop_tel         => @shop.try(:tel),
+                    :shop_address     => @shop.try(:address),
+                    :shop_name        => @shop.try(:corp_name))
+      
+      @order_delivery.order_details.each do | detail |
+        r.page.list(:product).add_row(:quantity       => detail.quantity,
+                                      :product_name   => detail.product_name,
+                                      :category_name1 => detail.style_category_name1,
+                                      :category_name2 => detail.style_category_name2,
+                                      :product_code   => detail.product_code,
+                                      :price          => number_with_delimiter(detail.price),
+                                      :price_with_tax => number_with_delimiter(detail.price_with_tax),
+                                      :subtotal       => number_with_delimiter(detail.subtotal))
+      end
+
+      send_data r.generate,:filename    => "statement_#{@order_delivery.order_code}.pdf",
+                           :type        => 'application/pdf',
+                           :disposition => 'attachment'
+    end
   end
 
   def picking_list
-   get_search_form
+    get_search_form
    
-   @order_deliveries = OrderDelivery.find(:all,
-                         :conditions => flatten_conditions(@search_list),
-                         :include => OrderDelivery::DEFAULT_INCLUDE,
-                         :order => "order_deliveries.id desc")
+    @order_deliveries = OrderDelivery.find(:all,
+                                           :conditions => flatten_conditions(@search_list),
+                                           :include    => OrderDelivery::DEFAULT_INCLUDE,
+                                           :order      => "order_deliveries.id desc")
   end
 
-  def picking_list_only
-      @order_deliveries = OrderDelivery.find(:all,:order => "order_deliveries.id desc", 
-                                     :conditions =>{ :id => params[:order_deliveries] })
-      render :layout => "admin/statement"
+  def picking_list_download
+    @order_deliveries = OrderDelivery.find(:all,
+                                           :order      => "order_deliveries.id desc", 
+                                           :conditions => { :id => params[:order_ids].split(",") })
+
+    report = ThinReports::Report.new :layout => "#{RAILS_ROOT}/public/admin/pdf_layout/picking_list"
+  
+    report.events.on :page_create do |e|
+        e.page.item(:page).value(e.page.no)
+    end
+
+    report.events.on :generate do |e|
+      e.pages.each do |page|
+        page.item(:page_total).value(e.report.page_count)
+      end
+    end
+    
+    report.start_new_page
+    
+    @order_deliveries.each do | order_delivery |
+      order_delivery.order_details.each do | detail |
+        report.page.list(:picking_list).add_row(:order_date     => order_delivery.received_at,
+                                                :order_code     => order_delivery.order_code,
+                                                :customer_name  => "#{order_delivery.family_name} #{order_delivery.first_name}",
+                                                :status         => order_delivery.status_view,
+                                                :product_code   => detail.product_code,
+                                                :product_name   => detail.product_name,
+                                                :category_name1 => detail.style_category_name1,
+                                                :category_name2 => detail.style_category_name2,
+                                                :quantity       => detail.quantity)
+      end
+    end
+
+    send_data report.generate,:filename     => "PickingList_#{Time.now.strftime('%Y%m%d%H%M%S')}.pdf",
+                              :type         => 'application/pdf',
+                              :disposition  => 'attachment'
   end
 
   def destroy

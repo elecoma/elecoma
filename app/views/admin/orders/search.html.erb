@@ -27,12 +27,17 @@
     </div>
     <% end %>
 
-<% form_tag ({ :action => 'picking_list' }.merge(:search => @search.to_params)) do%>
- <div class="btn_box space20_bottom">
+  <% form_tag ({ :action => 'picking_list' }.merge(:search => @search.to_params)) do%>
+    <%- [:payment_id, :sex].each do |name| -%>
+      <%- params[name] and params[name].each do |value| -%>
+        <%= hidden_field_tag '%s[]' % name, value %>
+      <%- end -%>
+    <%- end -%>
+    <div class="btn_box space20_bottom">
       <%= submit_tag 'ピッキングリスト', :class=>"btn" %>
       <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
-  </div>
-     <% end %>
+    </div>
+  <%- end -%>
 
   <table class="data2 clear" cellspacing="1">
    <tr>
