@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class RecommendProduct < ActiveRecord::Base
 
   acts_as_paranoid

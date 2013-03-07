@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateFeatureProducts < ActiveRecord::Migration
   def self.up
     create_table :feature_products do |t|

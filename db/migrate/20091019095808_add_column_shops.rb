@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AddColumnShops < ActiveRecord::Migration
   def self.up
     add_column :shops, :point_granted_rate, :integer, :comment => "ポイント付与率"

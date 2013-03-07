@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateRecalls < ActiveRecord::Migration
   def self.up
     create_table :recalls do |t|

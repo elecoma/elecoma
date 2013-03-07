@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class ReturnItemSearchForm < SearchForm
   set_field_names :product_id => '商品ID'
   set_field_names :code => '商品コード'

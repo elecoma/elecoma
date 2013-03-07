@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class ServiceCooperationsTemplate < ActiveRecord::Base
   # validates
   validates_presence_of :template_name,:file_type,:encode,:newline_character

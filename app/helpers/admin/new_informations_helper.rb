@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module Admin::NewInformationsHelper
   def new_window(flg)
     if flg

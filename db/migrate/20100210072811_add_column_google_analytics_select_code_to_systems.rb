@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AddColumnGoogleAnalyticsSelectCodeToSystems < ActiveRecord::Migration
   def self.up
     add_column :systems, :googleanalytics_select_code, :integer,:default => 0, :comment => "トラッキングコードの種類選択"

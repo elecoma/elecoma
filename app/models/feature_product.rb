@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class FeatureProduct < ActiveRecord::Base
   acts_as_paranoid
 

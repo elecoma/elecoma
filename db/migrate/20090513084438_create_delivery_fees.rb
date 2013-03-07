@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateDeliveryFees < ActiveRecord::Migration
   def self.up
     create_table :delivery_fees do |t|

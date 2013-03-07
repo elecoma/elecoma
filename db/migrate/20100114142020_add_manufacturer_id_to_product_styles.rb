@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AddManufacturerIdToProductStyles < ActiveRecord::Migration
   def self.up
     add_column :product_styles, :manufacturer_id, :string, :comment => "型番"    

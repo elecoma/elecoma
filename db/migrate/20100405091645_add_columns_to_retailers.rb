@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AddColumnsToRetailers < ActiveRecord::Migration
   def self.up
     add_column :retailers, :zipcode01, :string, :comment => '郵便番号（前半）'

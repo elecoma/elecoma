@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateAuthoritiesFunctions < ActiveRecord::Migration
   def self.up
     create_table :authorities_functions, :id => false do |t|

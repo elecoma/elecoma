@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreatePrivacies < ActiveRecord::Migration
   def self.up
     create_table :privacies do |t|

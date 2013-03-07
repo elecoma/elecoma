@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AddRetailerIfDontHaveRetailer < ActiveRecord::Migration
   def self.up
     begin

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # 在庫管理で商品検索条件を格納するフォーム
 class StockSearchForm < SearchForm
   set_field_names :product_id => '商品ID'

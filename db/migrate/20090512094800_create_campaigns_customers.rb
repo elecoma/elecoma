@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateCampaignsCustomers < ActiveRecord::Migration
   def self.up
     create_table :campaigns_customers, :id => false do |t|

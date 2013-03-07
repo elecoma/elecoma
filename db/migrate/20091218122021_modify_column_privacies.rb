@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class ModifyColumnPrivacies < ActiveRecord::Migration
   def self.up
     change_column :privacies, :content, :text, :comment => "個人情報収集（PC）"

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module CartHelper
 
   # カートを渡すと、カート内の商品への加算用リンクを生成します。

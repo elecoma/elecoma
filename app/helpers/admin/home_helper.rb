@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module Admin::HomeHelper
   def sold_outs(product_styles)
     if product_styles.blank?

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateNewInformations < ActiveRecord::Migration
   def self.up
     create_table :new_informations do |t|

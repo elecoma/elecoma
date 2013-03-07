@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateProductAccessLogs < ActiveRecord::Migration
   def self.up
     create_table :product_access_logs do |t|

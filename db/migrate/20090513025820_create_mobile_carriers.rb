@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateMobileCarriers < ActiveRecord::Migration
   def self.up
     create_table :mobile_carriers do |t|

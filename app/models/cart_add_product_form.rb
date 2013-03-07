@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # 「カートに入れる」フォーム
 class CartAddProductForm < SearchForm
   set_field_names :size => '個数'

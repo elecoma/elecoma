@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AddRetailerAndMobileFieldsToLaws < ActiveRecord::Migration
   def self.up
     add_column :laws, :render_type, :integer, :default => 0, :comment => "表示タイプ(0:text, 1:html)"

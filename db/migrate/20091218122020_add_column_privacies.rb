@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AddColumnPrivacies < ActiveRecord::Migration
   def self.up
     add_column :privacies, :content_collect_mobile, :text, :comment => "個人情報収集（モバイル）"

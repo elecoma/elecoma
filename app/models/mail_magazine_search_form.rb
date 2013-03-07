@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # 顧客管理で検索条件を格納するフォーム
 class MailMagazineSearchForm < SearchForm
   validates_numericality_of :customer_id, :only_integer => true, :allow_blank => true, :message => 'は半角数字のみを入力してください。'

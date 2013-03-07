@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AddColumnSupplierIdToProducts < ActiveRecord::Migration
   def self.up
     add_column :products, :supplier_id, :integer,:default => 1, :comment => "仕入先ID"

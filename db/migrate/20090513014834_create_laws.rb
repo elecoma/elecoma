@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateLaws < ActiveRecord::Migration
   def self.up
     create_table :laws do |t|
