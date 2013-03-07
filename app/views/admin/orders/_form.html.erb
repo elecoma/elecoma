@@ -104,7 +104,7 @@
    <tr>
     <td><%=h detail.product_code %></td>
     <td><%=h detail.product_name %>/<br /><%=h detail.style_category_name1 %>/<br /><%=h detail.style_category_name2 %></td>
-    <td><%=h detail.price %>円</td>
+    <td><%=h number_with_delimiter(detail.price) %>円</td>
     <td><%=h detail.quantity %></td>
     <td><%= number_with_delimiter(detail.price_with_tax) %>円</td>
     <td><%= number_with_delimiter(detail.subtotal) %>円</td>

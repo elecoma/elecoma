@@ -2,53 +2,56 @@
 <%=h flash[:error] %>
 <%= render :partial => "submenu" %>
 
- <div id="main"><!-- メイン -->
- <h2>ピッキングチェック表</h2></br>
-<%counter = 0%>
-<% @order_deliveries.each do | order_delivery | %>
-  <% order_delivery.order_details.each do | detail | %>
-    <%counter += 1%>
-  <%end%>
-<%end%>
-<p><%= counter %>件&nbsp;が該当しました</p>
+<div id="main"><!-- メイン -->
 
-<% form_tag({:action => 'picking_list_only',:order_deliveries => @order_deliveries },:target=>["_blank"])do  %>
-  <div class="btn_box space20_bottom">
-      <%= submit_tag '全体表示', :class=>"btn" %>
+  <h2>ピッキングチェック表</h2><br/>
+  <% counter = 0 -%>
+  <% ord_ids = [] -%>
+  <% @order_deliveries.each do | order_delivery | -%>
+    <% counter += order_delivery.order_details.count -%>
+    <% ord_ids << order_delivery.id -%>
+  <% end -%>
+
+  <p><%= counter %>件&nbsp;が該当しました</p>
+ 
+  <% form_tag :action => 'picking_list_download' do%>
+    <%= hidden_field_tag :order_ids,ord_ids.join(",") %>
+    <div class="btn_box space20_bottom">
+      <%= submit_tag 'PDF DOWNLOAD', :class=>"btn" %>
       <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
-  </div>
-<%end%>
+    </div>
+  <%end%>
 
-<table cellspacing="1" class="data2">
-<tr>
-<th colspan="10">受付商品情報</th></tr>
-<tr>
-<th class="center">√</th>
-<th class="center">受注日</th>
-<th class="center">受注番号</th>
-<th class="center">お客様氏名</th>
-<th class="center">対応状況</th>
-<th class="center">商品コード</th>
-<th class="center">商品名</th>
-<th class="center">規格1</th>
-<th class="center">規格2</th>
-<th class="center">数量</th>
-  </tr>
-<% @order_deliveries.each do | order_delivery | %>
-  <% order_delivery.order_details.each do | detail | %>
-　<tr>
-    <td><input type="checkbox"></td>
-    <td><%= date(order_delivery.received_at) %></td>
-    <td><%= link_to(order_delivery.order_code, {:controller => 'admin/orders', 
-     :action => :show, :id => order_delivery.order_id}, :target=>'_blank') %></td>
-    <td><%=h order_delivery.family_name %> <%=h order_delivery.first_name %> 様</td>
-    <td><%= order_delivery.status_view %></td>
-    <td><%=h detail.product_code %></td>
-    <td><%=h detail.product_name %></td>
-    <td><%=h detail.style_category_name1 %></td>
-    <td><%=h detail.style_category_name2 %></td>
-    <td><%=h detail.quantity %></td>
-   <% end %>
-<% end %>
-   </tr>
-</div>
+  <table cellspacing="1" class="data2">
+    <tr><th colspan="10">受付商品情報</th></tr>
+    <tr>
+      <th class="center">√</th>
+      <th class="center">受注日</th>
+      <th class="center">受注番号</th>
+      <th class="center">お客様氏名</th>
+      <th class="center">対応状況</th>
+      <th class="center">商品コード</th>
+      <th class="center">商品名</th>
+      <th class="center">規格1</th>
+      <th class="center">規格2</th>
+      <th class="center">数量</th>
+    </tr>
+
+    <% @order_deliveries.each do | order_delivery | %>
+      <% order_delivery.order_details.each do | detail | %>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><%= date(order_delivery.received_at) %></td>
+          <td><%= link_to(order_delivery.order_code, {:controller => 'admin/orders', 
+                  :action => :show, :id => order_delivery.order_id}, :target=>'_blank') %></td>
+          <td><%=h order_delivery.family_name %> <%=h order_delivery.first_name %> 様</td>
+          <td><%= order_delivery.status_view %></td>
+          <td><%=h detail.product_code %></td>
+          <td><%=h detail.product_name %></td>
+          <td><%=h detail.style_category_name1 %></td>
+          <td><%=h detail.style_category_name2 %></td>
+          <td><%=h detail.quantity %></td>
+        </tr>
+      <% end %>
+    <% end %>
+</table>
