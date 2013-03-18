@@ -345,7 +345,6 @@ class ProductTotalizer < Totalizer
   def search conditions
     records = OrderDetail.find_by_sql([<<-EOS, conditions])
       select
-        order_details.id,
         1 as position,
         product_code,
         product_name,
@@ -361,16 +360,17 @@ class ProductTotalizer < Totalizer
         join product_styles on product_styles.id = order_details.product_style_id
         join products on products.id = product_styles.product_id
       where #{WHERE_CLAUSE}
-  #{if @member == 'member'
-    " and (customers.activate in (:activate)) "
-  elsif @member == 'nomember'
-    " and (customers.activate is null) "
-  else
-    " and (customers.activate in (:activate) or customers.activate is null) "
-  end}
+        #{if @member == 'member'
+          " and (customers.activate in (:activate)) "
+        elsif @member == 'nomember'
+          " and (customers.activate is null) "
+        else
+          " and (customers.activate in (:activate) or customers.activate is null) "
+        end}
         and ((:sale_start_from is null or :sale_start_to is null)
              or products.sale_start_at between :sale_start_from and :sale_start_to)
-      group by order_details.id, product_code, product_name, unit_price, products.sale_start_at
+        and product_styles.deleted_at is null
+      group by product_code, product_name, unit_price, products.sale_start_at
       order by price desc
     EOS
     # position の振り直し & 販売開始日を Date に

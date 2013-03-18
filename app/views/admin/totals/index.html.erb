@@ -107,7 +107,7 @@
         <% end %>
       </tr>
     <% end %>
-   
+
     <% if @total %>
       <tr>
         <% @list_view.each do | column | %>
@@ -118,7 +118,7 @@
         <% end %>
       </tr>
     <% end %>
-    
+
     <tr>
       <% @labels.each do | label | %>
         <th class="result_title"><%= label and label.sub("\n", '<br />') %></th>
