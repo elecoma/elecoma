@@ -113,7 +113,7 @@ class Admin::OrdersController < Admin::BaseController
                     :shop_name        => @shop.try(:corp_name))
       
       @order_delivery.order_details.each do | detail |
-        r.page.list(:product).add_row(:quantity       => detail.quantity,
+        r.page.list(:product).add_row(:quantity       => number_with_delimiter(detail.quantity),
                                       :product_name   => detail.product_name,
                                       :category_name1 => detail.style_category_name1,
                                       :category_name2 => detail.style_category_name2,
@@ -167,7 +167,7 @@ class Admin::OrdersController < Admin::BaseController
                                                 :product_name   => detail.product_name,
                                                 :category_name1 => detail.style_category_name1,
                                                 :category_name2 => detail.style_category_name2,
-                                                :quantity       => detail.quantity)
+                                                :quantity       => number_with_delimiter(detail.quantity))
       end
     end
 
