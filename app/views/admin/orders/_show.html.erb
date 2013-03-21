@@ -107,7 +107,7 @@
  </tr>
  <tr>
   <th colspan="5">値引</th>
-  <td><%= number_with_delimiter @order_delivery.discount %>円</td>
+  <td><%= number_with_delimiter @order_delivery.discount || 0 %>円</td>
  </tr>
  <tr>
   <th colspan="5">送料</th>

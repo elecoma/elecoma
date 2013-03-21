@@ -1,3 +1,12 @@
+2013-3-21  Matsumoto Yasuhito  <ymatsumoto _at_ appirits.com>
+
+	* 2.1.6 Release
+	* [管理画面] 受注管理画面の検索内容に「受注日」を追加
+	* [管理画面] 納品書・ピッキングリストの作成機能追加
+	* [管理画面] 納品書・ピッキングリストのPDF出力機能追加
+	* [bugfix] 商品別集計が正しく集計されない不具合修正
+	* [bugfix] 商品マスタ管理、在庫切れ一覧、顧客マスタで日付で絞り込むとCSV DOWNLOADできないバグ修正
+
 2012-12-27  YOSHIDA Hiroki  <hyoshida _at_ appirits.com>
 
 	* 2.1.5 Release

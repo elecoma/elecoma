@@ -81,7 +81,7 @@
         <%=h detail.style_category_name2 %>
       </td>
       <td><%=h number_with_delimiter(detail.price) %>円</td>
-      <td><%=h detail.quantity %></td>
+      <td><%=h number_with_delimiter(detail.quantity) %></td>
       <td><%= number_with_delimiter(detail.price_with_tax) %>円</td>
       <td><%= number_with_delimiter(detail.subtotal) %>円</td>
     </tr>
@@ -95,17 +95,17 @@
   <% unless @order_delivery.discount.blank? %>
     <tr>
       <th colspan="5">値引</th>
-        <td><%=h @order_delivery.discount %>円</td>
+        <td><%=h number_with_delimiter(@order_delivery.discount) || 0 %>円</td>
     </tr>
   <% end %>
   
     <tr>
        <th colspan="5">送料</th>
-         <td><%=h @order_delivery.deliv_fee %>円</td>
+         <td><%=h number_with_delimiter(@order_delivery.deliv_fee) %>円</td>
     </tr>
     <tr>
       <th colspan="5">手数料</th>
-        <td><%=h @order_delivery.charge %>円</td>
+        <td><%=h number_with_delimiter(@order_delivery.charge) %>円</td>
     </tr>
     <tr>
       <th colspan="5">合計</th>
