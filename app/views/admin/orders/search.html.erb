@@ -9,16 +9,14 @@
 <%= render :partial => "search" %>
 
 <% if @order_deliveries %>
-  <% form_for :search, :url => {:action => 'csv_download'} do | f | %>
-    <%- @search.attributes.reject{|_,v|v.blank?}.each do | k, v | -%>
-      <%= f.hidden_field k %>
-    <%- end -%>
+  <% form_tag({:action => 'csv_download'}.merge(:search => @search.to_params)) do %>
     <%- [:payment_id, :sex].each do |name| -%>
       <%- params[name] and params[name].each do |value| -%>
         <%= hidden_field_tag '%s[]' % name, value %>
       <%- end -%>
     <%- end -%>
     <br />
+
     <p>&gt;&gt;検索結果一覧&nbsp;<%=@order_deliveries.total_entries %>件&nbsp;が該当しました</p>
 
     <div class="btn_box space20_bottom">

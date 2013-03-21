@@ -26,6 +26,19 @@ class CustomerSearchForm < SearchForm
   validates_numericality_of :order_count_down, :only_integer => true, :allow_blank => true, :message => 'は半角数字のみを入力してください。'
   validates_numericality_of :order_count_up, :only_integer => true, :allow_blank => true, :message => 'は半角数字のみを入力してください。'
   validates_format_of :product_code, :with => /^[0-9A-Za-z]+$/, :allow_blank => true, :message => 'は半角英数字のみを入力してください。'
+  
+  def to_params
+    self.attributes.inject({}) do |params,(key,value)|
+      if value.is_a? Time
+        params["#{key}(1i)"] = value.year
+        params["#{key}(2i)"] = value.month
+        params["#{key}(3i)"] = value.day
+      else
+        params[key] = value
+      end
+      params
+    end
+  end
 
   def self.csv(params)
     @condition = self.new(params[:condition] ||= [])
@@ -276,6 +289,7 @@ where
 #{
   from = condition.birthday_from
   to = condition.birthday_to
+  
   unless from.blank? && to.blank?
     if !from.blank? && !to.blank?
       "and (#{MergeAdapterUtil.convert_time_to_yyyymmdd('c.birthday')} >= '#{from.strftime("%Y%m%d")}'

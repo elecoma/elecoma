@@ -10,10 +10,7 @@
 <% end %>
 <br />
 
-<% form_for :search, :url => {:action => 'actual_count_csv_download'} do | f | %>
-  <%- @search.attributes.reject{|_,v|v.blank?}.each do | k, v | -%>
-    <%= f.hidden_field k %>
-  <%- end -%>
+<% form_tag({:action => 'actual_count_csv_download'}.merge(:search => @search.to_params)) do %>
   <%- params[:product_status_ids] and params[:product_status_ids].each do |value| -%>
     <%= hidden_field_tag 'product_status_ids[]', value %>
   <%- end -%>
