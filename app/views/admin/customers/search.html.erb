@@ -11,16 +11,7 @@
 
 <br />
 <% if @customers && @customers.size > 0 %>
-  <% form_for :condition, :url => {:action => 'csv_download'} do | f | %>
-    <% @condition.attributes.each do | k, v | %>
-      <% if v.instance_of? Array %>
-        <% v.each do |value| %>
-          <input type="hidden" name="condition[<%= k %>][]" value="<%= value %>"/>
-        <% end %>
-      <% else %>
-        <%= f.hidden_field k %>
-      <% end %>
-    <% end %>
+<% form_tag({:action => 'csv_download'}.merge(:condition => @condition.to_params)) do %>
   <p>&gt;&gt;検索結果一覧&nbsp;<%=@customers.total_entries %>件&nbsp;が該当しました</p>
   <div class="btn_box space20_bottom">
     <%= submit_tag 'CSV DOWNLOAD', :class=>"btn" %>
