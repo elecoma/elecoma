@@ -70,8 +70,9 @@ class Questionnaire < ActiveRecord::Base
   def self.csv(id, count)
     questionnaire = self.find(id)
     header = get_csv_header(count)
-    f = StringIO.new('', 'w')
-    CSV::Writer.generate(f) do |writer|
+    #f = StringIO.new('', 'w')
+    #CSV::Writer.generate(f) do |writer|
+    f = CSV.generate("") do |writer|
       writer << header
       questionnaire.questionnaire_answers.each do | questionnaire_answer |
         row = questionnaire_answer.export_row
@@ -81,7 +82,6 @@ class Questionnaire < ActiveRecord::Base
         writer << row
       end
     end
-    f.string
   end
 
   private

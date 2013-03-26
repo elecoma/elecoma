@@ -143,7 +143,7 @@ class Campaign < ActiveRecord::Base
               "性別",
               "職業"]
 
-    result += header.map.join(",") + "\r\n"
+    result += header.join(",") + "\r\n"
 
     questionnaires = campaign.customers
 
