@@ -45,11 +45,8 @@ class Admin::StockCsvController < Admin::BaseController
     name = params[:id]
     filename = '%s.csv' % name
     title = %w(商品コード 商品名 仕入先名 実在庫数 不良在庫数)
-
-    f = CSVUtil.make_csv_string(rows, title)
-    headers['Content-Type'] = "application/octet-stream; name=#{filename}"
-    headers['Content-Disposition'] = "attachment; filename=#{filename}"
-    render :text => Iconv.conv('cp932', 'UTF-8', f.string)    
+    f = CSVUtil.make_csv_string(rows, title)  
+    send_data(f, :type => 'text/csv; charset=shift_jis; header=present',:disposition => 'attachment', :filename => filename)
   end
   
   private
