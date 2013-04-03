@@ -11,7 +11,7 @@ class System < ActiveRecord::Base
   #   Ruby 1.9 で正規表現のライブラリが代わったので
   #   下記の旧コードでは動作しない
   #                  /^(?:\xE3\x82[\xA1-\xBF]|\xE3\x83[\x80-\xB6\xBC])*$/
-  KATAKANA_PATTERN = /^(?:\xE3\x82\xA1-\xE3\x82\xBF|\xE3\x83\x80-\xE3\x83\xB6)*$/ # \xE3\x83\xB6\xBC だと動作しない・・
+  KATAKANA_PATTERN = /^[\p{katakana}ー－]*$/ # 鬼車向け: カタカナと全角ハイフン/マイナスにマッチ
 
   #googleanalytics（トラッキングコード）の同期・非同期の区別
   GA_SELECT_SYNCH = 0
