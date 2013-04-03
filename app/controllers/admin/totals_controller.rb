@@ -44,7 +44,6 @@ class Admin::TotalsController < Admin::BaseController
     @list_view = @agent.columns
     @links = @agent.links
     @labels = @agent.labels
-    @total = @agent.total
     
     #当てはまったものをレコードに入れる
     begin
@@ -54,6 +53,8 @@ class Admin::TotalsController < Admin::BaseController
       e.backtrace.each{|bt|logger.error(bt)}
     end
 
+    @total = @agent.total
+    
     #
     begin
       flash[:graph] = @agent.graph
