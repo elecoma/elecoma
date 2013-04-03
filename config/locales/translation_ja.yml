@@ -863,3 +863,5 @@ ja:
     errors:
       messages:
         record_invalid: "Validation failed: {{errors}}"
+      full_messages:
+        format: "{{attribute}} {{message}}"
