@@ -1,4 +1,8 @@
-2013-3-21  Matsumoto Yasuhito  <ymatsumoto _at_ appirits.com>
+2013-04-03  Matsumoto Yasuhito  <ymatsumoto _at_ appirits.com>
+	* 2.1.7 Release
+	* [管理画面] コントローラーのテストが通る用に作り直しました
+
+2013-03-21  Matsumoto Yasuhito  <ymatsumoto _at_ appirits.com>
 
 	* 2.1.6 Release
 	* [管理画面] 受注管理画面の検索内容に「受注日」を追加
