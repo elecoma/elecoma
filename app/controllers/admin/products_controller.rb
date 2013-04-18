@@ -37,8 +37,8 @@ class Admin::ProductsController < Admin::BaseController
       @product = Product.new @old_product.attributes.reject{ |key, value| key.to_s == "id" }
     else
       @product = Product.new(params[:product])
-      @product.sale_end_at = Date.today + 3 * 365 #30年後
-      @product.public_end_at = Date.today + 3 * 365 #30年後
+      @product.sale_end_at = 3.years.since
+      @product.public_end_at = 3.years.since
     end
   end
 

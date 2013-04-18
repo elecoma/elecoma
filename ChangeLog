@@ -1,4 +1,11 @@
+2013-04-18  Matsumoto Yasuhito  <ymatsumoto _at_ appirits.com>
+
+	* 2.2.0 Release
+	* [管理画面] 日付検索をjavascriptのカレンダーでも選択できるようにしました
+	* [備考] 納品書・ビッキングリストのPDF作成機能も含まれます 
+
 2013-04-03  Matsumoto Yasuhito  <ymatsumoto _at_ appirits.com>
+
 	* 2.1.7 Release
 	* [管理画面] コントローラーのテストが通る用に作り直しました
 

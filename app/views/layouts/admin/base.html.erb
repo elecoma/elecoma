@@ -9,7 +9,10 @@
     <%= javascript_include_tag js_url(:action => "treemenu") %>
     <%= javascript_include_tag "rollover" %>
     <%= javascript_include_tag js_url(:action => "application") %>
+    <%= javascript_include_tag 'calendar/protocalendar' %>
+    <%= javascript_include_tag 'calendar/lang_ja' %>
     <%= stylesheet_link_tag "admin" %>
+    <%= stylesheet_link_tag 'calendar/simple' %>
     <%= yield :head %>
   </head>
   <body>

@@ -9,7 +9,11 @@
   <tr>
     <th>返品日時</th>
     <td>
-      <%= f.date_select :returned_at ,:use_month_numbers => true, :include_blank=>true %>
+      <%= calendar_date_select(:return_item,"returned_at",
+                          {:start_year => 5.years.ago.year,
+                          :end_year => Date.today.year,
+                          :use_month_numbers => true,
+                          :include_blank =>true})%>
     </td>
   </tr>
   <tr>

@@ -64,21 +64,48 @@
   <tr>
     <th>入荷予定日</th>
     <td>
-      <%= confirm_tag :date_select, :product, :arrival_expected_date, :use_month_numbers => true %>
+      <%= confirm_tag :calendar_date_select, 
+                      :product, 
+                      :arrival_expected_date,
+                     {:start_year => 5.years.ago.year,
+                      :end_year => 5.years.since.year,
+                      :use_month_numbers => true} %>
     </td>
   </tr>
   <tr>
     <th>販売期間</th>
     <td>
-      <%= confirm_tag :date_select, :product, :sale_start_at , :use_month_numbers => true%> ～
-      <%= confirm_tag :date_select, :product, :sale_end_at , :use_month_numbers => true %>
+      <%= confirm_tag :calendar_date_select,
+                      :product,
+                      :sale_start_at,
+                     {:start_year => 5.years.ago.year,
+                      :end_year => 5.years.since.year,
+                      :use_month_numbers => true} %>
+      ～
+      <%= confirm_tag :calendar_date_select,
+                      :product,
+                      :sale_end_at,
+                     {:start_year => 5.years.ago.year,
+                      :end_year => 5.years.since.year,
+                      :use_month_numbers => true} %>
     </td>
   </tr>
   <tr>
     <th>公開期間</th>
     <td>
-      <%= confirm_tag :date_select, :product, :public_start_at , :use_month_numbers => true%> ～
-      <%= confirm_tag :date_select, :product, :public_end_at , :use_month_numbers => true %>
+      <%= confirm_tag :calendar_date_select,
+                      :product,
+                      :public_start_at,
+                     {:start_year => 5.years.ago.year,
+                      :end_year => 5.years.since.year,
+                      :use_month_numbers => true} %>
+      ～
+      <%= confirm_tag :calendar_date_select,
+                      :product,
+                      :public_end_at,
+                     {:start_year => 5.years.ago.year,
+                      :end_year => 5.years.since.year,
+                      :use_month_numbers => true} %>
     </td>
   </tr>
   <tr>

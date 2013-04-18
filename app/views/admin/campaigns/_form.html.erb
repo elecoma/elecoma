@@ -37,11 +37,21 @@ Event.observe(window, 'load', function() {
     </tr>
     <tr>
       <th>開始日時 <span class="pnt">※</span></th>
-      <td><%= confirm_tag :datetime_select, :campaign, :opened_at, :use_month_numbers => true %></td>
+      <td>
+        <%= confirm_tag :calendar_date_select,
+                      :campaign,:opened_at,
+                      {:start_year => 5.years.ago.year,
+                      :end_year => Date.today.year} %>
+      </td>
     </tr>
     <tr>
       <th>終了日時 <span class="pnt">※</span></th>
-      <td><%= confirm_tag :datetime_select, :campaign, :closed_at, :use_month_numbers => true %></td>
+      <td>
+        <%= confirm_tag :calendar_date_select,
+                      :campaign,:closed_at,
+                      {:start_year => 5.years.ago.year,
+                      :end_year => Date.today.year} %>
+      </td>
     </tr>
     <tr>
       <th>申込制限数</th>

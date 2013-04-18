@@ -24,8 +24,16 @@
   <tr>
     <th>返品登録日</th>
     <td>
-      <%= f.date_select :returned_at_from, :use_month_numbers => true, :include_blank => true %>〜
-      <%= f.date_select :returned_at_to, :use_month_numbers => true, :include_blank => true %>
+      <%= calendar_date_select(:condition,"returned_at_from",
+                          {:start_year => 5.years.ago.year,
+                          :end_year => Date.today.year,
+                          :use_month_numbers => true,
+                          :include_blank =>true})%>
+      〜
+      <%= calendar_date_select(:condition,"returned_at_to",
+                          {:start_year => 5.years.ago.year,
+                          :end_year => Date.today.year,
+                          :use_month_numbers => true})%>
     </td>
   </tr>
   <tr>

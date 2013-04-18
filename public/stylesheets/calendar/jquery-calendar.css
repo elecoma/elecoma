@@ -1,0 +1,221 @@
+/*******************************************************************************
+ container
+*********************************************************************************/
+.cal-container, #cal-container {
+  background-color: #777;
+  color: #fff;
+  border: 1px solid #777;
+  overflow:hidden;
+  padding: 0px;
+  position:absolute;
+  width: 200px;
+  z-index: 10;
+
+  font-size: 13px;
+}
+
+.cal-container iframe {
+  border:none;
+  height:100%;
+  left:0px;
+  margin:0;
+  padding:0;
+  position:absolute;
+  top:0px;
+  width:100%;
+  z-index:0;
+}
+
+/*******************************************************************************
+ select
+*********************************************************************************/
+.cal-select-month{
+  background-color: #000;
+  color: #fff;
+  font-weight: bold;
+}
+
+.cal-select-year{
+  background-color: #000;
+  color: #fff;
+  font-weight: bold;
+}
+
+/*******************************************************************************
+ calendar
+*********************************************************************************/
+table.cal-table {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.cal-header {
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  padding: 3px;
+}
+
+.cal-body {
+  padding: 0px;
+  text-align: center;
+}
+
+
+.cal-weekday {
+  background-color: #efefef;
+  text-align: center;
+}
+
+.cal-otherday {
+  color: #fff;
+  background-color: #fff;
+  text-align: center;
+}
+
+.cal-sunday {
+  background-color: #ddd;
+  text-align: center;
+}
+
+.cal-saturday {
+  background-color: #ddd;
+  text-align: center;
+}
+
+.cal-holiday {
+  background-color: #ddd;
+  text-align: center;
+}
+
+.cal-label-cell {
+  color: #ffffff;
+  font-size: 75%;
+  text-align: center;
+}
+
+.cal-label-row .cal-sunday {
+  background-color: #777;
+  color: #ffffff;
+  text-align: center;
+}
+
+.cal-label-row .cal-saturday {
+  background-color: #777;
+  color: #ffffff;
+  text-align: center;
+}
+
+.cal-day-cell {
+  border: 1px solid #ddd;
+  line-height: 1.7;
+  height: 21px;
+  padding: 0;
+  width: 14%;
+}
+
+.cal-input-hour-minute {
+  padding-bottom: 2px;
+  text-align: center;
+}
+.cal-error-list {
+  padding: 3px 5px 3px 5px;
+  font-size: 80%;
+  list-style: none;
+  background-color: #F7CEE1;
+}
+.cal-error-list li {
+  color: #333;
+  background: #F7CEE1 url(../images/error.gif) no-repeat center left;
+  text-indent: 20px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+/* for ie bug */
+* html .cal-error-list li {
+  text-indent: 5px;
+}
+.cal-ok-button {
+  margin-left: 2px;
+}
+
+/*******************************************************************************
+ link
+*********************************************************************************/
+
+.cal-next-btn {
+  padding-bottom:4px;
+  padding-left:8px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.cal-prev-btn {
+  padding-bottom:4px;
+  padding-right:8px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.cal-day-cell a:link,
+.cal-day-cell a:visited,
+.cal-day-cell a:active {
+  color: #000;
+  display:block;
+  text-decoration: none;
+  
+}
+
+.cal-otherday a:link,
+.cal-otherday a:visited{
+  color: #fff;
+}
+
+.cal-weekday a:link,
+.cal-weekday a:visited{
+  border: 1px solid #efefef;
+}
+
+.cal-saturday a:link,
+.cal-saturday a:visited{
+  border: 1px solid #ddd;
+}
+
+.cal-sunday a:link,
+.cal-sunday a:visited{
+  border: 1px solid #ddd;
+}
+
+.cal-otherday a:link,
+.cal-otherday a:visited{
+  border: 1px solid #fff;
+}
+
+.cal-day-cell a:hover {
+  background-color: #fff;
+  color: #ADAAB5;
+  text-decoration: none;
+  border: 1px solid #000;
+}
+
+.cal-selected {
+  background-color: #ffbfbf;
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.cal-day-cell a:link.cal-selected,
+.cal-day-cell a:visited.cal-selected,
+.cal-day-cell a:active.cal-selected {
+  color: #000;
+  display:block;
+  text-decoration: none;
+}
+

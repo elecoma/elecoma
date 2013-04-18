@@ -21,8 +21,16 @@
   <tr>
     <th>誕生日</th>
     <td colspan="3" style="width:600px">
-      <%= f.birthday_select :birthday_from, :use_month_numbers => true, :include_blank=>true %>&nbsp〜&nbsp
-      <%= f.birthday_select :birthday_to, :use_month_numbers => true, :include_blank=>true %>
+      <%= calendar_date_select(:condition,"birthday_from",
+                          {:start_year => 100.years.ago.year,
+                          :end_year => Date.today.year,
+                          :use_month_numbers => true,
+                          :include_blank =>true})%>
+      &nbsp〜&nbsp
+      <%= calendar_date_select(:condition,"birthday_to",
+                          {:start_year => 100.years.ago.year,
+                          :end_year => Date.today.year,
+                          :use_month_numbers => true})%>
     </td>
   </tr>
   <tr>
@@ -58,15 +66,31 @@
   <tr>
     <th>登録・更新日</th>
     <td colspan="3" style="width:600px">
-      <%= f.date_select :updated_at_from, :use_month_numbers => true, :include_blank=>true %>&nbsp〜&nbsp
-      <%= f.date_select :updated_at_to, :use_month_numbers => true, :include_blank=>true %>
+      <%= calendar_date_select(:condition,"updated_at_from",
+                          {:start_year => 5.years.ago.year,
+                          :end_year => Date.today.year,
+                          :use_month_numbers => true,
+                          :include_blank =>true})%>
+      &nbsp〜&nbsp
+      <%= calendar_date_select(:condition,"updated_at_to",
+                          {:start_year => 5.years.ago.year,
+                          :end_year => Date.today.year,
+                          :use_month_numbers => true})%>
     </td>
   </tr>
   <tr>
     <th>最終購入日</th>
     <td colspan="3" style="width:600px">
-      <%= f.date_select :last_order_from, :use_month_numbers => true, :include_blank=>true %>&nbsp〜&nbsp
-      <%= f.date_select :last_order_to, :use_month_numbers => true, :include_blank=>true %>
+      <%= calendar_date_select(:condition,"last_order_from",
+                          {:start_year => 5.years.ago.year,
+                          :end_year => Date.today.year,
+                          :use_month_numbers => true,
+                          :include_blank =>true})%>
+      &nbsp〜&nbsp
+      <%= calendar_date_select(:condition,"last_order_to",
+                          {:start_year => 5.years.ago.year,
+                          :end_year => Date.today.year,
+                          :use_month_numbers => true})%>
     </td>
   </tr>
   <tr>

@@ -1,0 +1,194 @@
+/*******************************************************************************
+ container
+*********************************************************************************/
+.cal-container, #cal-container {
+  background-color: #fff;
+  border: 1px solid #0066B3;
+  overflow:hidden;
+  padding: 0px;
+  position:absolute;
+  width: 200px;
+  z-index: 10;
+
+  font-size: 13px;
+}
+
+.cal-container iframe {
+  border:none;
+  height:100%;
+  left:0px;
+  margin:0;
+  padding:0;
+  position:absolute;
+  top:0px;
+  width:100%;
+  z-index:0;
+}
+
+/*******************************************************************************
+ calendar
+*********************************************************************************/
+table.cal-table {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.cal-header {
+  background-color: #84AADE;
+  color: #fff;
+  text-align: center;
+  padding: 3px;
+}
+
+.cal-body {
+  padding: 5px;
+  text-align: center;
+}
+
+.cal-footer {
+}
+
+.cal-footer-top {
+  display: none;
+}
+
+.cal-weekday {
+  background-color: #A2A19F;
+  text-align: center;
+}
+
+.cal-otherday {
+  color: #fff;
+  background-color: #cccccc;
+  text-align: center;
+}
+
+.cal-sunday {
+  background-color: #F78E73;
+  text-align: center;
+}
+
+.cal-saturday {
+  background-color: #73A2DE;
+  text-align: center;
+}
+
+.cal-holiday {
+  background-color: #F78E73;
+  text-align: center;
+}
+
+.cal-label-cell {
+  color: #A2A19F;
+  font-size: 75%;
+  text-align: center;
+}
+
+.cal-label-row .cal-sunday {
+  background-color: #fff;
+  color: #F78E73;
+  text-align: center;
+}
+
+.cal-label-row .cal-saturday {
+  background-color: #fff;
+  color: #73A2DE;
+  text-align: center;
+}
+
+.cal-day-cell {
+  height: 21px;
+  border: 1px solid #fff;
+  line-height: 1.7;
+  width: 14%;
+}
+
+.cal-input-hour-minute {
+  padding-bottom: 2px;
+  text-align: center;
+}
+.cal-error-list {
+  background-color: #E6EFFB;
+  padding: 3px 5px 3px 5px;
+  font-size: 80%;
+  list-style: none;
+}
+.cal-error-list li {
+  background: #E6EFFB url(../images/error.gif) no-repeat center left;
+  text-indent: 20px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+/* for ie bug */
+* html .cal-error-list li {
+  text-indent: 5px;
+}
+.cal-ok-button {
+  margin-left: 2px;
+}
+
+.cal-select-year {
+  width: 60px;
+}
+.cal-select-month {
+  width: 60px;
+}
+
+/*******************************************************************************
+ link
+*********************************************************************************/
+
+.cal-next-btn {
+  padding-bottom:4px;
+  padding-left:8px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.cal-prev-btn {
+  padding-bottom:4px;
+  padding-right:8px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.cal-day-cell a:link,
+.cal-day-cell a:visited,
+.cal-day-cell a:active {
+  color: #fff;
+  display:block;
+  text-decoration: none;
+}
+
+.cal-day-cell a:hover {
+  background-color: #fff;
+  color: #ADAAB5;
+  text-decoration: none;
+}
+
+.cal-selected {
+  background-color: #fff;
+  color: #ADAAB5;
+  font-weight: bold;
+  text-align: center;
+}
+
+.cal-disabled {
+  color: #898989 !important;
+  background-color: #585756 !important;
+  cursor: default;
+}
+
+.cal-day-cell a:link.cal-selected,
+.cal-day-cell a:visited.cal-selected,
+.cal-day-cell a:active.cal-selected {
+  color: #ADAAB5;
+  display:block;
+  text-decoration: none;
+}
+
