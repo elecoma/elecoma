@@ -186,8 +186,8 @@ class Notifier < ActionMailer::Base
         @mail.set_content_type "text/plain; charset=iso-2022-jp"
       end
       @mail.body.gsub(/～/, '〜') # U+55FE(FULLWIDTH TILDE) -> U+301C(WAVE DASH)
-      @mail.subject = NKF.nkf('-j', @mail.subject)
-      @mail.body = NKF.nkf('-j', @mail.body)
+      @mail.subject = NKF.nkf("-WMjm0", @mail.subject)
+      @mail.body = NKF.nkf("-Wjm0", @mail.body)
     end
     @mail
   end
