@@ -37,15 +37,13 @@ class CSVUtil
     def make_csv_string(rows, title)
       # date = DateTime.now
       # CSV に吐く
-      # f = StringIO.new('', 'w')
-      # CSV::Writer.generate(f) do | writer |
-      f = CSV.generate("") do |writer|
+      str = CSV.generate("") do |writer|
         writer << title
         rows.each do |row|
           writer << row
         end
       end
-      return f.tosjis
+      return str.tosjis
     end
 
   end

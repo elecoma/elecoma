@@ -47,8 +47,7 @@ class CustomerSearchForm < SearchForm
     syms.each do |sym|
       col_names << field_names[sym]
     end
-    f = StringIO.new('', 'w')
-    CSV::Writer.generate(f) do | writer |
+    str = CSV.generate("") do | writer |
       writer << col_names
       customers.each do |c|
         arr = []
@@ -70,7 +69,6 @@ class CustomerSearchForm < SearchForm
         writer << arr
       end
     end
-    f.string
   end
 
   #誕生日から年齢を割り出すメソッド

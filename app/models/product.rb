@@ -287,8 +287,7 @@ class Product < ActiveRecord::Base
                          :conditions => flatten_conditions(search_list),
                          :include => DEFAULT_INCLUDE,
                          :order => "products.id")
-    f = StringIO.new('', 'w')
-    CSV::Writer.generate(f) do | writer |
+    str = CSV.generate("") do | writer |
       writer<< columns.map{|name| set_field_names[name]}
       products and products.each do | product |
         writer << columns.map do | column |
@@ -309,7 +308,7 @@ class Product < ActiveRecord::Base
       end
     end
     filename = "product_#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"
-    [f.string, filename]
+    [str.tosjis, filename]
   end
 
   def self.actual_count_list_csv(search_list)
@@ -317,9 +316,8 @@ class Product < ActiveRecord::Base
                                   :conditions => flatten_conditions(search_list),
                                   :joins => "LEFT JOIN products ON products.id = product_styles.product_id ",
                                   :order => "id")
-    f = StringIO.new('', 'w')
     title = ["商品名", "商品コード", "登録更新日", "実在個数"]
-    CSV::Writer.generate(f) do | writer |
+    str = CSV.generate("") do | writer |
       writer<< title
       products and products.each do | product |
         columns = []
@@ -331,7 +329,7 @@ class Product < ActiveRecord::Base
       end
     end
     filename = "actual_count_list_#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"
-    [f.string, filename]
+    [str.tosjis, filename]
   end
 
   def master_shop?

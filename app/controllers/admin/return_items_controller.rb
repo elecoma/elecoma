@@ -129,8 +129,8 @@ class Admin::ReturnItemsController < Admin::BaseController
     filename = '%s.csv' % name
     title = %w(商品ID 商品コード 商品名 規格名称 商品型番 返品数 返品日時)
     
-    f = CSVUtil.make_csv_string(rows, title)   
-    send_data(f, :type => 'text/csv; charset=shift_jis; header=present',:disposition => 'attachment', :filename => filename)
+    csv_data = CSVUtil.make_csv_string(rows, title)   
+    send_data(csv_data, :type => "application/octet-stream; name=#{filename}; charset=shift_jis; header=present",:disposition => 'attachment', :filename => filename)
   end
     
 

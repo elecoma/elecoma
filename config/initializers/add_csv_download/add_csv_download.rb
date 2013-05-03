@@ -17,8 +17,7 @@ module AddCSVDownload
     def csv(params)
       list_for_csv(params)
       columns, titles = get_csv_settings((@model.nil? ? nil : @model.csv_columns_name))
-      f = StringIO.new('', 'w')
-      CSV::Writer.generate(f) do | writer |
+      str = CSV.generate("") do | writer |
         writer << titles
         @records and @records.each do | record |
           writer << columns.map do | column |
@@ -27,7 +26,7 @@ module AddCSVDownload
         end
       end
       filename = "#{csv_output_setting_name}#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"      
-      [f.string, filename]
+      [str.tosjis, filename]
     end
 
     private

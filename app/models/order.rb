@@ -118,8 +118,7 @@ class Order < ActiveRecord::Base
                          :conditions => flatten_conditions(search_list),
                          :include => OrderDelivery::DEFAULT_INCLUDE,
                          :order => "order_deliveries.id desc")
-    f = StringIO.new('', 'w')
-    CSV::Writer.generate(f) do | writer |
+    str = CSV.generate("") do | writer |
       writer<< columns.map{|name| OrderDelivery.set_field_names[name]}
       order_deliveries and order_deliveries.each do | od |
         writer << columns.map do | column |
@@ -132,7 +131,7 @@ class Order < ActiveRecord::Base
       end
     end
     filename = "order_#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"
-    [f.string, filename]
+    [str.tosjis, filename]
   end
 
   private

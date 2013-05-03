@@ -111,9 +111,7 @@ class Admin::ProductsController < Admin::BaseController
     @search_list = []
     get_search_form
     csv_data, filename = Product.csv(@search_list)
-    headers['Content-Type'] = "application/octet-stream; name=#{filename}"
-    headers['Content-Disposition'] = "attachment; filename=#{filename}"
-    render :text => NKF.nkf('-s', csv_data)
+    send_data(csv_data, :type => "application/octet-stream; name=#{filename}; charset=shift_jis; header=present",:disposition => 'attachment', :filename => filename)
   end
 
   def csv_upload
@@ -146,9 +144,7 @@ class Admin::ProductsController < Admin::BaseController
     @search_list = []
     get_search_form
     csv_data, filename = Product.actual_count_list_csv(@search_list)
-    headers['Content-Type'] = "application/octet-stream; name=#{filename}"
-    headers['Content-Disposition'] = "attachment; filename=#{filename}"
-    render :text => Iconv.conv('cp932', 'UTF-8', csv_data)
+    send_data(csv_data, :type => "application/octet-stream; name=#{filename}; charset=shift_jis; header=present",:disposition => 'attachment', :filename => filename)
   end
 
   protected
