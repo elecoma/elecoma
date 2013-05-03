@@ -340,7 +340,7 @@ class Product < ActiveRecord::Base
     def add_by_csv(file, retailer_id)
       line = 0
       Product.transaction do
-        CSV::Reader.parse(file) do |row|
+        CSV.parse(file) do |row|
           if line != 0
             product = new_by_array(row, retailer_id)
             if product.nil?

@@ -416,7 +416,7 @@ class Customer < ActiveRecord::Base
     def add_by_csv(file)
       line = 0
       Customer.transaction do
-        CSV::Reader.parse(file) do |row|
+        CSV.parse(file) do |row|
           if line != 0
             customer = new_by_array(row)
             unless customer.save!

@@ -257,7 +257,7 @@ class OrderDelivery < ActiveRecord::Base
       line = 0
       update_line = 0
       OrderDelivery.transaction do
-        CSV::Reader.parse(file) do |row|
+        CSV.parse(file) do |row|
           if line != 0
             record = OrderDelivery.find_by_order_id(row[0].to_i)
             return [line-1, update_line, false] if record.order.retailer_id != retailer_id
