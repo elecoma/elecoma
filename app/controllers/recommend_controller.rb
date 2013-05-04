@@ -2,8 +2,7 @@ class RecommendController < ApplicationController
   def tsv
     conditions = Product.default_condition
     @products = Product.find(:all, :conditions => flatten_conditions(conditions))
-    f = StringIO.new('', 'w')
-    CSV::Writer.generate(f,"\t","\r\n") do | writer |
+    csv_data = CSV.generate("",:col_sep => "\t",:row_sep => "\r\n") do | writer |
       writer << [:item_code, :name, :url, :stock_flg, :comment, :category, :area, :price, :img_url]
       @products.each do | product |
         columns = []
@@ -20,8 +19,6 @@ class RecommendController < ApplicationController
       end
     end
     filename = "tsv.tsv"
-    headers['Content-Type'] = "application/octet-stream; name=#{filename}"
-    headers['Content-Disposition'] = "attachment; filename=#{filename}"
-    render :text => f.string
+    send_csv(csv_data,filename)
   end
 end
