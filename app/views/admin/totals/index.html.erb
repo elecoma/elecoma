@@ -25,16 +25,16 @@
         <th>販売開始期間</th>
           <td>
             <%= calendar_date_select(:search,:sale_start_from,
-                     {:start_year => 5.years.ago.year,
-                      :end_year => 5.years.since.year,
-                      :use_month_numbers => true,
-                      :include_blank =>true}) %>
+                                    {:start_year => 5.years.ago.year,
+                                     :end_year => 5.years.since.year,
+                                     :use_month_numbers => true,
+                                     :include_blank => true}) %>
             〜
             <%= calendar_date_select(:search,:sale_start_to,
-                     {:start_year => 5.years.ago.year,
-                      :end_year => 5.years.since.year,
-                      :use_month_numbers => true,
-                      :include_blank =>true}) %>
+                                    {:start_year => 5.years.ago.year,
+                                     :end_year => 5.years.since.year,
+                                     :use_month_numbers => true,
+                                     :include_blank => true}) %>
           </td>
       </tr>
     </table>
@@ -56,14 +56,14 @@
       <th style="width:10%">期間集計</th>
         <td style="width:90%">
           <%= calendar_date_select(:search,:date_from,
-                     {:start_year => 5.years.ago.year,
-                      :end_year => 5.years.since.year,
-                      :use_month_numbers => true}) %>
+                                  {:start_year => 5.years.ago.year,
+                                   :end_year => 5.years.since.year,
+                                   :use_month_numbers => true}) %>
           ～
           <%= calendar_date_select(:search,:date_to,
-                     {:start_year => 5.years.ago.year,
-                      :end_year => 5.years.since.year,
-                      :use_month_numbers => true}) %>
+                                  {:start_year => 5.years.ago.year,
+                                   :end_year => 5.years.since.year,
+                                   :use_month_numbers => true}) %>
           <%= submit_tag '期間で集計する', :name=>'search[by_date]', :class => "btn_s" %>
         </td>
     </tr>

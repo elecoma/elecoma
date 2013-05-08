@@ -92,7 +92,12 @@
   <tr>
     <th>生年月日</th>
     <td>
-      <%= confirm_tag :birthday_select, :customer, :birthday, :use_month_numbers => true %>
+      <%= confirm_tag :calendar_date_select,
+                      :customer,
+                      :birthday,
+                     {:start_year => 100.years.ago.year,
+                      :end_year => Date.today.year,
+                      :use_month_numbers => true} %>
     </td>
   </tr>
   <tr>

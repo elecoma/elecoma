@@ -15,6 +15,8 @@
          <%= calendar_date_select(:search,"created_at_to",
                           {:start_year => 5.years.ago.year,
                           :end_year => Date.today.year,
+                          :default => false,
+                          :include_blank =>true,
                           :use_month_numbers => true})%> 
      </td>
     </tr>
@@ -41,16 +43,17 @@
     <tr>
      <th>生年月日</th>
      <td class="td1" colspan="3">
-      <%= calendar_date_select(:search,"search_birth_from",
-                          {:start_year => 100.years.ago.year,
-                          :end_year => Date.today.year,
-                          :use_month_numbers => true,
-                          :include_blank =>true})%>
+      <%= calendar_date_select(:search,:search_birth_from,
+                              {:start_year => 100.years.ago.year,
+                               :end_year => Date.today.year,
+                               :use_month_numbers => true,
+                               :include_blank => true})%>
       〜
-      <%= calendar_date_select(:search,"search_birth_to",
-                          {:start_year => 100.years.ago.year,
-                          :end_year => Date.today.year,
-                          :use_month_numbers => true})%>
+      <%= calendar_date_select(:search,:search_birth_to,
+                              {:start_year => 100.years.ago.year,
+                               :end_year => Date.today.year,
+                               :include_blank => true,
+                               :use_month_numbers => true})%>
      </td>
     </tr>
     <tr>
@@ -72,17 +75,18 @@
     <tr>
      <th>登録・更新日</th>
      <td class="td1" colspan="3">
-      <%= calendar_date_select(:search,"search_updated_at_from",
-                          {:start_year => 5.years.ago.year,
-                          :end_year => Date.today.year,          
-                          :use_month_numbers => true,
-                          :include_blank =>true})%>
+      <%= calendar_date_select(:search,:search_updated_at_from,
+                              {:start_year => 5.years.ago.year,
+                               :end_year => Date.today.year,          
+                               :use_month_numbers => true,
+                               :include_blank => true})%>
      
       〜
-      <%= calendar_date_select(:search,"search_updated_at_to",
-                          {:start_year => 5.years.ago.year,
-                          :end_year => Date.today.year,
-                          :use_month_numbers => true})%>
+      <%= calendar_date_select(:search,:search_updated_at_to,
+                              {:start_year => 5.years.ago.year,
+                               :end_year => Date.today.year,
+                               :include_blank => true,
+                               :use_month_numbers => true})%>
      </td>
     </tr>
     <tr>
@@ -100,16 +104,17 @@
     <tr>
      <th>発送日</th>
      <td class="td1" colspan="3">
-      <%= calendar_date_select(:search,"shipped_at_from",
-                          {:start_year => 5.years.ago.year,
-                          :end_year => Date.today.year,
-                          :use_month_numbers => true,
-                          :include_blank =>true})%>
+      <%= calendar_date_select(:search,:shipped_at_from,
+                              {:start_year => 5.years.ago.year,
+                               :end_year => 5.years.since.year,
+                               :use_month_numbers => true,
+                               :include_blank => true})%>
       〜
-      <%= calendar_date_select(:search,"shipped_at_to",
-                          {:start_year => 5.years.ago.year,
-                          :end_year => Date.today.year,
-                          :use_month_numbers => true})%>
+      <%= calendar_date_select(:search,:shipped_at_to,
+                              {:start_year => 5.years.ago.year,
+                               :end_year => 5.years.since.year,
+                               :include_blank => true,
+                               :use_month_numbers => true})%>
      </td>
     </tr>
     <tr>

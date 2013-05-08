@@ -5,7 +5,7 @@
     <th>日付 <span class="pnt">※</span></th>
     <td>
       <%= confirm_tag :calendar_date_select,
-                      :new_information,"date",
+                      :new_information,:date,
                       {:start_year => 5.years.ago.year,
                       :end_year => Date.today.year,
                       :use_month_numbers => true} %>
