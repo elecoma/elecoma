@@ -30,6 +30,15 @@ class Admin::BaseController < ApplicationController
     @record.save
   end
 
+  def send_csv(text, filename)
+    send_data(
+      text,
+      type: "application/octet-stream; name=#{filename}; charset=shift_jis; header=present",
+      disposition: 'attachment',
+      filename: filename
+    )
+  end
+
   private
 
   def get_model(model_name = nil)
