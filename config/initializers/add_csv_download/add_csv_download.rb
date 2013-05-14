@@ -26,7 +26,7 @@ module AddCSVDownload
         end
       end
       filename = "#{csv_output_setting_name}#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"      
-      [str.tosjis, filename]
+      [str, filename]
     end
 
     private

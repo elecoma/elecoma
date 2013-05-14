@@ -111,7 +111,7 @@ class Admin::ProductsController < Admin::BaseController
     @search_list = []
     get_search_form
     csv_data, filename = Product.csv(@search_list)
-    send_data(csv_data, :type => "application/octet-stream; name=#{filename}; charset=shift_jis; header=present",:disposition => 'attachment', :filename => filename)
+    send_data(csv_data.tosjis, :type => "application/octet-stream; name=#{filename}; charset=shift_jis; header=present",:disposition => 'attachment', :filename => filename)
   end
 
   def csv_upload
@@ -144,7 +144,7 @@ class Admin::ProductsController < Admin::BaseController
     @search_list = []
     get_search_form
     csv_data, filename = Product.actual_count_list_csv(@search_list)
-    send_data(csv_data, :type => "application/octet-stream; name=#{filename}; charset=shift_jis; header=present",:disposition => 'attachment', :filename => filename)
+    send_data(csv_data.tosjis, :type => "application/octet-stream; name=#{filename}; charset=shift_jis; header=present",:disposition => 'attachment', :filename => filename)
   end
 
   protected

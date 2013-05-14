@@ -308,7 +308,7 @@ class Product < ActiveRecord::Base
       end
     end
     filename = "product_#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"
-    [str.tosjis, filename]
+    [str, filename]
   end
 
   def self.actual_count_list_csv(search_list)
@@ -329,7 +329,7 @@ class Product < ActiveRecord::Base
       end
     end
     filename = "actual_count_list_#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"
-    [str.tosjis, filename]
+    [str, filename]
   end
 
   def master_shop?

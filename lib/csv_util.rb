@@ -34,17 +34,11 @@ class CSVUtil
       return pairs
     end
     
-    def make_csv_string(rows, title)
-      # date = DateTime.now
-      # CSV に吐く
-      str = CSV.generate("") do |writer|
-        writer << title
-        rows.each do |row|
-          writer << row
-        end
+    def make_csv_string(rows, header)
+      CSV.generate do |writer|
+        writer << header
+        rows.each {|row| writer << row }
       end
-      return str.tosjis
     end
-
   end
 end

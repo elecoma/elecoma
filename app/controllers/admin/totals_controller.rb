@@ -55,7 +55,7 @@ class Admin::TotalsController < Admin::BaseController
   def csv
     totalizer = Object.const_get("#{params[:page]}_totalizer".classify)
     csv_data, filename = totalizer.csv(params)
-    send_data(csv_data, :type => "application/octet-stream; name=#{filename}; charset=shift_jis; header=present",:disposition => 'attachment', :filename => filename)
+    send_data(csv_data.tosjis, :type => "application/octet-stream; name=#{filename}; charset=shift_jis; header=present",:disposition => 'attachment', :filename => filename)
   end
 end
 

@@ -131,7 +131,7 @@ class Order < ActiveRecord::Base
       end
     end
     filename = "order_#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"
-    [str.tosjis, filename]
+    [str, filename]
   end
 
   private

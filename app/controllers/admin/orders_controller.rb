@@ -89,7 +89,7 @@ class Admin::OrdersController < Admin::BaseController
   def csv_download
     get_search_form
     csv_data, filename = Order.csv(@search_list)
-    send_data(csv_data, :type => "application/octet-stream; name=#{filename}; charset=shift_jis; header=present",:disposition => 'attachment', :filename => filename)
+    send_data(csv_data.tosjis, :type => "application/octet-stream; name=#{filename}; charset=shift_jis; header=present",:disposition => 'attachment', :filename => filename)
   end
 
   private
