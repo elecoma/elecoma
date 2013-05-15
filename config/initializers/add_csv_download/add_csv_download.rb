@@ -16,17 +16,8 @@ module AddCSVDownload
     
     def csv(params)
       list_for_csv(params)
-      columns, titles = get_csv_settings((@model.nil? ? nil : @model.csv_columns_name))
-      str = CSV.generate("") do | writer |
-        writer << titles
-        @records and @records.each do | record |
-          writer << columns.map do | column |
-            record[column] || record.send(column)
-          end
-        end
-      end
-      filename = "#{csv_output_setting_name}#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"      
-      [str, filename]
+      csv_text = CSVUtil.make_csv_string(csv_rows, csv_header)
+      [csv_text, csv_filename]
     end
 
     private
@@ -149,15 +140,32 @@ module AddCSVDownload
         end
       end
     end    
-    
-    def get_csv_settings(columns=nil)
-      unless columns
-        columns = @model.columns.map(&:name)
-      end
-      titles = columns.map do | name |
+
+    def csv_columns
+      return if @model.nil?
+      columns = @model.csv_columns_name 
+      columns ||= @model.columns.map(&:name)
+      columns
+    end
+
+    def csv_header
+      return if @model.nil?
+      csv_columns.map do |name|
         @model.set_field_names[name]
       end
-      [columns, titles]
+    end
+
+    def csv_filename
+      "#{csv_output_setting_name}#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"
+    end
+
+    def csv_rows
+      return if @records.blank?
+      @records.map do |record|
+        csv_columns.map do |column|
+          record[column] || record.send(column)
+        end
+      end
     end
   end
 

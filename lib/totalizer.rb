@@ -96,8 +96,12 @@ class Totalizer < TotalizerBase
     g
   end
 
-  def self.get_csv_settings(columns=nil)
-    [self.new.columns, self.new.labels.map{|c|c.sub("\n", '')}]
+  def self.csv_header
+    self.new.labels.map{|c| c.sub("\n", '') }
+  end
+
+  def self.csv_columns
+    self.new.columns
   end
 
   def self.csv_output_setting_name

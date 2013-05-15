@@ -28,67 +28,51 @@ class CustomerSearchForm < SearchForm
   validates_format_of :product_code, :with => /^[0-9A-Za-z]+$/, :allow_blank => true, :message => 'は半角英数字のみを入力してください。'
 
   def self.csv(params)
+    #customers = Customer.find_by_sql(get_sql_select(true) + get_sql_condition(@condition))
+    customers = Customer.find_by_sql(condition_for_csv(params))
+    return if customers.size.zero?
+    CSVUtil.make_csv_string(csv_rows(customers), csv_header)
+  end
+
+  private
+
+  def self.condition_for_csv(params)
     @condition = self.new(params[:condition] ||= [])
     sql_condition, conditions = get_sql_condition(@condition)
     sql = get_sql_select(true) + sql_condition
-    sqls = [sql]
-    conditions.each do |c|
-      sqls << c
-    end
-    #customers = Customer.find_by_sql(get_sql_select(true) + get_sql_condition(@condition))
-    customers = Customer.find_by_sql(sqls)
-    unless customers.size > 0
-      return false
-    end
+    [ sql ] + conditions
+  end
 
-    col_names = []
-    syms = Customer.get_symbols
-    field_names = Customer.field_names
-    syms.each do |sym|
-      col_names << field_names[sym]
+  def self.csv_header
+    Customer.get_symbols.map do |sym|
+      Customer.field_names[sym]
     end
-    str = CSV.generate("") do | writer |
-      writer << col_names
-      customers.each do |c|
-        arr = []
-        syms.each do |sym|
-          if sym == "sex".to_sym
-            if c.send(sym) == 1
-              arr << "男性"
-            else
-              arr << "女性"
-            end
-          elsif sym == "age".to_sym
-            #誕生日から年齢を割り出す
-            birthday = c.send("birthday".to_sym)
-            arr << self.get_age(birthday)
-          else
-            arr << c.send(sym)
-          end
+  end
+
+  def self.csv_rows(customers)
+    customers.map do |customer|
+      Customer.get_symbols.map do |sym|
+        case sym
+        when :sex
+          sex_key = customer.send(sym)
+          System::SEX_NAMES[sex_key]
+        when :age
+          self.calculate_age_from(customer.birthday)
+        else
+          customer.send(sym)
         end
-        writer << arr
       end
     end
   end
 
-  #誕生日から年齢を割り出すメソッド
-  def self.get_age(birthday)
-    unless birthday.blank?
-      today = Date.today
-      year = today.year.to_i - birthday.year.to_i
-      if today.month.to_i > birthday.month.to_i
-
-      elsif today.month.to_i < birthday.month.to_i
-        year = year - 1
-      elsif today.month.to_i == birthday.month.to_i
-        if today.day.to_i >= birthday.day.to_i
-
-        else
-          year = year - 1
-        end
-      end
-      return year
-    end
+  def self.calculate_age_from(birthday)
+    return if birthday.blank?
+    today = Date.today
+    day_diff   = today.day.to_i   - birthday.day.to_i
+    month_diff = today.month.to_i - birthday.month.to_i
+    year_diff  = today.year.to_i  - birthday.year.to_i
+    year_diff -= 1 if (month_diff < 0) || (month_diff == 0 && day_diff < 0)
+    year_diff
   end
 
   def self.get_sql_select(for_csv=false)

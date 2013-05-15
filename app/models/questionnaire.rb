@@ -68,18 +68,8 @@ class Questionnaire < ActiveRecord::Base
   end
 
   def self.csv(id, count)
-    questionnaire = self.find(id)
     header = get_csv_header(count)
-    str = CSV.generate("") do |writer|
-      writer << header
-      questionnaire.questionnaire_answers.each do | questionnaire_answer |
-        row = questionnaire_answer.export_row
-        questionnaire_answer.question_answers.each do |question_answer|
-          row.concat(question_answer.export_row)
-        end
-        writer << row
-      end
-    end
+    CSVUtil.make_csv_string(csv_rows(id), header)
   end
 
   private
@@ -108,4 +98,10 @@ class Questionnaire < ActiveRecord::Base
     header
   end
 
+  def self.csv_rows(id)
+    self.find(id).questionnaire_answers.map do |questionnaire_answer|
+      row = questionnaire_answer.export_row
+      row + questionnaire_answer.question_answers.map(&:export_row).flatten(1)
+    end
+  end
 end
