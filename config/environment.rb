@@ -82,6 +82,6 @@ class UnsupportedDeviceLinkRenderer < WillPaginate::LinkRenderer
   end  
 end
 
-#require 'lib/jpmobile/mobile/smartphone.rb'
-#carriers = Jpmobile::Mobile.carriers
-#Jpmobile::Mobile.carriers = carriers.push("Smartphone")
+require "#{RAILS_ROOT}/lib/jpmobile/mobile/smartphone.rb"
+carriers = Jpmobile::Mobile.carriers
+Jpmobile::Mobile.carriers = carriers.push("Smartphone")
