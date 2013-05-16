@@ -34,11 +34,21 @@ class CSVUtil
       return pairs
     end
     
-    def make_csv_string(rows, header)
-      CSV.generate do |writer|
+    def make_csv_string(rows, header, options={})
+      CSV.generate("", options) do |writer|
         writer << header
         rows.each {|row| writer << row }
       end
+    end
+
+    def make_tsv_string(rows, header, options={})
+      make_csv_string(rows, header, default_tsv_options.merge(options))
+    end
+
+    private
+
+    def default_tsv_options
+      { col_sep: "\t", row_sep: "\r\n" }
     end
   end
 end

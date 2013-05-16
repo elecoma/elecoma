@@ -51,6 +51,9 @@ class ApplicationController < ActionController::Base
       filename: filename
     )
   end
+
+  alias send_tsv send_csv
+
   private
   #sslの有効無効をuse_sslで決定する
   def ensure_proper_protocol
