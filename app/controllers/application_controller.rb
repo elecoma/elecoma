@@ -43,6 +43,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def send_csv(text, filename)
+    send_data(
+      text,
+      type: "application/octet-stream; name=#{filename}; charset=shift_jis; header=present",
+      disposition: 'attachment',
+      filename: filename
+    )
+  end
   private
   #sslの有効無効をuse_sslで決定する
   def ensure_proper_protocol
