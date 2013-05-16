@@ -842,7 +842,7 @@ class CartController < BaseController
   end
   
   def current_method_symbol
-    caller.first.scan(/`(.*)'/).to_s.intern
+    caller.first.sub(/^.*`(.*)'$/, '\1').intern
   end
 
   def save_transaction_items_before_payment
