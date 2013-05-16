@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
 
   def send_csv(text, filename)
     send_data(
-      text,
+      text.tosjis,
       type: "application/octet-stream; name=#{filename}; charset=shift_jis; header=present",
       disposition: 'attachment',
       filename: filename
