@@ -43,6 +43,6 @@
    :first_name_kana
  ].reject{|name|@customer.send(name).blank?}
 %>
-<%= names.map{|name|hidden_field(:customer, name, :object => @customer)} %>
+<%= names.map{|name|hidden_field(:customer, name, :object => @customer)}.join %>
 <%= hidden_field_tag 'done', 1 %>
 <% end %>
