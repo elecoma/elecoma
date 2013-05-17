@@ -49,6 +49,9 @@ class Admin::CustomersController < Admin::BaseController
 
     @order_count = params[:order_count]
     unless @customer.valid?
+      # render 前には before_filter が働かないので自前で必要なメソッドを呼ぶ
+      get_admin_customer_payment
+
       render :action => :edit, :id => @customer.id
     end
   end
@@ -115,10 +118,4 @@ class Admin::CustomersController < Admin::BaseController
     end
     @admin_customer_payment_list.flatten!
   end
-
 end
-
-
-
-
-
