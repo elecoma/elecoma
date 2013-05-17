@@ -90,6 +90,7 @@ class ServiceCooperation < ActiveRecord::Base
       # CSV - TSV
       return csv_tsv_generate(lists)
     rescue
+      logger.debug $!.message + "\n" + $!.backtrace.join("\n")
       return nil
     end
   end
@@ -97,24 +98,32 @@ class ServiceCooperation < ActiveRecord::Base
 private
   # CSV,TSVの出力を行う
   def csv_tsv_generate(lists)
-    f = StringIO.new('','w')
-    CSV::Writer.generate(f, FILE_TYPES[file_type][:delimiter], NEWLINE_CHARACTERS[newline_character][:code]) do | writer |
-      # カラム名を挿入
-      writer << field_items.split(",")
-      field_array = field_items.split(",")
-      lists.each do | items |
-        if items.respond_to?('values')
-          write_array = []
-          field_array.each do |key|
-            write_array << items[key]
-          end
-          writer << write_array
-        else
-          writer << items
-        end
-      end
-      return NKF.nkf(ENCODE_TYPES[encode][:option] ,f.string)
-    end
+    NKF.nkf(ENCODE_TYPES[encode][:option], csv_tsv_generate_without_encode(lists))
   end
 
+  def csv_tsv_generate_without_encode(lists)
+    CSVUtil.make_csv_string(csv_tsv_rows(lists), csv_tsv_header, csv_tsv_options)
+  end
+
+  def csv_tsv_options
+    {
+      col_sep: FILE_TYPES[file_type][:delimiter],
+      row_sep: NEWLINE_CHARACTERS[newline_character][:code]
+    }
+  end
+
+  def csv_tsv_header
+    field_items.split(",")
+  end
+
+  def csv_tsv_rows(lists)
+    field_array = field_items.split(",")
+    lists.map do |items|
+      if items.respond_to? :values
+        field_array.map {|key| items[key] }
+      else
+        items
+      end
+    end
+  end
 end
