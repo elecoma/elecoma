@@ -71,9 +71,10 @@ module Jpmobile
 
       # FIXME: unicodecr_to_external メソッドのオーバライドが何故必要か不明なため、
       #        なるべくもとのコードを弄らないよう暫定手段で文字コード問題を回避
-      def unicodecr_to_external_with_force_encoding(str, conversion_table=nil, to_sjis=true, use_webcode=true)
+      def unicodecr_to_external_with_force_encoding(str, *args)
+        return unicodecr_to_external_without_force_encoding(str, *args) if str.encoding == Encoding.default_external
         encoding_handler(str) do
-          unicodecr_to_external_without_force_encoding(str, conversion_table, to_sjis, use_webcode)
+          unicodecr_to_external_without_force_encoding(str, *args)
         end
       end
 
