@@ -82,7 +82,7 @@ module Jpmobile
 
       # 引数をSJISに強制変換して元メソッドに渡す
       # 理由: 携帯のユーザエージェント判別時に正規表現でSJIS文字列とUnicode文字列の比較をして例外発生するため
-      %w( docomo au softbank vodafone jphone ).each do |name|
+      %w( docomo au vodafone jphone ).each do |name|
         define_method "external_to_unicodecr_#{name}_with_force_encoding" do |str|
           encoding_handler(str, Encoding::Shift_JIS) do
             self.send "external_to_unicodecr_#{name}_without_force_encoding", str
