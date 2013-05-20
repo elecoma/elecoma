@@ -253,11 +253,11 @@ class OrderDelivery < ActiveRecord::Base
   end
 
   class << self
-    def update_by_csv(file, retailer_id)
+    def update_by_csv(filepath, retailer_id)
       line = 0
       update_line = 0
       OrderDelivery.transaction do
-        CSV.parse(file) do |row|
+        CSV.foreach(filepath, encoding: Encoding::Shift_JIS) do |row|
           if line != 0
             record = OrderDelivery.find_by_order_id(row[0].to_i)
             return [line-1, update_line, false] if record.order.retailer_id != retailer_id
@@ -275,7 +275,7 @@ class OrderDelivery < ActiveRecord::Base
             update_line = update_line + 1
           end
           line = line + 1
-        end #CSV::Reader.parse(file) do |row|
+        end
       end
       [line - 1, update_line, true]
     end

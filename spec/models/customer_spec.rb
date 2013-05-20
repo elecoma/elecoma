@@ -504,7 +504,7 @@ describe Customer do
   #現状だとraw_password,email_confirm,password_confirmがblankだとエラー
   it "CSVアップロード" do
     max_id = Customer.maximum(:id)
-    Customer.add_by_csv(File.read("#{RAILS_ROOT}/spec/csv/customer_csv_upload_for_spec.csv"))
+    Customer.add_by_csv("#{RAILS_ROOT}/spec/csv/customer_csv_upload_for_spec.csv")
     max_id.should < Customer.maximum(:id)
   end
 

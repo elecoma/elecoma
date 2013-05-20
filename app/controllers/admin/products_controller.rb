@@ -120,7 +120,7 @@ class Admin::ProductsController < Admin::BaseController
 
     begin
       if CSVUtil.valid_data_from_file?(file)
-        line, result = Product.add_by_csv(file, session[:admin_user].retailer_id)
+        line, result = Product.add_by_csv(file.path, session[:admin_user].retailer_id)
         unless result
           line = line + 1
           flash[:product_csv_upload_e] = "#{line}行目のデータが不正です。最初からやり直して下さい。"

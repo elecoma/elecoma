@@ -305,10 +305,10 @@ class Product < ActiveRecord::Base
   end
 
   class << self
-    def add_by_csv(file, retailer_id)
+    def add_by_csv(filepath, retailer_id)
       line = 0
       Product.transaction do
-        CSV.parse(file) do |row|
+        CSV.foreach(filepath, encoding: Encoding::Shift_JIS) do |row|
           if line != 0
             product = new_by_array(row, retailer_id)
             if product.nil?

@@ -77,7 +77,7 @@ class Admin::CustomersController < Admin::BaseController
 
     begin
       if CSVUtil.valid_data_from_file?(file)
-        line, result = Customer.add_by_csv(file)
+        line, result = Customer.add_by_csv(file.path)
         unless result
           line = line + 1
           flash.now[:notice] = "#{line}行目のデータが不正です。最初からやり直して下さい。"

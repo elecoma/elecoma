@@ -37,7 +37,7 @@ class Admin::OrderStatusesController < Admin::BaseController
     file = params[:upload_file]
     begin
       if CSVUtil.valid_data_from_file?(file)
-        line, update_line, result = OrderDelivery.update_by_csv(file, session[:admin_user].retailer_id)
+        line, update_line, result = OrderDelivery.update_by_csv(file.path, session[:admin_user].retailer_id)
         unless result
           line = line + 1
           flash[:status] = "#{line}行目のデータが不正です。最初からやり直して下さい。"
