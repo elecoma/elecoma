@@ -40,6 +40,14 @@ module TMail
       force_encoding_for :unquote_and_convert_to
     end
   end
+
+  # Subject欄向けのパッチ
+  class Decoder
+    class << self
+      include TMailRuby19Patch
+      force_encoding_for :decode
+    end
+  end
 end
  
 class StringOutput#:nodoc:
