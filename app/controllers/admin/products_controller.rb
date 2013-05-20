@@ -133,8 +133,9 @@ class Admin::ProductsController < Admin::BaseController
         flash[:product_csv_upload_e] = "CSVファイルが空か、指定されたファイルが存在しません"
         redirect_to :action => "index"
       end
-    rescue => e
-      logger.error("product_controller#csv_upload catch error: " + e.to_s)
+    rescue
+      logger.error 'product_controller#csv_upload catch error: ' + $!.message
+      logger.error $!.backtrace.join("\n")
       flash[:product_csv_upload_e] = "エラーが発生しました。最初からやり直して下さい。"
       redirect_to :action => "index"
     end

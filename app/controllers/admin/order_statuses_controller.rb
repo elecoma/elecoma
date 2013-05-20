@@ -56,8 +56,9 @@ class Admin::OrderStatusesController < Admin::BaseController
         flash[:status] = "CSVファイルが空か、指定されたファイルが存在しません"
         redirect_to :action => "index"
       end
-    rescue => e
-      logger.error("order_statuses_controller#csv_upload catch error: " + e.to_s)
+    rescue
+      logger.error "order_statuses_controller#csv_upload catch error: " + $!.message
+      logger.error $!.backtrace.join("\n")
       flash[:status] = "エラーが発生しました。最初からやり直してく下さい。"
       flash[:has_error] = true
 #      flash[:error] = e.to_s
