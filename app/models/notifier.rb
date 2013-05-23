@@ -171,7 +171,7 @@ class Notifier < ActionMailer::Base
       @mail.subject = @docomo_or_au ? mail_title : (mail_title)
       @mail.body = @docomo_or_au ? NKF.nkf("-xWs", @mail.body) : @mail.body
       @mail.body = Jpmobile::Filter::Emoticon::Outer.new.to_external(@mail.body, dummy_controller, use_webcode)
-      @mail.body = @docomo_or_au ? @mail.body : Base64.b64encode(@mail.body)
+      @mail.body = @docomo_or_au ? @mail.body : Base64.encode64(@mail.body)
       if @mail.content_type =~ /.*text\/html.*/
         @mail.set_content_type "text/html; charset=#{use_charset}"
       else
