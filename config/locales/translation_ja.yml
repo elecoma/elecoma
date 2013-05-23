@@ -862,6 +862,9 @@ ja:
         updated_at: "で更新"
     errors:
       messages:
-        record_invalid: "Validation failed: {{errors}}"
-      full_messages:
-        format: "{{attribute}} {{message}}"
+        record_invalid: "Validation failed: %{errors}"
+      # FIXME: バリデーションエラーメッセージが不正になるので full_messages 以下は記述しないこと
+      #   e.g.) obj.errors.fullmessages #=> "{:format=>\"%{attribute}%{message}\"}"
+      # activerecord-2.3.15/lib/active_record/validations.rb の作りが悪いせい？
+      #full_messages:
+      #  format: "%{attribute} %{message}"
