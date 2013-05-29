@@ -65,17 +65,14 @@ module Jpmobile
           when nil
             # 変換先が定義されていない。
             match
-          end
+          end.force_encoding(str.encoding) # 結合先の文字コードに合わせる
         end
       end
 
       # FIXME: unicodecr_to_external メソッドのオーバライドが何故必要か不明なため、
       #        なるべくもとのコードを弄らないよう暫定手段で文字コード問題を回避
       def unicodecr_to_external_with_force_encoding(str, *args)
-        return unicodecr_to_external_without_force_encoding(str, *args) if str.encoding == Encoding.default_external
-        encoding_handler(str) do
-          unicodecr_to_external_without_force_encoding(str, *args)
-        end
+        unicodecr_to_external_without_force_encoding(str.force_encoding(Encoding::ASCII_8BIT), *args)
       end
 
       alias_method_chain :unicodecr_to_external, :force_encoding
@@ -84,23 +81,12 @@ module Jpmobile
       # 理由: 携帯のユーザエージェント判別時に正規表現でSJIS文字列とUnicode文字列の比較をして例外発生するため
       %w( docomo au vodafone jphone ).each do |name|
         define_method "external_to_unicodecr_#{name}_with_force_encoding" do |str|
-          encoding_handler(str, Encoding::Shift_JIS) do
-            self.send "external_to_unicodecr_#{name}_without_force_encoding", str
-          end
+          converted_str = str if str.encoding == Encoding::Shift_JIS
+          converted_str ||= NKF.nkf('-s', str)
+          self.send "external_to_unicodecr_#{name}_without_force_encoding", converted_str
         end
 
         alias_method_chain "external_to_unicodecr_#{name}".to_sym, :force_encoding
-      end
-
-      private
-
-      def encoding_handler(text, encoding = Encoding::ASCII_8BIT)
-        raise unless block_given?
-        original_encoding = text.encoding
-        text.force_encoding(encoding)
-        result = yield
-        text.force_encoding(original_encoding)
-        result
       end
     end
   end
