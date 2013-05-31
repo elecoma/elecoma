@@ -1,0 +1,82 @@
+PATH
+  remote: vendor/gems/lhalib-0.8.1
+  specs:
+    lhalib (0.8.1)
+
+GEM
+  remote: https://rubygems.org/
+  remote: http://gems.github.com/
+  specs:
+    actionmailer (2.3.17)
+      actionpack (= 2.3.17)
+    actionpack (2.3.17)
+      activesupport (= 2.3.17)
+      rack (~> 1.1.0)
+    activerecord (2.3.17)
+      activesupport (= 2.3.17)
+    activeresource (2.3.17)
+      activesupport (= 2.3.17)
+    activesupport (2.3.17)
+    acts_as_list (0.1.9)
+    acts_as_tree (0.1.1)
+    addressable (2.3.4)
+    ar_fixtures (0.0.4)
+      hoe (>= 1.2.1)
+    crack (0.3.2)
+    daemons (1.1.9)
+    gettext (2.1.0)
+      locale (>= 2.0.5)
+    gruff (0.3.6)
+    hoe (3.6.2)
+      rake (>= 0.8, < 11.0)
+    jpmobile (0.0.8)
+    json (1.8.0)
+    locale (2.0.8)
+    moji (1.6)
+    pg (0.15.1)
+    rack (1.1.6)
+    rails (2.3.17)
+      actionmailer (= 2.3.17)
+      actionpack (= 2.3.17)
+      activerecord (= 2.3.17)
+      activeresource (= 2.3.17)
+      activesupport (= 2.3.17)
+      rake (>= 0.8.3)
+    rake (10.0.4)
+    resource_controller (0.6.6)
+    rmagick (2.13.2)
+    rspec (1.2.9)
+    rspec-rails (1.2.9)
+      rack (>= 1.0.0)
+      rspec (>= 1.2.9)
+    thoughtbot-factory_girl (1.2.2)
+    webmock (1.3.4)
+      addressable (>= 2.1.1)
+      crack (>= 0.1.7)
+    will_paginate (2.3.16)
+    yaml_waml (0.3.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  acts_as_list
+  acts_as_tree (= 0.1.1)
+  ar_fixtures
+  daemons
+  gettext (= 2.1.0)
+  gruff (= 0.3.6)
+  jpmobile (= 0.0.8)
+  json
+  lhalib (= 0.8.1)!
+  moji
+  pg
+  rails (= 2.3.17)
+  resource_controller
+  rmagick (= 2.13.2)
+  rspec (= 1.2.9)
+  rspec-rails (= 1.2.9)
+  thoughtbot-factory_girl (= 1.2.2)
+  webmock (= 1.3.4)
+  will_paginate (~> 2.3)
+  yaml_waml
