@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 source 'http://gems.github.com'
 
 gem 'rails', '2.3.17'
+gem 'rake', '~> 10.0'
+gem 'test-unit', '1.2.3'
 gem 'pg'
 gem 'rmagick', '2.13.2'
 gem 'gettext', '2.1.0'
