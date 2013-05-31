@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../config/boot'
+require File.expand_path(File.dirname(__FILE__) + '/../../config/boot')
 require "#{RAILS_ROOT}/lib/daemons/base.rb"
 require 'optparse'
 

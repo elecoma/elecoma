@@ -7,10 +7,10 @@
 require 'net/smtp'
 require 'drb'
 require 'enumerator'
-require File.dirname(__FILE__) + '/../config/boot'
+require File.expand_path(File.dirname(__FILE__) + '/../config/boot')
 require 'optparse'
 require "actionmailer"
-require File.dirname(__FILE__) + '/../vendor/plugins/mbmail/lib/mb_mail'
+require File.expand_path(File.dirname(__FILE__) + '/../vendor/plugins/mbmail/lib/mb_mail')
 
 #DRB_URI = 'druby://0.0.0.0:9999'
 DRB_URI = 'druby://127.0.0.1:9999'
