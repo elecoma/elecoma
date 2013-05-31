@@ -49,6 +49,9 @@ class Admin::CustomersController < Admin::BaseController
 
     @order_count = params[:order_count]
     unless @customer.valid?
+      # render 前には before_filter が働かないので自前で必要なメソッドを呼ぶ
+      get_admin_customer_payment
+
       render :action => :edit, :id => @customer.id
     end
   end
@@ -74,7 +77,7 @@ class Admin::CustomersController < Admin::BaseController
 
     begin
       if CSVUtil.valid_data_from_file?(file)
-        line, result = Customer.add_by_csv(file)
+        line, result = Customer.add_by_csv(file.path)
         unless result
           line = line + 1
           flash.now[:notice] = "#{line}行目のデータが不正です。最初からやり直して下さい。"
@@ -87,8 +90,9 @@ class Admin::CustomersController < Admin::BaseController
         flash.now[:notice] = "CSVファイルが空か、指定されたファイルが存在しません"
         redirect_to :action => "index"
       end
-    rescue => e
-      logger.error("custermers_controller#csv_upload catch error: " + e.to_s)
+    rescue
+      logger.error "custermers_controller#csv_upload catch error: " + $!.message
+      logger.error $!.backtrace.join("\n")
       flash.now[:notice] = "エラーが発生しました。最初からやり直して下さい。"
       redirect_to :action => "index"
     end
@@ -115,10 +119,4 @@ class Admin::CustomersController < Admin::BaseController
     end
     @admin_customer_payment_list.flatten!
   end
-
 end
-
-
-
-
-

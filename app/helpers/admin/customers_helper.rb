@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module Admin::CustomersHelper
   def get_hassou_name(order_delivery)
     unless order_delivery.status

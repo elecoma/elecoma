@@ -14,8 +14,6 @@ class Admin::MailMagazinesController < Admin::BaseController
   NEED_SANITIZE_HTML_POST = Regexp.new('(NEED_SANITIZE_START)(.*)(NEED_SANITIZE_END_TO_POST)', Regexp::MULTILINE).freeze
   NEED_SANITIZE_HTML_SEARCH = Regexp.new('(NEED_SANITIZE_START)(.*)(NEED_SANITIZE_END_TO_SEARCH)', Regexp::MULTILINE).freeze
 
-  emoticon_filter
-
   after_filter :sanitize_html, :only => :confirm
 
   index.before do

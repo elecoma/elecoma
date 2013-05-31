@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateImageResources < ActiveRecord::Migration
   def self.up
     remove_index :resources, :deleted_at

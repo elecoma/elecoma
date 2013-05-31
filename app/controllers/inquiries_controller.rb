@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class InquiriesController < BaseController
   before_filter :init_by_params, :only=>[:new, :confirm, :complete]
 

@@ -1,6 +1,5 @@
 <% content_for :head do -%>
   <%= javascript_include_tag 'admin/mail_magazine' %>
-  <%= javascript_include_tag 'admin/emoji_palette' %>
 <% end -%>
 <%= render :partial => "submenu" %>
 <div id="main"><!-- メイン -->
@@ -12,8 +11,6 @@
 		document.getElementById('contents_body').value = document.getElementById('contents[body]').value;
 	}
   }
-  var image_path = "/elecoma/images/emoticons";
-
 </script>
 
 <h2>配信内容設定</h2>
@@ -38,11 +35,6 @@
   <div id="mail_magazine_edit">
     <%= render :partial => "mail_contents", :locals => {:f => f} %>
   </div>
-  <div class="btn_t t_right">
-    <input class="btn_s" type=button value="文字数カウント" id="text_count_button" onclick="fnTextCount('contents[body]');">
-    今までに入力したのは<input type=text size=5 id="text_count">文字です。
-  </div>
-  <br />
   <%= hidden_field_tag 'customer_ids', @customer_ids %>
   <div class="btn_box">
     <%= f.submit "確認する", :class=>"btn", :onclick => "toConfirm()" %>

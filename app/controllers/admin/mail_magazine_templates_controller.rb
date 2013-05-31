@@ -2,7 +2,6 @@
 class Admin::MailMagazineTemplatesController < Admin::BaseController
   resource_controller
   mobile_filter
-  emoticon_filter
   before_filter :admin_permission_check_template
   before_filter :master_shop_check
 

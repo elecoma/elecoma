@@ -7,6 +7,12 @@ tmp/*
 db/schema.rb
 vendor/plugins/*
 !vendor/plugins/.gitkeep
+!vendor/plugins/acts_as_paranoid
+!vendor/plugins/double_submit_protection
+!vendor/plugins/image_submit_tag_ext
+!vendor/plugins/mbmail
+!vendor/plugins/rails-active-form
+!vendor/plugins/ssl_requirement
 var/run/*
 !var/run/.gitkeep
 config/database.yml

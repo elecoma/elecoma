@@ -1,4 +1,4 @@
-# -*- coding: undecided -*-
+# -*- coding: utf-8 -*-
 class NormalPaymentPlugin < ActiveForm
   include PaymentPluginBase
 

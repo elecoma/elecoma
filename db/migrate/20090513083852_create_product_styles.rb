@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateProductStyles < ActiveRecord::Migration
   def self.up
     create_table :product_styles do |t|

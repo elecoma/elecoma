@@ -119,29 +119,37 @@ class Order < ActiveRecord::Base
   end
 
   def self.csv(search_list)
-    columns = OrderDelivery.csv_columns_name
     order_deliveries = OrderDelivery.find(:all,
                          :conditions => flatten_conditions(search_list),
                          :include => OrderDelivery::DEFAULT_INCLUDE,
                          :order => "order_deliveries.id desc")
-    f = StringIO.new('', 'w')
-    CSV::Writer.generate(f) do | writer |
-      writer<< columns.map{|name| OrderDelivery.set_field_names[name]}
-      order_deliveries and order_deliveries.each do | od |
-        writer << columns.map do | column |
-          if ![:order_code,:prefecture_name,:occupation_name,:sex_name,:payment_name,:deliv_pref_name,:delivery_trader_name,:delivery_time_name,:status_view,:ticket_code].include?(column) && OrderDelivery.columns_hash[column.to_s].type == :datetime
-            (od[column] + (60*60*9)).strftime("%Y-%m-%d %H:%M") if od[column]
-          else
-            od[column] || od.send(column)
-          end
-        end
-      end
-    end
-    filename = "order_#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"
-    [f.string, filename]
+    csv_text = CSVUtil.make_csv_string(csv_rows(order_deliveries), csv_header)
+    [csv_text, csv_filename]
   end
 
   private
+
+  def self.csv_filename 
+    "order_#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"
+  end
+
+  def self.csv_header
+    columns.map{|name| OrderDelivery.set_field_names[name] }
+  end
+
+  def self.csv_rows(order_deliveries)
+    return if order_deliveries.blank?
+    order_deliveries.map do |od|
+      OrderDelivery.csv_columns_name.map do |column|
+        nodatetime_columns = [ :order_code, :prefecture_name, :occupation_name, :sex_name, :payment_name, :deliv_pref_name, :delivery_trader_name, :delivery_time_name, :status_view, :ticket_code ]
+        if nodatetime_columns.include?(column) || OrderDelivery.columns_hash[column.to_s].type != :datetime
+          od[column] || od.send(column)
+        else
+          (od[column] + 9.hours).strftime("%Y-%m-%d %H:%M") if od[column]
+        end
+      end
+    end
+  end
 
   def generate_code
     id_code = ("%04d" % self.id).slice(-4..-1) # レコード ID の下 4 桁
@@ -152,5 +160,4 @@ class Order < ActiveRecord::Base
   def sum_deliveries message
     order_deliveries.map(&message).map(&:to_i).sum
   end
-
 end

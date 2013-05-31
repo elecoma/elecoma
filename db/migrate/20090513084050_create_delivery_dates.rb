@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateDeliveryDates < ActiveRecord::Migration
   def self.up
     create_table :delivery_dates do |t|

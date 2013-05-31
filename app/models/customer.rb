@@ -413,10 +413,10 @@ class Customer < ActiveRecord::Base
   end
 
   class << self
-    def add_by_csv(file)
+    def add_by_csv(filepath)
       line = 0
       Customer.transaction do
-        CSV::Reader.parse(file) do |row|
+        CSV.foreach(filepath, encoding: Encoding::Shift_JIS) do |row|
           if line != 0
             customer = new_by_array(row)
             unless customer.save!

@@ -1,10 +1,6 @@
 <% content_for :head do -%>
-  <%= javascript_include_tag 'admin/emoji_palette' %>
   <%= javascript_include_tag 'admin/mail_magazine' %>
 	<script type="text/javascript">
-	  function textTypeChange(value){
-      writeRichText('mail_magazine_template[body]','<%=h_apos @mail_magazine_template.body %>', 400, 690, true, false, value, "<%=h ActionController::Base.relative_url_root.to_s + '/images/emoticons/' %>");
-		}
 	  function toConfirm() {
 	  	if (document.getElementById('mail_magazine_template[body]').contentDocument != null) {
 			document.getElementById('mail_magazine_template_body').value = document.getElementById('mail_magazine_template[body]').contentDocument.body.innerHTML;
@@ -24,7 +20,7 @@
       <td>
         <% [MailMagazineTemplate::HTML, MailMagazineTemplate::TEXT].each do | value | %>
         <% label = MailMagazineTemplate::FORM_TYPE_NAMES[value] %>
-         <%= radio_button_tag "mail_magazine_template[form]", value, checked=(@mail_magazine_template.form==value),:onclick=>"textTypeChange(value)" %>
+         <%= radio_button_tag "mail_magazine_template[form]", value, checked=(@mail_magazine_template.form==value) %>
          <%= content_tag :label, label, :for => "mail_magazine_template_form_%d" % value %>
         <% end %>
       </td>
@@ -42,19 +38,10 @@
     </tr>
     <tr>
       <td colspan=2>
-      	<div id='emoji_area_mail_magazine_template[body]'>
-  		  <script type="text/javascript">
-          writeRichText('mail_magazine_template[body]','<%=h_apos @mail_magazine_template.body %>', 400, 690, true, false, '<%=h @mail_magazine_template.form %>', "<%=h ActionController::Base.relative_url_root.to_s + '/images/emoticons' %>");
-  		  </script>
-  		</div>
+        <%= f.text_area :body, :style => 'width:690px; height:400px;', :id => 'mail_magazine_template[body]' %>
       </td>
     </tr>
   </table>
-  <div class="btn_t t_right">
-    <input class="btn_s" type=button value="文字数カウント" id="text_count_button" onclick="fnTextCount('mail_magazine_template[body]');">
-    今までに入力したのは<input type=text size=5 id="text_count">文字です。
-  </div>
-  <br />
   <%= hidden_field :mail_magazine_template, :body %>
   <div class="btn_box">
     <%= f.submit "この内容で登録する", :confirm=>"本当に登録しても宜しいですか？", :class=>"btn", :onclick => "toConfirm()" %>

@@ -16,11 +16,11 @@ Event.observe(window, 'load', function() {
 <%= error_messages_for :delivery_trader %>
 <%if @delivery_time %>
 <% @delivery_time.each do|dt|%>
-<%= dt.errors.full_messages.collect {|msg| content_tag("li", "#{msg}", :class => "err") }  if dt.errors.full_messages.size != 0%>
+<%= dt.errors.full_messages.collect {|msg| content_tag("li", "#{msg}", :class => "err") }.join  if dt.errors.full_messages.size != 0%>
 <%end%>
 <%end%>
 <% @delivery_fee.each do|df|%>
-<%= df.errors.full_messages.collect {|msg| content_tag("li", "#{df.prefecture_name}の#{msg}", :class => "err") }  if df.errors.full_messages.size != 0%>
+<%= df.errors.full_messages.collect {|msg| content_tag("li", "#{df.prefecture_name}の#{msg}", :class => "err") }.join  if df.errors.full_messages.size != 0%>
 <%end%>
 
 <table class="data2" cellspacing="1" cellpadding="0">

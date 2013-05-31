@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Style < ActiveRecord::Base
   acts_as_paranoid
   acts_as_list :scope => :retailer_id

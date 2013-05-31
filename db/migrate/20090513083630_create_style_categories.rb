@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateStyleCategories < ActiveRecord::Migration
   def self.up
     create_table :style_categories do |t|

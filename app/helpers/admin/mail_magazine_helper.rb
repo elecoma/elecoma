@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module Admin::MailMagazineHelper
   NOT_SELECTED = "（未指定）"
   DATE_FORMAT = "%Y-%m-%d"

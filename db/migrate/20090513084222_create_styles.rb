@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateStyles < ActiveRecord::Migration
   def self.up
     create_table :styles do |t|

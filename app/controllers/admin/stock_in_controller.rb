@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #入庫管理
 class Admin::StockInController < Admin::StockBaseController
   before_filter :admin_permission_check_stock

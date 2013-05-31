@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateRecommends < ActiveRecord::Migration
   def self.up
     create_table :recommends do |t|

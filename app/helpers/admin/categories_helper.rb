@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module Admin::CategoriesHelper
   def set_category_list
     id = params[:category_id] || 0

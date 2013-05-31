@@ -1,0 +1,404 @@
+/* ------------------------------------------------------------------------ */
+/* LHa for UNIX    Archiver Driver                                          */
+/*                                                                          */
+/*      Modified                Nobutaka Watazaki                           */
+/*                                                                          */
+/*  Ver. 1.14   Soruce All chagned              1995.01.14  N.Watazaki      */
+/*  Ver. 1.14i  Modified and bug fixed          2000.10.06  t.okamoto       */
+/* ------------------------------------------------------------------------ */
+/*      Modified arton for LhaLib */
+/*
+    Included...
+        lharc.h     interface.h     slidehuf.h
+*/
+
+#include "ruby.h"
+
+#include <stdio.h>
+#include <time.h>
+#include <errno.h>
+#include <ctype.h>
+#include <sys/types.h>
+#ifdef HAVE_SYS_FILE_H
+#include <sys/file.h>
+#endif
+#include <sys/stat.h>
+#include <signal.h>
+
+#if HAVE_INTTYPES_H
+# include <inttypes.h>
+#else
+# if HAVE_STDINT_H
+#  include <stdint.h>
+# endif
+#endif
+
+#if STDC_HEADERS
+# include <string.h>
+#else
+# if !HAVE_STRCHR
+#  define strchr index
+#  define strrchr rindex
+# endif
+char *strchr (), *strrchr ();
+# if !HAVE_MEMCPY
+#  define memcmp(s1, s2, n) bcmp ((s1), (s2), (n))
+#  define memcpy(d, s, n) bcopy ((s), (d), (n))
+#  define memmove(d, s, n) bcopy ((s), (d), (n))
+# endif
+#endif
+
+#if STDC_HEADERS
+# include <stdlib.h>
+# include <stddef.h>
+#else
+# if HAVE_STDLIB_H
+#  include <stdlib.h>
+# endif
+#endif
+
+#ifndef NULL
+#define NULL ((char *)0)
+#endif
+
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
+#if STDC_HEADERS
+# include <stdarg.h>
+# define va_init(a,b) va_start(a,b)
+#else
+# include <varargs.h>
+# define va_init(a,b) va_start(a)
+#endif
+
+#if HAVE_PWD_H
+# include <pwd.h>
+#endif
+#if HAVE_GRP_H
+# include <grp.h>
+#endif
+
+#if !HAVE_SETUID
+typedef int uid_t;
+#endif
+#if !HAVE_SETGID
+typedef int gid_t;
+#endif
+
+#if !HAVE_UINT64_T
+# define HAVE_UINT64_T 1
+# if SIZEOF_LONG == 8
+    typedef unsigned long uint64_t;
+# elif _WIN32
+    typedef unsigned __int64 uint64_t;
+# elif HAVE_LONG_LONG
+    typedef unsigned long long uint64_t;
+# else
+#  undef HAVE_UINT64_T
+# endif
+#endif
+
+#if _WIN32
+ #if !HAVE_SSIZE_T
+  typedef long ssize_t;
+ #endif
+#endif
+
+#if HAVE_SYS_TIME_H
+# include <sys/time.h>
+#else
+# include <time.h>
+#endif
+
+#if !defined(_WIN32)
+ #if HAVE_UTIME_H
+  #include <utime.h>
+ #else
+  struct utimbuf {
+    time_t actime;
+    time_t modtime;
+  };
+  int utime(const char *, struct utimbuf *);
+ #endif
+#endif
+
+#if HAVE_DIRENT_H
+# include <dirent.h>
+# define NAMLEN(dirent) strlen((dirent)->d_name)
+#else
+# define dirent direct
+# define NAMLEN(dirent) (dirent)->d_namlen
+# if HAVE_SYS_NDIR_H
+#  include <sys/ndir.h>
+# endif
+# if HAVE_SYS_DIR_H
+#  include <sys/dir.h>
+# endif
+# if HAVE_NDIR_H
+#  include <ndir.h>
+# endif
+# ifdef NONSYSTEM_DIR_LIBRARY           /* no use ?? */
+#  include "lhdir.h"
+# endif
+#endif
+
+#if HAVE_FNMATCH_H
+# include <fnmatch.h>
+#else
+int fnmatch(const char *pattern, const char *string, int flags);
+# define FNM_PATHNAME 1
+# define FNM_NOESCAPE 2
+# define FNM_PERIOD   4
+#endif
+
+#ifndef SEEK_SET
+#define SEEK_SET        0
+#define SEEK_CUR        1
+#define SEEK_END        2
+#endif  /* SEEK_SET */
+
+#if HAVE_LIMITS_H
+#include <limits.h>
+#else
+
+#ifndef CHAR_BIT
+#define CHAR_BIT 8
+#endif
+
+#ifndef UCHAR_MAX
+#define UCHAR_MAX ((1<<(sizeof(unsigned char)*8))-1)
+#endif
+
+#ifndef USHRT_MAX
+#define USHRT_MAX ((1<<(sizeof(unsigned short)*8))-1)
+#endif
+
+#ifndef SHRT_MAX
+#define SHRT_MAX ((1<<(sizeof(short)*8-1))-1)
+#endif
+
+#ifndef SHRT_MIN
+#define SHRT_MIN (SHRT_MAX-USHRT_MAX)
+#endif
+
+#ifndef ULONG_MAX
+#define ULONG_MAX ((1<<(sizeof(unsigned long)*8))-1)
+#endif
+
+#ifndef LONG_MAX
+#define LONG_MAX ((1<<(sizeof(long)*8-1))-1)
+#endif
+
+#ifndef LONG_MIN
+#define LONG_MIN (LONG_MAX-ULONG_MAX)
+#endif
+
+#endif /* HAVE_LIMITS_H */
+
+#if !HAVE_FSEEKO
+# define fseeko  fseek
+#endif
+#if !HAVE_FTELLO
+# define ftello  ftell
+#endif
+
+#if defined(NT)
+  #define WNT NT
+  #undef NT
+#endif
+
+#include "lha_macro.h"
+
+#define exit(n) lha_exit(n)
+
+struct encode_option {
+#if defined(__STDC__) || defined(AIX)
+    void            (*output) ();
+    void            (*encode_start) ();
+    void            (*encode_end) ();
+#else
+    int             (*output) ();
+    int             (*encode_start) ();
+    int             (*encode_end) ();
+#endif
+};
+
+struct decode_option {
+    unsigned short  (*decode_c) ();
+    unsigned short  (*decode_p) ();
+#if defined(__STDC__) || defined(AIX)
+    void            (*decode_start) ();
+#else
+    int             (*decode_start) ();
+#endif
+};
+
+/* ------------------------------------------------------------------------ */
+/*  LHa File Type Definition                                                */
+/* ------------------------------------------------------------------------ */
+#if !defined(_WIN32)
+typedef int boolean;            /* TRUE or FALSE */
+#endif
+
+struct string_pool {
+    int             used;
+    int             size;
+    int             n;
+    char           *buffer;
+};
+
+typedef struct LzHeader {
+    size_t          header_size;
+    int             size_field_length;
+    char            method[METHOD_TYPE_STORAGE];
+    size_t          packed_size;
+    size_t          original_size;
+    unsigned char   attribute;
+    unsigned char   header_level;
+    char            name[FILENAME_LENGTH];
+    char            realname[FILENAME_LENGTH];/* real name for symbolic link */
+    unsigned int    crc;      /* file CRC */
+    boolean         has_crc;  /* file CRC */
+    unsigned int    header_crc; /* header CRC */
+    unsigned char   extend_type;
+    unsigned char   minor_version;
+
+    /* extend_type == EXTEND_UNIX  and convert from other type. */
+    time_t          unix_last_modified_stamp;
+    unsigned short  unix_mode;
+    unsigned short  unix_uid;
+    unsigned short  unix_gid;
+    char            user[256];
+    char            group[256];
+}  LzHeader;
+
+struct interfacing {
+    FILE            *infile;
+    FILE            *outfile;
+    size_t          original;
+    size_t          packed;
+    size_t          read_size;
+    int             dicbit;
+    int             method;
+};
+
+
+typedef void addfile_handler(const LzHeader*);
+
+#define LHALIB_EXTERN extern
+
+LHALIB_EXTERN void cmd_extract(const char* archive_name, 
+			     addfile_handler hnd);
+
+#define fatal_error rb_fatal
+#define error rb_warn
+#define message rb_warn
+#define warning rb_warning
+
+LHALIB_EXTERN FILE * open_old_archive(const char* archive);
+LHALIB_EXTERN boolean need_file(const char*);
+LHALIB_EXTERN boolean archive_is_msdos_sfx1(const char*);
+LHALIB_EXTERN void output_dyn();
+LHALIB_EXTERN void encode_start_fix();
+LHALIB_EXTERN void encode_end_dyn();
+LHALIB_EXTERN void output_st1();
+LHALIB_EXTERN void encode_start_st0();
+LHALIB_EXTERN void encode_end_st0();
+LHALIB_EXTERN void encode_start_st1();
+LHALIB_EXTERN void encode_end_st1();
+LHALIB_EXTERN unsigned short decode_c_dyn();
+LHALIB_EXTERN unsigned short decode_p_dyn();
+LHALIB_EXTERN void decode_start_fix();
+LHALIB_EXTERN void decode_start_dyn();
+LHALIB_EXTERN void decode_start_st0();
+LHALIB_EXTERN void decode_start_st1();
+LHALIB_EXTERN unsigned short decode_c_st0();
+LHALIB_EXTERN unsigned short decode_c_st1();
+LHALIB_EXTERN unsigned short decode_p_st0();
+LHALIB_EXTERN unsigned short decode_p_st1();
+LHALIB_EXTERN unsigned short decode_c_lzs();
+LHALIB_EXTERN unsigned short decode_p_lzs();
+LHALIB_EXTERN void decode_start_lzs();
+LHALIB_EXTERN unsigned short decode_c_lz5();
+LHALIB_EXTERN unsigned short decode_p_lz5();
+LHALIB_EXTERN void decode_start_lz5();
+LHALIB_EXTERN void make_crctable();
+LHALIB_EXTERN size_t copyfile(FILE* f1, FILE* f2, size_t size, int text_flg, unsigned int* crcp);
+LHALIB_EXTERN void init_getbits();
+LHALIB_EXTERN void init_code_cache();
+LHALIB_EXTERN void putcode(unsigned char n, unsigned short x);
+LHALIB_EXTERN void putbits(unsigned char n, unsigned short x);
+LHALIB_EXTERN unsigned short getbits(unsigned char n);
+LHALIB_EXTERN void fillbuf(unsigned char n);
+LHALIB_EXTERN void encode_p_st0(unsigned short j);
+
+
+
+#define start_indicator(name, size, ing, len) 0
+#define finish_indicator(name, ed) 0
+
+#if defined(LHALIB_VERSION)
+  #define LHA_EXTERN
+#else
+  #define LHA_EXTERN LHALIB_EXTERN
+#endif
+
+LHALIB_EXTERN boolean lha_force;
+LHALIB_EXTERN boolean lha_verbose;
+LHALIB_EXTERN boolean lha_ignore_directory;
+LHALIB_EXTERN boolean extract_broken_archive;
+LHALIB_EXTERN boolean lha_noconvertcase;
+LHALIB_EXTERN boolean lha_generic_format;
+LHALIB_EXTERN boolean lha_text_mode;
+LHALIB_EXTERN int lha_n_max;
+LHALIB_EXTERN unsigned short lha_maxmatch;
+LHALIB_EXTERN int lha_overwrite;
+LHALIB_EXTERN unsigned short lha_c_freq[], lha_c_table[], lha_c_code[];
+LHALIB_EXTERN unsigned short lha_p_freq[], lha_pt_table[], lha_pt_code[], lha_t_freq[];
+LHALIB_EXTERN unsigned char lha_c_len[], lha_pt_len[];
+LHALIB_EXTERN unsigned short lha_left[], lha_right[];
+
+LHA_EXTERN unsigned short bitbuf;
+LHA_EXTERN unsigned short dicbit;
+LHA_EXTERN size_t lha_decode_count;
+LHA_EXTERN size_t lha_origsize;
+LHA_EXTERN size_t lha_compsize;
+LHA_EXTERN int lha_unpackable;
+LHA_EXTERN unsigned long lha_loc;
+LHA_EXTERN unsigned char* lha_text;
+LHA_EXTERN unsigned int crctable[UCHAR_MAX + 1];
+LHA_EXTERN FILE* infile;
+LHA_EXTERN FILE* outfile;
+LHA_EXTERN int archive_file_gid;
+LHA_EXTERN int archive_file_mode;
+LHA_EXTERN int header_level;
+
+#define force lha_force
+#define verbose lha_verbose
+#define verbose_listing lha_verbose
+#define ignore_directory lha_ignore_directory
+#define n_max lha_n_max
+#define maxmatch lha_maxmatch
+#define decode_count lha_decode_count
+#define unpackable lha_unpackable
+#define left lha_left
+#define right lha_right
+#define c_len lha_c_len
+#define pt_len lha_pt_len
+#define c_freq lha_c_freq
+#define c_table lha_c_table
+#define c_code lha_c_code
+#define p_freq lha_pt_freq
+#define pt_table lha_pt_table
+#define pt_code lha_pt_code
+#define t_freq lha_t_freq
+#define loc lha_loc
+#define text lha_text
+#define origsize lha_origsize
+#define compsize lha_compsize
+#define noconvertcase lha_noconvertcase
+#define generic_format lha_generic_format
+#define text_mode lha_text_mode
+#define overwrite lha_overwrite

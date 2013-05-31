@@ -9,6 +9,13 @@ describe Notifier do
     @shop = Shop.find(:first)
   end
 
+  it "メールの送信に成功すること" do
+    lambda {
+      inquiry = inquiries(:inquiry_test_id_1)
+      Notifier.deliver_pc_inquiry(inquiry)
+    }.should_not raise_error
+  end
+
   it "PCお問い合わせメール" do
     inquiry = inquiries(:inquiry_test_id_1)
     notifier = Notifier.create_pc_inquiry(inquiry)

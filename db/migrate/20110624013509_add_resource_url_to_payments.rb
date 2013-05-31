@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AddResourceUrlToPayments < ActiveRecord::Migration
   def self.up
     add_column :payments, :resource_url, :string, :comment => "ロゴ画像URL"

@@ -29,7 +29,7 @@ class ActiveRecord::Base
 
   def self.delegate_to(*messages)
     name = messages.last
-    if name.respond_to?(:[]) && name[:as]
+    if name.is_a?(Hash) && name[:as]
       messages.pop
       name = name[:as]
     end

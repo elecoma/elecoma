@@ -77,7 +77,7 @@ style="font-size:small; background-color:#ffffff; color:#000000; margin:0 auto; 
 <div style="text-align:center; color:#96704B; background-color:#fafabe;">
   <div style="background-color:#fafabe;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
   <% form_tag( {:controller => "products", :action => "search", :model => @model_name, :only_path=>false}, {:method => "get"}) do %>
-    <span style="color:#666666">&#xE6DC;</span><%= text_field_tag "search", {}, {:size => "15", :maxlength => "20", :style => "width:100px; height:20px;"} %>
+    <span style="color:#666666">&#xE6DC;</span><%= text_field_tag "search", nil, {:size => "15", :maxlength => "20", :style => "width:100px; height:20px;"} %>
     <%= submit_tag "検索" %>
   <% end %>
   <div style="background-color:#fafabe;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>

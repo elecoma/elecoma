@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateStockTables < ActiveRecord::Migration
   def self.up
     create_table :stock_tables do |t|

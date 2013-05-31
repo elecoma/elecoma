@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module ProductHelper
   def link_order(order)
      if  params[:order] == order || ( params[:order].blank? && order == "update" )

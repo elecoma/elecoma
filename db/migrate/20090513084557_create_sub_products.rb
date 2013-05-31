@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateSubProducts < ActiveRecord::Migration
   def self.up
     create_table :sub_products do |t|

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateKiyakus < ActiveRecord::Migration
   def self.up
     create_table :kiyakus do |t|

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Admin::LawsController < Admin::BaseController
   before_filter :admin_permission_check_commerce_low
   

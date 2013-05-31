@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateShops < ActiveRecord::Migration
   def self.up
     create_table :shops do |t|

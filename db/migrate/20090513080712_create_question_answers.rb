@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateQuestionAnswers < ActiveRecord::Migration
   def self.up
     create_table :question_answers do |t|

@@ -1,4 +1,4 @@
-# -*- coding: utf-8-emacs -*-
+# -*- coding: utf-8 -*-
 class AddDataFunctionsSetting < ActiveRecord::Migration
   def self.up
     Function.create(:name => '環境設定', :code => 'setting', :position => 1003)

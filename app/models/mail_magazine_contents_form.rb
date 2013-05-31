@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class MailMagazineContentsForm < SearchForm
   set_field_names :subject => '件名'
   set_field_names :body => '本文'

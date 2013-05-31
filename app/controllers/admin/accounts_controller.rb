@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Admin::AccountsController < Admin::BaseController
   skip_before_filter :admin_login_check
   layout nil, :only => 'login'

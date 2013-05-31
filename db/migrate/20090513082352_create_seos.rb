@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateSeos < ActiveRecord::Migration
   def self.up
     create_table :seos do |t|

@@ -1,0 +1,85 @@
+/*
+ * LhaLib for Ruby
+ * Copyright(c) 2006 arton
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * $Id:$
+ */
+
+#define LHALIB_VERSION "0.8.0"
+
+#include "lha.h"
+#include "st.h"
+
+static VALUE lhalib;
+
+boolean lha_force = FALSE;
+boolean lha_verbose = FALSE;
+boolean lha_ignore_directory = FALSE;
+boolean extract_broken_archive = FALSE;
+boolean lha_noconvertcase = FALSE;
+boolean lha_generic_format = FALSE;
+boolean lha_text_mode = FALSE;
+int overwrite = 1;
+int lha_n_max;
+unsigned short lha_maxmatch;
+unsigned short bitbuf;
+size_t lha_decode_count;
+int lha_unpackable;
+unsigned long lha_loc;
+unsigned char* lha_text;
+FILE* infile;
+FILE* outfile;
+int archive_file_gid;
+int archive_file_mode;
+
+void add_file(const char* file)
+{
+}
+
+static VALUE s_ex(VALUE self, VALUE file)
+{
+  rb_check_safe_str(file);
+  rb_secure(4);
+  make_crctable();
+  cmd_extract(StringValueCStr(file), add_file);
+}
+
+static VALUE s_open(int argc, VALUE* argv, VALUE self)
+{
+  VALUE file;
+  VALUE proc;
+  rb_scan_args(argc, argv, "1&", &file, &proc);
+  rb_check_safe_str(file);
+  rb_secure(4);
+
+  make_crctable();
+  cmd_extract(StringValueCStr(file), add_file);
+  if (!NIL_P(proc))
+    {
+      rb_yield(file);
+    }
+}
+
+
+/*
+ * Class initializer called by Ruby while requiring this library
+ */
+void Init_lhalib()
+{
+    header_level = 2;
+    lhalib = rb_define_module("LhaLib");
+    rb_define_module_function(lhalib, "x", s_open, -1);
+    rb_define_module_function(lhalib, "x", s_ex, 1);
+    rb_define_const(lhalib, "VERSION", rb_str_new2(LHALIB_VERSION));
+
+}

@@ -111,9 +111,7 @@ class Admin::ProductsController < Admin::BaseController
     @search_list = []
     get_search_form
     csv_data, filename = Product.csv(@search_list)
-    headers['Content-Type'] = "application/octet-stream; name=#{filename}"
-    headers['Content-Disposition'] = "attachment; filename=#{filename}"
-    render :text => NKF.nkf('-s', csv_data)
+    send_data(csv_data.tosjis, :type => "application/octet-stream; name=#{filename}; charset=shift_jis; header=present",:disposition => 'attachment', :filename => filename)
   end
 
   def csv_upload
@@ -122,7 +120,7 @@ class Admin::ProductsController < Admin::BaseController
 
     begin
       if CSVUtil.valid_data_from_file?(file)
-        line, result = Product.add_by_csv(file, session[:admin_user].retailer_id)
+        line, result = Product.add_by_csv(file.path, session[:admin_user].retailer_id)
         unless result
           line = line + 1
           flash[:product_csv_upload_e] = "#{line}行目のデータが不正です。最初からやり直して下さい。"
@@ -135,8 +133,9 @@ class Admin::ProductsController < Admin::BaseController
         flash[:product_csv_upload_e] = "CSVファイルが空か、指定されたファイルが存在しません"
         redirect_to :action => "index"
       end
-    rescue => e
-      logger.error("product_controller#csv_upload catch error: " + e.to_s)
+    rescue
+      logger.error 'product_controller#csv_upload catch error: ' + $!.message
+      logger.error $!.backtrace.join("\n")
       flash[:product_csv_upload_e] = "エラーが発生しました。最初からやり直して下さい。"
       redirect_to :action => "index"
     end
@@ -146,9 +145,7 @@ class Admin::ProductsController < Admin::BaseController
     @search_list = []
     get_search_form
     csv_data, filename = Product.actual_count_list_csv(@search_list)
-    headers['Content-Type'] = "application/octet-stream; name=#{filename}"
-    headers['Content-Disposition'] = "attachment; filename=#{filename}"
-    render :text => Iconv.conv('cp932', 'UTF-8', csv_data)
+    send_data(csv_data.tosjis, :type => "application/octet-stream; name=#{filename}; charset=shift_jis; header=present",:disposition => 'attachment', :filename => filename)
   end
 
   protected

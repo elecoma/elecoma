@@ -282,34 +282,12 @@ class Product < ActiveRecord::Base
   end
 
   def self.csv(search_list)
-    columns = csv_columns_name
     products = self.find(:all,
                          :conditions => flatten_conditions(search_list),
                          :include => DEFAULT_INCLUDE,
                          :order => "products.id")
-    f = StringIO.new('', 'w')
-    CSV::Writer.generate(f) do | writer |
-      writer<< columns.map{|name| set_field_names[name]}
-      products and products.each do | product |
-        writer << columns.map do | column |
-          if column.to_s == "permit"
-            if product[column]
-              "公開"
-            else
-              "非公開"
-            end
-          elsif column.to_s == "delivery_dates_label"
-            product.delivery_dates_label
-          elsif ![:small_resource_path,:medium_resource_path,:large_resource_path,:category_name,:delivery_dates_label,:supplier_name,:retailer_name].include?(column)&& Product.columns_hash[column.to_s].class == :datetime
-            (product[column] + (60*60*9)).strftime("%Y-%m-%d %H:%M") if product[column]
-          else
-            product[column] || product.send(column)
-          end
-        end
-      end
-    end
-    filename = "product_#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"
-    [f.string, filename]
+    csv_text = CSVUtil.make_csv_string(csv_rows(products), csv_header)
+    [csv_text, csv_filename]
   end
 
   def self.actual_count_list_csv(search_list)
@@ -317,21 +295,9 @@ class Product < ActiveRecord::Base
                                   :conditions => flatten_conditions(search_list),
                                   :joins => "LEFT JOIN products ON products.id = product_styles.product_id ",
                                   :order => "id")
-    f = StringIO.new('', 'w')
-    title = ["商品名", "商品コード", "登録更新日", "実在個数"]
-    CSV::Writer.generate(f) do | writer |
-      writer<< title
-      products and products.each do | product |
-        columns = []
-        columns  <<  product.product_name
-        columns  <<  product.code
-        columns  <<  product.updated_at
-        columns  <<  product.actual_count.to_i
-        writer << columns
-      end
-    end
-    filename = "actual_count_list_#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"
-    [f.string, filename]
+    rows = actual_count_list_csv_rows(products)
+    csv_text = CSVUtil.make_csv_string(rows, actual_count_list_csv_header)
+    [csv_text, actual_count_list_csv_filename]
   end
 
   def master_shop?
@@ -339,10 +305,10 @@ class Product < ActiveRecord::Base
   end
 
   class << self
-    def add_by_csv(file, retailer_id)
+    def add_by_csv(filepath, retailer_id)
       line = 0
       Product.transaction do
-        CSV::Reader.parse(file) do |row|
+        CSV.foreach(filepath, encoding: Encoding::Shift_JIS) do |row|
           if line != 0
             product = new_by_array(row, retailer_id)
             if product.nil?
@@ -615,6 +581,55 @@ class Product < ActiveRecord::Base
       :created_at => "登録日",
       :updated_at => "更新日"
     }
+  end
+
+  def self.csv_header
+    csv_columns_name.map{|name| set_field_names[name] }
+  end
+
+  def self.csv_filename
+    "product_#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"
+  end
+
+  def self.csv_rows(products)
+    return if products.blank?
+    products.map do |product|
+      csv_columns_name.map do |column|
+        if column.to_s == "permit"
+          if product[column]
+            "公開"
+          else
+            "非公開"
+          end
+        elsif column.to_s == "delivery_dates_label"
+          product.delivery_dates_label
+        elsif ![:small_resource_path,:medium_resource_path,:large_resource_path,:category_name,:delivery_dates_label,:supplier_name,:retailer_name].include?(column)&& Product.columns_hash[column.to_s].class == :datetime
+          (product[column] + (60*60*9)).strftime("%Y-%m-%d %H:%M") if product[column]
+        else
+          product[column] || product.send(column)
+        end
+      end
+    end
+  end
+
+  def self.actual_count_list_csv_header
+    %w( 商品名 商品コード 登録更新日 実在個数 )
+  end
+
+  def self.actual_count_list_csv_filename
+    "actual_count_list_#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"
+  end
+
+  def self.actual_count_list_csv_rows(products)
+    return if products.blank?
+    products.map do |product|
+      [
+        product.product_name,
+        product.code,
+        product.updated_at,
+        product.actual_count.to_i
+      ]
+    end
   end
 
   def self.id_change_to_i(ids)

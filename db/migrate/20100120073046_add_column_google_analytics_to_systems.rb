@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AddColumnGoogleAnalyticsToSystems < ActiveRecord::Migration
   def self.up
     add_column :systems, :googleanalytics_use_flag, :boolean,:default => false, :comment => "GoogleAnalytics利用可否"

@@ -19,7 +19,7 @@
    :zipcode02,
  ].reject{|name|@delivery_address[name].blank?}
 -%>
-<%= @names.map{|name|hidden_field :delivery_address, name} %>
+<%= @names.map{|name|hidden_field :delivery_address, name}.join %>
 <%= hidden_field 'done', 1 %>
   <%= submit_tag '戻る', :name=>'back' %>
   <%= submit_tag '確認ページへ' %><br />

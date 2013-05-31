@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe CustomerSearchForm do
@@ -110,20 +111,10 @@ describe CustomerSearchForm do
   end
   #fixturesデータをCSV形式に変換（比較用）
   def convert(customers)
-    datas = []
-    customers.each do |c|
-      arr = []
-      Customer.get_symbols.map do |sym|
-        if [:sex].include?(sym)
-          arr << (c.sex == System::MALE ? System::SEX_NAMES[System::MALE] : System::SEX_NAMES[System::FEMALE])
-        elsif [:age].include?(sym)
-          arr << (CustomerSearchForm.get_age(c.birthday).nil? ? "" : CustomerSearchForm.get_age(c.birthday).to_s)
-        else
-          arr << (c.send(sym).nil? ? "" : c.send(sym).to_s)
-        end
-      end
-      datas << arr.join(",").split(",")
+    rows = CustomerSearchForm.send :csv_rows, customers
+    rows.collect do |row|
+      # XXX: 下記行がどのような処理を意図しているか不明
+      row.join(",").split(",")
     end
-    datas
   end
 end

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module ActionView
   module Helpers
     module DateHelper

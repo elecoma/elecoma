@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AddColumnDesigns < ActiveRecord::Migration
   def self.up
     add_column :designs, :mobile_header, :text, :comment => "MBヘッダー"

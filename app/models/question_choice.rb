@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class QuestionChoice < ActiveRecord::Base
 
   acts_as_paranoid

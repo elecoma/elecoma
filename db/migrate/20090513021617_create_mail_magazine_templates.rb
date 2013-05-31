@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateMailMagazineTemplates < ActiveRecord::Migration
   def self.up
     create_table :mail_magazine_templates do |t|

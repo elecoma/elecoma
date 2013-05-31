@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreatePrefectures < ActiveRecord::Migration
   def self.up
     create_table :prefectures do |t|

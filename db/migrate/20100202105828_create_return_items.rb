@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateReturnItems < ActiveRecord::Migration
   def self.up
     create_table :return_items do |t|

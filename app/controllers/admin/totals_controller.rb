@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'ostruct'
 require 'totalizer'
 
@@ -78,10 +79,7 @@ class Admin::TotalsController < Admin::BaseController
   def csv
     totalizer = Object.const_get("#{params[:page]}_totalizer".classify)
     csv_data, filename = totalizer.csv(params)
-    headers['Content-Type'] = "application/octet-stream; name=#{filename}"
-    headers['Content-Disposition'] = "attachment; filename=#{filename}"
-    render :text => Iconv.conv('cp932', 'UTF-8', csv_data)
+    send_data(csv_data.tosjis, :type => "application/octet-stream; name=#{filename}; charset=shift_jis; header=present",:disposition => 'attachment', :filename => filename)
   end
-
 end
 

@@ -37,7 +37,7 @@ class Admin::OrderStatusesController < Admin::BaseController
     file = params[:upload_file]
     begin
       if CSVUtil.valid_data_from_file?(file)
-        line, update_line, result = OrderDelivery.update_by_csv(file, session[:admin_user].retailer_id)
+        line, update_line, result = OrderDelivery.update_by_csv(file.path, session[:admin_user].retailer_id)
         unless result
           line = line + 1
           flash[:status] = "#{line}行目のデータが不正です。最初からやり直して下さい。"
@@ -56,8 +56,9 @@ class Admin::OrderStatusesController < Admin::BaseController
         flash[:status] = "CSVファイルが空か、指定されたファイルが存在しません"
         redirect_to :action => "index"
       end
-    rescue => e
-      logger.error("order_statuses_controller#csv_upload catch error: " + e.to_s)
+    rescue
+      logger.error "order_statuses_controller#csv_upload catch error: " + $!.message
+      logger.error $!.backtrace.join("\n")
       flash[:status] = "エラーが発生しました。最初からやり直してく下さい。"
       flash[:has_error] = true
 #      flash[:error] = e.to_s

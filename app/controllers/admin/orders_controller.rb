@@ -204,9 +204,7 @@ class Admin::OrdersController < Admin::BaseController
   def csv_download
     get_search_form
     csv_data, filename = Order.csv(@search_list)
-    headers['Content-Type'] = "application/octet-stream; name=#{filename}"
-    headers['Content-Disposition'] = "attachment; filename=#{filename}"
-    render :text => Iconv.conv('cp932', 'UTF-8', csv_data)
+    send_csv(csv_data, filename)
   end
 
   private

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Authority < ActiveRecord::Base
   
   acts_as_list

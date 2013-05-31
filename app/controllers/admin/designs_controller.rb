@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Admin::DesignsController < Admin::BaseController
   before_filter :admin_permission_check_pc_edit, :only => [:index, :pc, :update]
   before_filter :admin_permission_check_mobile_edit, :only => :mobile

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateInquiries < ActiveRecord::Migration
   def self.up
     create_table :inquiries do |t|

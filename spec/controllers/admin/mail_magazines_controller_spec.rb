@@ -135,7 +135,7 @@ describe Admin::MailMagazinesController do
   describe "POST 'confirm'" do
     it "確認画面に移動" do
       contents = {:subject => "subject", 
-        :body => "<img src=\"/images/emoticons/E697.gif\" class=\"emoticon\">dasda",
+        :body => "dasda",
         :form_type => 2}
       post 'confirm', :contents => contents, :customer_ids => "1,3,5"
       response.should render_template("admin/mail_magazines/confirm.html.erb")
@@ -157,7 +157,7 @@ describe Admin::MailMagazinesController do
       on_form = 'true'
       post 'search', :on_form => on_form, :condition => {:form_type => "0"}
       contents = {:subject => "subject", 
-        :body => "<img src=\"/images/emoticons/E697.gif\" class=\"emoticon\">dasda",
+        :body => "dasda",
         :form_type => 2}
       post 'complete', :contents => contents, :customer_ids => "18"
       response.should redirect_to(:action => :history)
@@ -168,7 +168,7 @@ describe Admin::MailMagazinesController do
       on_form = 'true'
       post 'search', :on_form => on_form, :condition => {:form_type => "0"}
       contents = {:subject => "subject", 
-        :body => "<img src=\"/images/emoticons/E697.gif\" class=\"emoticon\">dasda",
+        :body => "asda",
         :form_type => 2}
       post 'complete', :contents => contents, :customer_ids => "0"
       response.should redirect_to(:action => :index)

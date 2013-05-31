@@ -25,10 +25,7 @@
   <% end %>
 
   <!-- ページング -->
-  <%param_datas = {}%>
-  <%params.each{ |key, value| param_datas[key.to_sym] = ((request.mobile? && !request.mobile.is_a?(Jpmobile::Mobile::Softbank)) ? value.tosjis : value) }%>
-<!--  page numbers -->
-  <div id="pages">  <%= will_paginate(@products,:params=>param_datas) %></div>
+  <div id="pages">  <%= will_paginate(@products) %></div>
   <div class="listOrder"><%= link_order "price" %>│<%= link_order "update" %></div>
 
 <% else %>

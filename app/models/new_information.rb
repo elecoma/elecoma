@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class NewInformation < ActiveRecord::Base
 
   acts_as_paranoid

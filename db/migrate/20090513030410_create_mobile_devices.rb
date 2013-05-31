@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateMobileDevices < ActiveRecord::Migration
   def self.up
     create_table :mobile_devices do |t|

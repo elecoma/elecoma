@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 class System < ActiveRecord::Base
+  require 'moji'
 
   acts_as_paranoid
   NON_MEMBERS_ALLOW, NON_MEMBERS_DISALLOW = 0, 1
@@ -8,7 +9,10 @@ class System < ActiveRecord::Base
   SEX_NAMES = { MALE => "男性", FEMALE => "女性" }
 
   # カタカナに一致する正規表現
-  KATAKANA_PATTERN = /^(?:\xE3\x82[\xA1-\xBF]|\xE3\x83[\x80-\xB6\xBC])*$/
+  #   Ruby 1.9 で正規表現のライブラリが代わったので
+  #   下記の旧コードでは動作しない
+  #                  /^(?:\xE3\x82[\xA1-\xBF]|\xE3\x83[\x80-\xB6\xBC])*$/
+  KATAKANA_PATTERN = /^(#{Moji.zen_kata}|ー|－)*$/ # 鬼車（\p{katakana}）だと半角カナも含まれるので moji を利用
 
   #googleanalytics（トラッキングコード）の同期・非同期の区別
   GA_SELECT_SYNCH = 0

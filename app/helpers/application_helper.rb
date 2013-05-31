@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   NOT_FOUND_STRING = "不明"
@@ -5,7 +6,7 @@ module ApplicationHelper
   def link_parameter(name, option)
     param_datas = {}
     #DOCOMOとAUの場合、リンクに日本語のパラメター値が付いている時の文字化けの問題対応
-    params.each{ |key, value| param_datas[key.to_sym] = ((request.mobile? && !request.mobile.is_a?(Jpmobile::Mobile::Softbank)) ? value.tosjis : value) }
+    params.each{ |key, value| param_datas[key.to_sym] = (is_softbank_mobile?(request) ? value.tosjis : value) }
     option.each{ |key, value| param_datas[key.to_sym] = value }
     link_to name, param_datas
   end
@@ -116,6 +117,12 @@ module ApplicationHelper
       logger.error e
       not_exist_string
     end
+  end
+
+  private
+
+  def is_softbank_mobile?(request_obj)
+    request_obj.mobile? && !request_obj.mobile.respond_to?(:smartphone?) && !request_obj.mobile.is_a?(Jpmobile::Mobile::Softbank)
   end
 
 #   def date_select_tag(name, value = nil, options = {})

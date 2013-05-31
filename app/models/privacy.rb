@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Privacy < ActiveRecord::Base
   CONTENT_COLLECT,CONTENT_COLLECT_MOBILE,CONTENT_PRIVACY,CONTENT_PRIVACY_MOBILE = "content_collect","content_collect_mobile","content_privacy","content_privacy_mobile"
   PRIVACY_NAMES = {

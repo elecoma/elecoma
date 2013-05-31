@@ -466,19 +466,22 @@ class CartController < BaseController
       redirect_to :action => 'show'
       return
     end
-    redirect_to :action => :finish, :ids => @ids
-    
-  end
 
+    # Rails 2.3.16 からクエリに 2 次元配列を渡したときの挙動が異なるので、
+    # セッションを利用して回避する
+    save_ids_for_finish
+
+    redirect_to :action => :finish
+  end
 
   def finish
     unless flash[:completed]
       render :template => 'cart/405', :status => :method_not_allowed
       return
     end
-    session[:point_after_operation] = nil
-    session[:transaction_items] = nil
-    @recommend_buys = Recommend.recommend_get(params[:ids][0], Recommend::TYPE_BUY)
+    restore_ids_for_finish
+    clean_sessions
+    @recommend_buys = Recommend.recommend_get(@ids.first, Recommend::TYPE_BUY) if @ids.present?
     @shop = Shop.find(:first)
     render :action => 'complete'
   end
@@ -842,7 +845,7 @@ class CartController < BaseController
   end
   
   def current_method_symbol
-    caller.first.scan(/`(.*)'/).to_s.intern
+    caller.first.sub(/^.*`(.*)'$/, '\1').intern
   end
 
   def save_transaction_items_before_payment
@@ -869,5 +872,19 @@ class CartController < BaseController
     @not_login_customer = transaction_items[:not_login_customer]
     return true
   end
-  
+
+  def save_ids_for_finish
+    session[:ids_for_finish] = @ids
+  end
+
+  def restore_ids_for_finish
+    return unless session[:ids_for_finish].is_a? Array
+    @ids = session[:ids_for_finish]
+  end
+
+  def clean_sessions
+    session[:point_after_operation] = nil
+    session[:transaction_items] = nil
+    session[:ids_for_finish] = nil
+  end
 end

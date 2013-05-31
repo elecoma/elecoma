@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateResourceDatas < ActiveRecord::Migration
   def self.up
     create_table :resource_datas do |t|
