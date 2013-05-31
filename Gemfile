@@ -32,6 +32,11 @@ gem 'lhalib', '0.8.1', :path => 'vendor/gems/lhalib-0.8.1'
 #gem 'double_submit_protection', :git => 'git://github.com/herval/double_submit_protection.git'
 #gem 'image_submit_tag_ext', :git => 'git://github.com/champierre/image_submit_tag_ext.git'
 
+group :development do
+  gem 'pry'
+  gem 'pry-doc'
+end
+
 group :test do
   gem 'rspec-rails', '1.2.9'
   gem 'rspec', '1.2.9'
