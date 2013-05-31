@@ -4,9 +4,9 @@ require 'optparse'
 
 opt = OptionParser.new
 OPTS = {}
-OPTS[:env] = 'production'
+OPTS[:env] = 'development'
 
-opt.on('-e environment', "\tSpecifies the environment for mail daemon [production/development/test] \n\t\t\t\t\tDefault: production") {|v| OPTS[:env] = v}
+opt.on('-e environment', "\tSpecifies the environment for mail daemon [production/development/test] \n\t\t\t\t\tDefault: #{OPTS[:env]}") {|v| OPTS[:env] = v}
 
 opt.banner = "Usage: mail [options] {start|stop|run}"
 
