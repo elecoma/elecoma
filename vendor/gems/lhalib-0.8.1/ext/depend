@@ -1,0 +1,15 @@
+lhalib.o : lhalib.c $(hdrdir)/ruby.h $(hdrdir)/config.h $(hdrdir)/defines.h lha.h lha_macro.h
+dhuf.o : dhuf.c lha.h
+extract.o : extract.c lha.h
+header.o : header.c lha.h
+huf.o : huf.c lha.h
+shuf.o : shuf.c lha.h
+slide.o : slide.c lha.h
+lharc.o : lharc.c lha.h
+larc.o : larc.c lha.h
+crcio.o : crcio.c lha.h
+bitio.o : bitio.c lha.h
+maketbl.o : maketbl.c lha.h
+maketree.o : maketree.c lha.h
+util.o : util.c lha.h
+

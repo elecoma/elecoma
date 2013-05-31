@@ -1,0 +1,53 @@
+--- !ruby/object:Gem::Specification
+name: lhalib
+version: !ruby/object:Gem::Version
+  version: 0.8.1
+  prerelease: 
+  segments:
+  - 0
+  - 8
+  - 1
+platform: ruby
+authors:
+- arton
+autorequire: 
+bindir: bin
+cert_chain: 
+date: 2006-09-18 00:00:00.000000000 Z
+dependencies: []
+description: LhaLib is an utility that unpack the LHa archived file.
+email: artonx@gmail.com
+executables: []
+extensions:
+- ext/extconf.rb
+extra_rdoc_files: []
+files:
+- ext/extconf.rb
+homepage: http://arton.no-ip.info/collabo/backyard/?LhaLib
+licenses: []
+post_install_message: 
+rdoc_options: []
+require_paths:
+- lib
+required_ruby_version: !ruby/object:Gem::Requirement
+  none: false
+  requirements:
+  - - ! '>='
+    - !ruby/object:Gem::Version
+      version: 1.8.2
+required_rubygems_version: !ruby/object:Gem::Requirement
+  none: false
+  requirements:
+  - - ! '>='
+    - !ruby/object:Gem::Version
+      version: '0'
+requirements:
+- none
+rubyforge_project: 
+rubygems_version: 1.8.23
+signing_key: 
+specification_version: 1
+summary: Ruby LHa Lib
+test_files: []
+has_rdoc: 
+

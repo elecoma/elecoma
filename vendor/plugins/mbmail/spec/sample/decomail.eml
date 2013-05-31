@@ -1,0 +1,49 @@
+From: test@example.com
+To: test@example.com
+Subject: test
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="-----=_NextPart_32760_65996_33696"
+
+
+-------=_NextPart_32760_65996_33696
+Content-Type: multipart/alternative; boundary="-----=_NextPart_35544_68780_36480"
+
+
+-------=_NextPart_35544_68780_36480
+Content-Type: text/plain; charset="iso-2022-jp"
+Content-Transfer-Encoding: 7bit
+
+This is a body of text/plain part.
+
+-------=_NextPart_35544_68780_36480
+Content-Type: text/html; charset="iso-2022-jp"
+Content-Transfer-Encoding: quoted-printable
+
+<HTML><HEAD><META http-equiv=3D=22Content-Type=22 content=3D=22text/html;=
+ charset=3Diso-2022-jp=22></HEAD><BODY><DIV>This is a body of text/html =
+part.<IMG src=3D=22cid:sample_cid=40example.com=22></DIV></BODY></HTML>
+-------=_NextPart_35544_68780_36480--
+
+-------=_NextPart_32760_65996_33696
+Content-Type: image/gif; name="inlined.gif"
+Content-Transfer-Encoding: base64
+Content-Disposition: inline; filename="inlined.gif"
+Content-ID: <sample_cid@example.com>
+
+0lGODlhHgAeAJECAP///wCZ/////wAAACH5BAEAAAIALAAAAAAeAB4AAAJZ
+lI8Sye22WljxoVnZtLz7D4biqGGheQUAtnVsFanA3DosHSs4KmHrC1nNfpmL
+Tsab0IgWlTOJZDWJSSGz+aopgK5or8jRksYlMDlmHqXHa7L7DY/L5/T6uAAA
+Ow==
+
+-------=_NextPart_32760_65996_33696
+Content-Type: image/gif; name="attached.gif"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="attached.gif"
+
+R0lGODlhHgAeAJECAP///wBm/////wAAACH5BAEAAAIALAAAAAAeAB4AAAJq
+lI+py+0P4woBVinonRs36oWf5pEIBWigpR5XAMRpp6jxWsGzyaEqnpLxErng
+zqWDDWvBlgG1WzGUP5dxWftJM1XWjfbcskTkMkaLdo5eQuGp1L6ZdcZZmU5P
+3eNyMt59l0RlxtVFeHhYAAA7
+
+-------=_NextPart_32760_65996_33696--
+
