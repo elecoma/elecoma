@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/swanandp/acts_as_list.git
+  revision: 819c37df1a5cacb5990a5c2cb923531e570203f2
+  ref: 819c37df1a5cacb5990a5c2cb923531e570203f
+  specs:
+    acts_as_list (0.1.4)
+
 PATH
   remote: vendor/gems/lhalib-0.8.1
   specs:
@@ -17,7 +24,6 @@ GEM
     activeresource (2.3.17)
       activesupport (= 2.3.17)
     activesupport (2.3.17)
-    acts_as_list (0.1.9)
     acts_as_tree (0.1.1)
     addressable (2.3.4)
     ar_fixtures (0.0.4)
@@ -80,7 +86,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  acts_as_list
+  acts_as_list!
   acts_as_tree (= 0.1.1)
   ar_fixtures
   daemons

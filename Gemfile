@@ -14,7 +14,7 @@ gem 'json'
 gem 'daemons'
 gem 'moji'
 
-gem 'acts_as_list'
+gem 'acts_as_list', :git => 'git://github.com/swanandp/acts_as_list.git', :ref => '819c37df1a5cacb5990a5c2cb923531e570203f'
 gem 'acts_as_tree', '0.1.1'
 gem 'ar_fixtures'
 gem 'jpmobile', '0.0.8'
