@@ -23,8 +23,15 @@ GEM
     ar_fixtures (0.0.4)
       hoe (>= 1.2.1)
     coderay (1.0.9)
+    columnize (0.3.6)
     crack (0.3.2)
     daemons (1.1.9)
+    debugger (1.6.0)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.2.0)
+      debugger-ruby_core_source (~> 1.2.1)
+    debugger-linecache (1.2.0)
+    debugger-ruby_core_source (1.2.2)
     gettext (2.1.0)
       locale (>= 2.0.5)
     gruff (0.3.6)
@@ -75,6 +82,7 @@ DEPENDENCIES
   acts_as_tree (= 0.1.1)
   ar_fixtures
   daemons
+  debugger
   gettext (= 2.1.0)
   gruff (= 0.3.6)
   jpmobile (= 0.0.8)
