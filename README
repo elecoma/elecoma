@@ -14,65 +14,33 @@
 エレコマを動かすに辺り、以下の環境を奨励します。
 （下記環境以外でも動作する可能性はあります）
 
- - OS    : CentOS 5.4
- - DB    : postgresql 8.3系
- - Ruby  : 1.8.7
- - Rails : 2.3.2
+ - OS    : CentOS 6.4
+ - DB    : postgresql 8.4系
+ - Ruby  : 1.9.3
+ - Rails : 2.3.17
 
 ================================================================================
   エレコマ 依存plugin
 ================================================================================
-エレコマではpluginを含めて配布をしていません。
-以下のpluginが依存しています。各自インストールをお願いします。
+エレコマではpluginの一部を含めて配布しています。
+以下のpluginが同梱されています。
 
 
 active-form
   git://github.com/realityforge/rails-active-form.git
   rev: f1e74bec3d87c23cfc05ca7df11925c08e55514f
 
-acts_as_list
-  git://github.com/rails/acts_as_list.git
-  rev: 8771a632dc26a7782800347993869c964133ea29
-
 acts_as_paranoid
   git://github.com/technoweenie/acts_as_paranoid.git
   rev: b0a5d2b8ba89eae03f673e4af2e52619260fcc30
-
-acts_as_tree
-  git://github.com/rails/acts_as_tree.git
-  rev: 20988cac158bcf7f7535a3c5dd193165797d719a
-
-ar_fixtures
-  http://topfunky.net/svn/plugins/ar_fixtures/
-  rev: 271
-
-jpmobile
-  git://github.com/jpmobile/jpmobile.git
-  rev: tag 0.0.8
-
-jpmobile_emoticon_filter
-  http://taslam-plugins.googlecode.com/svn/trunk/jpmobile_emoticon_filter/
-  rev: 49
 
 mbmail
   git://github.com/tmtysk/mbmail.git
   rev: 654ce3ec2dfa10ac3b05cd9354eb84456d206a6d
 
-resource_controller
-  git://github.com/jamesgolick/resource_controller.git
-  rev: 48359daa1e01c47f1d7b5f37441742123d395e11 
-
 ssl_requirement
   git://github.com/rails/ssl_requirement.git
   rev: 34a9a138c4093bd7d5678822f8f1e62c31d47299
-
-will_paginate
-  git://github.com/mislav/will_paginate.git
-  rev: 839d821041a4cfaa4dfbcc5719ea17ff196189c7
-
-yaml_waml 
-  git://github.com/kakutani/yaml_waml.git
-  rev: 1b292b3e0df9a7e69ed90eebdca327a0888b0a12
 
 double_submit_protection
   git://github.com/DianthuDia/double_submit_protection.git
@@ -82,116 +50,75 @@ image_submit_tag_ext
   git://github.com/champierre/image_submit_tag_ext.git
   rev: 572ce5ce5d40ee1494ddd0a121483e8791bb2184
 
-rspec
-  git://github.com/dchelimsky/rspec.git
-  rev: tag 1.2.9
-
-rspec-rails
-  git://github.com/dchelimsky/rspec-rails.git
-  rev: tag 1.2.9
-
 ================================================================================
   エレコマ インストール手順
 ================================================================================
-CentOS 5.4でのインストールを想定しています。
+CentOS 6.4でのインストールを想定しています。
  前提条件は以下となります。
- -ダウンロードページからエレコマをダウンロード済み。
+ -CentOS 6.4 minimal をインストール済み
+ -ダウンロードページからエレコマをダウンロード済み
 
 1. rubyのインストール
-$ sudo yum install gcc
-$ sudo yum install zlib-devel
-$ sudo yum install openssl-devel
-$ sudo yum install ncurses-devel
-$ sudo yum install readline-devel
-$ wget ftp://ftp.ruby-lang.org/pub/ruby/1.8/ruby-1.8.7-p174.tar.gz
-$ tar zxf ruby-1.8.7-p174.tar.gz 
-$ cd ruby-1.8.7-p174
-$ ./configure
-$ make
-$ sudo make install
+# yum -y groupinstall "Base" "Development tools"
+# yum -y install zlib-devel
+# yum -y install openssl-devel
+# yum -y install ncurses-devel
+# yum -y install readline-devel
+# wget ftp://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p194.tar.gz
+# tar zxf ruby-1.9.3-p194.tar.gz
+# cd ruby-1.9.3-p194
+# ./configure
+# make
+# make install
 
 2. gemのインストール
-$ wget http://rubyforge.org/frs/download.php/69365/rubygems-1.3.6.tgz
-$ tar zxf rubygems-1.3.6.tgz
-$ cd rubygems-1.3.6
-$ sudo ruby setup.rb
+# wget http://rubyforge.org/frs/download.php/76032/rubygems-1.8.23.tgz
+# tar zxf rubygems-1.8.23.tgz
+# cd rubygems-1.8.23
+# ruby setup.rb
 
 3. ImageMagickのインストール
-$ sudo yum install libjpeg-devel libpng-devel gd-devel freetype-devel
-$ wget http://ftp.nl.netbsd.org/pub/pub/ImageMagick/ImageMagick-6.5.8-4.tar.gz
-$ tar zxf ImageMagick-6.5.8-4.tar.gz
-$ cd ImageMagick-6.5.8-4
-$ ./configure --disable-openmp
-$ make
-$ sudo make install
+# yum -y install libjpeg-devel libpng-devel gd-devel freetype-devel
+# wget http://ftp.nl.netbsd.org/pub/pub/ImageMagick/ImageMagick-6.8.1-7.tar.gz
+# tar zxf ImageMagick-6.8.1-7.tar.gz
+# cd ImageMagick-6.8.1-7
+# ./configure --disable-openmp
+# make
+# make install
 
-4. Rmagickのインストール
-$ alias sudo="sudo PATH=$PATH"
-$ sudo gem install rmagick -v 2.12.2
-$ unalias sudo
+4. PostgreSQLのインストール
+# yum -y install postgresql84-devel postgresql84-server
 
-5. 依存するgemのインストール
-$ sudo gem install rails -v 2.3.5
-$ sudo gem install gettext -v 2.1.0
-$ sudo gem install gruff -v 0.3.6
-$ wget http://www.artonx.org/data/lhalib/lhalib-0.8.1.gem
-$ sudo gem install lhalib-0.8.1.gem
-$ sudo gem install webmock -v 1.3.4
-$ sudo gem install thoughtbot-factory_girl -v 1.2.2 --source http://gems.github.com
-$ sudo gem install json
-$ sudo gem install daemons
-$ sudo gem install thinreports
-
-6. PostgreSQLのインストール
-$ sudo yum install postgresql-devel
-$ sudo yum install postgresql-server
-$ sudo gem install postgres
-
-7. ecユーザの作成
-# adduser ec
-# passwd ec
-(パスワード変更)
-
-8. アプリケーションの展開
-# cd /usr/local
-# git clone git://github.com/elecoma/elecoma.git ec
-# chown -R ec:ec /usr/local/ec
-
-9. postgresqlのセットアップ
+5. PostgreSQLのセットアップ
+# /etc/init.d/postgresql initdb
 # vim /var/lib/pgsql/data/pg_hba.conf
-(TYPEが「host」のCIDR-ADDRESSが「127.0.0.1/32」となっている行の、METHODを「password crypt」(*1) に設定します)
+(TYPEが「host」のCIDR-ADDRESSが「127.0.0.1/32」となっている行の、METHODを「md5」(*1) に設定します)
 (*1 うまく動作しない場合は、ここを「trust」にしてみてください)
 # /etc/init.d/postgresql start
 # su - postgres
-$ psql template1
-# alter user postgres with password 'xxxx';
-# q\
 $ createuser ec
 Shall the new role be a superuser? (y/n) y
 $ psql template1
 # alter user ec with password 'elephant';
 # \q
-$ createdb --owner=ec ec_dev
-CREATE DATABASE
-$ createdb --owner=ec ec_test
-CREATE DATABASE
-$ createdb --owner=ec ec
-CREATE DATABASE
-$ psql -l
-        List of databases
-   Name    |  Owner   | Encoding 
------------+----------+----------
- ec        | ec       | UTF8
- ec_dev    | ec       | UTF8
- ec_test   | ec       | UTF8
- postgres  | postgres | UTF8
- template0 | postgres | UTF8
- template1 | postgres | UTF8
-(6 rows)
 
-10. 開発向けセットアップ
+6. ecユーザの作成
+# adduser ec
+# passwd ec
+(パスワード変更)
+
+7. エレコマの展開
+# cd /usr/local
+# git clone git://github.com/elecoma/elecoma.git ec
+# chown -R ec:ec /usr/local/ec
+
+6. 依存するgemのインストール
 # su - ec
-$ cd /usr/local/ec/
+$ cd /usr/local/ec
+$ bundle install --path vendor/bundle
+
+7. 開発向けセットアップ
+$ cd /usr/local/ec
 $ cd config
 $ cp database.example.yml database.yml
 $ vim database.yml
@@ -210,54 +137,17 @@ $ vim production.rb
 $ vim test.rb
 (メールサーバの設定を変更)
 
-11. gitのインストール
-$ wget http://kernel.org/pub/software/scm/git/git-1.6.5.5.tar.gz
-$ tar zxf git-1.6.5.5.tar.gz 
-$ cd git-1.6.5.5
-$ ./configure
-$ make
-$ sudo make install
+8. Passengerのインストール
+# yum -y install gcc-c++
+# yum -y install httpd-devel
+# yum -y install curl-devel
+# gem install passenger
+# passenger-install-apache2-module 
 
-12. プラグインのインストール
-$ ruby script/plugin install git://github.com/realityforge/rails-active-form.git
-$ ruby script/plugin install git://github.com/rails/acts_as_list.git
-$ ruby script/plugin install git://github.com/technoweenie/acts_as_paranoid.git
-$ ruby script/plugin install git://github.com/rails/acts_as_tree.git
-$ ruby script/plugin install http://topfunky.net/svn/plugins/ar_fixtures/
-$ ruby script/plugin install git://github.com/jpmobile/jpmobile.git -r 'tag 0.0.8'
-$ ruby script/plugin install http://taslam-plugins.googlecode.com/svn/trunk/jpmobile_emoticon_filter/
-$ cd vendor/plugins
-$ git clone git://github.com/tmtysk/mbmail.git mbmail
-$ cd mbmail
-$ git checkout 654ce3ec2dfa10ac3b05cd9354eb84456d206a6d
-$ rm -fr lib/jpmobile
-$ rm -fr .git
-$ cd ../../..
-$ ruby script/plugin install git://github.com/jamesgolick/resource_controller.git
-$ cd vendor/plugins/
-$ git clone  git://github.com/mislav/will_paginate.git
-$ cd will_paginate/
-$ git checkout origin/2-3-stable
-$ rm -fr .git
-$ cd ../../..
-$ ruby script/plugin install git://github.com/kakutani/yaml_waml.git
-$ ruby script/plugin install git://github.com/rails/ssl_requirement.git
-$ ruby script/plugin install git://github.com/DianthuDia/double_submit_protection.git
-$ ruby script/plugin install git://github.com/champierre/image_submit_tag_ext.git
-$ ruby script/plugin install git://github.com/dchelimsky/rspec-rails.git -r 'tag 1.2.9'
-$ ruby script/plugin install git://github.com/dchelimsky/rspec.git -r 'tag 1.2.9'
-
-13. passengerのインストール
-$ sudo yum install gcc-c++
-$ sudo yum install httpd-devel
-$ sudo yum install curl-devel
-$ sudo gem install passenger
-$ sudo passenger-install-apache2-module 
-
-14. apacheの設定
-$ sudo vim /etc/httpd/conf.d/ec.conf
-LoadModule passenger_module /usr/local/lib/ruby/gems/1.8/gems/passenger-2.2.7/ext/apache2/mod_passenger.so
-PassengerRoot /usr/local/lib/ruby/gems/1.8/gems/passenger-2.2.7
+9. Apacheの設定
+# vim /etc/httpd/conf.d/ec.conf
+LoadModule passenger_module /usr/local/lib/ruby/gems/1.9.1/gems/passenger-4.0.5/ext/apache2/mod_passenger.so
+PassengerRoot /usr/local/lib/ruby/gems/1.9.1/gems/passenger-4.0.5
 PassengerRuby /usr/local/bin/ruby
 
 <VirtualHost *:80>
@@ -270,18 +160,18 @@ PassengerRuby /usr/local/bin/ruby
   </Directory>
 </VirtualHost>
 
-15. production DBの作成
+10. production環境のDB作成
 # su - ec
-$ rake db:migrate RAILS_ENV=production
+$ rake db:create db:migrate RAILS_ENV=production
 
-16. apache の再起動
-$ sudo /etc/init.d/apache restart
+16. Apacheの再起動
+$ sudo /etc/init.d/httpd restart
 
 17. メールマガジン用プロセスを起動
-$ ruby lib/daemons/mail.rb -e production start
+$ bundle exec ruby lib/daemons/mail.rb -e production start
 
-※webrickでの起動も可能です。
-$ ruby ./script/server -e production
+※WEBrickでの起動も可能です。
+$ bundle exec ruby script/server -e production
 
 
 
@@ -371,18 +261,13 @@ http://www.artonx.org/collabo/backyard/?LhaLibEn
 * ユニットテスト
 ================================================================================
 エレコマではユニットテストにRspecを利用しています。
-利用するには、以下を実行してRspecのインストールを行なってください。
+利用するには、以下のようにコマンドを実行してください。
 
-1. gemsのインストール
---------------------------------------------------------------------------------
-$ sudo gem install rspec
-$ sudo gem install rspec-rails
-
-2. rspecの実行
+rspecの実行
 --------------------------------------------------------------------------------
 $ rake spec
 このコマンドを発行するとユニットテストが実行されます。
-※ $ ruby ./script/spec ./spec
+※ $ ruby script/spec ./spec
    でも実行可能です。
 
 
@@ -399,17 +284,7 @@ $ rake spec
 ================================================================================
 * 配布物に含まれる別プロジェクトのファイル
 ================================================================================
-1. TypePad 絵文字アイコン画像
-配布物に含まれる以下のファイルはTypePad 絵文字アイコン画像を利用しています。
-public/images/emoticons/*
-TypePad 絵文字アイコンは以下のライセンスに基づきます。
-
-TypePad 絵文字アイコン画像 by Six Apart Ltd is licensed 
-under a Creative Commons 表示 2.1 日本 License.
-Permissions beyond the scope of this license may be 
-available at http://start.typepad.jp/typecast/. 
-
-2. さざなみフォント
+1. さざなみフォント
 配布物に含まれる以下のファイルはさざなみフォントを利用しています。
 lib/sazanami-gothic.ttf
 さざなみフォントは以下のライセンスに基づきます。

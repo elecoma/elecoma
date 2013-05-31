@@ -1,3 +1,10 @@
+2013-05-31  YOSHIDA Hiroki  <hyoshida _at_ appirits.com>
+
+	* 3.0.0 Release
+	* [全般] Ruby 1.9 に対応
+	* [全般] Rails 2.3.17 に対応
+	* [全般] bundler 導入
+
 2013-04-18  Matsumoto Yasuhito  <ymatsumoto _at_ appirits.com>
 
 	* 2.2.0 Release
