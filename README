@@ -56,7 +56,6 @@ image_submit_tag_ext
 CentOS 6.4でのインストールを想定しています。
  前提条件は以下となります。
  -CentOS 6.4 minimal をインストール済み
- -ダウンロードページからエレコマをダウンロード済み
 
 1. rubyのインストール
 # yum -y groupinstall "Base" "Development tools"
@@ -265,10 +264,8 @@ http://www.artonx.org/collabo/backyard/?LhaLibEn
 
 rspecの実行
 --------------------------------------------------------------------------------
-$ rake spec
+$ ruby script/spec spec
 このコマンドを発行するとユニットテストが実行されます。
-※ $ ruby script/spec ./spec
-   でも実行可能です。
 
 
 ================================================================================
