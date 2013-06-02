@@ -21,7 +21,6 @@ gem 'ar_fixtures'
 gem 'jpmobile', '0.0.8'
 gem 'resource_controller'
 gem 'will_paginate', '~> 2.3'
-gem 'yaml_waml'
 
 # 下記URLから取得したgemを展開して同梱したものからインストール
 # http://www.artonx.org/data/lhalib/lhalib-0.8.1.gem
