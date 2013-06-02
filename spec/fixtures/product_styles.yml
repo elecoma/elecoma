@@ -142,8 +142,8 @@ valid_product:
   actual_count: 1000
   sell_price: 10000
   orderable_count: 100
-  created_at: 2009-10-01 00:00:00
-  updated_at: 2009-10-01 00:00:00    
+  created_at: 2009-10-01 00:00:00 +09:00
+  updated_at: 2009-10-01 00:00:00 +09:00
 
 #未公開商品  
 not_permit_product:  
@@ -209,8 +209,8 @@ valid_product_product_id_15:
   actual_count: 1000
   sell_price: 10000
   orderable_count: 100
-  created_at: 2009-11-01 00:00:00
-  updated_at: 2009-11-01 00:00:00    
+  created_at: 2009-11-01 00:00:00 +09:00
+  updated_at: 2009-11-01 00:00:00 +09:00
 
 #別ショップ
 valid_product_other_shop:  
@@ -221,7 +221,7 @@ valid_product_other_shop:
   actual_count: 1000
   sell_price: 10000
   orderable_count: 100
-  created_at: 2009-11-01 00:00:00
-  updated_at: 2009-11-01 00:00:00    
+  created_at: 2009-11-01 00:00:00 +09:00
+  updated_at: 2009-11-01 00:00:00 +09:00
 
         

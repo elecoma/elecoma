@@ -87,8 +87,3 @@ end
 require "#{RAILS_ROOT}/lib/jpmobile/mobile/smartphone.rb"
 carriers = Jpmobile::Mobile.carriers
 Jpmobile::Mobile.carriers = carriers.push("Smartphone")
-
-# HACK: Ruby1.9のデフォルトパーサpsychだと各所が動かなくなるので
-#       古いsyckを使うようにする (quick and dirty)
-require 'yaml'
-YAML::ENGINE.yamler = 'syck'

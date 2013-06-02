@@ -1,6 +1,11 @@
 # Don't change this file!
 # Configure your app in config/environment.rb and config/environments/*.rb
 
+# HACK: Ruby1.9のデフォルトパーサpsychだと各所が動かなくなるので
+#       古いsyckを使うようにする (quick and dirty)
+require 'yaml'
+YAML::ENGINE.yamler = 'syck'
+
 RAILS_ROOT = "#{File.dirname(__FILE__)}/.." unless defined?(RAILS_ROOT)
 
 module Rails
