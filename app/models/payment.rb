@@ -53,8 +53,8 @@ class Payment < ActiveRecord::Base
   end
 
   def validate
-    if !upper_limit.blank? && !lower_limit.blank? && upper_limit.to_i < lower_limit.to_i
-      errors.add "","※ 利用条件(〜円以上)は利用条件(〜円以下)より大きい値を入力できません。"  
+    if upper_limit.present? && lower_limit.present? && upper_limit.to_i < lower_limit.to_i
+      errors.add_to_base("※利用条件(〜円以上)は利用条件(〜円以下)より大きい値を入力できません。")
     end
     errors.add(:fee,"は0以上の整数で入力してください") unless self.fee.to_i >= 0
     errors.add(:lower_limit,"は0以上の整数で入力してください") unless self.lower_limit.to_i >= 0

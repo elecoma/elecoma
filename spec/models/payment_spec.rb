@@ -85,6 +85,12 @@ describe Payment do
       @payment.should be_valid
     end
     
+    it "利用条件 エラーメッセージ" do
+      @payment.lower_limit  = 2
+      @payment.upper_limit  = 1
+      @payment.should_not be_valid
+      @payment.errors.full_messages.should == ["※利用条件(〜円以上)は利用条件(〜円以下)より大きい値を入力できません。"]
+    end
   end
   
   describe "その他" do
