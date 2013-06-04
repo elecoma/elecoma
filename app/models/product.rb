@@ -38,7 +38,7 @@ class Product < ActiveRecord::Base
   validates_presence_of :supplier
   validates_presence_of :retailer
   validates_associated :sub_products
-
+  validates_numericality_of :price, :allow_nil => true, :greater_than_or_equal_to => 0
   attr_accessor :small_resource_path
   attr_accessor :medium_resource_path
   attr_accessor :large_resource_path
