@@ -3,6 +3,10 @@ class Inquiry < ActiveRecord::Base
 
   acts_as_paranoid
   TABLE_NAME_JP = "お問い合わせ"
+  GOODS, ORDER, CLAIM, SEND, CAMPAIGN, RISAGASU, SITE, OTHER = 1, 2, 3, 4, 5, 6, 7, 8
+  KIND_NAMES = {GOODS=>"商品について", ORDER=>"注文について", CLAIM=>"ご請求について",
+              SEND=>"発送について", CAMPAIGN=>"キャンペーンについて", RISAGASU=>"K&Bスタイルについて",
+              SITE=>"サイトについて", OTHER=>"その他"}
 
   validates_presence_of :email
   validates_presence_of :body
@@ -11,6 +15,7 @@ class Inquiry < ActiveRecord::Base
 
   validates_length_of :body, :maximum => 3000
   validates_length_of :name, :maximum => 100
+  validates_inclusion_of :kind, :in => KIND_NAMES.keys
 
   #validates_format_of :email, :with => /^(([^@\s]+)@((?:[-a-z0-9]+\.)*[a-z]{2,})|)$/i
   validates_format_of :tel, :with => /^[0-9()-]*$/, :allow_nil => true, :message => "の書式が不正です"
@@ -25,11 +30,6 @@ class Inquiry < ActiveRecord::Base
       end
     end
   end
-
-  GOODS, ORDER, CLAIM, SEND, CAMPAIGN, RISAGASU, SITE, OTHER = 1, 2, 3, 4, 5, 6, 7, 8
-  KIND_NAMES = {GOODS=>"商品について", ORDER=>"注文について", CLAIM=>"ご請求について",
-              SEND=>"発送について", CAMPAIGN=>"キャンペーンについて", RISAGASU=>"K&Bスタイルについて",
-              SITE=>"サイトについて", OTHER=>"その他"}
 
   def show_kind_name
     KIND_NAMES[self.kind]

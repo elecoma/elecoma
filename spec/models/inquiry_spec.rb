@@ -49,8 +49,23 @@ describe Inquiry do
       @inquiry.tel = "0801111222a"
       @inquiry.should_not be_valid
     end
+
+    describe "お問い合わせ種別" do
+
+      it "正しい種別だと成功すること" do
+        Inquiry::KIND_NAMES.keys.each do |value|
+          @inquiry.kind = value
+          @inquiry.should be_valid
+        end
+      end
+
+      it "不正な種別だと失敗すること" do
+        @inquiry.kind = Inquiry::KIND_NAMES.keys.max + 1
+        @inquiry.should_not be_valid
+      end
+    end
   end
-  
+
   describe "表示系" do
     it "問い合わせ種類" do
       inquiry = Inquiry.new(:kind=>Inquiry::GOODS)
