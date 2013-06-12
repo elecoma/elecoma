@@ -17,26 +17,30 @@ describe DeliveryAddress do
     it "should not be valid" do
       @unvalid_address.should_not be_valid
     end
-    
-    describe "お届け先は" do
 
-      before(:each) do
-       @optional_address = delivery_addresses(:optional_address)
-      end
-      
+    describe "お届け先は" do
       it "#{DeliveryAddress::MAXIMUM_POSITION}件まで登録できる" do
-        (DeliveryAddress::MAXIMUM_POSITION - @optional_address.customer.delivery_addresses.count).times do
-          @clone_address = @optional_address.clone
+        (DeliveryAddress::MAXIMUM_POSITION - @valid_address.customer.delivery_addresses.count).times do
+          @clone_address = @valid_address.clone
           @clone_address.save.should be_true
         end
       end
 
       it "#{DeliveryAddress::MAXIMUM_POSITION}件以上登録できない" do
-        (DeliveryAddress::MAXIMUM_POSITION - @optional_address.customer.delivery_addresses.count).times do
-          @clone_address = @optional_address.clone
+        (DeliveryAddress::MAXIMUM_POSITION - @valid_address.customer.delivery_addresses.count).times do
+          @clone_address = @valid_address.clone
           @clone_address.save
         end
+        @clone_address = @valid_address.clone
         @clone_address.save.should be_false
+      end
+
+      it "#{DeliveryAddress::MAXIMUM_POSITION}件登録してあるときでも変更できる" do
+        (DeliveryAddress::MAXIMUM_POSITION - @valid_address.customer.delivery_addresses.count).times do
+          @clone_address = @valid_address.clone
+          @clone_address.save
+        end
+        @clone_address.save.should be_true
       end
     end
 
