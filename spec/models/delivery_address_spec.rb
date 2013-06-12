@@ -17,6 +17,28 @@ describe DeliveryAddress do
     it "should not be valid" do
       @unvalid_address.should_not be_valid
     end
+    
+    describe "お届け先は" do
+
+      before(:each) do
+        @valid_address = DeliveryAddress.find(3)
+      end
+      
+      it "#{DeliveryAddress::MAXIMUM_POSITION}件まで登録できる" do
+        (DeliveryAddress::MAXIMUM_POSITION - @valid_address.customer.delivery_addresses.count).times do
+          @clone_address = @valid_address.clone
+          @clone_address.save.should be_true
+        end
+      end
+
+      it "#{DeliveryAddress::MAXIMUM_POSITION}件以上登録できない" do
+        (DeliveryAddress::MAXIMUM_POSITION - @valid_address.customer.delivery_addresses.count).times do
+          @clone_address = @valid_address.clone
+          @clone_address.save
+        end
+        @clone_address.save.should be_false
+      end
+    end
 
     it "名: 必須" do
       @valid_address.first_name = nil

@@ -21,6 +21,9 @@ class DeliveryAddress < ActiveRecord::Base
   validates_format_of :first_name_kana, :with => System::KATAKANA_PATTERN
 
   def validate
+    if customer && customer.delivery_addresses && customer.delivery_addresses.count >= MAXIMUM_POSITION
+      errors.add :delivery_addresses,"は#{MAXIMUM_POSITION}件以上登録できません。"
+    end
     unless prefecture
       errors.add :prefecture_id, 'が指定されていないか、不正な値になっています'
     end
