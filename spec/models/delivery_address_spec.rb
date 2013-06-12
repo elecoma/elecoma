@@ -21,19 +21,19 @@ describe DeliveryAddress do
     describe "お届け先は" do
 
       before(:each) do
-        @valid_address = DeliveryAddress.find(3)
+       @optional_address = delivery_addresses(:optional_address)
       end
       
       it "#{DeliveryAddress::MAXIMUM_POSITION}件まで登録できる" do
-        (DeliveryAddress::MAXIMUM_POSITION - @valid_address.customer.delivery_addresses.count).times do
-          @clone_address = @valid_address.clone
+        (DeliveryAddress::MAXIMUM_POSITION - @optional_address.customer.delivery_addresses.count).times do
+          @clone_address = @optional_address.clone
           @clone_address.save.should be_true
         end
       end
 
       it "#{DeliveryAddress::MAXIMUM_POSITION}件以上登録できない" do
-        (DeliveryAddress::MAXIMUM_POSITION - @valid_address.customer.delivery_addresses.count).times do
-          @clone_address = @valid_address.clone
+        (DeliveryAddress::MAXIMUM_POSITION - @optional_address.customer.delivery_addresses.count).times do
+          @clone_address = @optional_address.clone
           @clone_address.save
         end
         @clone_address.save.should be_false
