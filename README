@@ -112,6 +112,7 @@ $ psql template1
 # chown -R ec:ec /usr/local/ec
 
 6. 依存するgemのインストール
+# gem install bundler --no-ri --no-rdoc
 # su - ec
 $ cd /usr/local/ec
 $ bundle install --path vendor/bundle
