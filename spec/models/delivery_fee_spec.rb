@@ -39,5 +39,11 @@ describe DeliveryFee do
     end
   end
   
-    
+  describe "バリデーションメッセージ" do
+    it '値段に数値以外' do
+      @delivery_fee.price = '123abc'
+      @delivery_fee.should_not be_valid
+      @delivery_fee.errors.full_messages[0].should == '価格は数値で入力してください。'
+    end
+  end
 end
