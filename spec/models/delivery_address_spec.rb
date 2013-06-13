@@ -19,31 +19,24 @@ describe DeliveryAddress do
     end
 
     describe "お届け先は" do
-
-      it "#{DeliveryAddress::MAXIMUM_POSITION}件まで登録できる" do
-        (DeliveryAddress::MAXIMUM_POSITION - @valid_address.customer.delivery_addresses.count).times do
-          clone_address = @valid_address.clone
-          clone_address.save.should be_true
+     
+      before(:each) do
+       (DeliveryAddress::MAXIMUM_POSITION - @valid_address.customer.delivery_addresses.count).times do
+          @valid_address.clone.save
         end
+      end
+
+      it "#{DeliveryAddress::MAXIMUM_POSITION}件登録できている" do
+        @valid_address.customer.delivery_addresses.count.should == DeliveryAddress::MAXIMUM_POSITION
       end
 
       it "#{DeliveryAddress::MAXIMUM_POSITION}件以上登録できない" do
-        (DeliveryAddress::MAXIMUM_POSITION - @valid_address.customer.delivery_addresses.count).times do
-          clone_address = @valid_address.clone
-          clone_address.save
-        end
-        clone_address = @valid_address.clone
-        clone_address.save.should be_false
+        @valid_address.clone.save.should be_false
       end
 
       it "#{DeliveryAddress::MAXIMUM_POSITION}件登録してあるときでも変更できる" do
-        clone_address = nil
-        (DeliveryAddress::MAXIMUM_POSITION - @valid_address.customer.delivery_addresses.count).times do
-          clone_address = @valid_address.clone
-          clone_address.save
-        end
-        clone_address.family_name_kana = 'テスト'
-        clone_address.save.should be_true
+        @valid_address.family_name_kana = 'テスト'
+        @valid_address.save.should be_true
       end
     end
 
