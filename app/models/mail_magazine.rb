@@ -122,7 +122,7 @@ and c.activate = 2
     "and #{MergeAdapterUtil.concat('c.family_name', 'c.first_name')} like ? "
   end}
 #{unless condition.customer_name_kana.blank?
-    condition << "%#{condition.customer_name_kana}%"
+    conditions << "%#{condition.customer_name_kana}%"
     "and #{MergeAdapterUtil.concat('c.family_name_kana', 'c.first_name_kana')} like ? "
   end}
 #{if condition.sex_male == "1" && condition.sex_female == "0"
