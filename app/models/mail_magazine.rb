@@ -122,7 +122,7 @@ and c.activate = 2
     "and #{MergeAdapterUtil.concat('c.family_name', 'c.first_name')} like ? "
   end}
 #{unless condition.customer_name_kana.blank?
-    condition << "%#{condition.customer_name_kana}%"
+    conditions << "%#{condition.customer_name_kana}%"
     "and #{MergeAdapterUtil.concat('c.family_name_kana', 'c.first_name_kana')} like ? "
   end}
 #{if condition.sex_male == "1" && condition.sex_female == "0"
@@ -189,7 +189,7 @@ and c.activate = 2
   to = condition.updated_at_to
   unless from.blank? && to.blank?
     if !from.blank? && !to.blank?
-      "and #{MergeAdapterUtil.convert_time_to_yyyymmdd('c.updated_at')} >= '#{from.strftime("%Y%m%d")}'
+      "and (#{MergeAdapterUtil.convert_time_to_yyyymmdd('c.updated_at')} >= '#{from.strftime("%Y%m%d")}'
       and #{MergeAdapterUtil.convert_time_to_yyyymmdd('c.updated_at')} <= '#{to.strftime("%Y%m%d")}')"
     elsif !from.blank?
       "and #{MergeAdapterUtil.convert_time_to_yyyymmdd('c.updated_at')} >= '#{from.strftime("%Y%m%d")}'"
@@ -200,10 +200,10 @@ and c.activate = 2
 }
 #{
   from = condition.last_order_from
-  to = condition.last_order_from
+  to = condition.last_order_to
   unless from.blank? && to.blank?
     if !from.blank? && !to.blank?
-      "and #{MergeAdapterUtil.convert_time_to_yyyymmdd('last_order_at')} >= '#{from.strftime("%Y%m%d")}'
+      "and (#{MergeAdapterUtil.convert_time_to_yyyymmdd('last_order_at')} >= '#{from.strftime("%Y%m%d")}'
       and #{MergeAdapterUtil.convert_time_to_yyyymmdd('last_order_at')} <= '#{to.strftime("%Y%m%d")}')"
     elsif !from.blank?
       "and #{MergeAdapterUtil.convert_time_to_yyyymmdd('last_order_at')} >= '#{from.strftime("%Y%m%d")}'"
