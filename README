@@ -197,7 +197,7 @@ SHOPマスタ登録にて初期情報を入力してください。
 そのため、万が一管理画面にアクセスできなくなった場合は、
 以下のようにして手動で切替えてください。
 
-$ script/console production
+$ bundle exec ruby script/console production
 >> system = System.first
 >> system.use_ssl = false
 >> system.save
@@ -210,7 +210,7 @@ use_sslの値はtrueの時にSSLを利用し、falseの時にSSLを利用しな�
 エレコマの住所マスタは郵便事業株式会社の郵便番号マスタを利用しています。
 登録はコンソールから以下のように行ないます。
 
-$ ruby script/runner -e production Zip.import
+$ bundle exec ruby script/runner -e production Zip.import
 
 郵便番号マスタは以下のサイトにて配布されているものを自動的に取り込みます。
 http://www.post.japanpost.jp/zipcode/download.html
@@ -265,7 +265,7 @@ http://www.artonx.org/collabo/backyard/?LhaLibEn
 
 rspecの実行
 --------------------------------------------------------------------------------
-$ ruby script/spec spec
+$ bundle exec ruby script/spec spec
 このコマンドを発行するとユニットテストが実行されます。
 
 
