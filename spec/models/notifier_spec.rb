@@ -5,6 +5,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Notifier do
   fixtures :shops, :customers, :inquiries,:mail_templates
   fixtures :orders, :order_deliveries, :order_details, :payments, :prefectures
+  fixtures :products, :product_styles, :style_categories
   before(:each) do
     @shop = Shop.find(:first)
   end
