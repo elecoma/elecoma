@@ -62,7 +62,7 @@ describe Admin::NewInformationsController do
       post 'confirm', :new_information => record
       get 'update', :new_information => record
       assigns[:new_information].id.should == new_informations(:success_validates_2).id
-      assigns[:new_information].date.should == DateTime.parse("2008-01-01")
+      assigns[:new_information].date.should == DateTime.parse("2008-01-01 00:00:00 +09:00")
       #assigns[:status].should == "confirm"
       response.should redirect_to(:action => :index)
     end
@@ -74,7 +74,7 @@ describe Admin::NewInformationsController do
       post 'confirm', :new_information => record
       get 'update', :new_information => record
       assigns[:new_information].id.should == id
-      assigns[:new_information].date.should == DateTime.parse("2008-01-01")
+      assigns[:new_information].date.should == DateTime.parse("2008-01-01 00:00:00 +09:00")
       response.should_not be_redirect
     end
   end

@@ -142,8 +142,8 @@ valid_product:
   actual_count: 1000
   sell_price: 10000
   orderable_count: 100
-  created_at: 2009-10-01 00:00:00 +09:00
-  updated_at: 2009-10-01 00:00:00 +09:00
+  created_at: <%= Date.new(2009, 10, 1) %>
+  updated_at: <%= Date.new(2009, 10, 1) %>
 
 #未公開商品  
 not_permit_product:  

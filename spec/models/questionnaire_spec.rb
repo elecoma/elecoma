@@ -159,7 +159,7 @@ describe Questionnaire do
         #更新時間について、
         #questionnaire_answer.created_atとquestionnaire_answer[created_at]の結果が違うので特別処理
         if "created_at" == c
-          arr << (qa.created_at.nil? ? "" : qa.created_at.strftime('%Y-%m-%dT%H:%M:%S+00:00'))
+          arr << (qa.created_at.nil? ? "" : qa.created_at.strftime('%Y-%m-%d %H:%M:%S'))
         else  
           arr << (qa[c].nil? ? "" : qa[c].to_s)
         end      
