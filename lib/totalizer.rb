@@ -380,7 +380,7 @@ class ProductTotalizer < Totalizer
     # position の振り直し & 販売開始日を Date に
     records.zip((1..records.size).to_a) do | r, i |
       r.position = i
-      r.sale_start_at = Date.parse(r.sale_start_at)
+      r.sale_start_at = r.sale_start_at.to_date
     end
     records
   end

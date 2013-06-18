@@ -6,6 +6,7 @@ gem "tzinfo", "~> 0.3.31"
 
 # Supported DBs
 gem "pg", :group => :postgresql
+gem "activerecord-mysql2-adapter", :group => :mysql
 
 gem 'rake', '~> 10.0'
 gem 'test-unit', '1.2.3'
