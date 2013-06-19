@@ -3,6 +3,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe OrderDelivery do
   fixtures :orders, :order_details,:order_deliveries, :prefectures,:payments,:delivery_times,:delivery_traders,:occupations,:delivery_tickets  
+  fixtures :products, :product_styles
+
   before(:each) do
     #会員
     @order_delivery = order_deliveries(:customer_buy_two)

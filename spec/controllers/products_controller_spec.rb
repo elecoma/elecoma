@@ -2,7 +2,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe ProductsController do
-  fixtures :products, :categories, :seos, :product_styles, :styles, :style_categories
+  fixtures :products, :categories, :seos, :product_styles, :styles, :style_categories, :shops
 
   before do
   end

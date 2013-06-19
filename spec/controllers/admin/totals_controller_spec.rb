@@ -286,23 +286,18 @@ describe Admin::TotalsController do
     end
 
     it "販売開始期間を指定して集計" do
-      start_from = Date.new(2008, 8, 1)
-      start_to = Date.today
-      search = {
-        'month(1i)'=>start_from.year, 'month(2i)'=>start_from.month, :by_month => 'x',
-        'sale_start_from(1i)' => start_from.year.to_s,
-        'sale_start_from(2i)' => start_from.month.to_s,
-        'sale_start_from(3i)' => start_from.day.to_s,
-        'sale_start_to(1i)' => start_to.year.to_s,
-        'sale_start_to(2i)' => start_to.month.to_s,
-        'sale_start_to(3i)' => start_to.day.to_s
-      }
+      date_from = Date.new(2008, 8, 1)
+      date_to = Date.today
+      search = { :by_month => 'x' }.
+        merge(date_to_select(date_from, 'month')).
+        merge(date_to_select(date_from, 'sale_start_from')).
+        merge(date_to_select(date_to, 'sale_start_to'))
       post 'index', :page => 'product', :type => 'all', :search => search
       assigns[:sale_start_enabled].should be_true
       assigns[:records].should_not be_empty
       assigns[:records].each do | record |
-        record.sale_start_at.should >= start_from
-        record.sale_start_at.should <= start_to
+        record.sale_start_at.should >= date_from
+        record.sale_start_at.should <= date_to
       end
     end
 
@@ -311,7 +306,7 @@ describe Admin::TotalsController do
       date_to = DateTime.new(2008,8,31,23,59,59)
       conds = ['received_at between ? and ? and status in (?)', date_from, date_to,
                [OrderDelivery::HASSOU_TYUU, OrderDelivery::HAITATU_KANRYO]]
-      search = {'by_date'=>'x'}.
+      search = { :by_date => 'x' }.
         merge(date_to_select(date_from, 'date_from')).
         merge(date_to_select(date_to, 'date_to'))
       post 'index', :page => 'product', :type => 'all', :search => search

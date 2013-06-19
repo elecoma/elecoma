@@ -14,7 +14,7 @@ class DummyController < BaseController
 end
 
 describe BaseController do
-  fixtures :carts, :customers, :shops
+  fixtures :carts, :customers, :shops, :product_styles
 
   before do
     @controller.class.skip_before_filter :start_transaction
@@ -27,7 +27,7 @@ describe BaseController do
   end
 
   describe "cart_total_prices" do
-    it "" do
+    it "should have products with any prices in a cart " do
       carts = customers(:have_cart_user).carts
       result = controller.cart_total_prices carts
       result.should > 0
