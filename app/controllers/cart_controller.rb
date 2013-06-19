@@ -481,7 +481,7 @@ class CartController < BaseController
     end
     restore_ids_for_finish
     clean_sessions
-    @recommend_buys = Recommend.recommend_get(@ids.first, Recommend::TYPE_BUY) if @ids.present?
+    @recommend_buys = Recommend.recommend_get(product_id_for_recommend, Recommend::TYPE_BUY) if @ids.present?
     @shop = Shop.find(:first)
     render :action => 'complete'
   end
@@ -880,6 +880,14 @@ class CartController < BaseController
   def restore_ids_for_finish
     return unless session[:ids_for_finish].is_a? Array
     @ids = session[:ids_for_finish]
+  end
+
+  # TODO: 「@idsが2次元配列」という作りがわかりにくいので
+  #       いずれ根本的になおす
+  def product_id_for_recommend
+    grouped_product_ids_by_deliveries = @ids
+    product_ids = grouped_product_ids_by_deliveries.first
+    product_ids.first
   end
 
   def clean_sessions

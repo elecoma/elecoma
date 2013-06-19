@@ -4,7 +4,8 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe CartController do
   fixtures :systems, :customers, :carts, :products, :product_styles, :styles,
            :delivery_traders, :delivery_times, :payments, :delivery_addresses,
-           :delivery_fees, :order_deliveries, :shops, :payment_plugins, :retailers
+           :delivery_fees, :order_deliveries, :shops, :payment_plugins, :retailers,
+           :recommends, :recommend_xmls
 
   before do
     @dummy_carts = [carts(:cart_can_incriment).attributes]
@@ -540,10 +541,26 @@ describe CartController do
   end
 
   describe "GET 'finish'" do
-    it "should be successful" do
+    before(:each) do
       flash[:completed] = true
-      get 'finish', :ids => ["5"]
+    end
+
+    it "should be successful" do
+      session[:ids_for_finish] = [[ 5 ]]
+      get 'finish'
       response.should be_success
+    end
+
+    it '１つの商品購入時におすすめ商品を取得できること' do
+      session[:ids_for_finish] = [[ 16 ]]
+      get 'finish'
+      assigns[:recommend_buys].should be_present
+    end
+
+    it '複数商品購入時におすすめ商品を取得できること' do
+      session[:ids_for_finish] = [[ 16, 18 ]]
+      get 'finish'
+      assigns[:recommend_buys].should be_present
     end
   end
 
