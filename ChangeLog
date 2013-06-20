@@ -1,3 +1,11 @@
+2013-06-20  YOSHIDA Hiroki  <hyoshida _at_ appirits.com>
+
+	* 3.0.1 Release
+	* [全般] Rails 2.3.18 にアップデート
+	* [全般] Travis CI に連携
+	* [bugfix] 複数商品購入確定時に例外エラーが発生する不具合を修正
+
+
 2013-06-18  YOSHIDA Hiroki  <hyoshida _at_ appirits.com>
 
 	* 3.0.0 Release
@@ -7,16 +15,19 @@
 	* [bugfix] 管理画面:メルマガ配信先検索:特定条件が正しく検索できない不具合を修正
 	* [bugfix] 管理画面:日付検索が特定条件で正しく動作しない不具合を修正
 
+
 2013-04-18  Matsumoto Yasuhito  <ymatsumoto _at_ appirits.com>
 
 	* 2.2.0 Release
 	* [管理画面] 日付検索をjavascriptのカレンダーでも選択できるようにしました
 	* [備考] 納品書・ビッキングリストのPDF作成機能も含まれます 
 
+
 2013-04-03  Matsumoto Yasuhito  <ymatsumoto _at_ appirits.com>
 
 	* 2.1.7 Release
 	* [管理画面] コントローラーのテストが通る用に作り直しました
+
 
 2013-03-21  Matsumoto Yasuhito  <ymatsumoto _at_ appirits.com>
 
@@ -26,6 +37,7 @@
 	* [管理画面] 納品書・ピッキングリストのPDF出力機能追加
 	* [bugfix] 商品別集計が正しく集計されない不具合修正
 	* [bugfix] 商品マスタ管理、在庫切れ一覧、顧客マスタで日付で絞り込むとCSV DOWNLOADできないバグ修正
+
 
 2012-12-27  YOSHIDA Hiroki  <hyoshida _at_ appirits.com>
 

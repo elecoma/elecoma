@@ -29,7 +29,7 @@
 - OS    : CentOS 6.4
 - DB    : PostgreSQL 8.4系
 - Ruby  : 1.9.3
-- Rails : 2.3.17
+- Rails : 2.3.18
 
 
 依存プラグイン
@@ -77,7 +77,7 @@ CentOS 6.4でのインストールを想定しています。
 
 1. Rubyのインストール
 
-  ```bash
+  ```
   # yum -y groupinstall "Base" "Development tools"
   # yum -y install zlib-devel
   # yum -y install openssl-devel
@@ -93,7 +93,7 @@ CentOS 6.4でのインストールを想定しています。
 
 2. RubyGemsのインストール
 
-  ```bash
+  ```
   # wget http://rubyforge.org/frs/download.php/76032/rubygems-1.8.23.tgz
   # tar zxf rubygems-1.8.23.tgz
   # cd rubygems-1.8.23
@@ -102,7 +102,7 @@ CentOS 6.4でのインストールを想定しています。
 
 3. ImageMagickのインストール
 
-  ```bash
+  ```
   # yum -y install libjpeg-devel libpng-devel gd-devel freetype-devel
   # wget http://ftp.nl.netbsd.org/pub/pub/ImageMagick/ImageMagick-6.8.1-7.tar.gz
   # tar zxf ImageMagick-6.8.1-7.tar.gz
@@ -114,13 +114,13 @@ CentOS 6.4でのインストールを想定しています。
 
 4. PostgreSQLのインストール
 
-  ```bash
+  ```
   # yum -y install postgresql84-devel postgresql84-server
   ```
 
 5. PostgreSQLのセットアップ
 
-  ```bash
+  ```
   # /etc/init.d/postgresql initdb
   # vim /var/lib/pgsql/data/pg_hba.conf
   ```
@@ -128,7 +128,7 @@ CentOS 6.4でのインストールを想定しています。
   TYPEが「host」のCIDR-ADDRESSが「127.0.0.1/32」となっている行の、METHODを「md5」(*1) に設定します。  
   (*1 うまく動作しない場合は、ここを「trust」にしてみてください)
 
-  ```bash
+  ```
   # /etc/init.d/postgresql start
   # su - postgres
   $ createuser ec
@@ -140,7 +140,7 @@ CentOS 6.4でのインストールを想定しています。
 
 6. ecユーザの作成
 
-  ```bash
+  ```
   # adduser ec
   # passwd ec
   ```
@@ -149,7 +149,7 @@ CentOS 6.4でのインストールを想定しています。
 
 7. エレコマの展開
 
-  ```bash
+  ```
   # cd /usr/local
   # git clone git://github.com/elecoma/elecoma.git ec
   # chown -R ec:ec /usr/local/ec
@@ -157,7 +157,7 @@ CentOS 6.4でのインストールを想定しています。
 
 8. 依存するgemのインストール
 
-  ```bash
+  ```
   # gem install bundler --no-ri --no-rdoc
   # su - ec
   $ cd /usr/local/ec
@@ -166,7 +166,7 @@ CentOS 6.4でのインストールを想定しています。
 
 9. 開発向けセットアップ
 
-  ```bash
+  ```
   $ cd /usr/local/ec
   $ cd config
   $ cp database.yml.postgresql database.yml
@@ -184,7 +184,7 @@ CentOS 6.4でのインストールを想定しています。
 
 10. Passengerのインストール
 
-  ```bash
+  ```
   # yum -y install gcc-c++
   # yum -y install httpd-devel
   # yum -y install curl-devel
@@ -194,7 +194,7 @@ CentOS 6.4でのインストールを想定しています。
 
 11. Apacheの設定
 
-  ```bash
+  ```
   # vim /etc/httpd/conf.d/ec.conf
   LoadModule passenger_module /usr/local/lib/ruby/gems/1.9.1/gems/passenger-4.0.5/libout/apache2/mod_passenger.so
   PassengerRoot /usr/local/lib/ruby/gems/1.9.1/gems/passenger-4.0.5
@@ -213,26 +213,26 @@ CentOS 6.4でのインストールを想定しています。
 
 12. production環境のDB作成
 
-  ```bash
+  ```
   # su - ec
   $ bundle exec rake db:create db:migrate RAILS_ENV=production
   ```
 
 13. Apacheの再起動
 
-  ```bash
+  ```
   # /etc/init.d/httpd restart
   ```
 
   (※下記コマンドでWEBrickでの起動も可能です)
 
-  ```bash
+  ```
   $ bundle exec ruby script/server -e production
   ```
 
 14. メールマガジン用プロセスを起動
 
-  ```bash
+  ```
   $ bundle exec ruby lib/daemons/mail.rb -e production start
   ```
 
@@ -244,7 +244,7 @@ CentOS 6.4でのインストールを想定しています。
 ユーザー登録は ``$RAILS_ROOT/test/fixtures/admin_users.yml`` の5，6，8行目を任意のものに修正した後、  
 コンソールから以下のようにデータを登録します。
 
-  ```bash
+  ```
   $ bundle exec rake db:fixtures:load FIXTURES=admin_users RAILS_ENV=production
   ```
 
@@ -289,7 +289,7 @@ SHOPマスタ登録にて初期情報を入力してください。
 エレコマの住所マスタは郵便事業株式会社の郵便番号マスタを利用しています。  
 登録はコンソールから以下のように行ないます。
 
-  ```bash
+  ```
   $ bundle exec ruby script/runner -e production Zip.import
   ```
 
@@ -313,7 +313,7 @@ rspecの実行
 
 下記コマンドを発行するとユニットテストが実行されます。
 
-  ```bash
+  ```
   $ bundle exec ruby script/spec spec
   ```
 
@@ -325,7 +325,7 @@ SSLの切り替え
 そのため、万が一管理画面にアクセスできなくなった場合は、  
 以下のようにして手動で切替えてください。
 
-  ```bash
+  ```
   $ bundle exec ruby script/console production
   >> system = System.first
   >> system.use_ssl = false
@@ -354,8 +354,6 @@ SSLの切り替え
 配布物に含まれる以下のファイルはさざなみフォントを利用しています。  
     ```lib/sazanami-gothic.ttf```  
 さざなみフォントは以下のライセンスに基づきます。  
-
----
 
     Copyright (c) 1990-2003
             Wada Laboratory, the University of Tokyo. All rights reserved.
