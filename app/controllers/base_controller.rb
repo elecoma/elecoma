@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 class BaseController < ApplicationController
+  EXPIRES_TIME = 14.day
+  
   before_filter :verify_session_token
   before_filter :load_data
   before_filter :set_headers
