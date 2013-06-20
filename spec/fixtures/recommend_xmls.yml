@@ -15,3 +15,13 @@ two:
   categroy: MyString
   price: 300
   image_url: MyString
+
+valid_recommend_xml:
+  recommend_id: 1
+  product_id: 16
+  request_type: 0
+  name: MyString
+  url: MyString
+  categroy: MyString
+  price: 300
+  image_url: MyString
