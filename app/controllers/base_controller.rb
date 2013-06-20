@@ -87,6 +87,11 @@ class BaseController < ApplicationController
   end
 
   def load_user
+    if session[:expires_time] && Time.now - session[:expires_time] > EXPIRES_TIME
+      reset_session
+    end
+    session[:expires_time] = Time.now
+
     if session[:customer_id]
       @login_customer = Customer.find_by_id(session[:customer_id])
     elsif cookies[:auto_login]
