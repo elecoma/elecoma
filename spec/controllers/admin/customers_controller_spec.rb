@@ -4,6 +4,8 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 describe Admin::CustomersController do
   fixtures :authorities, :functions, :admin_users
   fixtures :customers
+  fixtures :prefectures
+
   before(:each) do
     session[:admin_user] = admin_users(:admin_user_00011)
     @customer = customers :customer_management

@@ -3,6 +3,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe PortalController do
   fixtures :customers, :carts, :products, :categories, :new_informations, :recommend_products, :systems, :product_styles, :laws, :faqs, :retailers
+  fixtures :shops
 
   before do
     @controller.class.skip_before_filter :start_transaction

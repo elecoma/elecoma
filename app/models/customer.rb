@@ -455,7 +455,7 @@ class Customer < ActiveRecord::Base
       customer.fax01 = arr[6]
       customer.fax02 = arr[7]
       customer.fax03 = arr[8]
-      customer.sex = System::SEX_NAMES.index arr[9]
+      customer.sex = System::SEX_NAMES.key arr[9]
       customer.age = arr[10]
       customer.point = arr[11]
       customer.occupation_id = arr[12]

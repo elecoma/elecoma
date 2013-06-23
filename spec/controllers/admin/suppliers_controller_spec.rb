@@ -3,6 +3,8 @@ require 'spec_helper'
 
 describe Admin::SuppliersController do
   fixtures :admin_users,:suppliers,:prefectures, :retailers
+  fixtures :products
+
   before do 
     session[:admin_user] = admin_users(:admin10)
     @controller.class.skip_before_filter @controller.class.before_filter

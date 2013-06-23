@@ -5,6 +5,7 @@ describe Admin::MailMagazinesController do
   fixtures :authorities, :functions, :admin_users, :mail_magazine_templates, :customers, :mail_magazines, :mails
   fixtures :orders, :order_deliveries, :order_details
   fixtures :campaigns_customers
+  fixtures :shops
 
   before do
     session[:admin_user] = admin_users(:admin_user_00011)

@@ -2,6 +2,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Mail do
   fixtures :customers, :mails
+  fixtures :prefectures
+
   before(:each) do
     @mails = Mail.new
   end

@@ -3,6 +3,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 describe Admin::StyleCategoriesController do
   fixtures :authorities, :functions, :admin_users
   fixtures :style_categories
+  fixtures :styles
 
   before do
     session[:admin_user] = admin_users(:admin10)

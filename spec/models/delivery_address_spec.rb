@@ -3,6 +3,8 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe DeliveryAddress do
   fixtures :delivery_addresses, :zips
+  fixtures :prefectures
+
   before(:each) do
     @valid_address = delivery_addresses(:valid_address)
     @unvalid_address = delivery_addresses(:unvalid_address)

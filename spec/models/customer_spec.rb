@@ -3,6 +3,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Customer do
   fixtures :customers, :zips, :constants
+  fixtures :prefectures
 
   before(:each) do
     @customer = customers :valid_signup

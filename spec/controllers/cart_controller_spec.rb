@@ -6,6 +6,7 @@ describe CartController do
            :delivery_traders, :delivery_times, :payments, :delivery_addresses,
            :delivery_fees, :order_deliveries, :shops, :payment_plugins, :retailers,
            :recommends, :recommend_xmls
+  fixtures :prefectures, :categories
 
   before do
     @dummy_carts = [carts(:cart_can_incriment).attributes]

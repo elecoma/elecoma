@@ -1,26 +1,18 @@
 # -*- coding: utf-8 -*-
 require File.dirname(__FILE__) + '/../../spec_helper'
 
-# Date を date_select の形にする
-def date_to_select date, name
-  {
-    name+'(1i)' => date.strftime('%Y'),
-    name+'(2i)' => date.strftime('%m'),
-    name+'(3i)' => date.strftime('%d')
-  }
-end
-
 describe Admin::OrdersController, "/admin/order" do
   #set_fixture_class :'test/orders2' => Order
   self.fixture_path = RAILS_ROOT + '/spec/fixtures/'
   fixtures :orders, :order_deliveries, :order_details
   #fixtures :csv_output_settings, :target_tables, :target_columns
   fixtures :styles, :systems
-  fixtures :admin_users , :payments
+  fixtures :admin_users, :payments
   fixtures :functions, :authorities, :authorities_functions
   fixtures :products
   fixtures :retailers
   fixtures :customers
+  fixtures :delivery_tickets, :payment_plugins
 
   before do
     @order = orders(:one)

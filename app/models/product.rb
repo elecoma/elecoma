@@ -74,7 +74,7 @@ class Product < ActiveRecord::Base
   end
 
   def delivery_dates_label
-    DELIVERY_DATE.index self.delivery_dates
+    DELIVERY_DATE.key self.delivery_dates
   end
 
   def permit_label

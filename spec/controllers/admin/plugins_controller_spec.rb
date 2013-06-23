@@ -219,7 +219,6 @@ module Admin
   module PluginsControllerExtend
 
     def test_payment_plugin_config
-      p @payment_plugin_instance
     end
 
     def test_payment_plugin_config_confirm
