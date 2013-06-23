@@ -36,6 +36,7 @@ GEM
     columnize (0.3.6)
     crack (0.3.2)
     daemons (1.1.9)
+    database_cleaner (1.0.1)
     debugger (1.6.0)
       columnize (>= 0.3.1)
       debugger-linecache (~> 1.2.0)
@@ -110,6 +111,7 @@ DEPENDENCIES
   acts_as_tree (= 0.1.1)
   ar_fixtures
   daemons
+  database_cleaner
   debugger
   gettext (= 2.1.0)
   gruff (= 0.3.6)

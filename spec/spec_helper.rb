@@ -5,6 +5,7 @@ ENV["RAILS_ENV"] = 'test'
 require File.dirname(__FILE__) + "/../config/environment" unless defined?(RAILS_ROOT)
 require 'spec/autorun'
 require 'spec/rails'
+require 'database_cleaner'
 
 Spec::Runner.configure do |config|
   # If you're not using ActiveRecord you should remove these
@@ -14,6 +15,13 @@ Spec::Runner.configure do |config|
   config.use_instantiated_fixtures  = false
   config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
   config.global_fixtures = :authorities, :functions, :authorities_functions, :systems
+
+  # テストがDBの状態に依存するのを防ぐ
+  # (ただし複数のspecファイルを実行するとすべてのfixturesメソッドが先読みされるためDB依存は避けられない)
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
   # == Fixtures
   #
   # You can declare fixtures for each example_group like this:
