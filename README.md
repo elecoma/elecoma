@@ -2,7 +2,8 @@
 ===========================
 
 [![Logo](http://ec.appirits.com/files/2013/02/elecoma_logo.png)](http://ec.appirits.com)
-[![Build Status](https://secure.travis-ci.org/elecoma/elecoma.png)](http://travis-ci.org/elecoma/elecoma)  
+[![Build Status](https://secure.travis-ci.org/elecoma/elecoma.png)](http://travis-ci.org/elecoma/elecoma)
+[![Code Climate](https://codeclimate.com/github/elecoma/elecoma.png)](https://codeclimate.com/github/elecoma/elecoma)
 
 エレコマはRuby on Railsで開発したECommerceシステムです。  
 オープンソースとしてMIT Licenseを採用しています。
