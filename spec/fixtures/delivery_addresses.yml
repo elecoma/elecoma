@@ -2,6 +2,7 @@
 
 valid_address:
   id: 1
+  customer_id: 1
   family_name: '新田'
   first_name: '次郎'
   family_name_kana: 'ニッタ'

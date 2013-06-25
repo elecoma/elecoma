@@ -3,12 +3,11 @@
    <div><%= flash[:notice] %></div>
    <div><%= flash[:error] %></div>
    <%= error_messages_for :delivery_address if @delivery_address %>
-   <% if @delivery_addresses.count < 20 %>
-   <p>
-   <%= link_to @delivery_addresses.count == 0 ? '新しいお届け先の追加・変更' : '新しいお届け先を追加する', {:action => :delivery_new}, :class => 'rosy small_button delivery_edit text' %>
-
-   </p>
-   <% end %>
+     <% if @delivery_addresses.count < DeliveryAddress::MAXIMUM_POSITION %>
+       <p><%= link_to '新しいお届け先を追加する', :action => :delivery_new %></p>
+     <% else %>
+       <p>お届け先の登録数は<%= DeliveryAddress::MAXIMUM_POSITION%>件までです。</p></br>
+     <% end %>
    <% if @delivery_addresses.count == 0 %>
    <div class="text">新しいお届け先はありません</div>
    <% else %>
