@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 class BaseController < ApplicationController
   EXPIRES_TIME = 14.day
-  
+
   before_filter :verify_session_token
   before_filter :load_data
   before_filter :set_headers
@@ -89,7 +89,7 @@ class BaseController < ApplicationController
   end
 
   def load_user
-    if session[:expires_time] && Time.now - session[:expires_time] > EXPIRES_TIME
+    if session[:expires_time] && Time.now - session[:expires_time] >= EXPIRES_TIME
       reset_session
     end
     session[:expires_time] = Time.now
