@@ -55,14 +55,16 @@ describe Admin::NewInformationsController do
   end
 
   describe "GET 'update'" do
+    let(:target_date) { Time.new(2008, 1, 1) }
+
     it "recordのvalidateが通ったらstatusはconfirmになる" do
       id = new_informations(:success_validates_2).id
       get 'edit', :id => id
-      record = {"name"=>"test", "date(1i)"=>"2008", "date(2i)"=>"1", "body"=>"", "date(3i)"=>"1", "url"=>"", "new_window"=>"0", :id => id}
+      record = {"name"=>"test", "body"=>"", "url"=>"", "new_window"=>"0", :id => id}.merge(date_to_select(target_date, "date"))
       post 'confirm', :new_information => record
       get 'update', :new_information => record
       assigns[:new_information].id.should == new_informations(:success_validates_2).id
-      assigns[:new_information].date.should == DateTime.parse("2008-01-01 00:00:00 +09:00")
+      assigns[:new_information].date.should == target_date
       #assigns[:status].should == "confirm"
       response.should redirect_to(:action => :index)
     end
@@ -70,11 +72,11 @@ describe Admin::NewInformationsController do
     it "recordのvalidateが通らなかったらstatusはupdateになる" do
       id = new_informations(:success_validates_2).id
       get 'edit', :id => id
-      record = {"name"=>"", "date(1i)"=>"2008", "date(2i)"=>"1", "date(3i)"=>"1"}
+      record = {"name"=>""}.merge(date_to_select(target_date, "date"))
       post 'confirm', :new_information => record
       get 'update', :new_information => record
       assigns[:new_information].id.should == id
-      assigns[:new_information].date.should == DateTime.parse("2008-01-01 00:00:00 +09:00")
+      assigns[:new_information].date.should == target_date
       response.should_not be_redirect
     end
   end

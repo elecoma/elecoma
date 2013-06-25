@@ -38,7 +38,12 @@ Rails::Initializer.run do |config|
 
   # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
   # Run "rake -D time" for a list of tasks for finding time zone names.
-  config.time_zone = 'Tokyo'
+  #
+  # XXX: Rails2のバグ？
+  #      config.time_zoneを'Tokyo'にするとDBに保存される日時がUTC形式になり、
+  #      取り出し時に(現在時刻-9時間)のJSTになる
+  #      (ただしupdated_atなどはJSTで保存され、正しいJSTで取り出せる)
+  #config.time_zone = 'Tokyo'
   config.active_record.default_timezone = :local
 
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.

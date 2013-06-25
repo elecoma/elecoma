@@ -83,9 +83,8 @@ describe Campaign do
       @campaign_entry.closed_at = DateTime.now + 3.years
       @campaign_entry.check_term.should be_true
       #本日の時間
-      now = DateTime.now
-      @campaign_entry.opened_at = DateTime.new(now.year, now.month, now.day, 0, 0, 0, Rational(9, 24))
-      @campaign_entry.closed_at = DateTime.new(now.year, now.month, now.day, 23, 59, 0, Rational(9, 24))
+      @campaign_entry.opened_at = DateTime.now.beginning_of_day
+      @campaign_entry.closed_at = DateTime.now.end_of_day
       @campaign_entry.check_term.should be_true  
     end
   end
