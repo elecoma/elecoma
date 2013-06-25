@@ -10,4 +10,3 @@ before_install:
 before_script:
   - cp config/database.yml.$DB config/database.yml
   - bundle exec rake db:create db:migrate
-script: bundle exec ruby script/spec spec

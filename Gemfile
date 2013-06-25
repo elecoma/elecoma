@@ -13,7 +13,7 @@ gem 'test-unit', '1.2.3'
 gem 'rmagick', '2.13.2'
 gem 'gettext', '2.1.0'
 gem 'gruff', '0.3.6'
-gem 'webmock', '1.3.4'
+gem 'webmock', '>= 1.8.7'
 gem 'thoughtbot-factory_girl', '1.2.2'
 gem 'json'
 gem 'daemons'
@@ -49,4 +49,5 @@ group :test do
   gem 'rspec-rails', '1.2.9'
   gem 'rspec', '1.2.9'
   gem 'database_cleaner'
+  gem 'coveralls', require: false
 end
