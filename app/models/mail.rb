@@ -15,6 +15,14 @@ class Mail < ActiveRecord::Base
         begin
           logger.info('Mail.post_all_mail: send %s -> %s' % [mail.from_address, mail.to_address])
           mail.update_attribute(:sent_at, Time.now)
+          if mail.mailmagazine_id
+            mailmagazine = MailMagazine.find_by_id(mail.mailmagazine_id)
+            mailmagazine.delivered_case = mailmagazine.delivered_case + 1
+            if mailmagazine.schedule_case <= mailmagazine.delivered_case
+              mailmagazine.sent_end_at = Time.now
+            end
+            mailmagazine.save
+          end
           smtp.send_message(Base64.decode64(mail.message), mail.from_address, mail.to_address)
         rescue Net::SMTPSyntaxError => e # 5xx
           handle_fatal_error(mail)

@@ -191,7 +191,7 @@ class Admin::MailMagazinesController < Admin::BaseController
 
     #メール送信
     begin
-      delivered_case = deliver_mail(customers, @contents)
+      delivered_case = deliver_mail(customers, @contents,mm.id)
     rescue =>e
       logger.error(e.message)
       e.backtrace.each{|s|logger.error(s)}
@@ -200,8 +200,6 @@ class Admin::MailMagazinesController < Admin::BaseController
       return
     end
 
-    mm.delivered_case = delivered_case
-    mm.sent_end_at = Time.now
     if mm.save
       flash[:magazine] = "保存しました"
     else
@@ -288,7 +286,7 @@ class Admin::MailMagazinesController < Admin::BaseController
     end
   end
 
-  def deliver_mail(customers, contents)
+  def deliver_mail(customers, contents,mailmagazine_id = nil)
     customers.blank? and return 0
     delivered_case = 0
     #drb = DRb::DRbObject.new_with_uri(@@drb_uri||DEFAULT_DRB_URI)
@@ -299,13 +297,15 @@ class Admin::MailMagazinesController < Admin::BaseController
         #mail = Notifier::create_html_mailmagazine(c, contents.body, contents.subject)
         mail = MobileHtmlNotifier::create_html_mailmagazine(c, contents.body, contents.subject)
       end
-      mailobj = Mail.new
       from = mail.from_addrs[0]
       if from
         from = from.address
       end
       mail.to.each do |to|
-        m = Mail.new(:to_address => to, :from_address => from, :message => Base64.encode64(mail.encoded))
+        m = Mail.new(:to_address => to,
+                     :from_address => from,
+                     :message => Base64.encode64(mail.encoded),
+                     :mailmagazine_id => mailmagazine_id)
         m.save
         delivered_case += 1
       end
