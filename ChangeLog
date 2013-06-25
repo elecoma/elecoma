@@ -1,3 +1,11 @@
+2013-06-25  YOSHIDA Hiroki  <hyoshida _at_ appirits.com>
+
+	* 3.0.2 Release
+	* [全般] Coverallsに連携
+	* [全般] Code Climateに連携
+	* [その他] テストの安定化
+
+
 2013-06-20  YOSHIDA Hiroki  <hyoshida _at_ appirits.com>
 
 	* 3.0.1 Release
