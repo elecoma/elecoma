@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.dirname(__FILE__) + '/../spec_helper'
 
 class DummyController < BaseController
@@ -24,6 +25,20 @@ describe BaseController do
   #Delete this example and add some real ones
   it "should use BaseController" do
     controller.should be_an_instance_of(BaseController)
+  end
+
+  describe "セッション" do
+     before(:each) do
+       time_now = Time.now
+       Time.stub!(:now).and_return(time_now)
+       session[:customer_id] = 1
+     end
+
+     it "一定時間ページをリロードしないとセッションリセット" do
+       session[:expires_time] = Time.now - BaseController::EXPIRES_TIME
+       controller.instance_eval{load_user}
+       session[:customer_id].should be_nil
+    end
   end
 
   describe "cart_total_prices" do
