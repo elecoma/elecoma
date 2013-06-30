@@ -181,7 +181,7 @@ CentOS 6.4でのインストールを想定しています。
   >   password: elephant
   ```
 
-  必要であれば ``$RAILS_ROOTenvironments/production.rb`` 内のメールサーバ設定を変更してください。
+  必要であれば ``$RAILS_ROOT/config/environments/production.rb`` 内のメールサーバ設定を変更してください。
 
 10. Passengerのインストール
 
