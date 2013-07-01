@@ -7,6 +7,7 @@ describe CartController do
            :delivery_fees, :order_deliveries, :shops, :payment_plugins, :retailers,
            :recommends, :recommend_xmls
   fixtures :prefectures, :categories
+  fixtures :orders, :order_details
 
   before do
     @dummy_carts = [carts(:cart_can_incriment).attributes]
@@ -631,6 +632,120 @@ describe CartController do
       response.should redirect_to(:action => 'show')
       assigns[:carts].should_not be_empty
       assigns[:carts].size.should == 2
+    end
+  end
+
+  describe "GET 'repeat_order'" do
+    before do
+      @order = orders(:history_01)
+
+      # 注文個数2、注文可能数10の場合
+      order_detail = @order.order_deliveries.first.order_details.first
+      order_detail.update_attributes(quantity: 2)
+      order_detail.product_style.update_attributes(orderable_count: 10)
+
+      session[:customer_id] = @order.customer_id
+    end
+
+    context "カートが空で、商品１、注文個数２の購入履歴の場合" do
+      before do
+        get :repeat_order, { :order_id => @order.id }
+      end
+
+      it "カート画面にリダイレクトすること" do
+        response.should redirect_to(:action => :show)
+      end
+
+      it "カートの商品が１個であること" do
+        assigns[:carts].size.should == 1
+      end
+
+      it "カートの商品の注文個数が２個であること" do
+        assigns[:carts].first.quantity.should == 2
+      end
+    end
+
+    context "カートが空でなくて、商品１、注文個数２の購入履歴の場合" do
+      before do
+        # 先にカートに商品を追加しておく
+        get :repeat_order, { :order_id => @order.id }
+        # カートに商品がある状態で商品を追加する
+        get :repeat_order, { :order_id => @order.id }
+      end
+
+      it "カート画面にリダイレクトすること" do
+        response.should redirect_to(:action => :show)
+      end
+
+      it "カートの商品が１個であること" do
+        assigns[:carts].size.should == 1
+      end
+
+      it "カートの商品の注文個数が４個であること" do
+        assigns[:carts].first.quantity.should == 4
+      end
+    end
+
+    context "注文可能数を超過する場合" do
+      before do
+        # 注文個数2、注文可能数１の場合
+        order_detail = @order.order_deliveries.first.order_details.first
+        order_detail.product_style.update_attributes(orderable_count: 1)
+
+        get :repeat_order, { :order_id => @order.id }
+      end
+
+      it "カート画面にリダイレクトすること" do
+        response.should redirect_to(:action => :show)
+      end
+
+      it "カートの商品が１個であること" do
+        assigns[:carts].size.should == 1
+      end
+
+      it "カートの商品の注文個数が１個であること" do
+        assigns[:carts].first.quantity.should == 1
+      end
+
+      it "エラーメッセージが表示されること" do
+        flash[:cart_add_product].should_not be_nil
+      end
+    end
+
+    context "カートへの最大投入数を超過する場合" do
+      before do
+        CartController.class_eval { remove_const(:CARTS_MAX_SIZE) }
+        CartController.const_set(:CARTS_MAX_SIZE, 5)
+        @order = orders(:history_00)
+        get :repeat_order, { :order_id => @order.id }
+      end
+
+      it "カート画面にリダイレクトすること" do
+        response.should redirect_to(:action => :show)
+      end
+
+      it "カートの商品が５個であること" do
+        assigns[:carts].size.should == 5
+      end
+
+      it "カートの商品の注文個数が２個であること" do
+        assigns[:carts].first.quantity.should == 2
+      end
+
+      it "エラーメッセージが表示されること" do
+        flash[:cart_add_product].should_not be_nil
+      end
+    end
+
+    context "存在しない購入履歴の場合" do
+      before do
+        session[:customer_id] = customers(:login_customer1).id
+        get :repeat_order, { :order_id => 999 }
+      end
+
+      it "エラーメッセージが表示されること" do
+        flash[:cart_add_product].should_not be_nil
+      end
     end
   end
 end

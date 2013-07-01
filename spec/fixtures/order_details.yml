@@ -186,10 +186,10 @@ history_00_00_<%= "%02d" % i %>:
   order_delivery_id: 31
   product_name: いも<%= id %>
   product_code: IMO-<%= id %>
-  product_id: <%= (id % 3) + 1 %> # 1..3
   price: <%= id %>
   quantity: 2
-  product_style_id: 1
+  product_id: <%= i + 1 %>
+  product_style_id: <%= i + 1 %>
 <% end %>
 history_00_01_00:
   id: 1360

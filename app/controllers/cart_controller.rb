@@ -514,6 +514,12 @@ class CartController < BaseController
     redirect_to :action => :show if add_to_cart(product_style, params[:size].to_i)
   end
 
+  def repeat_order
+    order_details = find_order_details_by_order_id
+    return redirect_for_product_cannot_sale if order_details.blank?
+    redirect_to :action => :show if add_carts_by_order_details(order_details)
+  end
+
   private
 
   def redirect_for_product_cannot_sale
@@ -551,6 +557,12 @@ class CartController < BaseController
     end
   end
 
+  def find_order_details_by_order_id
+    return if params[:order_id].blank?
+    order = Order.find_by_id_and_customer_id(params[:order_id], @login_customer.id)
+    order.order_deliveries.map(&:order_details).flatten unless order.nil?
+  end
+
   # カートに商品を追加する
   #
   # return:
@@ -583,6 +595,12 @@ class CartController < BaseController
     cart.quantity = insert_quantity
     session[:cart_last_product_id] = product_style.product_id
     true
+  end
+
+  def add_carts_by_order_details(order_details)
+    order_details.all? do |order_detail|
+      add_to_cart(order_detail.product_style, order_detail.quantity)
+    end
   end
 
   def find_or_build_cart_by(product_style)
