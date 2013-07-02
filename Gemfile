@@ -41,7 +41,6 @@ gem 'lhalib', '0.8.1', :path => 'vendor/gems/lhalib-0.8.1'
 group :development do
   gem 'pry'
   gem 'pry-doc'
-  gem 'debugger', :require => 'ruby-debug'
 end
 
 group :test do
