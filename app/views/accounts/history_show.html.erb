@@ -10,8 +10,9 @@
 
   <!-- 購入履歴一覧 -->
   <div id="mypage_main">
-    <h3><%= image_tag("mypage/mypage_t1.gif", :width => "535", :height => "44", :alt => "お届け先設定") %></h3>
-    <div class="mypage_box">
+    <h3 style="float: left; width:50%"><%= image_tag("mypage/mypage_t1.gif", :width => "535", :height => "44", :alt => "お届け先設定") %></h3>
+    <p style="float: right; padding: 15px 20px;"><%= link_to '[リピート購入]', { :controller => :cart, :action => :repeat_order, :order_id => @order.id } %></p>
+    <div style="clear: both;" class="mypage_box">
       <p class="tb_t">購入履歴詳細</p>
       <table class="tb1 cntr">
         <tr>

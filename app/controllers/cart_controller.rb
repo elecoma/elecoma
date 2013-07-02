@@ -505,67 +505,117 @@ class CartController < BaseController
       購入できない商品の場合は、カートに入れない
 =end
   def add_product
-    @add_product = CartAddProductForm.new(params)
-    unless @add_product.valid?
-      flash[:cart_add_product] = @add_product.errors.full_messages
-      if @add_product.product_id
-        flash['error_%d' % @add_product.product_id] = flash[:cart_add_product]
-      end
-      request.env['HTTP_REFERER'] ||= url_for(:action=>:show)
-      redirect_to :back
-      return
-    end
-    @carts ||= []
-    product_style =
-      if params[:product_style_id]
-        ProductStyle.find_by_id(params[:product_style_id].to_i)
-      else
-        ProductStyle.find_by_product_id_and_style_category_id1_and_style_category_id2(params[:product_id], params[:style_category_id1], params[:style_category_id2])
-      end
+    build_cart_add_product_form
+    return if @add_product.invalid?
 
-    if product_style.nil?
-      flash[:cart_add_product] = "ご指定の商品は購入できません。"
-      request.env['HTTP_REFERER'] ||= url_for(:action=>:show)
-      redirect_to :back
-      return
-    end
+    product_style = find_product_style_by_params
+    return redirect_for_product_cannot_sale if product_style.nil?
 
-    cart = find_cart(:product_style_id => product_style.id)
-    if cart.nil?
-      if @carts.size >= CARTS_MAX_SIZE
-        flash[:cart_add_product] = '一度に購入できる商品は ' + "#{CARTS_MAX_SIZE}" + '種類までです。'
-        redirect_to :action => 'show'
-        return
-      end
-      cart = Cart.new(:product_style => product_style,
-                      :customer => @login_customer,
-                      :quantity => 0)
-      @carts << cart
-    end
-    # キャンペ
-    unless params[:campaign_id].blank?
-      cart.campaign_id = params[:campaign_id]
-    end
+    redirect_to :action => :show if add_to_cart(product_style, params[:size].to_i)
+  end
 
-    size = [params[:size].to_i, 1].max
-    # 購入可能であれば、カートに商品を追加する
-    insert_size = product_style.available?(cart.quantity + size)
-    incremental = insert_size - cart.quantity # 増分
-    product_name = product_style.full_name
-    if insert_size.to_i <= 0
-      # 購入可能な件数が 0 より小さい場合はカートを追加しない
-      @carts.delete(cart)
-      flash[:cart_add_product] = "「#{product_name}」は購入できません。"
-    elsif incremental < size
-      # 指定数の在庫が無かった
-      flash[:cart_add_product] = "「#{product_name}」は販売制限しております。一度にこれ以上の購入はできません。"
-    end
-    cart.quantity = insert_size
-    session[:cart_last_product_id] = product_style.product_id
-    redirect_to :action => 'show'
+  def repeat_order
+    order_details = find_order_details_by_order_id
+    return redirect_for_product_cannot_sale if order_details.blank?
+    redirect_to :action => :show if add_carts_by_order_details(order_details)
   end
 
   private
+
+  def redirect_for_product_cannot_sale
+    flash[:cart_add_product] = "ご指定の商品は購入できません。"
+    request.env['HTTP_REFERER'] ||= url_for(:action=>:show)
+    redirect_to :back
+    nil
+  end
+
+  def redirect_for_invalid_add_product_form
+    flash[:cart_add_product] = @add_product.errors.full_messages.join
+    flash['error_%d' % @add_product.product_id] = flash[:cart_add_product] unless @add_product.product_id.nil?
+    request.env['HTTP_REFERER'] ||= url_for(:action=>:show)
+    redirect_to :back
+    nil
+  end
+
+  def redirect_for_carts_was_full
+    flash[:cart_add_product] = '一度に購入できる商品は ' + "#{CARTS_MAX_SIZE}" + '種類までです。'
+    redirect_to :action => :show
+    nil
+  end
+
+  def build_cart_add_product_form
+    @add_product = CartAddProductForm.new(params)
+    return redirect_for_invalid_add_product_form if @add_product.invalid?
+    @add_product
+  end
+
+  def find_product_style_by_params
+    if params[:product_style_id]
+      ProductStyle.find_by_id(params[:product_style_id].to_i)
+    else
+      ProductStyle.find_by_product_id_and_style_category_id1_and_style_category_id2(params[:product_id], params[:style_category_id1], params[:style_category_id2])
+    end
+  end
+
+  def find_order_details_by_order_id
+    return if params[:order_id].blank?
+    order = Order.find_by_id_and_customer_id(params[:order_id], @login_customer.id)
+    order.order_deliveries.map(&:order_details).flatten unless order.nil?
+  end
+
+  # カートに商品を追加する
+  #
+  # return:
+  #   成功 = ture
+  #   失敗 = false
+  #
+  # 備考:
+  #   false の場合はredirect_toを実施済みなので
+  #   呼び出しもとは直ちにメソッドを終了すべき
+  #
+  def add_to_cart(product_style, quantity=1)
+    return false if quantity <= 0
+    cart = find_or_build_cart_by(product_style)
+    return false if cart.nil?
+
+    # キャンペ
+    cart.campaign_id = params[:campaign_id] if params[:campaign_id].present?
+
+    # 購入可能であれば、カートに商品を追加する
+    insert_quantity = product_style.available?(cart.quantity + quantity)
+    insert_quantity_diff = insert_quantity - cart.quantity
+    if insert_quantity.zero?
+      # 購入可能な件数が 0 ならカートを追加しない
+      @carts.delete(cart)
+      flash[:cart_add_product] = "「#{product_style.full_name}」は購入できません。"
+    elsif insert_quantity_diff < quantity
+      # 指定数の在庫が無かった
+      flash[:cart_add_product] = "「#{product_style.full_name}」は販売制限しております。一度にこれ以上の購入はできません。"
+    end
+    cart.quantity = insert_quantity
+    session[:cart_last_product_id] = product_style.product_id
+    true
+  end
+
+  def add_carts_by_order_details(order_details)
+    order_details.all? do |order_detail|
+      add_to_cart(order_detail.product_style, order_detail.quantity)
+    end
+  end
+
+  def find_or_build_cart_by(product_style)
+    cart = find_cart(:product_style_id => product_style.id)
+    return cart if cart.present?
+    build_cart_by(product_style)
+  end
+
+  def build_cart_by(product_style)
+    return redirect_for_carts_was_full if @carts.size >= CARTS_MAX_SIZE
+    cart = Cart.new(:product_style => product_style, :customer => @login_customer, :quantity => 0)
+    @carts ||= []
+    @carts << cart
+    cart
+  end
 
   def save_before_finish
     Order.transaction do
