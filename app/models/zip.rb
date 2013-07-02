@@ -29,13 +29,12 @@ class Zip < ActiveRecord::Base
       lzhfile.write res
     end
     lzhfile.close
-    require 'lhalib'
     LhaLib::x(lzhfile.path)
-    cnt = 0
-    rawfile = open("ken_all.csv")
-    while rawfile.gets(nil)
-      cnt = $_.count("\n")
-    end
+    #cnt = 0
+    #rawfile = open("ken_all.csv")
+    #while rawfile.gets(nil)
+    #  cnt = $_.count("\n")
+    #end
     #system "rm -f ken_all.lzh; wget -O - http://www.post.japanpost.jp/zipcode/dl/oogaki/lzh/ken_all.lzh | lha x -"
     #cnt = `wc -l ken_all.csv  | awk '{print $1}' `
     Zip.transaction do
@@ -51,7 +50,7 @@ class Zip < ActiveRecord::Base
                 :address_city => line[7],
                 :address_details => line[8]).save!
         # 進行状況を出力（すべてだと負荷が高くなるので一部を出力）
-        puts "#{idx+1}/#{cnt}" if (idx % 1000) == 0 || idx+1 == cnt
+        #puts "#{idx+1}/#{cnt}" if (idx % 1000) == 0 || idx+1 == cnt
         STDOUT.flush
       end
     end
@@ -70,13 +69,12 @@ class Zip < ActiveRecord::Base
       lzhfile.write res
     end
     lzhfile.close
-    require 'lhalib'
     LhaLib::x(lzhfile.path)
-    cnt = 0
-    rawfile = open("jigyosyo.csv")
-    while rawfile.gets(nil)
-      cnt = $_.count("\n")
-    end
+    #cnt = 0
+    #rawfile = open("jigyosyo.csv")
+    #while rawfile.gets(nil)
+    #  cnt = $_.count("\n")
+    #end
     #system "rm -f jigyosyo.csv; wget -O - http://www.post.japanpost.jp/zipcode/dl/jigyosyo/lzh/jigyosyo.lzh | lha x -"
     #cnt = `wc -l jigyosyo.csv  | awk '{print $1}' `
     Zip.transaction do
@@ -92,7 +90,7 @@ class Zip < ActiveRecord::Base
                 :address_city => line[4],
                 :address_details => line[5]+line[6]).save!
         # 進行状況を出力（すべてだと負荷が高くなるので一部を出力）
-        puts "#{idx+1}/#{cnt}" if (idx % 1000) == 0 || idx+1 == cnt
+        #puts "#{idx+1}/#{cnt}" if (idx % 1000) == 0 || idx+1 == cnt
         STDOUT.flush
       end
     end
