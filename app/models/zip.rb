@@ -1,5 +1,5 @@
+# -*- coding: utf-8 -*-
 class Zip < ActiveRecord::Base
-
   acts_as_paranoid
   belongs_to :prefecture
 
@@ -13,93 +13,124 @@ class Zip < ActiveRecord::Base
   KEN_ALL_PATH = "/zipcode/dl/oogaki/lzh/ken_all.lzh"
   JIGYOSYO_PATH = "/zipcode/dl/jigyosyo/lzh/jigyosyo.lzh"
 
-  def self.import
-    Zip.delete_all
-    import_address
-    import_office
-  end
-
-  def self.import_address
-    puts "download start "
-    FileUtils.rm("ken_all.csv", :force => true)
-	http = Net::HTTP.new(BASE_DOMAIN)
-    lzhfile = Tempfile.new("ken_all.lzh")
-	lzhfile.binmode
-    http.get(KEN_ALL_PATH) do |res|
-      lzhfile.write res
+  class << self
+    def import
+      self.delete_all
+      import_address
+      import_office
     end
-    lzhfile.close
-    LhaLib::x(lzhfile.path)
-    #cnt = 0
-    #rawfile = open("ken_all.csv")
-    #while rawfile.gets(nil)
-    #  cnt = $_.count("\n")
-    #end
-    #system "rm -f ken_all.lzh; wget -O - http://www.post.japanpost.jp/zipcode/dl/oogaki/lzh/ken_all.lzh | lha x -"
-    #cnt = `wc -l ken_all.csv  | awk '{print $1}' `
-    Zip.transaction do
-      puts "import start "
-      zip_file=open("ken_all.csv")
 
-      zip_file.each_with_index do | line,idx |
-        line = CSV.parse_line(NKF.nkf("-w",line))
-        Zip.new(:prefecture_id => line[0][0..1].to_i,
-                :zipcode01 => line[2][0..2],
-                :zipcode02 => line[2][3..6],
-                :prefecture_name => line[6],
-                :address_city => line[7],
-                :address_details => line[8]).save!
-        # 進行状況を出力（すべてだと負荷が高くなるので一部を出力）
-        #puts "#{idx+1}/#{cnt}" if (idx % 1000) == 0 || idx+1 == cnt
-        STDOUT.flush
+    def import_address
+      remove_address_zip_csv
+
+      puts "Zip.import_address: Download starting..."
+      filepath = download_lzh(KEN_ALL_PATH)
+      extract_lzh_to_csv(filepath)
+
+      puts "Zip.import_address: Import starting..."
+      create_address_zips_from_csv
+
+      remove_address_zip_csv
+      remove_file(filepath)
+    end
+
+    def import_office
+      remove_office_zip_csv
+
+      puts "Zip.import_office: Download starting..."
+      filepath = download_lzh(JIGYOSYO_PATH)
+      extract_lzh_to_csv(filepath)
+
+      puts "Zip.import_office: Import starting..."
+      create_office_zips_from_csv
+
+      remove_office_zip_csv
+      remove_file(filepath)
+    end
+
+    def find_by_zipcode(first, second, options={})
+      find_by_zipcode01_and_zipcode02(first, second, options)
+    end
+
+    private
+
+    def download_lzh(filepath)
+      tmp_file = Tempfile.new(File.basename filepath)
+      tmp_file.binmode
+      Net::HTTP.new(BASE_DOMAIN).get(filepath) do |res|
+        tmp_file.write res
+      end
+      tmp_file.close
+      tmp_file.path
+    end
+
+    # カレントディレクトリに解凍される
+    def extract_lzh_to_csv(filepath)
+      LhaLib::x(filepath)
+    end
+
+    def address_zip_csv_filepath
+      File.basename(KEN_ALL_PATH, '.lzh') + '.csv'
+    end
+
+    def office_zip_csv_filepath
+      File.basename(JIGYOSYO_PATH, '.lzh') + '.csv'
+    end
+
+    def remove_address_zip_csv
+      remove_file(address_zip_csv_filepath)
+    end
+
+    def remove_office_zip_csv
+      remove_file(office_zip_csv_filepath)
+    end
+
+    def create_address_zips_from_csv
+      Zip.transaction do
+        csv_open(address_zip_csv_filepath) do |row|
+          create_address_zip(row)
+        end
       end
     end
-    FileUtils.rm("ken_all.csv", :force => true)
-    FileUtils.rm(lzhfile.path, :force => true)
-    #system("rm ken_all.csv")
-  end
 
-  def self.import_office
-    puts "download start "
-    FileUtils.rm("jigyosyo.csv", :force => true)
-	http = Net::HTTP.new(BASE_DOMAIN)
-    lzhfile = Tempfile.new("jigyosyo.lzh")
-	lzhfile.binmode
-    http.get(JIGYOSYO_PATH) do |res|
-      lzhfile.write res
-    end
-    lzhfile.close
-    LhaLib::x(lzhfile.path)
-    #cnt = 0
-    #rawfile = open("jigyosyo.csv")
-    #while rawfile.gets(nil)
-    #  cnt = $_.count("\n")
-    #end
-    #system "rm -f jigyosyo.csv; wget -O - http://www.post.japanpost.jp/zipcode/dl/jigyosyo/lzh/jigyosyo.lzh | lha x -"
-    #cnt = `wc -l jigyosyo.csv  | awk '{print $1}' `
-    Zip.transaction do
-      puts "import start "
-      zip_file=open("jigyosyo.csv")
-
-      zip_file.each_with_index do | line,idx |
-        line = CSV.parse_line(NKF.nkf("-w",line))
-        Zip.new(:prefecture_id => line[0][0..1].to_i,
-                :zipcode01 => line[7][0..2],
-                :zipcode02 => line[7][3..6],
-                :prefecture_name => line[3],
-                :address_city => line[4],
-                :address_details => line[5]+line[6]).save!
-        # 進行状況を出力（すべてだと負荷が高くなるので一部を出力）
-        #puts "#{idx+1}/#{cnt}" if (idx % 1000) == 0 || idx+1 == cnt
-        STDOUT.flush
+    def create_office_zips_from_csv
+      Zip.transaction do
+        csv_open(office_zip_csv_filepath) do |row|
+          create_office_zip(row)
+        end
       end
     end
-    FileUtils.rm("jigyosyo.csv", :force => true)
-    FileUtils.rm(lzhfile.path, :force => true)
-    #system("rm jigyosyo.csv")
-  end
 
-  def self.find_by_zipcode(first, second, options={})
-    find_by_zipcode01_and_zipcode02(first, second, options)
+    def create_address_zip(record)
+      Zip.create!(
+        prefecture_id: record[0][0..1].to_i,
+        zipcode01: record[2][0..2],
+        zipcode02: record[2][3..6],
+        prefecture_name: record[6],
+        address_city: record[7],
+        address_details: record[8]
+      )
+    end
+
+    def create_office_zip(record)
+      Zip.create!(
+        prefecture_id: record[0][0..1].to_i,
+        zipcode01: record[7][0..2],
+        zipcode02: record[7][3..6],
+        prefecture_name: record[3],
+        address_city: record[4],
+        address_details: record[5] + record[6]
+      )
+    end
+
+    def csv_open(filepath)
+      open(filepath).each do |line|
+        yield CSV.parse_line(NKF.nkf('-w', line))
+      end
+    end
+
+    def remove_file(filepath)
+      FileUtils.rm(filepath, force: true)
+    end
   end
 end
