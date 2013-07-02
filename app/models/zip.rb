@@ -124,9 +124,19 @@ class Zip < ActiveRecord::Base
     end
 
     def csv_open(filepath)
-      open(filepath).each do |line|
+      count = count_file_line(filepath)
+      open(filepath).each_with_index do |line,index|
         yield CSV.parse_line(NKF.nkf('-w', line))
+        print_progress(index, count)
       end
+    end
+
+    def print_progress(value, max)
+      print "#{(value.to_f / max.to_f * 100).ceil}%..." if value % (max / 10) == 0
+    end
+
+    def count_file_line(filepath)
+      File.read(filepath, encoding: 'Shift_JIS:UTF-8').count("\n")
     end
 
     def remove_file(filepath)
