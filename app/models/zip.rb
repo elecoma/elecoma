@@ -137,7 +137,7 @@ class Zip < ActiveRecord::Base
     end
 
     def count_file_line(filepath)
-      File.read(filepath, encoding: 'Shift_JIS:UTF-8').count("\n")
+      File.read(filepath, encoding: 'CP932:UTF-8').count("\n")
     end
 
     def remove_file(filepath)
