@@ -1,3 +1,11 @@
+2013-08-13  YOSHIDA Hiroki  <hyoshida _at_ appirits.com>
+
+	* 3.1.0 Release
+	* [全般] リピート購入機能を実装
+	* [bugfix] セッション管理の不備を修正
+	* [bugfix] 郵便番号インポートが動作しない不具合を修正
+
+
 2013-06-25  YOSHIDA Hiroki  <hyoshida _at_ appirits.com>
 
 	* 3.0.2 Release
