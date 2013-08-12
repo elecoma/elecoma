@@ -70,11 +70,11 @@ class Zip < ActiveRecord::Base
     end
 
     def address_zip_csv_filepath
-      File.basename(KEN_ALL_PATH, '.lzh') + '.csv'
+      File.basename(KEN_ALL_PATH, '.*') + '.csv'
     end
 
     def office_zip_csv_filepath
-      File.basename(JIGYOSYO_PATH, '.lzh') + '.csv'
+      File.basename(JIGYOSYO_PATH, '.*') + '.csv'
     end
 
     def remove_address_zip_csv
@@ -129,6 +129,7 @@ class Zip < ActiveRecord::Base
         yield CSV.parse_line(NKF.nkf('-w', line))
         print_progress(index, count)
       end
+      puts
     end
 
     def print_progress(value, max)
@@ -136,7 +137,7 @@ class Zip < ActiveRecord::Base
     end
 
     def count_file_line(filepath)
-      File.read(filepath, encoding: 'Shift_JIS:UTF-8').count("\n")
+      File.read(filepath, encoding: 'CP932:UTF-8').count("\n")
     end
 
     def remove_file(filepath)

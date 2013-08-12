@@ -291,6 +291,7 @@ SHOPマスタ登録にて初期情報を入力してください。
 登録はコンソールから以下のように行ないます。
 
   ```
+  $ bundle exec rake gems:build
   $ bundle exec ruby script/runner -e production Zip.import
   ```
 

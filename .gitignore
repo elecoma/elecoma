@@ -13,6 +13,10 @@ vendor/plugins/*
 !vendor/plugins/mbmail
 !vendor/plugins/rails-active-form
 !vendor/plugins/ssl_requirement
+vendor/gems/lhalib-0.8.1/ext/Makefile
+vendor/gems/lhalib-0.8.1/ext/*.o
+vendor/gems/lhalib-0.8.1/ext/*.so
+vendor/gems/lhalib-0.8.1/lib
 var/run/*
 !var/run/.gitkeep
 config/database.yml
