@@ -175,6 +175,35 @@ describe Admin::MailMagazinesController do
       response.should redirect_to(:action => :index)
     end
 
+    context "宛先が複数ある場合" do
+      let(:on_form) { 'true' }
+      let(:condition) { { form_type: '0', mail_type: '0' } }
+      let(:contents) { { subject: 'subject', body: 'body', form_type: 2 } }
+      let(:customer_count) { 7 }
+      let(:lasted_mail_magazine) { MailMagazine.last }
+
+      before { post :search, on_form: on_form, condition: condition }
+
+      it "複数の宛先が検索できること" do
+        assigns[:customers].size.should == customer_count
+      end
+
+      it "メールが正常に送信できること" do
+        post :complete, contents: contents
+        response.should redirect_to(action: :history)
+      end
+
+      it "複数の宛先に送信予約できていること" do
+        post :complete, contents: contents
+        lasted_mail_magazine.schedule_case.should == customer_count
+      end
+
+      it "複数の宛先に送信できていること" do
+        post :complete, contents: contents
+        Mail.post_all_mail
+        lasted_mail_magazine.delivered_case.should == customer_count
+      end
+    end
   end
 
   describe "POST 'history'" do
