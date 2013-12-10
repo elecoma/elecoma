@@ -277,7 +277,7 @@ campaign_product:
   name: 秋の恩返し
   dir_name: campaign_product
   opened_at: 2009-11-06 00:00:00
-  closed_at: 2013-12-06 00:00:00
+  closed_at: <%= DateTime.new(Time.now.year.next, 12, 6) %>
   max_application_number: 10
   application_count:
   repeat_application: TRUE
