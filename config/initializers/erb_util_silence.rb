@@ -10,9 +10,6 @@ if Rails::VERSION::MAJOR == 2
         if s.html_safe?
           s
         else
-          # 「invalid byte sequence in US-ASCII」対策
-          s = s.toutf8
-
           s.gsub(/[&"'><]/, HTML_ESCAPE).html_safe
         end
       end
