@@ -80,7 +80,7 @@ describe Mail do
     describe "メールマガジン" do
       before(:each) do
         SCHEDULE_NUM = 10
-        time_now =  Time.now
+        time_now = Time.parse('2014-02-26')
 
         @dummysmtp.stub!(:send_message).and_raise(Net::SMTPServerBusy)
         Net::SMTP.stub!(:start).and_yield(@dummysmtp)
