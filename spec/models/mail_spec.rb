@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'net/smtp'
 
 describe Mail do
   fixtures :customers, :mails
@@ -75,6 +77,48 @@ describe Mail do
       customer.reachable.should be_false
     end
 
+    describe "メールマガジン" do
+      let (:now) { Time.parse('2014-02-26') }
+      let (:schedule_case) { 10 }
+      let (:mail_magazine) {
+        MailMagazine.create(
+          :schedule_case => schedule_case,
+          :delivered_case => 0
+        )
+      }
+      let (:mail) {
+        Mail.new(
+          :to_address => @customer.email,
+          :from_address => "sender@example.com",
+          :message => "test",
+          :mailmagazine_id => mail_magazine.id
+        )
+      }
+
+      before do
+        @dummysmtp.stub!(:send_message).and_raise(Net::SMTPServerBusy)
+        Net::SMTP.stub!(:start).and_yield(@dummysmtp)
+        Time.stub!(:now).and_return(now)
+      end
+
+      it "メール送信すると配信件数が増える" do
+        mail.save
+        Mail.post_all_mail
+        mail_magazine.reload.delivered_case.should > 0
+      end
+
+      it "予定件数分送信していない場合、配信終了時刻は空欄" do
+        mail.save
+        Mail.post_all_mail
+        mail_magazine.reload.sent_end_at.should be_nil
+      end
+
+      it "予定件数分送信した場合、配信終了時刻に現在時刻が入る" do
+        schedule_case.times { mail.clone.save }
+        Mail.post_all_mail
+        mail_magazine.reload.sent_end_at.should == now
+      end
+    end
   end
 end
 
