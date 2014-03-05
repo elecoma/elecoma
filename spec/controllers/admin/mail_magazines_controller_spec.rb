@@ -182,6 +182,13 @@ describe Admin::MailMagazinesController do
       let(:customer_count) { 7 }
       let(:lasted_mail_magazine) { MailMagazine.last }
 
+      # メール送信が行われないようにスタブ化しておく
+      before do
+        dummy_smtp = Net::SMTP.new('localhost')
+        dummy_smtp.stub!(:send_message).and_return(nil)
+        Net::SMTP.stub!(:start).and_yield(dummy_smtp)
+      end
+
       before { post :search, on_form: on_form, condition: condition }
 
       it "複数の宛先が検索できること" do
