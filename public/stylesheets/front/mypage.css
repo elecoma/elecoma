@@ -187,3 +187,34 @@
 .mypage_box .my_btn2 input {
   border: none;
 }
+
+/*--------お気に入り--------*/
+#favorite li {
+    float: left;
+    width: 118px;
+    padding: 5px;
+    height: 180px;
+}
+
+* html #favorite li {
+    padding: 4px;
+}
+
+#favorite dt {
+    font-size: 20px;
+    margin-left: 5px
+}
+
+#favorite dd {
+    font-size: 15px;
+    margin-left: 25px;
+}
+
+#favorite img {
+    border: 1px solid #aaaaaa;
+}
+
+#favorite p {
+    margin-top: 5px;
+    line-height: 110%;
+}

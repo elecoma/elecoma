@@ -13,6 +13,7 @@ class ProductsController < BaseController
     @shop = Shop.find(:first)
     @social = @shop.social
     @social_flag = (@social.google || @social.facebook || @social.mixi_check || @social.mixi_like || @social.evernote || @social.gree || @social.hatena || @social.twitter) if @social
+    @favorite = Favorite.find(:all, :conditions => { customer_id: @login_customer.id, product_style_id: @product.product_styles.first.id}) if @login_customer
     if request.mobile?
       ProductAccessLog.create(:product_id => @product.id,
                               :session_id => session.session_id,

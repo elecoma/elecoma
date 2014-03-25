@@ -72,9 +72,23 @@
     <%= render :partial => "base/add_cart", :locals => {:product => @product} %>
    　　   <%have_style = @product.product_styles.any?(&:style_category1)%>
      <%if have_style%>
-	 <dl><dd><%= link_to_remote( "在庫一覧を見る",
-						:update => "stock_table",
-						:url =>{ :action=>"stock_table",:id=>@product,:partial=>true }) %></dd></dl>
+     
+     <% if @login_customer %>
+       <% if @favorite.blank? %>
+         <% form_tag ({ :controller => "favorite", :action => "add_favorite" }) do%>
+           <%= hidden_field_tag 'product_style_id',@product.product_styles.first.id %>
+           <%= submit_tag 'お気に入りに追加' %>
+         <% end %></br>
+       <% else %>
+         <% form_tag ({ :controller => "favorite", :action => "delete_favorite" }) do%>
+           <%= hidden_field_tag 'product_style_ids[]',@product.product_styles.first.id %>
+           <%= submit_tag 'お気に入りから削除', :confirm => "本当に削除してよろしいですか？" %>
+	 <% end %></br>
+       <% end %>
+     <% end %>
+     <dl><dd><%= link_to_remote( "在庫一覧を見る",
+		                :update => "stock_table",
+				:url =>{ :action=>"stock_table",:id=>@product,:partial=>true }) %></dd></dl>
      <div id="stock_table" align="right">
 	   <%= render :action => 'stock_table', :method=>:get %>
 	 </div>

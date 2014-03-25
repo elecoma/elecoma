@@ -16,6 +16,10 @@ class AccountsController < BaseController
 
   EMAIL_PATTERN = /^(([^@\s]+)@((?:[-a-z0-9]+\.)*[a-z]{2,})|)$/i
 
+  def favorite
+    @favorites = Favorite.find(:all,:conditions => {:customer_id => @login_customer.id})
+  end
+
   def login
     if request.request_method == :post
       if params[:customer]
