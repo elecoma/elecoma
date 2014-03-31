@@ -15,7 +15,6 @@ describe AccountsController do
     controller.should be_an_instance_of(AccountsController)
   end
 
-
   describe "GET 'login'" do
     it "should be successful" do
       get 'login'
@@ -319,6 +318,26 @@ describe AccountsController do
     it "無関係な id" do
       get 'history_show', :id => 99294
       response.should_not be_success
+    end
+  end
+
+  describe "お気に入り" do
+    fixtures :favorites
+
+    describe "GET favorite" do
+      before do
+        @exists_favorite = favorites(:exists_favorite)
+        session[:customer_id] = @exists_favorite.customer_id
+        get 'favorite'
+      end
+
+      it "リクエストは成功する" do
+        response.should be_true
+      end
+
+      it "お気に入りを取得している" do
+        assigns[:favorites].should == @exists_favorite
+      end
     end
   end
 
