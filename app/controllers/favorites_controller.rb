@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-class FavoriteController < BaseController
+class FavoritesController < BaseController
 
   def delete_favorite
     if params[:product_style_ids].is_a? Array
@@ -16,17 +16,15 @@ class FavoriteController < BaseController
   def add_favorite
     if params[:product_style_id].blank?
       flash[:error] = "お気に入りへの追加に失敗しました"
-      return redirect_to action: :favorites
+      return redirect_to(:controller => 'accounts', :action => 'favorite')
     end
 
-    favorite = Favorite.find(:first,:conditions => { customer_id: @login_customer.id, product_style_id: params[:product_style_id].to_i})
-    if favorite.present?
-      favorite.update_attribute(:updated_at,Time.now)
-      flash[:error] = favorite.errors.full_messages.join
-    else
-      Favorite.create(customer_id: @login_customer.id, product_style_id: params[:product_style_id].to_i)
-      flash[:notice] = "商品をお気に入りに登録しました"
-    end
+      favorite = Favorite.create(customer_id: @login_customer.id, product_style_id: params[:product_style_id].to_i)
+      if favorite.errors.present?
+        flash[:error] = favorite.errors.on(:product_style_id)
+      else
+        flash[:notice] = "商品をお気に入りに登録しました"
+      end
     redirect_to(:controller => 'accounts', :action => 'favorite')
   end
 end

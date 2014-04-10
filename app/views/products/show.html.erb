@@ -75,12 +75,12 @@
      
      <% if @login_customer %>
        <% if @favorite.blank? %>
-         <% form_tag ({ :controller => "favorite", :action => "add_favorite" }) do%>
+         <% form_tag ({ :controller => "favorites", :action => "add_favorite" }) do%>
            <%= hidden_field_tag 'product_style_id',@product.product_styles.first.id %>
            <%= submit_tag 'お気に入りに追加' %>
          <% end %></br>
        <% else %>
-         <% form_tag ({ :controller => "favorite", :action => "delete_favorite" }) do%>
+         <% form_tag ({ :controller => "favorites", :action => "delete_favorite" }) do%>
            <%= hidden_field_tag 'product_style_ids[]',@product.product_styles.first.id %>
            <%= submit_tag 'お気に入りから削除', :confirm => "本当に削除してよろしいですか？" %>
 	 <% end %></br>

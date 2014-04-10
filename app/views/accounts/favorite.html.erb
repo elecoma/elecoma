@@ -14,11 +14,11 @@
       <dd><%= flash[:error] %></font></dd>
       <dd><%= flash[:notice] %></font></dd></br>
       <% if @favorites.present? %>
-        <% form_tag ({ :controller => "favorite", :action => "delete_favorite" }) do %>
+        <% form_tag ({ :controller => "favorites", :action => "delete_favorite" }) do %>
 	  <% @favorites.each do |favorites| %>
 	    <%= hidden_field_tag 'product_style_ids[]',favorites.product_style_id %>
 	  <% end %>
-          <%= submit_tag 'お気に入りを全て削除', :confirm => "お気に入りを全て削除します。よろしいですか？" %>
+	  <%= submit_tag 'お気に入りを全て削除', :confirm => "お気に入りを全て削除します。よろしいですか？" %>
         <% end %>
 	<ul>
 	  <% @favorites.each do |favorites| %>
@@ -28,7 +28,7 @@
 	      <p><%= link_to((product_image_tag(product, :small)), {:controller => "products", :action => "show", :id => (product.id),:category_id => product.category_id}) %></p>
 	      <p><%= link_to_product product %></p>
 	      <p>
-	      <% form_tag ({:controller => "favorite", :action => "delete_favorite"}) do %>
+	      <% form_tag ({:controller => "favorites", :action => "delete_favorite"}) do %>
 	        <%= hidden_field_tag 'product_style_ids[]',style.id %>
 	        <%= submit_tag 'お気に入りから削除', :confirm => "本当に削除してもよろしいですか？" %>
 	      <% end %>
