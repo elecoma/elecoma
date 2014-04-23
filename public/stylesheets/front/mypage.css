@@ -191,6 +191,7 @@
 /*--------お気に入り--------*/
 #favorite li {
     float: left;
+    margin-top:20px;
     width: 118px;
     padding: 5px;
     height: 180px;
