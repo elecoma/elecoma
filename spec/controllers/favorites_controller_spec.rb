@@ -21,7 +21,7 @@ describe FavoritesController do
     describe "product_style_idが無く、ログインしていない場合" do
       it "お気に入り一覧へリダイレクトする" do
         post 'add_favorite', params={}
-        response.should redirect_to controller: :accounts, action: :favorite
+        response.should redirect_to controller: :accounts, action: :login
       end
 
       it "お気に入りが増えていない" do
@@ -51,7 +51,7 @@ describe FavoritesController do
     describe "product_style_idがあり、ログインしていない場合" do
       it "お気に入り一覧へリダイレクトする" do
         post 'add_favorite', params={product_style_id: @exists_favorite.product_style_id}
-        response.should redirect_to controller: :accounts, action: :favorite
+        response.should redirect_to controller: :accounts, action: :login
       end
 
       it "お気に入りが増えていない" do
@@ -110,7 +110,7 @@ describe FavoritesController do
     describe "product_style_idsが無く、ログインしていない場合" do
       it "お気に入り一覧へリダイレクトする" do
         post 'delete_favorite', params={}
-        response.should redirect_to controller: :accounts, action: :favorite
+        response.should redirect_to controller: :accounts, action: :login
       end
 
       it "お気に入りが減っていない" do
@@ -140,7 +140,7 @@ describe FavoritesController do
     describe "product_style_idsがあり、ログインしていない場合" do
       it "お気に入り一覧へリダイレクトする" do
         post 'delete_favorite', params = { product_style_ids: [@exists_favorite.product_style_id] }
-        response.should redirect_to controller: :accounts, action: :favorite
+        response.should redirect_to controller: :accounts, action: :login
       end
 
       it "お気に入りが減っていない" do
