@@ -215,6 +215,10 @@
     border: 1px solid #aaaaaa;
 }
 
+#favorite .submit {
+    border: none;
+}
+
 #favorite p {
     margin-top: 5px;
     line-height: 110%;
