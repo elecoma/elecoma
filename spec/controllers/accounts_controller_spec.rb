@@ -327,7 +327,8 @@ describe AccountsController do
     describe "GET favorite" do
       before do
         @exists_favorite = favorites(:exists_favorite)
-        session[:customer_id] = @exists_favorite.customer_id
+        @exists_favorite2 = favorites(:exists_favorite2)
+        session[:customer_id] = [@exists_favorite.customer_id, @exists_favorite2.customer_id]
         get 'favorite'
       end
 
@@ -336,7 +337,7 @@ describe AccountsController do
       end
 
       it "お気に入りを取得している" do
-        assigns[:favorites].should == @exists_favorite
+        assigns[:favorites].should == [@exists_favorite,@exists_favorite2]
       end
     end
   end

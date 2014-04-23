@@ -169,7 +169,7 @@ describe FavoritesController do
 
         it "指定したお気に入り商品が削除されている" do
           post 'delete_favorite', params = { product_style_ids: [@exists_favorite.product_style_id] }
-          Favorite.find(@exists_favorite.id).should be_nil
+          Favorite.find(:first, :conditions => { :product_style_id => @exists_favorite.product_style_id}).should be_nil
         end
       end
 
@@ -191,8 +191,8 @@ describe FavoritesController do
 
         it "指定したお気に入り商品が削除されている" do
           post 'delete_favorite', params = { product_style_ids: [@exists_favorite.product_style_id, @exists_favorite2.product_style_id] }
-          Favorite.find(@exists_favorite.id).should be_nil
-          Favorite.find(@exists_favorite2.id).should be_nil
+          Favorite.find(:first, :conditions => { :product_style_id => @exists_favorite.product_style_id}).should be_nil
+          Favorite.find(:first, :conditions => { :product_style_id => @exists_favorite2.product_style_id}).should be_nil
         end
       end
     end
