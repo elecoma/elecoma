@@ -27,6 +27,8 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :socials, :only => [:update, :index]
   end
 
+  map.resources :accounts, :collection => {:favorite => [:get]}, :only => [:favorite]
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
