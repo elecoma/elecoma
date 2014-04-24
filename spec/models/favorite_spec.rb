@@ -13,8 +13,8 @@ describe Favorite do
 
     it "正しい値が入っていればデータが作成できる" do
       @favorite.customer_id = 1
-      @favorite.product_style_id = 2
-      @favorite.save be_true
+      @favorite.product_style_id = 3
+      @favorite.save.should be_true
     end
 
     it "customer_idが無いと失敗" do
@@ -27,13 +27,13 @@ describe Favorite do
       @favorite.save.should be_false
     end
 
-    it "product_style_idに数字以外が入っていると失敗" do
-      @favorite.product_style_id = 'test'
+    it "customer_idに数字以外が入っていると失敗" do
+      @favorite.customer_id = 'test'
       @favorite.save.should be_false
     end
 
     it "product_style_idに数字以外が入っていると失敗" do
-      @favorite.customer_id = 'test'
+      @favorite.product_style_id = 'test'
       @favorite.save.should be_false
     end
 

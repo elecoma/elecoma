@@ -20,13 +20,13 @@ describe FavoritesController do
 
     describe "product_style_idが無く、ログインしていない場合" do
       it "ログイン画面へリダイレクトする" do
-        post 'add_favorite', params={}
+        post 'add_favorite'
         response.should redirect_to controller: :accounts, action: :login
       end
 
       it "お気に入りが増えていない" do
         lambda{
-          post 'add_favorite', params = {}
+          post 'add_favorite'
         }.should_not change(Favorite,:count).by(1)
       end
     end
@@ -37,13 +37,13 @@ describe FavoritesController do
       end
 
       it "お気に入り一覧へリダイレクトする" do
-        post 'add_favorite', params={}
+        post 'add_favorite'
         response.should redirect_to controller: :accounts, action: :favorite
       end
 
       it "お気に入りが増えていない" do
         lambda{
-          post 'add_favorite', params = {}
+          post 'add_favorite'
         }.should_not change(Favorite,:count).by(1)
       end
     end
@@ -109,13 +109,13 @@ describe FavoritesController do
 
     describe "product_style_idsが無く、ログインしていない場合" do
       it "ログイン画面へリダイレクトする" do
-        post 'delete_favorite', params={}
+        post 'delete_favorite'
         response.should redirect_to controller: :accounts, action: :login
       end
 
       it "お気に入りが減っていない" do
         lambda{
-          post 'delete_favorite', params = {}
+          post 'delete_favorite'
         }.should_not change(Favorite,:count).by(-1)
       end
     end
@@ -126,13 +126,13 @@ describe FavoritesController do
       end
 
       it "お気に入り一覧へリダイレクトする" do
-        post 'delete_favorite', params={}
+        post 'delete_favorite'
         response.should redirect_to controller: :accounts, action: :favorite
       end
 
       it "お気に入りが減っていない" do
         lambda{
-          post 'delete_favorite', params = {}
+          post 'delete_favorite'
         }.should_not change(Favorite,:count).by(-1)
       end
     end

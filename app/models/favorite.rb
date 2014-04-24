@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 class Favorite < ActiveRecord::Base
+
   MAX_PER_PAGE = 20
 
   acts_as_paranoid
