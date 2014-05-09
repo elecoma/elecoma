@@ -54,4 +54,13 @@ module ProductHelper
   def content_title_tag(parts)
     parts.reject(&:nil?).join(' - ')
   end
+
+  def first_product_style
+    return if @product.nil?
+    @product.product_styles.first
+  end
+
+  def already_favorite?
+    Favorite.exists?(customer_id: @login_customer.id, product_style_id: first_product_style.try(:id))
+  end
 end
