@@ -84,9 +84,9 @@
     <%- end -%>
     <% if @login_customer %>
       <% if already_favorite? %>
-        <%= link_to image_tag("/images/item/favorite_delete.gif", :width=>"140", :alt=>"お気に入りから削除"), {:controller => :favorites, :action => :delete_favorite, :product_style_ids => [first_product_style.id] }, :confirm => "お気に入>りを削除します。よろしいですか？"  %>
+        <%= link_to image_tag("/images/item/favorite_delete.gif", :width=>"140", :alt=>"お気に入りから削除"), {:controller => :favorites, :action => :delete_favorite, :product_style_ids => [@product.first_product_style.id] }, :confirm => "お気に入>りを削除します。よろしいですか？"  %>
       <% else %>
-        <%= link_to image_tag("/images/item/favorite_add.gif", :width=>"140", :alt=>"お気に入りを追加"), {:controller => :favorites, :action => :add_favorite, :product_style_id => first_product_style.id }  %>
+        <%= link_to image_tag("/images/item/favorite_add.gif", :width=>"140", :alt=>"お気に入りを追加"), {:controller => :favorites, :action => :add_favorite, :product_style_id => @product.first_product_style.id }  %>
       <% end %>
     <% end %>
   </div>
