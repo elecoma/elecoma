@@ -13,7 +13,6 @@ class ProductsController < BaseController
     @shop = Shop.find(:first)
     @social = @shop.social
     @social_flag = (@social.google || @social.facebook || @social.mixi_check || @social.mixi_like || @social.evernote || @social.gree || @social.hatena || @social.twitter) if @social
-    @already_favorite_flag = first_product_style if @login_customer
     if request.mobile?
       ProductAccessLog.create(:product_id => @product.id,
                               :session_id => session.session_id,
@@ -127,22 +126,4 @@ class ProductsController < BaseController
       redirect_to :action => params[:action], :params => params
     end
   end
-
-  def first_product_style
-    product_check(@product)
-    product_check(@product.product_styles)
-    product_check(@product.product_styles.first)
-
-    favorite = Favorite.exists?(:customer_id => @login_customer.id, :product_style_id => @product.product_styles.first.id)
-    favorite
-  end
-
-  def product_check(product)
-    if product.nil?
-      flash[:error] = "商品は存在しません"
-      redirect_to(favorite_accounts_path)
-      return
-    end
-  end
-
 end
