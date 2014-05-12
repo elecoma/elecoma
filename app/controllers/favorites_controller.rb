@@ -7,8 +7,10 @@ class FavoritesController < BaseController
     return redirect_to(favorite_accounts_path) unless params[:product_style_ids].is_a? Array
 
     params[:product_style_ids].each do |product_style_id|
-      product = product_id_check(product_style_id)
-      return redirect_to(favorite_accounts_path) if product.nil?
+      unless ProductStyle.exists?(product_style_id)
+        flash[:error] = "商品ID[#{product_style_id}]は存在しない商品IDです"
+        return redirect_to(favorite_accounts_path)
+      end
 
       favorite = Favorite.find(:first, :conditions => {:customer_id => @login_customer.id, :product_style_id => product_style_id})
       if favorite.nil?
@@ -32,8 +34,10 @@ class FavoritesController < BaseController
       return redirect_to(favorite_accounts_path)
     end
 
-    product = product_id_check(params[:product_style_id])
-    return redirect_to(favorite_accounts_path) if product.nil?
+    unless ProductStyle.exists?(params[:product_style_id])
+      flash[:error] = "商品ID[#{params[:product_style_id]}]は存在しない商品IDです"
+      return redirect_to(favorite_accounts_path)
+    end
 
     favorite = Favorite.create(:customer_id => @login_customer.id, :product_style_id => params[:product_style_id].to_i)
     unless favorite.errors.present?
@@ -43,14 +47,4 @@ class FavoritesController < BaseController
     end
     redirect_to(favorite_accounts_path)
   end
-
-  private
-
-  def product_id_check(product_style_id)
-    product = ProductStyle.find_by_id(product_style_id)
-    flash[:error] = "商品ID[#{product_style_id}]は存在しない商品IDです" if product.nil?
-    product
-  end
 end
-
-
