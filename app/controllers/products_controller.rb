@@ -126,5 +126,4 @@ class ProductsController < BaseController
       redirect_to :action => params[:action], :params => params
     end
   end
-
 end
