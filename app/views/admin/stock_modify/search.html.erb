@@ -5,6 +5,7 @@
 <h2>在庫管理</h2>
 <%=h flash[:notice] %>
 <%=h flash[:error] %>
+
 <%= error_messages_for :condition %>
 <% form_for :condition, :url => {:action => 'search'}, :html => {:method => :get} do |f| %>
   <%= render :partial => "search", :locals=>{:f => f}%>
@@ -12,6 +13,10 @@
 <br />
 
 <p>&gt;&gt;検索結果一覧&nbsp;<%=@product_styles.total_entries %>件&nbsp;が該当しました。</p><br/>
+<div class="errorExplanation" id="errorExplanation" style="display:none"><h2>実在庫数にエラーが発生しました。</h2><p>次の項目を確認してください。</p><ul>
+  <li><div id="msg1" style="display:none">数字以外の文字が含まれています。</div></li>
+  <li><div id="msg2" style="display:none">実在庫数が不良在庫より少ないです。</div></li>
+</ul></div>
   <table class="data2 clear" cellspacing="1">
     <tr>
       <th>商品ID</th>
@@ -19,7 +24,7 @@
       <th>商品名</th>
       <th>規格名称</th>
       <th>商品型番</th>
-      <th>実在庫数</th>
+      <th onClick="editall()">実在庫数</th>
       <th>在庫調整</th>
     </tr>
 <%unless @product_styles.blank?%>	
@@ -30,14 +35,160 @@
         <td><%= h ps.product_name %></td>
         <td><%= h ps.style_name %></td>
         <td><%= h ps.manufacturer_id %></td>
-        <td><%= number_with_delimiter(ps.actual_count.to_i) %></td>
+
+        <td width="114" height="26"><div id=<%="count"+ps.id.to_s%> onClick="show_edit(<%=ps.id%>)"><div id=<%="act"+ps.id.to_s%> style="text-align: left; float: left;"><%= number_with_delimiter ps.actual_count.to_i %></div>
+            <div style="text-align: right;"><a href="#" onClick="show_edit(<%=ps.id%>);return false;" ><%= image_tag "edit.gif"%></a></div></div>
+            <div id=<%="edit"+ps.id.to_s%> style="display:none;"><p>
+              <% form_for ps, :url=>{:action => "edit_now", :id=>ps.id}, :html=>{:onsubmit=>"submitone("+ps.id.to_s+");return false;"} do |f| %>
+              <%= f.text_field :actual_count, {:id=>"ac"+ps.id.to_s, :class=>"data_s",:style=>"ime-mode:inactive", :autocomplete=>'off'} %>
+              <%= f.submit "保存" %>
+            <%end%></p></div>
+        </td>
         <td class="t_center">
 	    <%= link_to "在庫調整", :action=>"edit" ,:id=>ps.id %>
         </td>
       </tr>
-    <% end %>
+   <% end %>
 <%end%>
 </table>
-<%= will_paginate @product_styles %>
-
+<span align="left" style="float: left;"><%= will_paginate @product_styles %></span>
+<span align="right">
+<% form_tag :url=>{:action=>"edit_all"},:target=>["_blank"] do %>
+  <%= submit_tag "一括更新", :onclick=>"submitall(); return false" %>
+<%end%></span>
+<br />
+<table cellspacing="1" cellpadding="0" class="data" >
+  <tr>
+    <th>在庫編集方法</th>
+    <td><div style="margin: 3px;"><%= image_tag "edit.gif"%>ボタンをクリックするとテキストボックスが開くので、実在庫数を編集して保存できます。複数の商品の実在庫数を編集して、一括更新ボタンで同時に保存もできます。</div></td>
+  </tr>
+</table>
 </div><!-- /メイン -->
+
+<script language="JavaScript" type="text/javascript">
+<!--
+var cl = new Array();
+var al = new Array();
+var el = new Array();
+var ids = <%=@product_styles.map {|ps| ps.id}%>;
+
+for( var i=0; i<ids.length; i++){
+  el[i] = 0;
+  al[i] = false;
+}
+
+function show_err(){
+  var e_msg_box = document.getElementById("errorExplanation");
+  var e_msg1 = document.getElementById("msg1");
+  var e_msg2 = document.getElementById("msg2");
+
+  e_msg_box.style.display = "none";
+  e_msg1.style.display = "none";
+  e_msg2.style.display = "none";
+  for( var i=0; i<ids.length; i++){
+    var e_edit = document.getElementById("ac"+ids[i]);
+    e_edit.style.backgroundColor = "white";
+    if(el[i] == 1){
+      e_msg_box.style.display = "";
+      e_msg1.style.display = "";
+      e_edit.style.backgroundColor = "lightpink";
+    }
+    if(el[i] == 2){
+      e_msg_box.style.display = "";
+      e_msg2.style.display = "";
+      e_edit.style.backgroundColor = "lightpink";
+    }
+  }
+}
+
+function show_sync(){
+  for (var i=0; i<cl.length; i++){
+    if(al[ids.indexOf(cl[i])]) return;
+  }
+  for (var i=0; i<cl.length; i++){
+    show_count(cl[i]);
+  }
+  cl.length = 0;
+  show_err();
+}
+
+function show_count(num) {
+  var e_count = document.getElementById("count"+num);
+  var e_edit = document.getElementById("edit"+num);
+
+  e_count.style.display = "";
+  e_edit.style.display = "none";
+}
+
+function submitnow(num) {
+  var e_edit = document.getElementById("edit"+num);
+  var e_num = document.getElementById("ac"+num).value;
+  var e_ex = document.getElementById("act"+num).innerHTML;
+  var res = e_num.match(/[^0-9]/);
+
+  if (e_edit.style.display == "none"){
+    return;
+  }
+  al[ids.indexOf(num)] = false;
+  el[ids.indexOf(num)] = 0;
+  if(!res) {
+    cl.push(num);
+    e_ex = e_ex.replace(/[^0-9]/g, "");
+    if(e_num=="") {
+      document.getElementById("ac"+num).value = e_ex;
+      return;
+    }
+    if(e_num==e_ex) {
+      return;
+    }
+    al[ids.indexOf(num)] = true;
+    new Ajax.Request('/admin/stock_modify/edit_now/'+String(num), {
+      asynchronous:true,
+      evalScripts:true,
+      parameters:Form.serialize('edit_product_style_'+String(num)),
+      onSuccess: function(data){
+        al[ids.indexOf(num)] = false;
+        show_sync();
+      },
+      onFailure: function(data){
+        el[ids.indexOf(num)] = 2;
+        al[ids.indexOf(num)] = false;
+        cl.splice(cl.indexOf(num),1);
+        show_sync();
+      }
+   });
+   return;
+  }
+  el[ids.indexOf(num)] = 1;
+  return;
+}
+
+function show_edit(num) {
+  var e_count = document.getElementById("count"+num);
+  var e_edit = document.getElementById("edit"+num);
+
+  e_count.style.display = "none";
+  e_edit.style.display = "";
+}
+
+function submitone(num){
+  submitnow(num);
+  show_sync();
+}
+
+function submitall(){
+  for (var i=0; i<ids.length; i++) {
+    submitnow(ids[i]);
+  }
+  show_sync();
+}
+
+function editall(){
+  for (var i=0; i<ids.length; i++) {
+    show_edit(ids[i]);
+  }
+}
+
+-->
+
+</script>

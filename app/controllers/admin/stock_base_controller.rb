@@ -22,6 +22,8 @@ class Admin::StockBaseController < Admin::BaseController
       :order => "product_styles.id"
     }
     @product_styles = ProductStyle.paginate(find_options)    
+    session[:product_styles] = @product_styles
+    session[:find_options] = find_options
   end
   
   #入庫数、在庫数を更新

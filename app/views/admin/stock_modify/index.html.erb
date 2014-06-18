@@ -5,6 +5,7 @@
 <h2>在庫管理</h2>
 <%=h flash[:stock_update] %>
 <%=h flash[:stock_update_e] %>
+
 <%= error_messages_for :condition %>
 
 <% form_for :condition, :url => {:action => 'search'}, :html => {:method => :get} do |f| %>
