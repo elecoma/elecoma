@@ -50,19 +50,16 @@ class Admin::StockModifyController < Admin::StockBaseController
 
   def edit_now
     #1.IDが有効か
-    return if params[:id].blank? && params[:id]=~ /^\d*$/
-    @product_style = ProductStyle.find_by_id(params[:id].to_i)
+    @product_style = ProductStyle.find_by_id(params[:id])
+    return if @product_style.blank?
     @stock_history = StockHistory.new(params[:product_style])
+    return if @stock_history.blank?
     actual_count = @stock_history.actual_count.to_i
-    @product_style.actual_count = 0 if @product_style.actual_count.blank?
-    @product_style.orderable_count = 0 if @product_style.orderable_count.blank?
-    @product_style.broken_count = 0 if @product_style.broken_count.blank?
+    raise ActiveRecord::StatementInvalid and return if actual_count >= 2**31
     #2.変更が必要か
     return if @product_style.actual_count == actual_count
-    @stock_history.actual_adjustment = actual_count - @product_style.actual_count
-    @stock_history.orderable_adjustment = actual_count - @product_style.broken_count - @product_style.orderable_count
-    @stock_history.stock_type = StockHistory::STOCK_MODIFY
-    @stock_history.comment = "更新"
+    ps_init
+    set_sh(actual_count)
     #3-1.入力チェック
     return unless @stock_history.valid?
     #3-2.値チェック
@@ -79,7 +76,18 @@ class Admin::StockModifyController < Admin::StockBaseController
     end
   end
 
-  def edit_all
+  private
+  def ps_init
+    @product_style.actual_count = 0 if @product_style.actual_count.blank?
+    @product_style.orderable_count = 0 if @product_style.orderable_count.blank?
+    @product_style.broken_count = 0 if @product_style.broken_count.blank?
+  end
+
+  def set_sh(actual_count)
+    @stock_history.actual_adjustment = actual_count - @product_style.actual_count
+    @stock_history.orderable_adjustment = actual_count - @product_style.broken_count - @product_style.orderable_count
+    @stock_history.stock_type = StockHistory::STOCK_MODIFY
+    @stock_history.comment = "更新"
   end
 
 end
