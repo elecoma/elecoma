@@ -50,29 +50,31 @@ class Admin::StockModifyController < Admin::StockBaseController
 
   def edit_now
     #1.IDが有効か
+    @product_styles = session[:product_styles]
     @product_style = ProductStyle.find_by_id(params[:id])
-    return if @product_style.blank?
+    show_res(4) and return if @product_style.blank?
+    #2.入力が半角数字のみか
+    show_res(1) and return if params[:product_style][:actual_count] =~ /[^0-9]/
     @stock_history = StockHistory.new(params[:product_style])
-    return if @stock_history.blank?
+    show_res(4) and return if @stock_history.blank?
     actual_count = @stock_history.actual_count.to_i
-    raise ActiveRecord::StatementInvalid and return if actual_count >= 2**31
-    #2.変更が必要か
-    return if @product_style.actual_count == actual_count
+    #3.整数型範囲内か
+    show_res(2) and return if actual_count >= 2**31
+    #4.変更が必要か
+    show_res(-1) and return if @product_style.actual_count == actual_count
     ps_init
     set_sh(actual_count)
-    #3-1.入力チェック
-    return unless @stock_history.valid?
-    #3-2.値チェック
+    #5-1.入力チェック
+    show_res(4) and return unless @stock_history.valid?
+    #5-2.値チェック
     result,err_msg = check_parameter
-    return unless result
-    #4.値設定
+    show_res(3) and return unless result
+    #6.値設定
     set_parameter
     if @product_style.save
       set_stock_history
       @stock_history.save
-      render :update do |page|
-        page.replace_html "act"+params[:id].to_s, :text => number_with_delimiter(actual_count)
-      end
+      @sr_id = show_res(0)
     end
   end
 
@@ -88,6 +90,14 @@ class Admin::StockModifyController < Admin::StockBaseController
     @stock_history.orderable_adjustment = actual_count - @product_style.broken_count - @product_style.orderable_count
     @stock_history.stock_type = StockHistory::STOCK_MODIFY
     @stock_history.comment = "更新"
+  end
+
+  def show_res(e_id)
+    @e_id = e_id
+    respond_to do |format|
+      format.js
+    end
+    true
   end
 
 end

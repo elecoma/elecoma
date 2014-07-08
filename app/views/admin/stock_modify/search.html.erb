@@ -14,9 +14,10 @@
 
 <p>&gt;&gt;検索結果一覧&nbsp;<%=@product_styles.total_entries %>件&nbsp;が該当しました。</p><br/>
 <div id="errorExplanation" style="display:none"><h2>実在庫数にエラーが発生しました。</h2><p>次の項目を確認してください。</p><ul>
-  <li><div id="msg1" style="display:none">数字以外の文字が含まれています。</div></li>
-  <li><div id="msg2" style="display:none">実在庫数が不良在庫より少ないです。</div></li>
-  <li><div id="msg3" style="display:none">入力が扱える数値の範囲外です。</div></li>
+  <li><div id="msg1" style="display:none">実在庫数は半角数字のみで入力してください。</div></li>
+  <li><div id="msg2" style="display:none">入力が扱える数値の範囲を超えています。</div></li>
+  <li><div id="msg3" style="display:none">実在庫数が不良在庫より少ないです。</div></li>
+  <li><div id="msg4" style="display:none">在庫にアクセスできません。</div></li>
 </ul></div>
   <table class="data2 clear" cellspacing="1">
     <tr>

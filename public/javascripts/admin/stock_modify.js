@@ -36,30 +36,21 @@ function show_sync(ids){
 //エラー表示
 function show_err(ids){
   var e_msg_box = document.getElementById("errorExplanation");
-  var e_msg1 = document.getElementById("msg1");
-  var e_msg2 = document.getElementById("msg2");
-  var e_msg3 = document.getElementById("msg3");
+  var n_errors = 4;
+  var e_msgs = new Array();
+ 
+  for (var e=1; e<=n_errors; e++){
+    e_msgs[e] = document.getElementById("msg"+e);
+    e_msgs[e].style.display = "none";
+  }
 
   e_msg_box.style.display = "none";
-  e_msg1.style.display = "none";
-  e_msg2.style.display = "none";
-  e_msg3.style.display = "none";
   for( var i=0; i<ids.length; i++){
     var e_field = document.getElementById("ac"+ids[i]);
     e_field.style.backgroundColor = "white";
-    if(error_list[i] == 1){
+    if(error_list[i] > 0) {
       e_msg_box.style.display = "";
-      e_msg1.style.display = "";
-      e_field.style.backgroundColor = "lightpink";
-    }
-    if(error_list[i] == 2){
-      e_msg_box.style.display = "";
-      e_msg2.style.display = "";
-      e_field.style.backgroundColor = "lightpink";
-    }
-    if(error_list[i] == 3){
-      e_msg_box.style.display = "";
-      e_msg3.style.display = "";
+      e_msgs[error_list[i]].style.display = "";
       e_field.style.backgroundColor = "lightpink";
     }
   }
@@ -91,52 +82,26 @@ function submit_now(num, ids) {
   var e_edit = document.getElementById("edit_product_style_"+num);
   var e_num = document.getElementById("ac"+num);
   var e_act = document.getElementById("act"+num).innerHTML;
-  var res = e_num.value.match(/[^0-9]/);
 
-  ajax_list[ids.indexOf(num)] = false;
-  error_list[ids.indexOf(num)] = 0;
-  if (e_edit.style.display == "none"){
+  if (e_edit.style.display == "none" || ajax_list[ids.indexOf(num)]){
     return;
   }
-  if(!res) {
-    count_list[ids.indexOf(num)] = true;
-    e_act = e_act.replace(/[^0-9]/g, "");
-    if(e_num.value=="") {
-      e_num.value = e_act;
-      return;
-    }
-    var new_num = Number(e_num.value);
-    if(new_num==e_act) {
-      e_num.value = new_num;
-      return;
-    }
-    if(new_num >= Math.pow(2,31)) {
-      error_list[ids.indexOf(num)] = 3;
-      count_list[ids.indexOf(num)] = false;
-      return;
-    }
-    ajax_list[ids.indexOf(num)] = true;
-    new Ajax.Request('/admin/stock_modify/edit_now/'+num, {
-      asynchronous:true,
-      evalScripts:true,
-      parameters:Form.serialize('edit_product_style_'+num),
-      onSuccess: function(data){
-        e_num.value = new_num;
-        ajax_list[ids.indexOf(num)] = false;
-        success_list[ids.indexOf(num)] = true;
-        show_sync(ids);
-      },
-      onFailure: function(data){
-        error_list[ids.indexOf(num)] = 2;
-        ajax_list[ids.indexOf(num)] = false;
-        count_list[ids.indexOf(num)] = false;
-        show_sync(ids);
-      }
-   });
-   return;
+  ajax_list[ids.indexOf(num)] = false;
+  error_list[ids.indexOf(num)] = 0;
+  count_list[ids.indexOf(num)] = true;
+  e_act = e_act.replace(/[^0-9]/g, "");
+  if(e_num.value=="") {
+    e_num.value = e_act;
+    return;
   }
-  error_list[ids.indexOf(num)] = 1;
-  return;
+  var new_num = Number(e_num.value);
+  ajax_list[ids.indexOf(num)] = true;
+  new Ajax.Request('/admin/stock_modify/edit_now/'+num, {
+    asynchronous:true,
+    evalScripts:true,
+    parameters:Form.serialize('edit_product_style_'+num),
+ });
+ return;
 }
 
 //実在庫数表示
