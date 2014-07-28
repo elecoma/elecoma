@@ -25,6 +25,7 @@ class Product < ActiveRecord::Base
   has_one :campaign
   belongs_to :supplier
   belongs_to :retailer
+  has_one :product_set
 
   validates_length_of :name , :maximum => 50
   validates_length_of :name , :minimum => 1
@@ -39,6 +40,8 @@ class Product < ActiveRecord::Base
   validates_presence_of :retailer
   validates_associated :sub_products
   validates_numericality_of :price, :allow_nil => true, :greater_than_or_equal_to => 0
+  validates_presence_of :price, :if => :is_set?
+
   attr_accessor :small_resource_path
   attr_accessor :medium_resource_path
   attr_accessor :large_resource_path
@@ -63,6 +66,10 @@ class Product < ActiveRecord::Base
         errors.add :public_end_at, "は公開開始日以降の日付を設定してください。"
       end
     end
+  end
+
+  def is_set?
+    self.set_flag
   end
 
   def self.permit_select
@@ -100,14 +107,23 @@ class Product < ActiveRecord::Base
   end
 
   # 規格
-  def first_product_style
-    product_styles.empty? and return nil
-    product_styles[0]
+  def first_product_order_unit
+    if is_set?
+      product_set = ProductSet.find_by_product_id(id)
+      product_order_unit = ProductOrderUnit.find_by_product_set_id(product_set.id)
+      product_order_unit.blank? and return nil
+      product_order_unit
+    else
+      product_styles.empty? and return nil
+      product_order_unit = ProductOrderUnit.find_by_product_style_id(product_styles[0].id)
+      product_order_unit.blank? and return nil
+      product_order_unit
+    end
   end
-  delegate_to :first_product_style, :style_category1, :style, :as => :style1
-  delegate_to :first_product_style, :style_category2, :style, :as => :style2
-  delegate_to :first_product_style, :style_category1, :style_id, :as => :style_id1
-  delegate_to :first_product_style, :style_category2, :style_id, :as => :style_id2
+  delegate_to :first_product_order_unit, :ps, :style_category1, :style, :as => :style1
+  delegate_to :first_product_order_unit, :ps, :style_category2, :style, :as => :style2
+  delegate_to :first_product_order_unit, :ps, :style_category1, :style_id, :as => :style_id1
+  delegate_to :first_product_order_unit, :ps, :style_category2, :style_id, :as => :style_id2
 
   # 最安値と最高値の 2 要素配列
   def price_range
@@ -164,10 +180,19 @@ class Product < ActiveRecord::Base
     end
   end
 
+  # セット在庫がある
+  def have_set_zaiko?
+    product_set or return false
+    return false if self.sell_limit == 0
+    product_set.get_product_style_ids.zip(product_set.get_ps_counts).all? do |ps_id, ps_count|
+      ProductStyle.find(ps_id).orderable_count.to_i >= ps_count
+    end
+  end
+
   def self.default_condition
     conditions = [["products.permit = ?", true]]
     conditions << ["? between products.public_start_at and products.public_end_at", today_utc(Date.today)]
-    conditions << ["have_product_style = ?", true]
+    conditions << ["have_product_style = ? or set_flag = ?", true, true]
     conditions
   end
 
@@ -501,6 +526,16 @@ class Product < ActiveRecord::Base
     end
   end
 
+  def get_set_list
+    return unless set_flag
+    ProductSet.find_by_product_id(id).get_set_list
+  end
+
+  def get_set_id
+    return unless set_flag
+    ProductSet.find_by_product_id(id).id
+  end
+
   private
   def self.csv_columns_name
     [
@@ -644,5 +679,5 @@ class Product < ActiveRecord::Base
   def self.today_utc(today)
     ud = Time.local(today.year,today.month,today.day)
     DateTime.new(ud.year, ud.month, ud.day, ud.hour, ud.min, ud.sec)
-  end
+  end  
 end

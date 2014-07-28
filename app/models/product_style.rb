@@ -19,9 +19,11 @@ class ProductStyle < ActiveRecord::Base
              :class_name => "Style",
              :foreign_key => "style_id2"
   has_many :stock_histories
+  has_one :product_order_unit
              
   validates_format_of :code, :with => /^[a-zA-Z0-9]*$/
   validates_format_of :manufacturer_id, :with => /^[a-zA-Z0-9]*$/, :allow_blank=>true
+  validates_format_of :set_ids, :with => /(\d+,)*\d*/  
 
 =begin rdoc
   * INFO
@@ -92,5 +94,23 @@ class ProductStyle < ActiveRecord::Base
       x.blank? and break xs
       xs << x
     end.join(delimiter)
+  end
+
+  def get_set_ids
+    unless set_ids.blank?
+      set_ids.split(",").map{|set_id| set_id.to_i }
+    end
+  end
+
+  def is_included?(carts)
+    carts.any? do |cart|
+      if cart.is_set?
+        cart.product_order_unit.ps.get_product_style_ids.any? do |id|
+          self.id == id
+        end
+      else
+        self == cart.product_order_unit.ps
+      end
+    end
   end
 end

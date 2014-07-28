@@ -1,0 +1,34 @@
+<% size = 4 unless local_variables.include?('size') %>
+<%-
+[
+  ['set', recommend_set_list, '/images/item/reco_t.gif', 'これらの商品が含まれるセットがあります。'],
+].each do |key, list, image_url, alt|
+-%>
+<% unless list.blank? %>
+ <div id="reco_box">
+ <h2><%= image_tag image_url, :alt=>alt %></h2>
+   <ul class="clearfix"><p>
+     <% if list.size > size %> <a id="reco-<%=key%>-back" style="cursor:pointer;visibility:hidden;float:right"><%= image_tag "/images/item/lt2.png", :alt=>"↑" %></a><%end%>
+     <% list.each_with_index do | recommend_set, i | %>
+       <% next unless recommend_set %>
+     <%# 最初の 4個以外非表示にする %>
+     <% style = i >= size ? 'display:none' : ''  %>
+     <li class="products" id="reco-<%=key%><%=i%>" style="<%= style %>">
+      <%= link_to((product_image_tag(recommend_set, :small)), {:controller => "/products", :action => "show", :id => (recommend_set.id),:category_id => recommend_set.category_id}) %> 
+      <dl>
+        <dt><%= link_to_product recommend_set, recommend_set.name %></dt>
+        <dd>&yen;<%=h number_with_delimiter recommend_set.price %></dd>
+      </dl>
+      <ul class="reco-<%=key%><%=i%>-list"%>
+        <% recommend_set.get_set_list.each do |set| %>
+          <li class="set-items">・<%=h set.product_style.full_name%> <%=h set.quantity%>個</li>
+        <%end%>
+      </ul>
+    </li>
+    <% end %>
+    <% if list.size > size %> <a id="reco-<%=key%>-next" style="cursor:pointer;visibility:hidden;float:right"><%= image_tag "/images/item/gt2.png", :alt=>"↓" %></a> <%end%>
+   </ul></p>
+ <div class="m_btm"><%= image_tag("item/reco_bg_btm.gif", :width => "530", :height => "5", :alt => "") %></div>
+</div>
+<% end %>
+<% end %>

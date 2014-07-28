@@ -3,18 +3,19 @@ class Cart < ActiveRecord::Base
 
   acts_as_paranoid
   belongs_to :customer
-  belongs_to :product_style
+  belongs_to :product_order_unit
 
-  delegate_to :product_style, :product
-  delegate_to :product_style, :product, :id, :as => :product_id
-  delegate_to :product_style, :product, :name, :as => :product_name
-  delegate_to :product_style, :sell_price, :as => :price
-  delegate_to :product_style, :style_category1, :name, :as => :classcategory_name1
-  delegate_to :product_style, :style_category2, :name, :as => :classcategory_name2
+  delegate_to :product_order_unit, :product_style, :product
+  delegate_to :product_order_unit, :product_set, :product
+  delegate_to :product_order_unit, :product_style, :product, :id, :as => :product_id
+  delegate_to :product_order_unit, :product_style, :product, :name, :as => :product_name
+  delegate_to :product_order_unit, :sell_price, :as => :price
+  delegate_to :product_order_unit, :product_style, :style_category1, :name, :as => :classcategory_name1, :unless => :is_set?
+  delegate_to :product_order_unit, :product_style, :style_category2, :name, :as => :classcategory_name2, :unless => :is_set?
 
   def subtotal
-    if product_style
-      product_style.including_tax_sell_price * quantity.to_i
+    if product_order_unit
+      product_order_unit.including_tax_sell_price * quantity.to_i
     else
       nil
     end
@@ -27,21 +28,16 @@ class Cart < ActiveRecord::Base
     if quantity == 0
       errors.add :quantity, 'が 0 です。削除してください。'
     end
-    unless product_style
-      errors.add :product_style, 'がありません。削除してください。'
+    unless product_order_unit
+      errors.add :product_order_unit, 'がありません。削除してください。'
     else
-      ## product_style が必要な検証
-      # 受注可能数以内か
-      if quantity > product_style.available?(quantity)
-        errors.add_to_base('購入可能な数量を超過しています')
-      end
       # キャンペーンが生きているか
-      if product_style.product && campaign = product_style.product.campaign
+      if ps.product && campaign = ps.product.campaign
         unless campaign.check_term
           errors.add_to_base('キャンペーン期間外です。')
         end
       end
-      product = product_style.product
+      product = product_order_unit.ps.product
       unless product.permit
         errors.add_to_base('申し訳ありませんが販売を終了させて頂きました。')
       end
@@ -50,4 +46,13 @@ class Cart < ActiveRecord::Base
       end
     end
   end
+
+  def is_set?
+    self.product_order_unit.set_flag
+  end
+
+  def ps
+    is_set? ? product_order_unit.product_set :  product_order_unit.product_style
+  end  
+
 end
