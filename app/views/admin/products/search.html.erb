@@ -48,7 +48,7 @@
           <%= link_to "編集", edit_admin_product_path(product.id) %><br />
           <%= link_to_product product,  "確認", {:target => "_blank"} %>
         </td>
-        <td class="t_center"><%= link_to "規格", new_admin_product_style_path(:id => product.id) %></td>
+        <td class="t_center"><%= link_to "規格", new_admin_product_style_path(:id => product.id) unless product.is_set? %></td>
         <td class="t_center">
           <%= link_to "削除", admin_product_path(product.id), :confirm => "本当に削除しますか？", :method=>"delete" %>
         </td>
