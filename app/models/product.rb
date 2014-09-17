@@ -69,6 +69,7 @@ class Product < ActiveRecord::Base
   end
 
   def is_set?
+	return false if self.set_flag.nil?
     self.set_flag
   end
 
