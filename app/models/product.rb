@@ -106,6 +106,16 @@ class Product < ActiveRecord::Base
     end
   end
 
+def first_product_style
+    product_styles.empty? and return nil
+    product_styles[0]
+  end
+  delegate_to :first_product_style, :style_category1, :style, :as => :style1
+  delegate_to :first_product_style, :style_category2, :style, :as => :style2
+  delegate_to :first_product_style, :style_category1, :style_id, :as => :style_id1
+  delegate_to :first_product_style, :style_category2, :style_id, :as => :style_id2
+
+=begin
   # 規格
   def first_product_order_unit
     if is_set?
@@ -124,19 +134,27 @@ class Product < ActiveRecord::Base
   delegate_to :first_product_order_unit, :ps, :style_category2, :style, :as => :style2
   delegate_to :first_product_order_unit, :ps, :style_category1, :style_id, :as => :style_id1
   delegate_to :first_product_order_unit, :ps, :style_category2, :style_id, :as => :style_id2
+=end
 
   # 最安値と最高値の 2 要素配列
   def price_range
-    [product_styles.minimum(:sell_price), product_styles.maximum(:sell_price)]
+#　後ですべてPOUに価格参照元を差し替える
+    	[product_styles.minimum(:sell_price), product_styles.maximum(:sell_price)]
   end
 
   def price_label
-    p_range = price_range
-    if p_range[0] == p_range[1]
-      number_with_delimiter(p_range[0])
-    else
-      p_range.map{|p| number_with_delimiter(p)}.join("～")
-    end
+	if set_flag?
+	      product_set = ProductSet.find_by_product_id(id)
+    	  product_order_unit = ProductOrderUnit.find_by_product_set_id(product_set.id)
+		  return product_order_unit.sell_price
+ 	else
+	   	p_range = price_range
+    	if p_range[0] == p_range[1]
+    	  return number_with_delimiter(p_range[0])
+    	else
+    	  return p_range.map{|p| number_with_delimiter(p)}.join("～")
+    	end
+	end
   end
 
   def category_name
@@ -207,9 +225,11 @@ class Product < ActiveRecord::Base
             search_list << ["products.id = ?", 0]
           end
         else
-          search.errors.add "商品IDは数字で入力して下さい。", ""
+ #         search.errors.add "商品IDは数字で入力して下さい。", ""
+        search.errors.add "","商品IDは数字で入力して下さい。"
         end
       end
+
       unless search.code.blank?
         code_condition = ["product_styles.code like ? ", "%#{search.code}%"]
         if actual_count_list_flg
@@ -234,6 +254,7 @@ class Product < ActiveRecord::Base
           search_list << ["products.id in (?) ", ids]
         end
       end      
+
       unless search.style.blank?
         product_styles = ProductStyle.find(:all, :select => "product_styles.product_id",
                                            :joins => "left join style_categories  on product_styles.style_category_id1 = style_categories.id left join style_categories as style_categories2 on style_category_id2 = style_categories2.id ",

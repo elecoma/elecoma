@@ -26,7 +26,6 @@ class Admin::ProductsController < Admin::BaseController
   end
 
   new_action.before do
-    get_product
 
     get_product_status_by_params
     get_sub_product_by_params

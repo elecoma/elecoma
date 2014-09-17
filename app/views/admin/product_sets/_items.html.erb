@@ -1,0 +1,48 @@
+<h2>セット内容</h2>
+
+<% if params[:action] == "new" or "edit" %>
+  <table class="data" cellspacing="1">
+    <tr>
+     <th>ID(ps)</th>
+     <th>商品名</th>
+     <th>画像</th>
+     <th>個数</th>               
+     <th>詳細</th>
+     <th>増減</th>
+     <th>リストから削除</th>
+    </tr> 
+   <% @sets && @sets.each do |ps| %>
+    <tr>
+     <td><%= ps.product_style_id %>
+     <td><%= ps.product.name %></td>
+     <td><%= product_image_tag ps.product, :small %></td>
+     <td><%= ps.quantity %>個</td>
+     <td><%= link_to_product ps.product,  "確認", {:target => "_blank"} %></td>
+     <td><%= link_to "INC",:action => "inc",:id => ps.product_style_id %><br/><%= link_to "DEC",:action => "dec",:id => ps.product_style_id %></td>
+     <td><%= link_to "DEL",:action => "del",:id => ps.product_style_id %></td>
+    </tr>
+   <% end %>
+  </table>
+
+<% else %>
+
+  <table class="data" cellspacing="1">
+    <tr>
+     <th>ID(ps)</th>
+     <th>商品名</th>
+     <th>画像</th>
+     <th>個数</th>
+     <th>詳細</th>
+    </tr>
+   <% @sets && @sets.each do |ps| %>
+    <tr>
+     <td><%= ps.product_style_id %>
+     <td><%= ps.product.name %></td>
+     <td><%= product_image_tag ps.product, :small %></td>
+     <td><%= ps.quantity %>個</td>
+     <td><%= link_to_product ps.product,  "確認", {:target => "_blank"} %></td>
+    </tr>
+   <% end %>
+  </table>
+
+<% end %>

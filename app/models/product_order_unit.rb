@@ -3,7 +3,7 @@ class ProductOrderUnit < ActiveRecord::Base
 
   belongs_to :product_style
   belongs_to :product_set
-
+  belongs_to :order_delivery
   validates_presence_of :sell_price
   validates_presence_of :product_style_id, :unless => :is_set?
   validates_presence_of :product_set_id, :if => :is_set?
@@ -52,7 +52,8 @@ class ProductOrderUnit < ActiveRecord::Base
   end
 
   def sell_name
-    set_flag ? product.name : product_style.full_name
+
+  set_flag ? product.name : product_style.full_name
   end
 
   #税込販売額

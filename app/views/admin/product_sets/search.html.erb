@@ -1,0 +1,36 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+<h2>セット商品の検索</h2>
+<%=h flash[:notice] %>
+<%=h flash[:error] %>
+<%= render :partial => "search" %>
+<br />
+  <p>&gt;&gt;検索結果一覧&nbsp;<%=@product_sets.total_entries %>件&nbsp;が該当しました</p>
+
+<% form_tag :action => "permit_setting" do %>
+  <table class="data2 clear" cellspacing="1">
+    <tr>
+	  <th>ID</th>
+      <th>商品名</th>
+      <th>価格</th>
+      <th>商品詳細</th>
+      <th>削除</th>
+    </tr>
+    <% @product_sets && @product_sets.each do | set | %>
+      <tr>
+        <td><%= h set.id %></td>
+		<td><%= h Product.find(set.product_id).name %></td>
+        <td><%= h set.product_order_unit.sell_price %></td>
+		<td><%= link_to "編集", edit_admin_product_set_path(set.id) %></td>
+		<td><%= link_to "削除", admin_product_set_path(set.id), :confirm => "本当に削除しますか？", :method=>"delete" %></td>
+      </tr>
+    <% end %>
+  </table>
+ <% end %>
+
+<%= will_paginate @product_styles, :params => {:search => params[:search] } %>
+
+
+
+</div><!-- /メイン -->

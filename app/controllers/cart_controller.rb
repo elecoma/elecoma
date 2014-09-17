@@ -510,7 +510,6 @@ class CartController < BaseController
 
     product_style = find_product_style_by_params
     return redirect_for_product_cannot_sale if product_style.nil?
-
     redirect_to :action => :show if add_to_cart(product_style, params[:size].to_i)
   end
 
@@ -575,6 +574,7 @@ class CartController < BaseController
   #
   def add_to_cart(product_style, quantity=1)
     return false if quantity <= 0
+
     cart = find_or_build_cart_by(product_style)
     return false if cart.nil?
 

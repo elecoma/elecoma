@@ -18,6 +18,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :order_statuses
     admin.resources :products, :collection => {:search => [:get], :actual_count_index => [:get], :actual_count_search => [:get]}
     admin.resources :product_styles
+    admin.resources :product_sets, :collection => {:edit_items => [:get],:search_ps => [:get],:product_form => [:get],:confirm => [:get],:regist => [:post] ,:search => [:get]},:member =>{:del =>[:get]}
     admin.resources :categories
     admin.resources :styles
     admin.resources :style_categories

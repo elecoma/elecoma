@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 class BaseController < ApplicationController
   EXPIRES_TIME = 14.day
 
@@ -64,7 +63,6 @@ class BaseController < ApplicationController
       end
     end
     @carts ||= []
-
     @cart_price = cart_total_prices(@carts)
     @carts_map = Hash.new
     @carts.each do |cart|
@@ -76,7 +74,6 @@ class BaseController < ApplicationController
     @carts_map.each do |retailer_id, carts|
       @cart_price_map[retailer_id] = cart_total_prices(carts)
     end
-  
   end
 
   def save_carts(carts=nil)

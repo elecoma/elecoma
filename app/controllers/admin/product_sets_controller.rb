@@ -1,25 +1,123 @@
 # -*- coding: utf-8 -*-
 # セット管理
-class Admin::ProductSetsController < Admin::StockBaseController
+class Admin::ProductSetsController < Admin::BaseController
+  require 'nkf'
   before_filter :admin_permission_check_product
   before_filter :load_sets, :except => [:edit, :index, :destroy]
-  before_filter :get_product, :only => [:search, :new, :show, :edit, :confirm, :regist, :reset]
+  before_filter :get_product, :only => [:search_ps,:product_form,:search,:edit_items,:new, :show, :edit, :confirm, :regist, :reset]
   after_filter :save_sets
-
+  before_filter :load_search_form
+  after_filter :save_search_form
 
 SET_MAX_SIZE = 20
 
   def index
-    @product_sets = ProductSet.find(:all, :order => :id)
+	get_search_form
+  end
+
+  def product_form
+#セット商品の商品情報を入力するフォーム
+    if @sets.blank?
+        redirect_to :action => "edit_items"
+    end
+    get_product_status_by_params
+    get_sub_product_by_params
+  end
+
+  def search
+    get_search_form
+    find_options = {
+      :page => params[:page],
+      :per_page => @search.per_page || 10,
+      :conditions => flatten_conditions(@search_list),
+      :include => :product,
+      :order => "product_sets.id"
+    }
+    @product_sets = ProductSet.paginate(find_options)
+  end
+
+  def search_ps
+	get_search_form_ps
+	@search_list << ["products.set_flag is NOT true"]
+    find_options = {
+      :page => params[:page],
+      :per_page => @search.per_page || 10,
+      :conditions => flatten_conditions(@search_list),
+      :include => :product,
+      :order => "product_styles.id"
+    }
+    @product_styles = ProductStyle.paginate(find_options)
+  end
+
+  def get_search_form(actual_flg=false)
+      addparam = {'retailer_id' => session[:admin_user].retailer_id}
+      params[:search].merge! addparam unless params[:search].nil?
+      @search = SearchForm.new(params[:search])
+	  @search, @search_list = ProductSet.get_conditions(@search, actual_flg)
+  end
+
+  def get_search_form_ps(actual_flg=false)
+    addparam = {'retailer_id' => session[:admin_user].retailer_id}
+    params[:search].merge! addparam unless params[:search].nil?
+    @search = SearchForm.new(params[:search])
+    @search, @search_list = ProductStyle.get_conditions(@search, actual_flg)
+  end
+
+  def save_search_form
+    if @search
+      flash.now[:order_search] = @search.attributes.reject{|_,v|v.blank?}
+    end
+  end
+
+  def load_search_form
+    unless @search
+      @search = SearchForm.new(flash.now[:order_search])
+    end
+  end
+
+  def edit_items
+    get_search_form
+    get_product_status_by_params
+    get_sub_product_by_params
   end
 
   def new
+    if @product_set
+		@sets = []
+    	@product = Product.new
+    	@product_set = ProductSet.new
+		session[:product_set_id] = nil
+	end
+	redirect_to :action => "edit_items"
+=begin
     if params[:id] && params[:id].to_i == 0
       @sets = []
       @product_set = ProductSet.new
       session[:product_set_id] = nil
     end
     @condition = StockSearchForm.new(params[:condition])
+=end
+
+  end
+
+  def get_sub_product_by_params
+    @sub_products = []
+    @sub_products = SubProduct.find(:all, :conditions => ["product_id = ?",@product.id], :order => "no") unless @product.id.blank?
+    unless @sub_products.size == 5
+      5.times do |idx|
+        @sub_products << SubProduct.new(:no => idx )
+      end
+    end
+    if params[:sub_product]
+      params[:sub_product].each do |idx,  sub_products |
+        sub_product = @sub_products[idx.to_i]
+        sub_products.delete(:medium_resource_id) if sub_products && !sub_products[:medium_resource].blank?
+        sub_products.delete(:large_resource_id) if sub_products && !sub_products[:large_resource].blank?
+        sub_product.attributes = sub_products
+        @product.sub_products << sub_product
+        @sub_products[idx.to_i] =  sub_product
+      end
+    end
   end
 
   def edit
@@ -27,6 +125,7 @@ SET_MAX_SIZE = 20
     @product = Product.find(@product_set.product_id)
     @product_statuses = ProductStatus.find(:all, :conditions=>["product_id=?", @product.id])
     get_product_status_by_params
+    get_sub_product_by_params
     product_style_ids = @product_set.get_product_style_ids
     ps_counts = @product_set.get_ps_counts
     @sets = []
@@ -61,19 +160,20 @@ SET_MAX_SIZE = 20
     if !params[:product_status_ids].blank?
       params[:product_status_ids].each do | id |
         @product_statuses << ProductStatus.new(:product_id => @product.id, :status_id => id.to_i)
-      end
+    end
     end
   end
 
   def confirm
     get_product_status_by_params
-
+    get_sub_product_by_params
     @product.set_flag = true
     set_resource_old
     unless @product.valid?
-      render :action => "show"
+      render :action => "product_form"
     end
   end
+
 
   def regist
     @product.sell_limit = nil if @product.no_limit_flag
@@ -90,14 +190,15 @@ SET_MAX_SIZE = 20
         ps.save
       end
     end
+
+    @product_set.product_id = @product.id
     @product_set.product_style_ids = @sets.map{|set| set.product_style_id}.join(",") 
     @product_set.ps_counts = @sets.map{|set| set.quantity}.join(",")
-    @product_set.product_id = @product.id
-    @product_set.save
     @order_unit = ProductOrderUnit.find_by_product_set_id(@product_set.id)
     @order_unit = ProductOrderUnit.new unless @order_unit
     @order_unit.set_flag = true
     @order_unit.sell_price = @product.price
+    @product_set.save
     @order_unit.product_set_id = @product_set.id
     @order_unit.save
     @sets.each do |set|
@@ -108,25 +209,30 @@ SET_MAX_SIZE = 20
       ps.set_ids = ids.uniq.join(",")
       ps.save
     end
+
     @sets = []
+    redirect_to :action => "show", :id => @product_set.id
   end
 
   def add_product
+
     set = @sets.find {|set| set.product_style_id == params[:id].to_i}
     if set.present?
       set.quantity += 1
     else
       if @sets.size >= SET_MAX_SIZE
-        flash.now[:set_add_product] = '一つのセットに登録できる商品は' + "#{SET_MAX_SIZE}" + '種類までです。'
+        flash[:set_add_product] = '一つのセットに登録できる商品は' + "#{SET_MAX_SIZE}" + '種類までです。'
       else
         set = ProductSetStyle.new(:product_style => ProductStyle.find(params[:id]),  :quantity => 1)
         @sets ||= []
         @sets << set
-        flash.now[:set_add_product] = "商品を追加しました"
+        flash[:set_add_product] = "商品を追加しました"
       end
     end
-    render :partial => "items"
+    render "edit_items"
+
   end
+
 
   def save_sets
     sets ||= @sets
@@ -149,7 +255,7 @@ SET_MAX_SIZE = 20
     if set.present?
       @sets.reject!{|i|i==set}
     end
-    render :partial => "items"
+    render "edit_items"
   end
 
   def modify
@@ -160,7 +266,7 @@ SET_MAX_SIZE = 20
     if set.present?
       set.quantity += 1
     end
-    render :partial => "items"
+    render "edit_items"
   end
   
   def dec
@@ -168,15 +274,16 @@ SET_MAX_SIZE = 20
     if set.present?
       set.quantity -= 1 if set.quantity > 1
     end
-    render :partial => "items"
+    render "edit_items"
   end
 
   def reset
     @sets = []
-    redirect_to :action => :new
+    redirect_to :action => :edit_items
   end
 
   def destroy
+#エンドユーザーから注文があった後に商品が一緒に削除されると問題なので未使用
     product_set = ProductSet.find(params[:id])
     ps_ids = product_set.get_product_style_ids
     ps_ids.each do |ps_id|
@@ -196,7 +303,8 @@ SET_MAX_SIZE = 20
 
   protected
 
-  def set_resource_old
+   def set_resource_old
+
     [:small_resource, :medium_resource, :large_resource].each do | resource_name |
       resource_id = params["product_#{resource_name}_old_id".intern]
       if resource_id.to_s == 0.to_s

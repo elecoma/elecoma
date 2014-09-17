@@ -82,6 +82,7 @@
     <%- else -%>
     品切れ中<br />
     <%- end -%>
+
     <% if @login_customer %>
       <% if already_favorite? %>
         <%= link_to image_tag("/images/item/favorite_delete.gif", :width=>"140", :alt=>"お気に入りから削除"), {:controller => :favorites, :action => :delete_favorite, :product_style_ids => [@product.first_product_style.id] }, :confirm => "お気に入>りを削除します。よろしいですか？"  %>

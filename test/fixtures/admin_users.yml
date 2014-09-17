@@ -2,10 +2,10 @@
 
 load_by_admin_user:
   id: 1
-  name: admin #任意のユーザー名に修正してください
-  login_id: admin #任意のログインIDに修正してください(半角英数字15文字以内)
+  name: appirits #任意のユーザー名に修正してください
+  login_id: usagi #任意のログインIDに修正してください(半角英数字15文字以内)
   position: 1
-  password: <%= AdminUser.encode_password 'pass' %> #passの部分を任意のパスワードに修正してください（半角英数字15文字以内）
+  password: <%= AdminUser.encode_password 'abc123' %> #passの部分を任意のパスワードに修正してください（半角英数字15文字以内）
   authority_id: 1
   activity: true
 

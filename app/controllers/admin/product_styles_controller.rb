@@ -2,9 +2,16 @@
 class Admin::ProductStylesController < Admin::BaseController
   before_filter :admin_permission_check_product,
     :only => [:create, :new]
+
   
   def new
     @product = Product.find_by_id(params[:id].to_i)
+
+	if @product.is_set 
+		redirect_to :controller => 'products', :action => 'index'
+		flash.now[:error] = "セット商品には規格を登録できません"
+	end
+
     set_product_styles(params[:id].to_i)
     set_style_category
   end
@@ -21,6 +28,7 @@ class Admin::ProductStylesController < Admin::BaseController
     render :layout => false
   end
 
+
   def confirm
     set_product_styles
     set_style_category
@@ -35,17 +43,31 @@ class Admin::ProductStylesController < Admin::BaseController
       @product.product_styles = @product_styles if @product.product_styles.empty?
       @product.have_product_style = true
       @product.save
+
       # has_manyが正常に動かない時の対策
       @product_styles.each do |ps|
         ps.save
       end
+
+      #product_styles新規生成時に単品の商品ならproduct_order_unitも作成する
+	  unless @product.is_set?
+      	@ps = @product.product_styles.first
+	  	 unless ProductOrderUnit.exists?(:product_style_id => @ps.id)
+      		#product_styles新規生成時に単品の商品ならproduct_order_unitも作成する
+      		@pou = ProductOrderUnit.new
+      		@pou.set_flag = false 
+      	    @pou.product_style_id = @ps.id
+      	    @pou.sell_price = @ps.sell_price
+            @pou.save
+       	 end
+	  end
       flash.now[:notice] = "保存しました"
     else
       flash.now[:error] = "保存に失敗しました"
     end
     redirect_to :controller => "products", :action => "index"
   end
-  
+
   #在庫管理履歴プレビュー
   def stock_histories
     product_style_id = params[:id].to_i

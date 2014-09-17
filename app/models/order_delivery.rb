@@ -10,6 +10,7 @@ class OrderDelivery < ActiveRecord::Base
   belongs_to :delivery_trader
   belongs_to :delivery_time
   has_many :order_details, :order => 'position'
+  has_many :product_order_units
   belongs_to :payment
   has_many :recalls
   has_many :delivery_tickets

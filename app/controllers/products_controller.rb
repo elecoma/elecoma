@@ -8,6 +8,15 @@ class ProductsController < BaseController
   def show
     stock_table
     load_seo_products_detail
+
+	p @product
+	if @product.is_set?
+		@product_set = ProductSet.find(:first, :conditions => { :product_id => @product.id }) if @product.is_set?
+	    load_sets
+    	p @sets
+
+	end
+
     @recommend_buys = Recommend.recommend_get(@product.id, Recommend::TYPE_BUY) || []
     @recommend_views = Recommend.recommend_get(@product.id, Recommend::TYPE_VIEW) || []
     @shop = Shop.find(:first)
@@ -19,6 +28,21 @@ class ProductsController < BaseController
                               :customer_id => @login_customer && @login_customer.id,
                               :docomo_flg => request.mobile == Jpmobile::Mobile::Docomo, 
                               :ident => request.mobile.ident)
+    end
+  end
+
+  def load_sets
+#セット商品、リストの読み込み
+    @product = Product.find(@product_set.product_id)
+    @product_statuses = ProductStatus.find(:all, :conditions=>["product_id=?", @product.id])
+    get_product_status_by_params
+    get_sub_product_by_params
+    product_style_ids = @product_set.get_product_style_ids
+    ps_counts = @product_set.get_ps_counts
+    @sets = []
+    product_style_ids.zip(ps_counts).each do |ps_id, ps_count|
+      set = ProductSetStyle.new(:product_style => ProductStyle.find(ps_id),  :quantity => ps_count)
+      @sets << set
     end
   end
 
