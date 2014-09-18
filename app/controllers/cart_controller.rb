@@ -56,7 +56,7 @@ class CartController < BaseController
       return
     end
     new_quantity = cart.quantity + value
-    cart.quantity = cart.product_style.available?(new_quantity)
+    cart.quantity = cart.product_style.available?(@login_customer.carts,new_quantity)
     if cart.quantity < new_quantity
       flash[:notice] = '購入できる上限を超えています'
     end
@@ -507,10 +507,10 @@ class CartController < BaseController
   def add_product
     build_cart_add_product_form
     return if @add_product.invalid?
-
     product_style = find_product_style_by_params
-    return redirect_for_product_cannot_sale if product_style.nil?
-    redirect_to :action => :show if add_to_cart(product_style, params[:size].to_i)
+    product_order_unit = find_pou_by_params
+	return redirect_for_product_cannot_sale if product_order_unit.nil?
+    redirect_to :action => :show if add_to_cart(product_order_unit, params[:size].to_i)
   end
 
   def repeat_order
@@ -548,6 +548,16 @@ class CartController < BaseController
     @add_product
   end
 
+  def find_pou_by_params
+    if params[:product_style_id]
+      ps = ProductStyle.find_by_id(params[:product_style_id].to_i)
+	  ps.product_order_unit
+    else
+      ps = ProductStyle.find_by_product_id_and_style_category_id1_and_style_category_id2(params[:product_id], params[:style_category_id1], params[:style_category_id2])
+      ps.product_order_unit
+    end
+  end
+
   def find_product_style_by_params
     if params[:product_style_id]
       ProductStyle.find_by_id(params[:product_style_id].to_i)
@@ -572,28 +582,28 @@ class CartController < BaseController
   #   false の場合はredirect_toを実施済みなので
   #   呼び出しもとは直ちにメソッドを終了すべき
   #
-  def add_to_cart(product_style, quantity=1)
+  def add_to_cart(product_order_unit, quantity=1)
     return false if quantity <= 0
 
-    cart = find_or_build_cart_by(product_style)
+    cart = find_or_build_cart_by(product_order_unit)
     return false if cart.nil?
 
     # キャンペ
     cart.campaign_id = params[:campaign_id] if params[:campaign_id].present?
 
     # 購入可能であれば、カートに商品を追加する
-    insert_quantity = product_style.available?(cart.quantity + quantity)
+    insert_quantity = product_order_unit.available?(@login_customer.carts,cart.quantity + quantity)
     insert_quantity_diff = insert_quantity - cart.quantity
     if insert_quantity.zero?
       # 購入可能な件数が 0 ならカートを追加しない
       @carts.delete(cart)
-      flash[:cart_add_product] = "「#{product_style.full_name}」は購入できません。"
+      flash[:cart_add_product] = "「#{product_order_unit.sell_name}」は購入できません。"
     elsif insert_quantity_diff < quantity
       # 指定数の在庫が無かった
-      flash[:cart_add_product] = "「#{product_style.full_name}」は販売制限しております。一度にこれ以上の購入はできません。"
+      flash[:cart_add_product] = "「#{product_order_unit.sell_name}」は販売制限しております。一度にこれ以上の購入はできません。"
     end
     cart.quantity = insert_quantity
-    session[:cart_last_product_id] = product_style.product_id
+    session[:cart_last_product_id] = product_order_unit.product_style.product_id
     true
   end
 
@@ -603,15 +613,15 @@ class CartController < BaseController
     end
   end
 
-  def find_or_build_cart_by(product_style)
-    cart = find_cart(:product_style_id => product_style.id)
+  def find_or_build_cart_by(product_order_unit)
+    cart = find_cart(:product_order_unit_id => product_order_unit.id)
     return cart if cart.present?
-    build_cart_by(product_style)
+    build_cart_by(product_order_unit)
   end
 
-  def build_cart_by(product_style)
+  def build_cart_by(product_order_unit)
     return redirect_for_carts_was_full if @carts.size >= CARTS_MAX_SIZE
-    cart = Cart.new(:product_style => product_style, :customer => @login_customer, :quantity => 0)
+    cart = Cart.new(:product_order_unit => product_order_unit, :customer => @login_customer, :quantity => 0)
     @carts ||= []
     @carts << cart
     cart

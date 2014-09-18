@@ -66,7 +66,7 @@ class BaseController < ApplicationController
     @cart_price = cart_total_prices(@carts)
     @carts_map = Hash.new
     @carts.each do |cart|
-      retailer_id = cart.product_style.product.retailer_id
+      retailer_id = cart.product_order_unit.product_style.product.retailer_id
       @carts_map[retailer_id] = Array.new unless @carts_map.key? retailer_id
       @carts_map[retailer_id] << cart
     end

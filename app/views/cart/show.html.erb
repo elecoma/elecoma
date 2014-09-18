@@ -43,8 +43,8 @@
                <%- unless cart.classcategory_name2.blank? %>
                <%= h(cart.classcategory_name2)%>
                <%- end %>
-               <%- unless cart.product_style.product.master_shop? %>
-               <br />販売元: <%= show_retailer_shop(cart.product_style.product) %>
+               <%- unless cart.product_order_unit.product_style.product.master_shop? %>
+               <br />販売元: <%= show_retailer_shop(cart.product_order_unit.product_style.product) %>
                <%- end %>
             </p>
           </td>
@@ -55,7 +55,7 @@
             <%= decriment_tag(cart) %>
           </td>
           <td><%= number_with_delimiter cart.subtotal %>円</td>
-          <td><%= link_to '削除する', {:controller => 'cart', :action => 'delete', :id => cart.product_style_id}, {:confirm=>'本当に削除しますか？'} %></td>
+          <td><%= link_to '削除する', {:controller => 'cart', :action => 'delete', :id => cart.product_order_unit.product_style_id}, {:confirm=>'本当に削除しますか？'} %></td>
         </tr>
       <% end %>
       <tr>
