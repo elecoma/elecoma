@@ -9,12 +9,9 @@ class ProductsController < BaseController
     stock_table
     load_seo_products_detail
 
-	p @product
 	if @product.is_set?
 		@product_set = ProductSet.find(:first, :conditions => { :product_id => @product.id }) if @product.is_set?
 	    load_sets
-    	p @sets
-
 	end
 
     @recommend_buys = Recommend.recommend_get(@product.id, Recommend::TYPE_BUY) || []

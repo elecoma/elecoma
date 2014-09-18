@@ -9,7 +9,7 @@ class Admin::ProductSetsController < Admin::BaseController
   before_filter :load_search_form
   after_filter :save_search_form
 
-SET_MAX_SIZE = 20
+  SET_MAX_SIZE = 20
 
   def index
 	get_search_form
@@ -17,9 +17,7 @@ SET_MAX_SIZE = 20
 
   def product_form
 #セット商品の商品情報を入力するフォーム
-    if @sets.blank?
-        redirect_to :action => "edit_items"
-    end
+    redirect_to :action => "edit_items" if @sets.blank?
     get_product_status_by_params
     get_sub_product_by_params
   end
@@ -50,10 +48,10 @@ SET_MAX_SIZE = 20
   end
 
   def get_search_form(actual_flg=false)
-      addparam = {'retailer_id' => session[:admin_user].retailer_id}
-      params[:search].merge! addparam unless params[:search].nil?
-      @search = SearchForm.new(params[:search])
-	  @search, @search_list = ProductSet.get_conditions(@search, actual_flg)
+    addparam = {'retailer_id' => session[:admin_user].retailer_id}
+    params[:search].merge! addparam unless params[:search].nil?
+    @search = SearchForm.new(params[:search])
+	@search, @search_list = ProductSet.get_conditions(@search, actual_flg)
   end
 
   def get_search_form_ps(actual_flg=false)
@@ -83,21 +81,12 @@ SET_MAX_SIZE = 20
 
   def new
     if @product_set
-		@sets = []
-    	@product = Product.new
-    	@product_set = ProductSet.new
-		session[:product_set_id] = nil
+	   @sets = []
+       @product = Product.new
+       @product_set = ProductSet.new
+	   session[:product_set_id] = nil
 	end
 	redirect_to :action => "edit_items"
-=begin
-    if params[:id] && params[:id].to_i == 0
-      @sets = []
-      @product_set = ProductSet.new
-      session[:product_set_id] = nil
-    end
-    @condition = StockSearchForm.new(params[:condition])
-=end
-
   end
 
   def get_sub_product_by_params
@@ -105,17 +94,17 @@ SET_MAX_SIZE = 20
     @sub_products = SubProduct.find(:all, :conditions => ["product_id = ?",@product.id], :order => "no") unless @product.id.blank?
     unless @sub_products.size == 5
       5.times do |idx|
-        @sub_products << SubProduct.new(:no => idx )
+         @sub_products << SubProduct.new(:no => idx )
       end
     end
     if params[:sub_product]
       params[:sub_product].each do |idx,  sub_products |
-        sub_product = @sub_products[idx.to_i]
-        sub_products.delete(:medium_resource_id) if sub_products && !sub_products[:medium_resource].blank?
-        sub_products.delete(:large_resource_id) if sub_products && !sub_products[:large_resource].blank?
-        sub_product.attributes = sub_products
-        @product.sub_products << sub_product
-        @sub_products[idx.to_i] =  sub_product
+      sub_product = @sub_products[idx.to_i]
+      sub_products.delete(:medium_resource_id) if sub_products && !sub_products[:medium_resource].blank?
+      sub_products.delete(:large_resource_id) if sub_products && !sub_products[:large_resource].blank?
+      sub_product.attributes = sub_products
+      @product.sub_products << sub_product
+      @sub_products[idx.to_i] =  sub_product
       end
     end
   end

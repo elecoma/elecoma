@@ -26,9 +26,7 @@ class ProductSet < ActiveRecord::Base
           search.errors.add(:id,"")
         end
       end
-      unless search.name.blank?
-        search_list << ["products.name like ?", "%#{search.name}%"]
-      end
+      search_list << ["products.name like ?", "%#{search.name}%"] if search.name.present?
       unless search.category.blank?
         category = Category.find_by_id search.category.to_i
         unless category.blank?
@@ -36,24 +34,12 @@ class ProductSet < ActiveRecord::Base
           search_list << ["products.category_id in (?)", ids] unless ids.empty?
         end
       end
-      unless search.created_at_to.blank?
-          search_list << ["products.created_at < ?", search.created_at_to + 1.day]
-      end
-      unless search.updated_at_from.blank?
-          search_list << ["products.updated_at >= ?", search.updated_at_from]
-      end
-      unless search.updated_at_to.blank?
-          search_list << ["products.updated_at <= ?", search.updated_at_to + 1.day]
-      end
-      unless search.sale_start_at_start.blank?
-        search_list << ["products.sale_start_at >= ?", search.sale_start_at_start]
-      end
-      unless search.sale_start_at_end.blank?
-        search_list << ["products.sale_start_at <= ?", search.sale_start_at_end + 1.day]
-      end
-      unless search.retailer_id.blank?
-        search_list << ["products.retailer_id = ?", search.retailer_id]
-      end
+      search_list << ["products.created_at < ?", search.created_at_to + 1.day] if search.created_at_to.present?
+      search_list << ["products.updated_at >= ?", search.updated_at_from] if search.updated_at_from.present?
+      search_list << ["products.updated_at <= ?", search.updated_at_to + 1.day] if search.updated_at_to.present?
+      search_list << ["products.sale_start_at >= ?", search.sale_start_at_start] if search.updated_at_to.present?
+      search_list << ["products.sale_start_at <= ?", search.sale_start_at_end + 1.day] if search.updated_at_to.present?
+      search_list << ["products.retailer_id = ?", search.retailer_id] if search.updated_at_to.present?
     end
     [search, search_list]
   end
