@@ -56,6 +56,6 @@ module ProductHelper
   end
 
   def already_favorite?
-    Favorite.exists?(customer_id: @login_customer.id, product_style_id: @product.first_product_style.try(:id))
+    Favorite.exists?(customer_id: @login_customer.id, product_order_unit_id: @product.first_product_style.product_order_unit.try(:id))
   end
 end
