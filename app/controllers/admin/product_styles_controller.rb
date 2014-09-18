@@ -6,8 +6,8 @@ class Admin::ProductStylesController < Admin::BaseController
   
   def new
     @product = Product.find_by_id(params[:id].to_i)
-
-	if @product.is_set 
+p @product
+	if @product.is_set? 
 		redirect_to :controller => 'products', :action => 'index'
 		flash.now[:error] = "セット商品には規格を登録できません"
 	end
