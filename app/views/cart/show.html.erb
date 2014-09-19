@@ -55,7 +55,7 @@
             <%= decriment_tag(cart) %>
           </td>
           <td><%= number_with_delimiter cart.subtotal %>円</td>
-          <td><%= link_to '削除する', {:controller => 'cart', :action => 'delete', :id => cart.product_order_unit.product_style_id}, {:confirm=>'本当に削除しますか？'} %></td>
+          <td><%= link_to '削除する', {:controller => 'cart', :action => 'delete', :id => cart.product_order_unit.id}, {:confirm=>'本当に削除しますか？'} %></td>
         </tr>
       <% end %>
       <tr>

@@ -50,13 +50,13 @@ class CartController < BaseController
   def inc
     # TODO キーはインデックスにしたい: そのほうがユーザ視点で自然なので。
     value = params[:value] || 1
-    cart = find_cart(:product_style_id => params[:id].to_i)
-    if cart.nil? || cart.product_style.nil?
+    cart = find_cart(:product_order_unit_id => params[:id].to_i)
+    if cart.nil? || cart.product_order_unit.nil?
       redirect_to :action => :show
       return
     end
     new_quantity = cart.quantity + value
-    cart.quantity = cart.product_style.available?(@login_customer.carts,new_quantity)
+    cart.quantity = cart.product_order_unit.available?(@login_customer.carts,new_quantity)
     if cart.quantity < new_quantity
       flash[:notice] = '購入できる上限を超えています'
     end
@@ -76,8 +76,8 @@ class CartController < BaseController
 =end
   def dec
     value = params[:value] || 1
-    cart = find_cart(:product_style_id => params[:id].to_i)
-    if cart.nil? || cart.product_style.nil?
+    cart = find_cart(:product_order_unit_id => params[:id].to_i)
+    if cart.nil? || cart.product_order_unit.nil?
       redirect_to :action => :show
       return
     end
@@ -100,7 +100,8 @@ class CartController < BaseController
 =end
   def delete
     # セッションから消す
-    cart = find_cart(:product_style_id => params[:id].to_i)
+p params
+    cart = find_cart(:product_order_unit_id => params[:id].to_i)
     if cart.nil?
       redirect_to :action => :show
       return
