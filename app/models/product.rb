@@ -147,7 +147,7 @@ def first_product_style
 	if set_flag?
 	      product_set = ProductSet.find_by_product_id(id)
     	  product_order_unit = ProductOrderUnit.find_by_product_set_id(product_set.id)
-		  return product_order_unit.sell_price
+		  return number_with_delimiter(product_order_unit.sell_price)
  	else
 	   	p_range = price_range
     	if p_range[0] == p_range[1]

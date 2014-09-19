@@ -37,7 +37,7 @@
       <tr>
         <td><%= h product.id %></td>
         <td><%= product_image_tag product, :small %></td>
-        <td><%= product.is_set? ? h(product.price) : h(product.price_label) %></td>
+        <td><%= product.is_set? ? number_with_delimiter(product.price) : number_with_delimiter(product.price_label) %></td>
         <td><%= h product.name %></td>
         <td><%= h product.category_name %></td>
         <td>

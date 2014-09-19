@@ -21,7 +21,7 @@
       <tr>
         <td><%= h set.id %></td>
 		<td><%= h Product.find(set.product_id).name %></td>
-        <td><%= h set.product_order_unit.sell_price %></td>
+        <td><%= h number_with_delimiter(set.product_order_unit.sell_price) %></td>
 		<td><%= link_to "編集", edit_admin_product_set_path(set.id) %></td>
 		<td><%= link_to "削除", admin_product_set_path(set.id), :confirm => "本当に削除しますか？", :method=>"delete" %></td>
       </tr>
