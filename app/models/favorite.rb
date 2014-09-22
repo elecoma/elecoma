@@ -12,4 +12,11 @@ class Favorite < ActiveRecord::Base
   validates_numericality_of :customer_id,:product_order_unit_id,:allow_blank => true
   validates_uniqueness_of :product_order_unit_id, :scope => :customer_id, :message => "この商品ははすでに登録されています"
 
+  def ps_path
+    is_set? ? product_order_unit.product_set :  product_order_unit.product_style
+  end
+  def is_set?
+    self.product_order_unit.set_flag
+  end
+
 end

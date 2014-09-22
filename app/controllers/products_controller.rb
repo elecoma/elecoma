@@ -8,12 +8,10 @@ class ProductsController < BaseController
   def show
     stock_table
     load_seo_products_detail
-
-	if @product.is_set?
-		@product_set = ProductSet.find(:first, :conditions => { :product_id => @product.id }) if @product.is_set?
+	if @product.set_flag
+		@product_set = ProductSet.find(:first, :conditions => { :product_id => @product.id })
 	    load_sets
 	end
-
     @recommend_buys = Recommend.recommend_get(@product.id, Recommend::TYPE_BUY) || []
     @recommend_views = Recommend.recommend_get(@product.id, Recommend::TYPE_VIEW) || []
     @shop = Shop.find(:first)
@@ -42,7 +40,34 @@ class ProductsController < BaseController
       @sets << set
     end
   end
+  def get_sub_product_by_params
+    @sub_products = []
+    @sub_products = SubProduct.find(:all, :conditions => ["product_id = ?",@product.id], :order => "no") unless @product.id.blank?
+    unless @sub_products.size == 5
+      5.times do |idx|
+        @sub_products << SubProduct.new(:no => idx )
+      end
+    end
+    if params[:sub_product]
+      params[:sub_product].each do |idx,  sub_products |
+        sub_product = @sub_products[idx.to_i]
+        sub_products.delete(:medium_resource_id) if sub_products && !sub_products[:medium_resource].blank?
+        sub_products.delete(:large_resource_id) if sub_products && !sub_products[:large_resource].blank?
+        sub_product.attributes = sub_products
+        @product.sub_products << sub_product
+        @sub_products[idx.to_i] =  sub_product
+      end
+    end
+  end
 
+  def get_product_status_by_params
+    @product_statuses ||= []
+    if !params[:product_status_ids].blank?
+      params[:product_status_ids].each do | id |
+        @product_statuses << ProductStatus.new(:product_id => @product.id, :status_id => id.to_i)
+      end
+    end
+  end
   def search
     index
 

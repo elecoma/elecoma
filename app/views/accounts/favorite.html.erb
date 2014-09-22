@@ -20,7 +20,7 @@
 	<%= link_to image_tag("/images/item/favorite_delete_all.gif", :width=>"140", :alt=>"お気に入りから削除", :class => "submit"), {:controller => :favorites, :action => :delete_favorite, :product_order_unit_ids => product_ids }, :confirm => "お気に入りを全て削除します。よろしいですか？"  %>
 	<ul>
 	  <% @favorites.each do |favorite| %>
-	    <% product = favorite.product_order_unit.product_style.product %>
+	    <% product = favorite.ps_path.product %>
 	    <% pou = favorite.product_order_unit %>
 	    <li style="display:inline">
 	      <p><%= link_to((product_image_tag(product, :small)), {:controller => "products", :action => "show", :id => product.id, :category_id => product.category_id}) %></p>

@@ -73,6 +73,14 @@ class Product < ActiveRecord::Base
     self.set_flag
   end
 
+  def pou_path
+    if is_set?
+      product_set.product_order_unit
+    else
+      first_product_style.product_order_unit
+    end
+  end
+
   def self.permit_select
     PERMIT_LABEL.collect{|key, value| [key, value]}
   end
