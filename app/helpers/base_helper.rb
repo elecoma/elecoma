@@ -13,11 +13,7 @@ module BaseHelper
     product or return name
     name ||= h(product.name)
     if product.permit
-      if 
-        link_to name, {:controller => "/product_sets", :action => "show", :id => product.id}, options
-      else
-        link_to name, {:controller => "/products", :action => "show", :id => product.id, :category_id => product.category_id}, options
-      end
+      link_to name, {:controller => "/products", :action => "show", :id => product.id, :category_id => product.category_id}, options
     else
       name
     end

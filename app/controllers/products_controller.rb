@@ -127,7 +127,7 @@ class ProductsController < BaseController
 
   def load_recommend_products
     @recommend_products = RecommendProduct.find(:all, :order => "position")
- end
+  end
 
   def load_seo_products_list
     @seo= Seo.find(:first, :conditions=>{ :page_type => Seo::PRODUCTS_LIST})

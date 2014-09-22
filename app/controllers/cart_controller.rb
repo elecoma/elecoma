@@ -100,7 +100,6 @@ class CartController < BaseController
 =end
   def delete
     # セッションから消す
-p params
     cart = find_cart(:product_order_unit_id => params[:id].to_i)
     if cart.nil?
       redirect_to :action => :show
@@ -200,16 +199,23 @@ p params
       end
     end
     if @order_deliveries.empty?
-      @carts.map(&:product_style).map(&:product).map(&:retailer).each do |retailer|
+      @carts.map(&:product_order_unit).map(&:product_style).map(&:product).map(&:retailer).each do |retailer|
         od = OrderDelivery.new
         od.set_delivery_address(@delivery_address)
         @order_deliveries[retailer.id] = od
       end
     end
     @delivery_traders = Hash.new
-    @carts.map(&:product_style).map(&:product).map(&:retailer).each do |retailer|
-      @delivery_traders[retailer.id] = select_delivery_trader_with_retailer_id(retailer.id)
+    @carts.map(&:product_order_unit).each do |pou|
+      if pou.set_flag
+        retailer_id = pou.product_set.product.retailer_id
+        @delivery_traders[retailer_id] = select_delivery_trader_with_retailer_id(retailer_id)
+      else
+        retailer_id = pou.product_style.product.retailer_id
+        @delivery_traders[retailer_id] = select_delivery_trader_with_retailer_id(retailer_id)
+      end
     end
+
     if @not_login_customer
       @order_deliveries.each do |key, order_delivery|
         order_delivery.set_customer(@temporary_customer)
@@ -428,7 +434,7 @@ p params
       @order_details[key] = od.details_build_from_carts(cart)
       od.calculate_charge!
       od.calculate_total!
-      @ids << @order_details[key].map{|o_d| o_d.product_style.product_id}
+      @ids << @order_details[key].map{|o_d| o_d.ps.product.id}
     end  
 
     @order_deliveries.each do |key, od|
@@ -442,7 +448,6 @@ p params
       render :action => 'purchase'
       return
     end
-
     # paymentロジックをプラグイン化するため、予めセッションに保存しておき画面遷移で引き回さないようにする
     save_transaction_items_before_payment
     payment_id =  @order_deliveries.first[1].payment_id
@@ -639,9 +644,9 @@ p params
                                   :ident => request.mobile.ident,
                                   :complete_flg => true)
         end
-        product_style = ProductStyle.find(cart.product_style_id, :lock=>true)
-        product_style.order(cart.quantity)
-        product_style.save!
+        product_order_unit = ProductOrderUnit.find(cart.product_order_unit_id, :lock=>true)
+        product_order_unit.order(cart.quantity)
+        product_order_unit.save!
         #会員のみキャンペーン処理
         if @login_customer
           cart.campaign_id and process_campaign(cart, @login_customer)  
@@ -676,8 +681,8 @@ p params
 =end
   def total_points
     @carts.inject(0) do | result, cart |
-      cart.product or next
-      point_rate_product = cart.product.point_granted_rate
+      cart.ps.product or next
+      point_rate_product = cart.ps.product.point_granted_rate
       point_rate_shop = Shop.find(:first).point_granted_rate
       point_granted_rate = 0
       unless point_rate_product.blank?
@@ -693,8 +698,8 @@ p params
 
   def total_points_each_cart(carts)
     carts.inject(0) do | result, cart |
-      cart.product or next
-      point_rate_product = cart.product.point_granted_rate
+      cart.ps.product or next
+      point_rate_product = cart.ps.product.point_granted_rate
       point_rate_shop = Shop.find(:first).point_granted_rate
       point_granted_rate = 0
       unless point_rate_product.blank?
@@ -786,6 +791,7 @@ p params
     @order_details_map = Hash.new
     @order_deliveries.each do |key, order_delivery|
       cart = @carts_map[key.to_i]
+p cart
       @order_details_map[key] = order_delivery.details_build_from_carts(cart)
     end
   end
@@ -882,7 +888,7 @@ p params
       item.product_name = detail.product_name
       item.price = detail.price.to_s
       item.quantity = detail.quantity.to_s
-      item.sku = detail.product_style.manufacturer_id
+      item.sku = detail.ps.manufacturer_id
       ecommerce.add_item(item)
     end
 

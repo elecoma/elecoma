@@ -8,9 +8,9 @@
       </tr>
       <% carts.each do |cart| %>
         <tr>
-          <td><%= link_to_product_image(cart.product_style.product, :small) %></td>
-          <td><%=h cart.product_style.product.name %></td>
-          <td><%= number_with_delimiter cart.product_style.sell_price %>円</td>
+          <td><%= link_to_product_image(cart.ps.product, :small) %></td>
+          <td><%=h cart.ps.product.name %></td>
+          <td><%= number_with_delimiter cart.product_order_unit.sell_price %>円</td>
           <td><%= number_with_delimiter cart.quantity %>個</td>
         </tr>
       <% end %> 

@@ -49,8 +49,16 @@ class OrderDetail < ActiveRecord::Base
   end
 
   # 商品名[ 規格名1[ 規格名2]] を出力
-  def product_name(delimiter=' ')
+  def product_style_name(delimiter=' ')
     product_order_unit.sell_name
+  end
+
+  def is_set?
+    self.product_order_unit.set_flag
+  end
+
+  def ps
+    is_set? ? product_order_unit.product_set :  product_order_unit.product_style
   end
 
 end
