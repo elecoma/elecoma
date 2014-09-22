@@ -219,7 +219,7 @@ class OrderDelivery < ActiveRecord::Base
     end
     # 送料無料の商品があれば無料
     order_details.any? do |detail|
-      detail.product_style.product.free_delivery?
+      detail.ps.product.free_delivery?
     end and return 0
     # 離島だったら離島の価格（郵便番号が入力間違ってzipに存在しない時も離島として）
     # 都道府県ID = nil として処理する

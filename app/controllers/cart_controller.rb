@@ -513,9 +513,11 @@ class CartController < BaseController
   def add_product
     build_cart_add_product_form
     return if @add_product.invalid?
+    @product =Product.find_by_id(@add_product.product_id)
+    p "にゃーん！" if @product.is_set?
     product_style = find_product_style_by_params
     product_order_unit = find_pou_by_params
-	return redirect_for_product_cannot_sale if product_order_unit.nil?
+	  return redirect_for_product_cannot_sale if product_order_unit.nil?
     redirect_to :action => :show if add_to_cart(product_order_unit, params[:size].to_i)
   end
 
@@ -557,10 +559,14 @@ class CartController < BaseController
   def find_pou_by_params
     if params[:product_style_id]
       ps = ProductStyle.find_by_id(params[:product_style_id].to_i)
-	  ps.product_order_unit
+	    ps.product_order_unit
     else
-      ps = ProductStyle.find_by_product_id_and_style_category_id1_and_style_category_id2(params[:product_id], params[:style_category_id1], params[:style_category_id2])
-      ps.product_order_unit
+      if @product.is_set?
+        @product.product_set.product_order_unit
+      else
+        ps = ProductStyle.find_by_product_id_and_style_category_id1_and_style_category_id2(params[:product_id], params[:style_category_id1], params[:style_category_id2])
+        ps.product_order_unit
+      end
     end
   end
 
@@ -791,7 +797,6 @@ class CartController < BaseController
     @order_details_map = Hash.new
     @order_deliveries.each do |key, order_delivery|
       cart = @carts_map[key.to_i]
-p cart
       @order_details_map[key] = order_delivery.details_build_from_carts(cart)
     end
   end
@@ -888,7 +893,7 @@ p cart
       item.product_name = detail.product_name
       item.price = detail.price.to_s
       item.quantity = detail.quantity.to_s
-      item.sku = detail.ps.manufacturer_id
+      item.sku = detail.product_order_unit.is_set? ? "" : detail.ps.manufacturer_id
       ecommerce.add_item(item)
     end
 

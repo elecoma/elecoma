@@ -32,8 +32,8 @@ class OrderDetail < ActiveRecord::Base
       self.product_category_id = product_order_unit.ps.product.category_id
       self.price = product_order_unit.sell_price
       self.product_id = product_order_unit.ps.product_id
-      self.product_style_ids = product_order_unit.ps.product_style_ids
-      self.ps_counts = product_order_unit.ps.ps_counts
+      self.product_style_ids = product_order_unit.product_set.product_style_ids
+      self.ps_counts = product_order_unit.product_set.ps_counts
       self.tax_price = 0 # 内税なので
     else
       self.product_code = product_order_unit.ps.code
