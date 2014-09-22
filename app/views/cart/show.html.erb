@@ -62,11 +62,13 @@
         <td colspan="6">合計 <%=h(number_with_delimiter(@cart_price)) %>円</td>
       </tr>
     </table>
-    <%= render :partial => '/base/recommend_asp', :locals=>{:size=>4} %>
-
     <div class="cart_btn">
       <%= link_to image_tag('/images/cart/cart_btn01.gif', :width=>"135", :height=>"28", :alt=>"買い物を続ける"), {:controller => :portal, :action => :show} %>
       <%= link_to image_tag('/images/cart/cart_btn02.gif', :width=>"135", :height=>"28", :alt=>"購入手続き"), {:controller => 'cart', :action => 'shipping'} %>
     </div>
   <%- end -%>
+  <div id="under_line"></div>
+  <% @reco_no = 0 %>
+  <%= render :partial => 'recommend_set', :locals => {:size=>4} %>
 </div><!-- /cart -->
+

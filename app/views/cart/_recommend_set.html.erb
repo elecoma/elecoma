@@ -1,7 +1,7 @@
 <% size = 4 unless local_variables.include?('size') %>
 <%-
 [
-  ['set', recommend_set_list, '/images/item/reco_t.gif', 'これらの商品が含まれるセットがあります。'],
+  ['set', @recommend_set_list, '/images/item/reco_t.gif', 'これらの商品が含まれるセットがあります。'],
 ].each do |key, list, image_url, alt|
 -%>
 <% unless list.blank? %>

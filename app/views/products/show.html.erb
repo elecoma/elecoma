@@ -68,20 +68,30 @@
           <% end %>
           <dd>販売元: <%= show_retailer_shop(@product) %></dd>
     </dl>
-    <%- if @product.have_zaiko? -%>
-    <%= render :partial => "base/add_cart", :locals => {:product => @product} %>
-   　　   <%have_style = @product.product_styles.any?(&:style_category1)%>
-     <%if have_style%>
-     <dl><dd><%= link_to_remote( "在庫一覧を見る",
-		                :update => "stock_table",
-				:url =>{ :action=>"stock_table",:id=>@product,:partial=>true }) %></dd></dl>
-     <div id="stock_table" align="right">
-	   <%= render :action => 'stock_table', :method=>:get %>
-	 </div>
-	 <%end%>						
-    <%- else -%>
-    品切れ中<br />
-    <%- end -%>
+    <% if @product.is_set? %>
+        <%- if @product.have_set_zaiko? -%>
+            <%= render :partial => "base/add_cart", :locals => {:product => @product} %>
+            在庫あり<br />
+        <%- else -%>
+            品切れ中<br />
+        <%- end -%>
+
+    <% else %>
+        <%- if @product.have_zaiko? -%>
+            <%= render :partial => "base/add_cart", :locals => {:product => @product} %>
+            <%have_style = @product.product_styles.any?(&:style_category1)%>
+            <%if have_style%>
+                <dl><dd><%= link_to_remote( "在庫一覧を見る",
+                                    :update => "stock_table",
+                                    :url =>{ :action=>"stock_table",:id=>@product,:partial=>true }) %></dd></dl>
+                <div id="stock_table" align="right">
+                <%= render :action => 'stock_table', :method=>:get %>
+                </div>
+            <%end%>
+        <%- else -%>
+            品切れ中<br />
+        <%- end -%>
+    <% end %>
 
     <% if @login_customer %>
       <% if already_favorite? %>
@@ -109,8 +119,14 @@
 
 
   <div class="main_hr"><hr /></div>
-
   <p class="description">
+  <% if @product.is_set? %>
+   【セット内容】<br />
+    <% @sets.each do |item| %>
+     ・<%= ProductStyle.find_by_id(item.product_style_id).product.name %>(<%= item.quantity %>個) <%= link_to "詳細", action: "show",id: item.product_id %><br/>
+    <% end %>
+  <% end %>
+  <br/>
   <%=h_br @product.description %>
   <br />
   <%= ("【サイズ】<br />" + h_br(@product.size_txt) + "<br />" ) unless @product.size_txt.blank? %>

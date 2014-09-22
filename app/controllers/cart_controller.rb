@@ -18,6 +18,22 @@ class CartController < BaseController
 
   # カートの中を見る。Loginの可否、カート内容の有無で動的に変動。カート操作全般はここから行う。
   def show
+
+#カートに入っている単品商品を含むセット商品があればリコメンドリストに追加する
+    @recommend_set_list = []
+    @carts.each do |cart|
+      ids = cart.product_order_unit.product_style.set_ids if cart.product_order_unit.is_set?
+      ids = ids.split(",")
+      ids = ids.collect {|num| num.to_i }
+
+      ids.each do |id|
+        @recommend_set_list << ProductSet.find_by_id(id).product
+      end
+
+    end
+
+    @recommend_set_list = @recommend_set_list.uniq
+
     unless @carts.all?(&:valid?)
       if flash.now[:error]
         flash.now[:error] = flash.now[:error] + cart_errors(@carts)
