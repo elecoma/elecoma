@@ -9,6 +9,7 @@ class Cart < ActiveRecord::Base
   delegate_to :product_order_unit, :product_set, :product
   delegate_to :product_order_unit, :product_style, :product, :id, :as => :product_id
   delegate_to :product_order_unit, :product_style, :product, :name, :as => :product_name
+  delegate_to :product_order_unit, :product_set, :product, :name, :as => :product_name
   delegate_to :product_order_unit, :sell_price, :as => :price
   delegate_to :product_order_unit, :product_style, :style_category1, :name, :as => :classcategory_name1, :unless => :is_set?
   delegate_to :product_order_unit, :product_style, :style_category2, :name, :as => :classcategory_name2, :unless => :is_set?

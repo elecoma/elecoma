@@ -4,67 +4,67 @@
   <tr>
     <th>商品ID</th>
     <td>
-      <%= h(@product_style.product_id) %>
+      <%= h(@pou.ps.product.id) %>
     </td>
   </tr>
   <tr>
     <th>商品名</th>
     <td>
-      <%= h(@product_style.product_name) %>
+      <%= h(@pou.ps.product.name) %>
     </td>
   </tr>
   <%if @system_supplier_use_flag%>
   <tr>
     <th>仕入先名</th>
-    <td><%= h(@product_style.product.supplier_name) %></td>
+    <td><%= h(@pou.ps.product.supplier_name) %></td>
   </tr>  
  <% end %>
   <tr>
     <th>カテゴリー名</th>
     <td>
-      <%= h(@product_style.product.category_name) %>
+      <%= h(@pou.ps.product.category_name) %>
     </td>
   </tr>
   <tr>
     <th>商品コード</th>
     <td>
-      <%= h(@product_style.code) %>
+      <%= h(@pou.ps.code) %>
     </td>
   </tr>
   <tr>
     <th>規格名称</th>
     <td>
-      <%= h(@product_style.style_name) %>
+      <%= h(@pou.product_style.style_name) unless @pou.is_set? %>
     </td>
   </tr>
   <tr>
     <th>商品型番</th>
     <td>
-      <%= h(@product_style.manufacturer_id) %>
+      <%= h(@pou.product_style.manufacturer_id) unless @pou.is_set? %>
     </td>
   </tr>  
   <tr>
     <th>価格</th>
     <td>
-      <%= number_with_delimiter(@product_style.sell_price) %>
+      <%= number_with_delimiter(@pou.sell_price) %>
     </td>
   </tr>
   <tr>
     <th>現在実在庫数</th>
     <td>
-      <%= number_with_delimiter(@product_style.actual_count.to_i) %>
+      <%= number_with_delimiter(@pou.product_style.actual_count.to_i) unless @pou.is_set? %>
     </td>
   </tr>
   <tr>
     <th>現在受注可能数</th>
     <td>
-      <%= number_with_delimiter(@product_style.orderable_count.to_i) %>
+      <%= number_with_delimiter(@pou.product_style.orderable_count.to_i) unless @pou.is_set? %>
     </td>
   </tr>
   <tr>
     <th>現在不良在庫数</th>
     <td>
-      <%= number_with_delimiter(@product_style.broken_count.to_i) %>
+      <%= number_with_delimiter(@pou.product_style.broken_count.to_i) unless @pou.is_set? %>
     </td>
   </tr>
 </table>

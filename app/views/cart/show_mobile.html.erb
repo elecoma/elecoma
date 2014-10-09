@@ -18,14 +18,14 @@
         商品名:<%= h(cart.product_name) %>
         <%= h(cart.classcategory_name1) %>
         <%= h(cart.classcategory_name2) %>
-        <%- unless cart.product_style.product.master_shop? %>
-        <br />販売元: <%= show_retailer_shop(cart.product_style.product) %>
+        <%- unless cart.ps.product.master_shop? %>
+        <br />販売元: <%= show_retailer_shop(cart.ps.product) %>
         <% end %>
         <div style="text-align:right;">単価: &yen;<%= h(number_with_delimiter(cart.price)) %> / 数量:<%= h(cart.quantity) %>個<br />
         <span style="color:#ff6600">▲</span><%= incriment_tag(cart) %>
 		<span style="color:#000099">▼</span><a href="#"><%= decriment_tag(cart) %>
         <span style="color:#cc0033">[×]</span><a href="#"> <%= link_to '削除',
-          {:controller => 'cart', :action => 'delete', :id => cart.product_style_id},
+          {:controller => 'cart', :action => 'delete', :id => cart.product_order_unit_id},
           {:class => 'product_delete', :confirm=>'本当に削除しますか？'}
          %>
 		</div>

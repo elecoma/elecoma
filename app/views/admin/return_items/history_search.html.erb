@@ -26,11 +26,11 @@
     <%unless @return_items.blank?%>       
       <% @return_items.each do | ri | %>
         <tr>
-          <td><%= h ri.product_id %></td>
-          <td><%= h ri.product_style.code %></td>
-          <td><%= h ri.product_style.product_name %></td>
-          <td><%= h ri.product_style.style_name %></td>
-          <td><%= h ri.product_style.manufacturer_id %></td>
+          <td><%= h ri.path_product.product.id %></td>
+          <td><%= h ri.path_product.code unless ri.is_set? %></td>
+          <td><%= h ri.path_product.product.name %></td>
+          <td><%= h ri.path_product.style_name unless ri.is_set? %></td>
+          <td><%= h ri.path_product.manufacturer_id unless ri.is_set? %></td>
           <td><%= number_with_delimiter(ri.returned_count.to_i) %></td>
           <td><%= h ri.returned_at %></td>
           <td class="t_center">

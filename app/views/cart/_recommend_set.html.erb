@@ -7,8 +7,8 @@
 <% unless list.blank? %>
  <div id="reco_box">
  <h2><%= image_tag image_url, :alt=>alt %></h2>
-   <ul class="clearfix"><p>
-     <% if list.size > size %> <a id="reco-<%=key%>-back" style="cursor:pointer;visibility:hidden;float:right"><%= image_tag "/images/item/lt2.png", :alt=>"↑" %></a><%end%>
+   <ul class="clearfix">
+     <li class="move lt"><a id="reco-<%=key%>-back" style="cursor:pointer;visibility:hidden;float:right"><%= image_tag "/images/item/lt2.png", :alt=>"↑" %></a>
      <% list.each_with_index do | recommend_set, i | %>
        <% next unless recommend_set %>
      <%# 最初の 4個以外非表示にする %>
@@ -26,7 +26,7 @@
       </ul>
     </li>
     <% end %>
-    <% if list.size > size %> <a id="reco-<%=key%>-next" style="cursor:pointer;visibility:hidden;float:right"><%= image_tag "/images/item/gt2.png", :alt=>"↓" %></a> <%end%>
+    <li class="move gt"><a id="reco-<%=key%>-next" style="cursor:pointer;visibility:hidden;float:right"><%= image_tag "/images/item/gt2.png", :alt=>"↓" %></a>
    </ul></p>
  <div class="m_btm"><%= image_tag("item/reco_bg_btm.gif", :width => "530", :height => "5", :alt => "") %></div>
 </div>

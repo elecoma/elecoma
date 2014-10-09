@@ -10,7 +10,7 @@ class ProductsController < BaseController
     load_seo_products_detail
 	if @product.set_flag
 		@product_set = ProductSet.find(:first, :conditions => { :product_id => @product.id })
-	    load_sets
+	  load_sets
 	end
     @recommend_buys = Recommend.recommend_get(@product.id, Recommend::TYPE_BUY) || []
     @recommend_views = Recommend.recommend_get(@product.id, Recommend::TYPE_VIEW) || []

@@ -22,6 +22,6 @@
       <%= f.text_area :comment, {:size => "60x10"} %>
     </td>
   </tr>
-  <%= f.hidden_field :product_id, {:value => @product_style.product_id.to_s} %>
-  <%= f.hidden_field :product_style_id, {:value => @product_style.id.to_s} %>
+  <%= f.hidden_field :product_id, {:value => @pou.ps.product.id.to_s} %>
+  <%= f.hidden_field :product_order_unit_id, {:value => @pou.id.to_s} %>
 </table>

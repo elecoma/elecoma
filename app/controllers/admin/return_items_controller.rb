@@ -12,13 +12,13 @@ class Admin::ReturnItemsController < Admin::BaseController
   end
 
   new_action.before do
-    @product_style = ProductStyle.find_by_id(params[:id].to_i)
+    @pou = ProductOrderUnit.find_by_id(params[:id].to_i)
   end
 
   new_action.wants.html do
-    if @product_style.nil?
+    if @pou.nil?
       redirect_to :action => :index
-    elsif @product_style.product.retailer_id != session[:admin_user].retailer_id
+    elsif @pou.ps.product.retailer_id != session[:admin_user].retailer_id
       redirect_to :action => :index
     else
       render :action => :new
@@ -27,13 +27,13 @@ class Admin::ReturnItemsController < Admin::BaseController
 
   edit.before do
     ri = ReturnItem.find_by_id(params[:id].to_i)
-    @product_style = ProductStyle.find_by_id(ri.product_style_id) unless ri.nil?
+    @pou = ProductOrderUnit.find_by_id(ri.product_order_unit_id) unless ri.nil?
   end
 
   edit.wants.html do
-    if @product_style.nil?
+    if @pou.nil?
       redirect_to :action => :history
-    elsif @product_style.product.retailer_id != session[:admin_user].retailer_id
+    elsif @pou.ps.product.retailer_id != session[:admin_user].retailer_id
       redirect_to :action => :history
     else
       render :action => :edit
@@ -42,11 +42,10 @@ class Admin::ReturnItemsController < Admin::BaseController
 
   [create, update].each do |action|
     action.before do
-      @product_style = ProductStyle.find_by_id(params[:return_item][:product_style_id].to_i)
+      @pou = ProductOrderUnit.find_by_id(params[:return_item][:product_order_unit_id].to_i)
       @return_item.admin_user_id = session[:admin_user].id
-      raise ActiveRecord::RecordNotFound if @product_style.product.retailer_id != session[:admin_user].retailer_id
+      raise ActiveRecord::RecordNotFound if @pou.ps.product.retailer_id != session[:admin_user].retailer_id
     end
-    
   end  
   
   create.wants.html do
@@ -79,14 +78,24 @@ class Admin::ReturnItemsController < Admin::BaseController
       return
     end
     @condition, @search_list = Product.get_conditions(@condition, params, true)
-    find_options = {
+    @products = Product.find(:all,:conditions => flatten_conditions(@search_list))
+    @pous = []
+    @products.each do |product|
+      if product.is_set?
+        @pous << ProductOrderUnit.find(:first, :conditions => {:product_set_id => product.product_set.id})
+      else
+        @product_styles = product.product_styles
+        @product_styles.each do |ps|
+          @pous << ProductOrderUnit.find(:first, :conditions => {:product_style_id => ps.id})
+        end
+      end
+    end
+    order_options = {
       :page => params[:page],
       :per_page => @condition.per_page || 10,
-      :conditions => flatten_conditions(@search_list),
-      :joins => "LEFT JOIN products ON products.id = product_styles.product_id ",
-      :order => "product_styles.id"
+      :order => "product_order_units.id"
     }
-    @product_styles = ProductStyle.paginate(find_options)
+    @pous = @pous.paginate(order_options)
   end
 
   def csv_index
@@ -113,14 +122,16 @@ class Admin::ReturnItemsController < Admin::BaseController
     if params[:id].blank?
       render :status => :not_found
     end
-    condition, join = get_csv_condition
-    rows = ReturnItem.find(:all, :conditions => flatten_conditions(condition), :joins => join).map do |ri|
+    @return_items = ReturnItem.all.select {|ri| ri.path_product.product.retailer.id == session[:admin_user].retailer_id}
+    
+
+    rows = @return_items.map do |ri|
       a = []
-      a << ri.product_id
-      a << ri.product_style.code
-      a << ri.product_style.product_name
-      a << ri.product_style.style_name
-      a << ri.product_style.manufacturer_id
+      a << ri.path_product.product.id
+      a << ri.path_product.code unless ri.is_set?
+      a << ri.path_product.product.name
+      a << ri.path_product.style_name unless ri.is_set?
+      a << ri.path_product.manufacturer_id unless ri.is_set?
       a << ri.returned_count
       a << ri.returned_at
       a
@@ -142,12 +153,12 @@ class Admin::ReturnItemsController < Admin::BaseController
       return
     end
     @search_list = ReturnItemSearchForm.get_conditions(@condition)
-    @search_list << [ 'product_styles.deleted_at IS NULL' ]
+    @search_list << [ 'product_order_units.deleted_at IS NULL' ]
     find_options = {
       :page => params[:page], 
       :per_page => @condition.per_page || 10,
       :conditions => flatten_conditions(@search_list),
-      :joins=> :product_style,
+      :joins=> :product_order_unit,
       :include => [:product],
       :order => "return_items.id"
     }
@@ -165,8 +176,10 @@ class Admin::ReturnItemsController < Admin::BaseController
 
   def get_csv_condition
     condition = []
+=begin
     condition << ["products.retailer_id = ?", session[:admin_user].retailer_id]
     return condition, "LEFT JOIN product_styles ON product_styles.id = return_items.product_style_id " + "LEFT JOIN products ON products.id = product_styles.product_id "
+=end
   end
 
 end

@@ -46,7 +46,6 @@ class ProductOrderUnit < ActiveRecord::Base
       quantity
     else
       count = get_ps_count_in_carts(carts, product_style.id)
-      p product_style.id
       product_style.available?(quantity + count) - count 
     end
   end

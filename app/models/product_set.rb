@@ -39,7 +39,8 @@ class ProductSet < ActiveRecord::Base
       search_list << ["products.updated_at <= ?", search.updated_at_to + 1.day] if search.updated_at_to.present?
       search_list << ["products.sale_start_at >= ?", search.sale_start_at_start] if search.updated_at_to.present?
       search_list << ["products.sale_start_at <= ?", search.sale_start_at_end + 1.day] if search.updated_at_to.present?
-      search_list << ["products.retailer_id = ?", search.retailer_id] if search.updated_at_to.present?
+      search_list << ["products.retailer_id = ?", search.retailer_id] unless search.retailer_id.blank?
+
     end
     [search, search_list]
   end

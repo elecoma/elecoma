@@ -234,7 +234,6 @@ def first_product_style
             search_list << ["products.id = ?", 0]
           end
         else
- #         search.errors.add "商品IDは数字で入力して下さい。", ""
         search.errors.add "","商品IDは数字で入力して下さい。"
         end
       end

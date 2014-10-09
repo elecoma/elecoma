@@ -6,7 +6,6 @@ class Admin::ProductStylesController < Admin::BaseController
   
   def new
     @product = Product.find_by_id(params[:id].to_i)
-p @product
 	if @product.is_set? 
 		redirect_to :controller => 'products', :action => 'index'
 		flash.now[:error] = "セット商品には規格を登録できません"
@@ -47,20 +46,15 @@ p @product
       # has_manyが正常に動かない時の対策
       @product_styles.each do |ps|
         ps.save
+        unless ProductOrderUnit.exists?(:product_style_id => ps.id)
+          @pou = ProductOrderUnit.new
+          @pou.set_flag = false
+          @pou.product_style_id = ps.id
+          @pou.sell_price = ps.sell_price
+          @pou.save
+        end
       end
 
-      #product_styles新規生成時に単品の商品ならproduct_order_unitも作成する
-	  unless @product.is_set?
-      	@ps = @product.product_styles.first
-	  	 unless ProductOrderUnit.exists?(:product_style_id => @ps.id)
-      		#product_styles新規生成時に単品の商品ならproduct_order_unitも作成する
-      		@pou = ProductOrderUnit.new
-      		@pou.set_flag = false 
-      	    @pou.product_style_id = @ps.id
-      	    @pou.sell_price = @ps.sell_price
-            @pou.save
-       	 end
-	  end
       flash.now[:notice] = "保存しました"
     else
       flash.now[:error] = "保存に失敗しました"

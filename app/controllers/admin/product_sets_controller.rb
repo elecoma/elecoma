@@ -51,7 +51,7 @@ class Admin::ProductSetsController < Admin::BaseController
     addparam = {'retailer_id' => session[:admin_user].retailer_id}
     params[:search].merge! addparam unless params[:search].nil?
     @search = SearchForm.new(params[:search])
-	@search, @search_list = ProductSet.get_conditions(@search, actual_flg)
+	  @search, @search_list = ProductSet.get_conditions(@search, actual_flg)
   end
 
   def get_search_form_ps(actual_flg=false)
@@ -183,11 +183,11 @@ class Admin::ProductSetsController < Admin::BaseController
     @product_set.product_id = @product.id
     @product_set.product_style_ids = @sets.map{|set| set.product_style_id}.join(",") 
     @product_set.ps_counts = @sets.map{|set| set.quantity}.join(",")
+    @product_set.save
     @order_unit = ProductOrderUnit.find_by_product_set_id(@product_set.id)
     @order_unit = ProductOrderUnit.new unless @order_unit
     @order_unit.set_flag = true
     @order_unit.sell_price = @product.price
-    @product_set.save
     @order_unit.product_set_id = @product_set.id
     @order_unit.save
     @sets.each do |set|
@@ -199,6 +199,8 @@ class Admin::ProductSetsController < Admin::BaseController
       ps.save
     end
 
+    session.delete(:sets)
+    session.delete(:product_set_id)
     @sets = []
     redirect_to :action => "show", :id => @product_set.id
   end

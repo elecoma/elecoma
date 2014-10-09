@@ -18,18 +18,19 @@ class CartController < BaseController
 
   # カートの中を見る。Loginの可否、カート内容の有無で動的に変動。カート操作全般はここから行う。
   def show
-
 #カートに入っている単品商品を含むセット商品があればリコメンドリストに追加する
     @recommend_set_list = []
     @carts.each do |cart|
-      ids = cart.product_order_unit.product_style.set_ids if cart.product_order_unit.is_set?
-      ids = ids.split(",")
-      ids = ids.collect {|num| num.to_i }
+      unless cart.product_order_unit.is_set?
+        ids = cart.product_order_unit.product_style.set_ids
+        ids = '' if ids.nil?
+        ids = ids.split(",")
+        ids = ids.collect {|num| num.to_i }
 
-      ids.each do |id|
-        @recommend_set_list << ProductSet.find_by_id(id).product
+        ids.each do |id|
+          @recommend_set_list << ProductSet.find_by_id(id).product
+        end
       end
-
     end
 
     @recommend_set_list = @recommend_set_list.uniq
@@ -215,21 +216,18 @@ class CartController < BaseController
       end
     end
     if @order_deliveries.empty?
-      @carts.map(&:product_order_unit).map(&:product_style).map(&:product).map(&:retailer).each do |retailer|
+      @carts.map(&:product_order_unit).each do |pou|
         od = OrderDelivery.new
         od.set_delivery_address(@delivery_address)
-        @order_deliveries[retailer.id] = od
+        @retailer = pou.ps.product.retailer
+        @order_deliveries[@retailer.id] = od
       end
     end
+
     @delivery_traders = Hash.new
     @carts.map(&:product_order_unit).each do |pou|
-      if pou.set_flag
-        retailer_id = pou.product_set.product.retailer_id
-        @delivery_traders[retailer_id] = select_delivery_trader_with_retailer_id(retailer_id)
-      else
-        retailer_id = pou.product_style.product.retailer_id
-        @delivery_traders[retailer_id] = select_delivery_trader_with_retailer_id(retailer_id)
-      end
+      retailer_id = pou.ps.product.retailer_id
+      @delivery_traders[retailer_id] = select_delivery_trader_with_retailer_id(retailer_id)
     end
 
     if @not_login_customer
@@ -530,7 +528,6 @@ class CartController < BaseController
     build_cart_add_product_form
     return if @add_product.invalid?
     @product =Product.find_by_id(@add_product.product_id)
-    p "にゃーん！" if @product.is_set?
     product_style = find_product_style_by_params
     product_order_unit = find_pou_by_params
 	  return redirect_for_product_cannot_sale if product_order_unit.nil?
@@ -620,7 +617,8 @@ class CartController < BaseController
     cart.campaign_id = params[:campaign_id] if params[:campaign_id].present?
 
     # 購入可能であれば、カートに商品を追加する
-    insert_quantity = product_order_unit.available?(@login_customer.carts,cart.quantity + quantity)
+    load_cart 
+    insert_quantity = product_order_unit.available?(@carts,cart.quantity + quantity)
     insert_quantity_diff = insert_quantity - cart.quantity
     if insert_quantity.zero?
       # 購入可能な件数が 0 ならカートを追加しない
@@ -631,13 +629,17 @@ class CartController < BaseController
       flash[:cart_add_product] = "「#{product_order_unit.sell_name}」は販売制限しております。一度にこれ以上の購入はできません。"
     end
     cart.quantity = insert_quantity
-    session[:cart_last_product_id] = product_order_unit.product_style.product_id
+    if product_order_unit.is_set?
+      session[:cart_last_product_id] = product_order_unit.product_set.product_id
+    else
+      session[:cart_last_product_id] = product_order_unit.product_style.product_id
+    end
     true
   end
 
   def add_carts_by_order_details(order_details)
     order_details.all? do |order_detail|
-      add_to_cart(order_detail.product_style, order_detail.quantity)
+      add_to_cart(order_detail.product_order_unit, order_detail.quantity)
     end
   end
 
@@ -659,7 +661,7 @@ class CartController < BaseController
     Order.transaction do
       @carts.each do | cart |
         if request.mobile?
-          ProductAccessLog.create(:product_id => cart.product_style.product_id,
+          ProductAccessLog.create(:product_id => cart.ps.product_id,
                                   :session_id => session.session_id,
                                   :customer_id => @login_customer && @login_customer.id,
                                   :docomo_flg => request.mobile == Jpmobile::Mobile::Docomo,
@@ -781,7 +783,7 @@ class CartController < BaseController
     end.map do |c,i|
       c.errors.full_messages.map do |message|
         if c.product_style
-          name = c.product_style.full_name
+          name = c.ps.full_name
         else
           name = '%d 番目の商品' % (i+1)
         end
@@ -826,7 +828,7 @@ class CartController < BaseController
 
   def process_campaign(cart, customer)
     cp = Campaign.find_by_id(cart.campaign_id)
-    return if cp.product_id != cart.product_style.product_id
+    return if cp.product_id != cart.ps.product_id
     return if cp.duplicated?(customer)
     cp.customers << customer
     cp.application_count ||= 0

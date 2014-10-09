@@ -34,7 +34,7 @@
       </tr>
       <% @carts.each_with_index do |cart, i| %>
         <tr>
-          <td><%= link_to_product_image(cart.product, :small) %></td>
+          <td><%= link_to_product_image(cart.ps.product, :small) %></td>
           <td>
             <p><%= h(cart.product_name) %><br />
                <%- unless cart.classcategory_name1.blank? %>
@@ -43,7 +43,7 @@
                <%- unless cart.classcategory_name2.blank? %>
                <%= h(cart.classcategory_name2)%>
                <%- end %>
-               <%- unless cart.product_order_unit.product_style.product.master_shop? %>
+               <%- unless cart.ps.product.master_shop? %>
                <br />販売元: <%= show_retailer_shop(cart.product_order_unit.product_style.product) %>
                <%- end %>
             </p>
