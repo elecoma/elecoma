@@ -11,7 +11,7 @@ soba:
   price: 500
   quantity: 4
   point_rate: 5
-  product_style_id: 1
+  product_order_unit_id: 1
 
 udon:
   id: 2
@@ -26,7 +26,7 @@ udon:
   price: 480
   quantity: 7
   point_rate: 5
-  product_style_id: 1
+  product_order_unit_id: 1
 
 limited_in_summer:
   id: 3
@@ -40,7 +40,7 @@ limited_in_summer:
   quantity: 1
   point_rate: 5
   created_at: 2008-06-01
-  product_style_id: 1
+  product_order_unit_id: 1
 
 limited_in_winter:
   id: 4
@@ -54,7 +54,7 @@ limited_in_winter:
   quantity: 1
   point_rate: 5
   created_at: 2008-06-01
-  product_style_id: 1
+  product_order_unit_id: 1
 
 dog:
   id: 5
@@ -62,7 +62,7 @@ dog:
   product_code: DOG001
   price: 400
   quantity: 10
-  product_style_id: 1
+  product_order_unit_id: 1
 
 cat:
   id: 6
@@ -70,7 +70,7 @@ cat:
   product_code: CAT001
   price: 220
   quantity: 18
-  product_style_id: 1
+  product_order_unit_id: 1
 
 for_recall:
   id: 7
@@ -79,7 +79,7 @@ for_recall:
   product_name: リコール
   price: 4380
   quantity: 1
-  product_style_id: 1
+  product_order_unit_id: 1
 
 for_recall_2:
   id: 8
@@ -88,7 +88,7 @@ for_recall_2:
   product_name: ひげ
   price: 99
   quantity: 20
-  product_style_id: 1
+  product_order_unit_id: 1
 
 # 受注集計用
 # 発送済み 8 月購入
@@ -103,7 +103,7 @@ commited_august_<%= i %>:
   product_code: NATSU0001
   price: 400
   quantity: 20
-  product_style_id: 1
+  product_order_unit_id: 1
 <% end %>
 # 未発送 8 月購入
 <% (1..31).each do |i| 
@@ -117,7 +117,7 @@ not_commited_august_<%= i %>:
   product_code: NATSU0001
   price: 400
   quantity: 20
-  product_style_id: 1
+  product_order_unit_id: 1
 <% end %>
 # 発送済み 9 月購入
 <% (1..30).each do |i| 
@@ -131,7 +131,7 @@ commited_september_<%= i %>:
   product_code: NIGAKKI01
   price: 4000
   quantity: 3
-  product_style_id: 1
+  product_order_unit_id: 1
 <% end %>
 
 <%
@@ -149,7 +149,7 @@ for_total_<%= "%04d" % id%>:
   product_code: PRODUCT-0<%= product_id %>
   price: <%= product_id * 1111 %>
   quantity: <%= rand(10)+1 %>
-  product_style_id: 1
+  product_order_unit_id: 1
 <% end %>
 
 #昨日のorder
@@ -163,7 +163,7 @@ last_day_order_<%= idx %>:
   price: 6665
   quantity: 15
   created_at: <%= Date.today - 1 %>
-  product_style_id: 1
+  product_order_unit_id: 1
 <% end %>
 #本日のorder
 <% (4..6).each do | idx | %>
@@ -176,7 +176,7 @@ today_order_<%= idx-3 %>:
   price: 6665
   quantity: 15
   created_at: <%= Date.today %>
-  product_style_id: 1
+  product_order_unit_id: 1
 <% end %>
 
 # マイページ 注文履歴用
@@ -189,7 +189,7 @@ history_00_00_<%= "%02d" % i %>:
   price: <%= id %>
   quantity: 2
   product_id: <%= i + 1 %>
-  product_style_id: <%= i + 1 %>
+  product_order_unit_id: <%= i + 1 %>
 <% end %>
 history_00_01_00:
   id: 1360
@@ -198,7 +198,7 @@ history_00_01_00:
   product_name: FUTON
   price: 10080
   quantity: 1
-  product_style_id: 1
+  product_order_unit_id: 1
 history_00_02_00:
   id: 1380
   order_delivery_id: 40
@@ -206,7 +206,7 @@ history_00_02_00:
   product_name: CHA-N
   price: 3
   quantity: 400
-  product_style_id: 1
+  product_order_unit_id: 1
 #会員1商品購入
 #購入商品はproduct_id＝18（キャンペーン付き＋送料無料）
 customer_buy_one:
@@ -220,7 +220,7 @@ customer_buy_one:
   quantity: 1
   product_category_id: 1
   order_delivery_id: 3232
-  product_style_id: 16
+  product_order_unit_id: 16
   style_category_name1: have_classcategory1
   style_category_name2: classcategory1
 #会員2商品購入
@@ -236,7 +236,7 @@ customer_buy_two_1:
   quantity: 1
   product_category_id: 1
   order_delivery_id: 3233
-  product_style_id: 16
+  product_order_unit_id: 16
   style_category_name1: have_classcategory1
   style_category_name2: classcategory1
 customer_buy_two_2:
@@ -250,7 +250,7 @@ customer_buy_two_2:
   quantity: 1
   product_category_id: 1
   order_delivery_id: 3233
-  product_style_id: 14
+  product_order_unit_id: 14
   style_category_name1: have_classcategory1
   style_category_name2: classcategory1
 #会員2商品購入+ポイント使用
@@ -266,7 +266,7 @@ customer_buy_two_with_point_1:
   quantity: 1
   product_category_id: 1
   order_delivery_id: 3234
-  product_style_id: 16
+  product_order_unit_id: 16
   style_category_name1: have_classcategory1
   style_category_name2: classcategory1
 customer_buy_two_with_point_2:
@@ -280,7 +280,7 @@ customer_buy_two_with_point_2:
   quantity: 1
   product_category_id: 1
   order_delivery_id: 3234
-  product_style_id: 14
+  product_order_unit_id: 14
   style_category_name1: have_classcategory1
   style_category_name2: classcategory1
 #会員1商品購入+オプション配送先選択
@@ -296,7 +296,7 @@ customer_buy_one_with_option_deliv:
   quantity: 1
   product_category_id: 1
   order_delivery_id: 3235
-  product_style_id: 14
+  product_order_unit_id: 14
   style_category_name1: have_classcategory1
   style_category_name2: classcategory1
 #非会員1商品（2個）購入
@@ -312,7 +312,7 @@ not_customer_buy_one:
   quantity: 2
   product_category_id: 1
   order_delivery_id: 3236
-  product_style_id: 16
+  product_order_unit_id: 16
   style_category_name1: have_classcategory1
   style_category_name2: classcategory1
 #非会員2商品購入+オプション配送先選択 
@@ -328,7 +328,7 @@ not_customer_buy_two_with_option_deliv_1:
   quantity: 1
   product_category_id: 1
   order_delivery_id: 3237
-  product_style_id: 16
+  product_order_unit_id: 16
   style_category_name1: have_classcategory1
   style_category_name2: classcategory1
 not_customer_buy_two_with_option_deliv_2:
@@ -342,7 +342,7 @@ not_customer_buy_two_with_option_deliv_2:
   quantity: 1
   product_category_id: 1
   order_delivery_id: 3237
-  product_style_id: 14
+  product_order_unit_id: 14
   style_category_name1: have_classcategory1
   style_category_name2: classcategory1
 #非会員＋通常商品（product_id＝16）＋離島
@@ -357,7 +357,7 @@ not_customer_ritou:
   quantity: 1
   product_category_id: 1
   order_delivery_id: 3238
-  product_style_id: 14
+  product_order_unit_id: 14
   style_category_name1: have_classcategory1
   style_category_name2: classcategory1
   
@@ -375,7 +375,7 @@ other_shop_commited_august_<%= i %>:
   product_code: NATSU0001
   price: 400
   quantity: 20
-  product_style_id: 1
+  product_order_unit_id: 1
 <% end %>
 # 未発送 8 月購入 多店舗
 <% (1..31).each do |i| 
@@ -389,7 +389,7 @@ other_shop_not_commited_august_<%= i %>:
   product_code: NATSU0001
   price: 400
   quantity: 20
-  product_style_id: 1
+  product_order_unit_id: 1
 <% end %>
 # 発送済み 9 月購入 多店舗
 <% (1..30).each do |i| 
@@ -403,5 +403,5 @@ other_shop_commited_september_<%= i %>:
   product_code: NIGAKKI01
   price: 4000
   quantity: 3
-  product_style_id: 1
+  product_order_unit_id: 1
 <% end %>

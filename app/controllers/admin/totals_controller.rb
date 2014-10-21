@@ -45,7 +45,6 @@ class Admin::TotalsController < Admin::BaseController
     @list_view = @agent.columns
     @links = @agent.links
     @labels = @agent.labels
-    
     #当てはまったものをレコードに入れる
     begin
       @records = @agent.get_records(params)
@@ -53,7 +52,6 @@ class Admin::TotalsController < Admin::BaseController
       logger.error e.message
       e.backtrace.each{|bt|logger.error(bt)}
     end
-
     @total = @agent.total
     
     #

@@ -7,7 +7,7 @@ describe CartController do
            :delivery_fees, :order_deliveries, :shops, :payment_plugins, :retailers,
            :recommends, :recommend_xmls
   fixtures :prefectures, :categories
-  fixtures :orders, :order_details
+  fixtures :orders, :order_details,:product_order_units
 
   before do
     @dummy_carts = [carts(:cart_can_incriment).attributes]
@@ -67,7 +67,7 @@ describe CartController do
       session[:carts] = carts.map(&:attributes)
       get 'show'
       assigns[:carts].zip(carts).each do |actual, expected|
-        actual.product_style_id.should == expected.product_style_id
+        actual.product_order_unit_id.should == expected.product_order_unit_id
         actual.quantity.should == expected.quantity
       end
     end
@@ -78,7 +78,7 @@ describe CartController do
       session[:carts] = carts.map(&:attributes)
       get 'show'
       assigns[:carts].zip(carts).each do |actual, expected|
-        actual.product_style_id.should == expected.product_style_id
+        actual.product_order_unit_id.should == expected.product_order_unit_id
         actual.quantity.should == expected.quantity
       end
     end
@@ -97,7 +97,7 @@ describe CartController do
       session[:customer_id] = nil # customers(:product_buyer).id
       @carts = [carts(:cart_can_incriment)]
       session[:carts] = @carts.map(&:attributes)
-      get 'inc', {:id => @carts[0].product_style_id}
+      get 'inc', {:id => @carts[0].product_order_unit_id}
       response.should be_redirect
       response.should redirect_to({:controller => 'cart', :action => 'show'})
     end
@@ -106,7 +106,7 @@ describe CartController do
       session[:customer_id] = nil
       carts = [carts(:cart_can_incriment)]
       session[:carts] = carts.map(&:attributes)
-      get 'inc', {:id => carts[0].product_style_id}
+      get 'inc', {:id => carts[0].product_order_unit_id}
       response.should be_redirect
       response.should redirect_to({:controller => 'cart', :action => 'show'})
       assigns[:carts][0].quantity.should == carts[0].quantity + 1
@@ -116,7 +116,7 @@ describe CartController do
       session[:customer_id] = nil # customers(:product_buyer).id
       @carts = [carts(:cart_can_not_incriment)]
       session[:carts] = @carts.map(&:attributes)
-      get 'inc', {:id => @carts[0].product_style_id}
+      get 'inc', {:id => @carts[0].product_order_unit_id}
       response.should be_redirect
       response.should redirect_to({:controller => 'cart', :action => 'show'})
       Cart.find(@carts[0].id).quantity.should_not == 2
@@ -128,7 +128,7 @@ describe CartController do
       session[:customer_id] = nil # customers(:product_buyer).id
       @carts = [carts(:cart_can_decriment)]
       session[:carts] = @carts.map(&:attributes)
-      get 'dec', {:id => @carts[0].product_style_id}
+      get 'dec', {:id => @carts[0].product_order_unit_id}
       response.should be_redirect
       response.should redirect_to({:controller => 'cart', :action => 'show'})
     end
@@ -137,7 +137,7 @@ describe CartController do
       session[:customer_id] = nil # customers(:product_buyer).id
       @carts = [carts(:cart_can_decriment)]
       session[:carts] = @carts.map(&:attributes)
-      get 'dec', {:id => @carts[0].product_style_id}
+      get 'dec', {:id => @carts[0].product_order_unit_id}
       response.should be_redirect
       response.should redirect_to({:controller => 'cart', :action => 'show'})
       assigns[:carts][0].quantity.should == @carts[0].quantity - 1
@@ -147,7 +147,7 @@ describe CartController do
       session[:customer_id] = nil # customers(:product_buyer).id
       @carts = [carts(:cart_can_not_decriment)]
       session[:carts] = @carts.map(&:attributes)
-      get 'dec', {:id => @carts[0].product_style_id}
+      get 'dec', {:id => @carts[0].product_order_unit_id}
       response.should be_redirect
       response.should redirect_to({:controller => 'cart', :action => 'show'})
       assigns[:carts].should_not be_empty
@@ -160,7 +160,7 @@ describe CartController do
       session[:customer_id] = nil # customers(:product_buyer).id
       @carts = [carts(:cart_can_incriment)]
       session[:carts] = @carts.map(&:attributes)
-      get 'delete', {:id => @carts[0].product_style_id}
+      get 'delete', {:id => @carts[0].product_order_unit_id}
       response.should be_redirect
       response.should redirect_to({:controller => 'cart', :action => 'show'})
     end
@@ -169,7 +169,7 @@ describe CartController do
       session[:customer_id] = nil # customers(:product_buyer).id
       @carts = [carts(:cart_can_incriment)]
       session[:carts] = @carts.map(&:attributes)
-      get 'delete', {:id => @carts[0].product_style_id}
+      get 'delete', {:id => @carts[0].product_order_unit_id}
       response.should be_redirect
       response.should redirect_to({:controller => 'cart', :action => 'show'})
       assigns[:carts].should be_empty
@@ -179,7 +179,7 @@ describe CartController do
       session[:customer_id] = nil # customers(:product_buyer).id
       @carts = [carts(:cart_can_incriment), carts(:cart_can_not_incriment)]
       session[:carts] = @carts.map(&:attributes)
-      get 'delete', {:id => @carts[0].product_style_id}
+      get 'delete', {:id => @carts[0].product_order_unit_id}
       response.should be_redirect
       response.should redirect_to({:controller => 'cart', :action => 'show'})
       assigns[:carts].should_not be_empty
@@ -472,7 +472,7 @@ describe CartController do
 #        :order_delivery => order_delivery.attributes
 #      }
       order_deliveries = Hash.new
-      order_deliveries[carts(:cart_can_incriment).product_style.product.retailer_id] = order_deliveries(:nobi).attributes
+      order_deliveries[carts(:cart_can_incriment).ps.product.retailer_id] = order_deliveries(:nobi).attributes
       @params = {
         :point_usable => 'false',
         :order_deliveries => order_deliveries
@@ -613,11 +613,11 @@ describe CartController do
       session[:customer_id] = nil # customers(:product_buyer).id
       carts = [carts(:cart_can_incriment), carts(:cart_can_decriment)]
       session[:carts] = carts.map(&:attributes)
-      product_style = carts[0].product_style
+      product_order_unit = carts[0].product_order_unit
       get 'add_product', {:size => 1,
-        :product_id => product_style.product_id,
-        :style_category_id1 => product_style.style_category_id1,
-        :style_category_id2 => product_style.style_category_id2
+        :product_id => product_order_unit.ps.product.id,
+        :style_category_id1 => product_order_unit.product_style.style_category_id1,
+        :style_category_id2 => product_order_unit.product_style.style_category_id2
       }
       response.should redirect_to(:action => 'show')
       assigns[:carts].should_not be_empty
@@ -642,7 +642,7 @@ describe CartController do
       # 注文個数2、注文可能数10の場合
       order_detail = @order.order_deliveries.first.order_details.first
       order_detail.update_attributes(quantity: 2)
-      order_detail.product_style.update_attributes(orderable_count: 10)
+      order_detail.product_order_unit.product_style.update_attributes(orderable_count: 10)
 
       session[:customer_id] = @order.customer_id
     end
@@ -690,7 +690,7 @@ describe CartController do
       before do
         # 注文個数2、注文可能数１の場合
         order_detail = @order.order_deliveries.first.order_details.first
-        order_detail.product_style.update_attributes(orderable_count: 1)
+        order_detail.product_order_unit.product_style.update_attributes(orderable_count: 1)
 
         get :repeat_order, { :order_id => @order.id }
       end

@@ -2,7 +2,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe FavoritesController do
-  fixtures :favorites,:product_styles
+  fixtures :favorites,:product_order_units
 
   before do
     @controller.class.skip_before_filter :start_transaction
@@ -18,7 +18,7 @@ describe FavoritesController do
       response.should be_true
     end
 
-    describe "product_style_idが無く、ログインしていない場合" do
+    describe "product_order_unit_idが無く、ログインしていない場合" do
       it "ログイン画面へリダイレクトする" do
         post 'add_favorite'
         response.should redirect_to controller: :accounts, action: :login
@@ -31,7 +31,7 @@ describe FavoritesController do
       end
     end
 
-    describe "product_style_idが無く、ログインしている場合" do
+    describe "product_order_unit_idが無く、ログインしている場合" do
       before do
         session[:customer_id] = @exists_favorite.customer_id
       end
@@ -48,50 +48,50 @@ describe FavoritesController do
       end
     end
 
-    describe "product_style_idがあり、ログインしていない場合" do
+    describe "product_order_unit_idがあり、ログインしていない場合" do
       it "ログイン画面へリダイレクトする" do
-        post 'add_favorite', params={product_style_id: @exists_favorite.product_style_id}
+        post 'add_favorite', params={product_order_unit_id: @exists_favorite.product_order_unit_id}
         response.should redirect_to controller: :accounts, action: :login
       end
 
       it "お気に入りが増えていない" do
         lambda{
-          post 'add_favorite', params = { product_style_id: @exists_favorite.product_style_id }
+          post 'add_favorite', params = { product_order_unit_id: @exists_favorite.product_order_unit_id }
         }.should_not change(Favorite,:count).by(1)
       end
     end
 
-    describe "product_style_idがあり、ログインしている場合" do
+    describe "product_order_unit_idがあり、ログインしている場合" do
       before do
         session[:customer_id] = @exists_favorite.customer_id
       end
 
       describe "既にお気に入りに入れている商品の場合" do
         it "お気に入り一覧へリダイレクトする" do
-          post 'add_favorite', params = { product_style_id: @exists_favorite.product_style_id }
+          post 'add_favorite', params = { product_order_unit_id: @exists_favorite.product_order_unit_id }
           response.should redirect_to controller: :accounts, action: :favorite
         end
 
         it "お気に入りが増えていない" do
           lambda{
-            post 'add_favorite', params = { product_style_id: @exists_favorite.product_style_id }
+            post 'add_favorite', params = { product_order_unit_id: @exists_favorite.product_order_unit_id }
           }.should_not change(Favorite,:count).by(1)
         end
       end
 
       describe "まだお気に入りに入れていない商品の場合" do
         before do
-          @product_style = product_styles(:valid_product)
+          @product_order_unit = product_order_units(:valid_product)
         end
 
         it "お気に入り一覧へリダイレクトする" do
-          post 'add_favorite', params = { product_style_id: @product_style.id }
+          post 'add_favorite', params = { product_order_unit_id: @product_order_unit.id }
           response.should redirect_to controller: :accounts, action: :favorite
         end
 
         it "お気に入りが増えている" do
           lambda{
-            post 'add_favorite', params = { product_style_id: @product_style.id }
+            post 'add_favorite', params = { product_order_unit_id: @product_order_unit.id }
           }.should change(Favorite,:count).by(1)
         end
       end
@@ -107,7 +107,7 @@ describe FavoritesController do
       response.should be_true
     end
 
-    describe "product_style_idsが無く、ログインしていない場合" do
+    describe "product_order_unit_idsが無く、ログインしていない場合" do
       it "ログイン画面へリダイレクトする" do
         post 'delete_favorite'
         response.should redirect_to controller: :accounts, action: :login
@@ -120,7 +120,7 @@ describe FavoritesController do
       end
     end
 
-    describe "product_style_idsが無く、ログインしている場合" do
+    describe "product_order_unit_idsが無く、ログインしている場合" do
       before do
         session[:customer_id] = @exists_favorite.customer_id
       end
@@ -137,39 +137,39 @@ describe FavoritesController do
       end
     end
 
-    describe "product_style_idsがあり、ログインしていない場合" do
+    describe "product_order_unit_idsがあり、ログインしていない場合" do
       it "ログイン画面へリダイレクトする" do
-        post 'delete_favorite', params = { product_style_ids: [@exists_favorite.product_style_id] }
+        post 'delete_favorite', params = { product_order_unit_ids: [@exists_favorite.product_order_unit_id] }
         response.should redirect_to controller: :accounts, action: :login
       end
 
       it "お気に入りが減っていない" do
         lambda{
-          post 'delete_favorite', params = { product_style_ids: [@exists_favorite.product_style_id] }
+          post 'delete_favorite', params = { product_order_unit_ids: [@exists_favorite.product_order_unit_id] }
         }.should_not change(Favorite,:count).by(-1)
       end
     end
 
-    describe "product_style_idsがあり、ログインしている場合" do
+    describe "product_order_unit_idsがあり、ログインしている場合" do
       before do
         session[:customer_id] = @exists_favorite.customer_id
       end
 
       describe "１つだけ削除" do
         it "お気に入り一覧へリダイレクトする" do
-          post 'delete_favorite', params = { product_style_ids: [@exists_favorite.product_style_id] }
+          post 'delete_favorite', params = { product_order_unit_ids: [@exists_favorite.product_order_unit_id] }
           response.should redirect_to controller: :accounts, action: :favorite
         end
 
         it "お気に入りが減っている" do
           lambda{
-            post 'delete_favorite', params = { :product_style_ids => [@exists_favorite.product_style_id] }
+            post 'delete_favorite', params = { :product_order_unit_ids => [@exists_favorite.product_order_unit_id] }
           }.should change(Favorite,:count).by(-1)
         end
 
         it "指定したお気に入り商品が削除されている" do
-          post 'delete_favorite', params = { product_style_ids: [@exists_favorite.product_style_id] }
-          Favorite.find(:first, :conditions => { :product_style_id => @exists_favorite.product_style_id}).should be_nil
+          post 'delete_favorite', params = { product_order_unit_ids: [@exists_favorite.product_order_unit_id] }
+          Favorite.find(:first, :conditions => { :product_order_unit_id => @exists_favorite.product_order_unit_id}).should be_nil
         end
       end
 
@@ -179,20 +179,20 @@ describe FavoritesController do
         end
 
         it "お気に入り一覧へリダイレクトする" do
-          post 'delete_favorite', params = { product_style_ids: [@exists_favorite.product_style_id, @exists_favorite2.product_style_id] }
+          post 'delete_favorite', params = { product_order_unit_ids: [@exists_favorite.product_order_unit_id, @exists_favorite2.product_order_unit_id] }
           response.should redirect_to controller: :accounts, action: :favorite
         end
 
         it "お気に入りが複数減っている" do
           lambda{
-            post 'delete_favorite', params = { product_style_ids: [@exists_favorite.product_style_id, @exists_favorite2.product_style_id] }
+            post 'delete_favorite', params = { product_order_unit_ids: [@exists_favorite.product_order_unit_id, @exists_favorite2.product_order_unit_id] }
           }.should change(Favorite,:count).by(-2)
         end
 
         it "指定したお気に入り商品が削除されている" do
-          post 'delete_favorite', params = { product_style_ids: [@exists_favorite.product_style_id, @exists_favorite2.product_style_id] }
-          Favorite.find(:first, :conditions => { :product_style_id => @exists_favorite.product_style_id}).should be_nil
-          Favorite.find(:first, :conditions => { :product_style_id => @exists_favorite2.product_style_id}).should be_nil
+          post 'delete_favorite', params = { product_order_unit_ids: [@exists_favorite.product_order_unit_id, @exists_favorite2.product_order_unit_id] }
+          Favorite.find(:first, :conditions => { :product_order_unit_id => @exists_favorite.product_order_unit_id}).should be_nil
+          Favorite.find(:first, :conditions => { :product_order_unit_id => @exists_favorite2.product_order_unit_id}).should be_nil
         end
       end
     end

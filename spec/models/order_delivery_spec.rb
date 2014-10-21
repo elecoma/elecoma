@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe OrderDelivery do
   fixtures :orders, :order_details,:order_deliveries, :prefectures,:payments,:delivery_times,:delivery_traders,:occupations,:delivery_tickets  
-  fixtures :products, :product_styles, :customers, :payment_plugins
+  fixtures :products, :product_styles, :customers, :payment_plugins, :product_order_units
 
   before(:each) do
     #会員
@@ -439,19 +439,19 @@ describe OrderDelivery do
       od = OrderDelivery.new
       order_details = od.details_build_from_carts(carts)
       carts.each_with_index do |cart,i|
-        order_details[i].product_style_id.should == cart.product_style_id
+        order_details[i].product_order_unit_id.should == cart.product_order_unit_id
         order_details[i].quantity.should == cart.quantity
         order_details[i].position.should == cart.position
-        product_style = cart.product_style
-        order_details[i].product_name.should == product_style.product.name
-        order_details[i].product_code.should == product_style.code
-        order_details[i].product_category_id.should == product_style.product.category_id
-        order_details[i].price.should == product_style.sell_price
-        order_details[i].style_category_name1.should == product_style.style_category_name1
-        order_details[i].style_category_name2.should == product_style.style_category_name2
-        order_details[i].style_name1.should == product_style.style_name1
-        order_details[i].style_name2.should == product_style.style_name2
-        order_details[i].product_id.should == product_style.product.id
+        pou = cart.product_order_unit
+        order_details[i].product_name.should == pou.ps.product.name
+        order_details[i].product_code.should == pou.product_style.code unless pou.is_set?
+        order_details[i].product_category_id.should == pou.ps.product.category_id
+        order_details[i].price.should == pou.sell_price
+        order_details[i].style_category_name1.should == pou.product_style.style_category_name1 unless pou.is_set?
+        order_details[i].style_category_name2.should == pou.product_style.style_category_name2 unless pou.is_set?
+        order_details[i].style_name1.should == pou.product_style.style_name1 unless pou.is_set?
+        order_details[i].style_name2.should == pou.product_style.style_name2 unless pou.is_set?
+        order_details[i].product_id.should == pou.ps.product.id
         order_details[i].tax_price.should == 0
       end
     end

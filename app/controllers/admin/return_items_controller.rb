@@ -78,7 +78,7 @@ class Admin::ReturnItemsController < Admin::BaseController
       return
     end
     @condition, @search_list = Product.get_conditions(@condition, params, true)
-    @products = Product.find(:all,:conditions => flatten_conditions(@search_list))
+    @products = Product.find(:all,:conditions => flatten_conditions(@search_list),:joins => "LEFT JOIN product_styles ON product_styles.product_id = products.id ")
     @pous = []
     @products.each do |product|
       if product.is_set?

@@ -20,10 +20,10 @@ class ReturnItemSearchForm < SearchForm
       end
       #商品コード
       unless search.code.blank?
-        ps = ProductStyle.find(:all,:conditions=>"code like '%#{search.code}'")
+        pous = ProductStyle.find(:all,:conditions=>"code like '%#{search.code}'")
         ids = []
-        ids = ps.map{|p| p.id.to_i} unless ps.blank?
-        search_list << ["return_items.product_style_id in (?) ", ids] unless ids.blank?
+        ids = pous.map{|pou| pou.product_order_unit.id.to_i} unless pous.blank?
+        search_list << ["return_items.product_order_unit_id in (?) ", ids] unless ids.blank?
       end
       #商品名
       unless search.name.blank?
@@ -34,10 +34,10 @@ class ReturnItemSearchForm < SearchForm
       end
       #型番
       unless search.manufacturer.blank?
-        ps = ProductStyle.find(:all,:conditions=>"manufacturer_id like '%#{search.manufacturer}'")
+        pous = ProductStyle.find(:all,:conditions=>"manufacturer_id like '%#{search.manufacturer}'")
         ids = []
-        ids = ps.map{|p| p.id.to_i} unless ps.blank?
-        search_list << ["return_items.product_style_id in (?) ", ids] unless ids.blank?
+        ids = pous.map{|pou| pou.product_order_unit.id.to_i} unless pous.blank?
+        search_list << ["return_items.product_order_unit_id in (?) ", ids] unless ids.blank?
       end
       #操作者
       unless search.operator.blank?

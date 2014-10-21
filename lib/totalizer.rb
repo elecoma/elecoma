@@ -7,7 +7,7 @@
   end
 
 require 'gruff'
-
+RecProduct = Struct.new(:position,:product_code,:product_name,:count,:items,:unit_price,:price,:sale_start_at)
 class TotalizerBase
 end
 
@@ -346,46 +346,59 @@ class ProductTotalizer < Totalizer
     end
     return g.to_blob
   end
-  def search conditions
-    records = OrderDetail.find_by_sql([<<-EOS, conditions])
+def search conditions
+  @ods = OrderDetail.find_by_sql([<<-EOS, conditions])
       select
-        1 as position,
-        product_code,
-        product_name,
-        count(*) as count,
-        sum(quantity) as items,
-        order_details.price as unit_price,
-        sum(order_details.price*quantity) as price,
-        products.sale_start_at as sale_start_at
+        *
       from order_details
         join order_deliveries on order_deliveries.id = order_details.order_delivery_id
         join orders on orders.id = order_deliveries.order_id
-        left outer join customers on customers.id = orders.customer_id
-        join product_styles on product_styles.id = order_details.product_style_id
-        join products on products.id = product_styles.product_id
       where #{WHERE_CLAUSE}
-        #{if @member == 'member'
-          " and (customers.activate in (:activate)) "
-        elsif @member == 'nomember'
-          " and (customers.activate is null) "
-        else
-          " and (customers.activate in (:activate) or customers.activate is null) "
-        end}
-        and ((:sale_start_from is null or :sale_start_to is null)
-             or products.sale_start_at between :sale_start_from and :sale_start_to)
-        and product_styles.deleted_at is null
-      group by product_code, product_name, unit_price, products.sale_start_at
-      order by price desc
     EOS
-    # position の振り直し & 販売開始日を Date に
-    records.zip((1..records.size).to_a) do | r, i |
-      r.position = i
-      r.sale_start_at = r.sale_start_at.to_date
-    end
-    records
+  if conditions[:sale_start_from].present? or conditions[:sale_start_to].present? 
+    @ods.select! {|od| (conditions[:sale_start_from].to_date..conditions[:sale_start_to].to_date).include? od.ps.product.sale_start_at.to_date }
+  end
+  @new_array = 0
+  lists = Array.new(0) { Array.new(0) }
+  @ods.each do |od|
+    @pou = od.product_order_unit
+    if lists.assoc(@pou.id)
+      lists.map! do |list|
+        if list[0] == @pou.id
+          list[3] += 1
+          list[4] += od.quantity
+          list[6] += od.price*od.quantity
+          list
+        else
+          list
+        end
+      end 
+    else
+      if @pou.is_set?
+        lists[@new_array] = [@pou.id,"", od.product_name, 1, od.quantity, od.price, od.price*od.quantity,@pou.ps.product.sale_start_at.to_date ]
+      else
+        lists[@new_array] = [@pou.id, @pou.product_style.code, od.product_name, 1, od.quantity, od.price, od.price*od.quantity,@pou.ps.product.sale_start_at.to_date ]
+      end
+      @new_array = lists.size
+    end 
+  end
+  lists.sort! {|a, b|
+    b[6] <=> a[6]
+  }
+  record_odps = []
+  lists.each do |r|
+    record_odps << RecProduct.new(r[0],r[1],r[2],r[3],r[4],r[5],r[6],r[7])
+  end
+
+  # position の振り直し & 販売開始日を Date に
+  record_odps.zip((1..lists.size).to_a) do | r, i |
+    r.position = i
+    r.sale_start_at = r.sale_start_at.to_date
+  end
+
+  record_odps
   end
 end
-
 class AgeTotalizer < Totalizer
   # 上限, 表示名
   AGES = [

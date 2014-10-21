@@ -23,15 +23,25 @@ class Cart < ActiveRecord::Base
   end
 
   def validate
+
     if customer && customer.black
       errors.add_to_base('申し訳ありませんが販売を終了させて頂きました。')
     end
+
     if quantity == 0
       errors.add :quantity, 'が 0 です。削除してください。'
     end
     unless product_order_unit
       errors.add :product_order_unit, 'がありません。削除してください。'
     else
+
+    # 受注可能数以内か
+    unless is_set?
+      if quantity > self.product_order_unit.product_style.available?(quantity)
+        errors.add_to_base('購入可能な数量を超過しています')
+      end
+    end
+
       # キャンペーンが生きているか
       if ps.product && campaign = ps.product.campaign
         unless campaign.check_term

@@ -73,7 +73,8 @@ class CartController < BaseController
       return
     end
     new_quantity = cart.quantity + value
-    cart.quantity = cart.product_order_unit.available?(@login_customer.carts,new_quantity)
+    load_cart
+    cart.quantity = cart.product_order_unit.available?(@carts,new_quantity)
     if cart.quantity < new_quantity
       flash[:notice] = '購入できる上限を超えています'
     end
@@ -527,7 +528,7 @@ class CartController < BaseController
   def add_product
     build_cart_add_product_form
     return if @add_product.invalid?
-    @product =Product.find_by_id(@add_product.product_id)
+    @product = Product.find_by_id(@add_product.product_id)
     product_style = find_product_style_by_params
     product_order_unit = find_pou_by_params
 	  return redirect_for_product_cannot_sale if product_order_unit.nil?
@@ -578,7 +579,7 @@ class CartController < BaseController
         @product.product_set.product_order_unit
       else
         ps = ProductStyle.find_by_product_id_and_style_category_id1_and_style_category_id2(params[:product_id], params[:style_category_id1], params[:style_category_id2])
-        ps.product_order_unit
+        ps.product_order_unit unless ps.blank?
       end
     end
   end

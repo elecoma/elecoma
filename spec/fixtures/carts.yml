@@ -3,83 +3,83 @@
 cart_by_have_cart_user_one:
   id: 1
   customer_id: 2
-  product_style_id: 5 # have_not_classcategory
+  product_order_unit_id: 5 # have_not_classcategory
   position: 2
   quantity: 1
 
 cart_by_have_cart_user_two:
   id: 2
   customer_id: 2
-  product_style_id: 12
+  product_order_unit_id: 12
   position: 3
   quantity: 2
 
 cart_by_have_cart_user_three:
   id: 3
   customer_id: 2
-  product_style_id: 13
+  product_order_unit_id: 13
   position: 1
   quantity: 4
 
 cart_can_incriment:
   id: 4
   customer_id: 8
-  product_style_id: 1
+  product_order_unit_id: 1
   position: 7
   quantity: 1
 
 cart_can_not_incriment:
   id: 5
   customer_id: 8
-  product_style_id: 2
+  product_order_unit_id: 2
   position: 4
   quantity: 1
 
 cart_can_decriment:
   id: 6
   customer_id: 8
-  product_style_id: 3
+  product_order_unit_id: 3
   position: 8
   quantity: 4
 
 cart_can_not_decriment:
   id: 7
   customer_id: 8
-  product_style_id: 4
+  product_order_unit_id: 4
   position: 5
   quantity: 1
 
 cart_have_classcategory1:
   id: 8
   customer_id: 2
-  product_style_id: 9
+  product_order_unit_id: 9
   position: 3
   quantity: 2
 
 cart_have_classcategory2:
   id: 9
   customer_id: 2
-  product_style_id: 6
+  product_order_unit_id: 6
   position: 3
   quantity: 2
 
 cart_only_classcategory2:
   id: 10
-  product_style_id: 6
+  product_order_unit_id: 6
   position: 3
   quantity: 2
 
 cart_for_customer_have_delivery_address:
   id: 11
   customer_id: 13
-  product_style_id: 6
+  product_order_unit_id: 6
   position: 1
   quantity: 2
 
 invalid:
   id: 12
   customer_id: 15
-  product_style_id: 2
+  product_order_unit_id: 2
   position: 1
   quantity: 40000
 valid_cart:
@@ -87,13 +87,13 @@ valid_cart:
   customer_id: 32
   position: 0
   quantity: 1
-  product_style_id: 14
+  product_order_unit_id: 14
 
 
 cart_with_othershop:
   id: 14
   customer_id: 8
-  product_style_id: 22
+  product_order_unit_id: 22
   position: 7
   quantity: 1
 
