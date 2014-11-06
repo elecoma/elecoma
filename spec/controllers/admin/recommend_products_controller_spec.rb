@@ -2,7 +2,8 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe Admin::RecommendProductsController do
-  fixtures :admin_users , :recommend_products, :products, :product_styles
+  fixtures :admin_users , :recommend_products, :products, :product_styles, :product_order_units
+  fixtures :product_sets
   before(:each) do
     session[:admin_user] = admin_users(:admin10)
     @controller.class.skip_before_filter @controller.class.before_filter

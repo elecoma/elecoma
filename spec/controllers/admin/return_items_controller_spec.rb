@@ -2,7 +2,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Admin::ReturnItemsController do
-  fixtures :products, :product_order_units, :admin_users,:product_styles
+  fixtures :products,:product_sets,:product_order_units, :admin_users,:product_styles
   fixtures :return_items
 
   before do

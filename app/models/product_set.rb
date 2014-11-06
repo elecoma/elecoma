@@ -1,8 +1,8 @@
 class ProductSet < ActiveRecord::Base
   acts_as_paranoid
 
-  belongs_to :product
-  has_one :product_order_unit
+  belongs_to :product, :dependent => :destroy
+  has_one :product_order_unit, :dependent => :destroy
   validates_format_of :product_style_ids, :with => /^(\d+,){0,19}\d+$/
   validates_format_of :ps_counts, :with => /^(\d+,){0,19}\d+$/ 
   delegate_to :product, :name, :as => :product_name
@@ -14,6 +14,7 @@ class ProductSet < ActiveRecord::Base
 
   def self.get_conditions(search, params, actual_count_list_flg = false)
     search_list = []
+
     if search
       unless search.set_id.blank?
         if search.set_id.to_s =~ /^\d*$/
@@ -34,12 +35,12 @@ class ProductSet < ActiveRecord::Base
           search_list << ["products.category_id in (?)", ids] unless ids.empty?
         end
       end
-      search_list << ["products.created_at < ?", search.created_at_to + 1.day] if search.created_at_to.present?
-      search_list << ["products.updated_at >= ?", search.updated_at_from] if search.updated_at_from.present?
-      search_list << ["products.updated_at <= ?", search.updated_at_to + 1.day] if search.updated_at_to.present?
-      search_list << ["products.sale_start_at >= ?", search.sale_start_at_start] if search.updated_at_to.present?
-      search_list << ["products.sale_start_at <= ?", search.sale_start_at_end + 1.day] if search.updated_at_to.present?
-      search_list << ["products.retailer_id = ?", search.retailer_id] unless search.retailer_id.blank?
+      search_list << ["product_sets.created_at >= ?", search.created_at_from] if search.created_at_to.present?
+      search_list << ["product_sets.created_at <= ?", search.created_at_to + 1.day] if search.created_at_to.present?
+      search_list << ["product_sets.updated_at >= ?", search.updated_at_from] if search.updated_at_from.present?
+      search_list << ["product_sets.updated_at <= ?", search.updated_at_to + 1.day] if search.updated_at_to.present?
+      search_list << ["products.sale_start_at >= ?", search.sale_start_at_start] if search.sale_start_at_start.present? 
+      search_list << ["products.sale_start_at <= ?", search.sale_start_at_end + 1.day] if search.sale_start_at_end.present?
 
     end
     [search, search_list]

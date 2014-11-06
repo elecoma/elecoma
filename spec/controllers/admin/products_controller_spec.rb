@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe Admin::ProductsController do
   fixtures :products, :admin_users, :authorities, :functions, :authorities_functions, :admin_users, :categories, :resource_datas, :image_resources
-  fixtures :styles, :product_styles, :style_categories,:suppliers, :retailers
+  fixtures :styles, :product_styles, :style_categories,:suppliers, :retailers, :product_sets, :product_order_units
 
   before do
     session[:admin_user] = admin_users(:admin10)
@@ -298,6 +298,41 @@ describe Admin::ProductsController do
     end
   end
 
-
+  describe "destroy：データの削除と依存関係のテスト" do
+    before(:each) do
+      @valid_product = products(:valid_product)
+      @valid_ps = product_styles(:valid_product)
+      @valid_set_product = products(:valid_set_product)
+      @valid_pou = product_order_units(:valid_product)
+      @another_product = products(:limited_in_summer)
+    end
+    it "単品の商品が正常に削除できる" do
+      get 'destroy',:id => @valid_product.id
+      Product.find_by_id(@valid_product.id).should be_nil 
+      response.should redirect_to action: :index 
+    end 
+    it "単品の商品を削除すると関連するProductStyleが削除される" do
+      @pr_id = @valid_product.id
+      @ps_id = @valid_ps.id
+      get 'destroy',:id => @pr_id
+      Product.find_by_id(@pr_id).should be_nil
+      ProductStyle.find_by_id(@ps_id).should be_nil 
+    end
+    it "セットに組み込まれた単品の商品を削除すると、そのセットの商品も削除される" do
+      @set_id = @valid_set_product.product_set.id
+      get 'destroy',:id => @valid_product.id
+      Product.find_by_id(@valid_product.id).should be_nil
+      ProductStyle.find_by_id(@valid_ps.id).should be_nil
+      Product.find_by_id(@valid_set_product.id).should be_nil
+      ProductSet.find_by_id(@set_id).should be_nil
+      ProductOrderUnit.find_by_id(@valid_pou.id).should be_nil
+    end
+    it "単品商品の削除によってセット商品が消えると、セット商品に含まれていた他のProductStyleのset_idsが修正される" do
+      ProductStyle.find_by_id(@valid_ps.id).set_ids.should == "1"
+      get 'destroy',:id => @another_product.id
+      Product.find_by_id(@another_product.id).should be_nil
+      ProductStyle.find_by_id(@valid_ps.id).set_ids.should == "" 
+    end
+  end
 end
 

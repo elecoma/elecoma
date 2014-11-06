@@ -19,7 +19,7 @@ class ProductStyle < ActiveRecord::Base
              :class_name => "Style",
              :foreign_key => "style_id2"
   has_many :stock_histories
-  has_one :product_order_unit
+  has_one :product_order_unit,:dependent => :destroy
              
   validates_format_of :code, :with => /^[a-zA-Z0-9]*$/
   validates_format_of :manufacturer_id, :with => /^[a-zA-Z0-9]*$/, :allow_blank=>true
@@ -52,8 +52,6 @@ class ProductStyle < ActiveRecord::Base
         search_list << ["product_styles.code like ?", "%#{search.code}%"]
       end
 
-
-
       unless search.category.blank?
         category = Category.find_by_id search.category.to_i
         unless category.blank?
@@ -66,32 +64,16 @@ class ProductStyle < ActiveRecord::Base
       end
 
       unless search.created_at_from.blank?
-        if actual_count_list_flg
-          search_list << ["product_styles.created_at >= ?", search.created_at_from]
-        else
-          search_list << ["products.created_at >= ?", search.created_at_from]
-        end
+        search_list << ["product_styles.created_at >= ?", search.created_at_from]
       end
       unless search.created_at_to.blank?
-        if actual_count_list_flg
-          search_list << ["product_styles.created_at < ?", search.created_at_to + 1 * 60 * 60 * 24]
-        else
-          search_list << ["products.created_at < ?", search.created_at_to + 1.day]
-        end
+        search_list << ["product_styles.created_at < ?", search.created_at_to + 1 * 60 * 60 * 24]
       end
       unless search.updated_at_from.blank?
-        if actual_count_list_flg
-          search_list << ["product_styles.updated_at >= ?", search.updated_at_from]
-        else
-          search_list << ["products.updated_at >= ?", search.updated_at_from]
-        end
+        search_list << ["product_styles.updated_at >= ?", search.updated_at_from]
       end
       unless search.updated_at_to.blank?
-        if actual_count_list_flg
-          search_list << ["product_styles.updated_at <= ?", search.updated_at_to ]
-        else
-          search_list << ["products.updated_at <= ?", search.updated_at_to + 1.day]
-        end
+        search_list << ["product_styles.updated_at <= ?", search.updated_at_to ]
       end
       unless search.sale_start_at_start.blank?
         search_list << ["products.sale_start_at >= ?", search.sale_start_at_start]
@@ -158,6 +140,7 @@ class ProductStyle < ActiveRecord::Base
     else
       raise '在庫不足です。'
     end
+    self.save
   end
 
   # 規格分類込みの名称

@@ -2,7 +2,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Cart do
-  fixtures :customers, :products, :carts, :product_styles, :styles, :style_categories,:campaigns,:product_order_units
+  fixtures :product_sets,:customers, :products, :carts, :product_styles, :styles, :style_categories,:campaigns,:product_order_units
 
   before(:each) do
     @cart = carts(:valid_cart)
@@ -22,7 +22,7 @@ describe Cart do
       @cart.quantity = 0
       @cart.should_not be_valid
     end
-    #product_styleが空
+    #product_order_unitが空
     it "注文単位が存在しない場合" do
       @cart.product_order_unit_id = nil
       @cart.should_not be_valid
@@ -57,11 +57,12 @@ describe Cart do
   describe "金額計算系" do
     it "小計" do
       @cart.subtotal.should == product_order_units(:valid_product).sell_price * 1
+
       cart = Cart.new(:product_order_unit_id => 20,:quantity =>2)
       cart.subtotal.should == product_order_units(:multi_styles_product_3).sell_price * 2
+
       cart = Cart.new
       cart.subtotal.should be_nil
     end
   end
-  
 end

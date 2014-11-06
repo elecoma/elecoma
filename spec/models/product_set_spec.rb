@@ -2,7 +2,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe ProductSet do
-
+fixtures :product_set_styles, :product_sets, :product_styles
   describe "validateチェック" do
     before do
       @product_set = ProductSet.new(
@@ -53,7 +53,5 @@ describe ProductSet do
       @product_set.ps_counts = '1,2'
       @product_set.save.should be_false
     end    
-
   end
-
 end

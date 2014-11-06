@@ -27,6 +27,12 @@ describe Admin::ProductStylesController do
     it 'without id should raise exception' do
       lambda { get 'new' }.should raise_error(NoMethodError)
     end
+
+    it 'セット商品には規格を付与しない' do
+      get 'new', :id => products(:valid_set_product).id
+      response.should redirect_to(:controller => 'products', :action => 'index')
+    end
+
   end
 
   describe "POST 'create_form'" do
@@ -83,6 +89,16 @@ describe Admin::ProductStylesController do
       product_styles[product_styles.count.to_s] = one_product_style
       post 'create', :id => @product_style_test.id, :product_id => @product_style_test.id, :product_styles => product_styles
       assigns[:save_flg].should_not be_true
+    end
+    it 'ProductOrderUnitも同時に生成される' do
+      @product = products(:valid_product)
+      @pou_last = ProductOrderUnit.last
+      product_styles = Hash.new
+      one_product_style = {:enable => "on", :style_category1 => 50, :style_category2 => 60, :code => "VVM0001", :sell_price => 8900}
+      product_styles[product_styles.count.to_s] =  one_product_style
+      post 'create', :id => @product_style_test.id, :product_id => @product.id, :product_styles => product_styles
+      ProductOrderUnit.last.id.should_not == @pou_last.id
+      ProductOrderUnit.last.sell_price.should == one_product_style[:sell_price]
     end
   end
 end

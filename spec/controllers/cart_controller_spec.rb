@@ -15,7 +15,6 @@ describe CartController do
     @controller.class.skip_before_filter :start_transaction
     @controller.class.skip_after_filter :end_transaction
   end
-
   #Delete these examples and add some real ones
   it "should use CartController" do
     controller.should be_an_instance_of(CartController)
@@ -43,6 +42,19 @@ describe CartController do
       assigns[:carts].should_not be_empty
       assigns[:cart_point].should_not be_nil
       assigns[:carts_map].count.should == 1
+    end
+
+    it "セット商品に属さない単品ではセット商品をリコメンドしない" do
+      session[:carts] = [carts(:cart_by_have_cart_user_one)].map(&:attributes)
+      get 'show'
+      response.should be_success
+      assigns[:recommend_set_list].should be_empty
+    end
+    it "セット商品に含まれる単品の商品があった場合、該当のセット賞品をリコメンドする" do
+      session[:carts] = [carts(:cart_by_have_cart_user_one)].map(&:attributes)
+      get 'show'
+      response.should be_success
+      assigns[:recommend_set_list].should_not be_nil
     end
 
     #it 'ログイン状態の時、カートは DB から取得' do
@@ -91,7 +103,6 @@ describe CartController do
       assigns[:carts].should be_empty
     end
   end
-
   describe "GET 'inc'" do
     it "should be successful" do
       session[:customer_id] = nil # customers(:product_buyer).id
@@ -185,7 +196,6 @@ describe CartController do
       assigns[:carts].should_not be_empty
     end
   end
-
   describe "GET 'shipping'" do
     before do
       session[:carts] = @dummy_carts
@@ -215,11 +225,9 @@ describe CartController do
       response.should_not be_success
     end
   end
-
   #TODO 一時ユーザのテストケースが足りない
   #TODO 戻るボタンのテストケース
   describe "POST 'delivery'" do 
-
     before do
       @customer = customers(:have_delivary_address)
       session[:customer_id] = @customer.id
@@ -261,7 +269,6 @@ describe CartController do
         value.should == @customer.delivery_addresses[0][name]
       end
     end
-
     it "@order_deliveries があること" do
       post 'delivery', :address_select => 0
       response.should be_success
@@ -297,10 +304,7 @@ describe CartController do
       assigns[:delivery_address].should be_nil
       response.should_not be_success
     end
-    
-
   end
-
   describe "GET 'purchase'" do
     before do
       session[:customer_id] = customers(:product_buyer).id
@@ -486,7 +490,6 @@ describe CartController do
     end
 
 #    it "戻るボタン" do
-#      post 'complete', :cancel => 'zzz'
 #      response.should render_template('purchase')
 #    end
 
@@ -634,7 +637,6 @@ describe CartController do
       assigns[:carts].size.should == 2
     end
   end
-
   describe "GET 'repeat_order'" do
     before do
       @order = orders(:history_01)

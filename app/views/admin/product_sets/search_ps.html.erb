@@ -24,7 +24,7 @@
       <tr>
         <td><%= h ps.id %></td>
         <td><%= product_image_tag ps.product, :small %></td>
-        <td><%= h ps.product.price_label %></td>
+        <td><%= h number_with_delimiter(ps.product_order_unit.sell_price) %></td>
         <td><%= h ps.code %></td>
         <td><%= h ps.full_name %></td>
         <td><%= h ps.product.category_name %></td>

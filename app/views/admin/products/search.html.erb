@@ -50,7 +50,7 @@
         </td>
         <td class="t_center"><%= link_to "規格", new_admin_product_style_path(:id => product.id) unless product.is_set? %></td>
         <td class="t_center">
-          <%= link_to "削除", admin_product_path(product.id), :confirm => "本当に削除しますか？", :method=>"delete" %>
+          <%= link_to "削除", admin_product_path(product.id), :confirm => product.confirm_msg_del, :method=>"delete" %>
         </td>
         <td class="t_center">
           <%= link_to "複製", new_admin_product_path(:id => product.id, :copy => true) %>

@@ -364,3 +364,26 @@ valid_product_other_shop:
   supplier_id: 2
   retailer_id: 2
 
+#通常セット商品
+valid_set_product:
+  id: 25
+  name: 靴下セット
+  permit: true
+  no_limit_flag: false
+  introduction: テスト
+  description: テスト
+  price: 10000
+  small_resource_id: 70
+  medium_resource_id: 69
+  category_id: 16
+  delivery_dates: 3
+  sale_start_at: <%= DateTime.now - 3.years %>
+  sale_end_at: <%= DateTime.now + 1.month %>
+  public_start_at: <%= DateTime.now - 3.years %>
+  public_end_at: <%= DateTime.now + 1.month %>
+  arrival_expected_date: <%= DateTime.now + 3.days %>
+  created_at: <%= DateTime.now - 3.years %>
+  updated_at: <%= DateTime.now - 3.years %>
+  supplier_id: 2
+  retailer_id: 1
+  set_flag: true

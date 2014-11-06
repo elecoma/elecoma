@@ -25,7 +25,7 @@ class Product < ActiveRecord::Base
   has_one :campaign
   belongs_to :supplier
   belongs_to :retailer
-  has_one :product_set
+  has_one :product_set, :dependent => :destroy
 
   validates_length_of :name , :maximum => 50
   validates_length_of :name , :minimum => 1
@@ -69,8 +69,24 @@ class Product < ActiveRecord::Base
   end
 
   def is_set?
-	return false if self.set_flag.nil?
+	  return false if self.set_flag.nil?
     self.set_flag
+  end
+  def confirm_msg_del
+    msg = "本当に削除しますか？"
+    unless is_set?
+      @product_styles = self.product_styles
+      @sets = "" 
+      @product_styles.each do |ps|
+        unless ps.set_ids.blank?
+          ps.get_set_ids.each do |id|
+            @sets << "『" + ProductSet.find_by_id(id).product.name + "』\n"
+          end
+          msg = "この商品を削除するとこの商品をリストに含む以下のセット商品も削除されます。\n" + @sets + "\n本当に削除しますか？"
+        end
+      end
+    end
+    return msg
   end
 
   def pou_path
@@ -153,16 +169,16 @@ def first_product_style
 
   def price_label
 	if set_flag?
-	      product_set = ProductSet.find_by_product_id(id)
-    	  product_order_unit = ProductOrderUnit.find_by_product_set_id(product_set.id)
-		  return number_with_delimiter(product_order_unit.sell_price)
+	  product_set = ProductSet.find_by_product_id(self.id)
+    product_order_unit = ProductOrderUnit.find_by_product_set_id(product_set.id)
+		number_with_delimiter(product_order_unit.sell_price)
  	else
-	   	p_range = price_range
-    	if p_range[0] == p_range[1]
-    	  return number_with_delimiter(p_range[0])
-    	else
-    	  return p_range.map{|p| number_with_delimiter(p)}.join("～")
-    	end
+	  p_range = price_range
+    if p_range[0] == p_range[1]
+     return number_with_delimiter(p_range[0])
+    else
+     return p_range.map{|p| number_with_delimiter(p)}.join("～")
+    end
 	end
   end
 

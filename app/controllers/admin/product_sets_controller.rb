@@ -12,7 +12,7 @@ class Admin::ProductSetsController < Admin::BaseController
   SET_MAX_SIZE = 20
 
   def index
-	get_search_form
+	  get_search_form
   end
 
   def product_form
@@ -35,8 +35,8 @@ class Admin::ProductSetsController < Admin::BaseController
   end
 
   def search_ps
-	get_search_form_ps
-	@search_list << ["products.set_flag is NOT true"]
+	  get_search_form_ps
+	  @search_list << ["products.set_flag is NOT true"]
     find_options = {
       :page => params[:page],
       :per_page => @search.per_page || 10,
@@ -45,6 +45,7 @@ class Admin::ProductSetsController < Admin::BaseController
       :order => "product_styles.id"
     }
     @product_styles = ProductStyle.paginate(find_options)
+    @product_styles.select! {|ps| Product.find_by_id(ps.product_id).present? }
   end
 
   def get_search_form(actual_flg=false)
@@ -85,6 +86,7 @@ class Admin::ProductSetsController < Admin::BaseController
        @product = Product.new
        @product_set = ProductSet.new
 	   session[:product_set_id] = nil
+   
 	end
 	redirect_to :action => "edit_items"
   end
@@ -134,8 +136,8 @@ class Admin::ProductSetsController < Admin::BaseController
   end
 
   def get_product
-    if @product_set
-      @product = Product.find(@product_set.product_id)
+    if @product_set.present? && !@product_set.new_record?
+      @product = Product.find_by_id(@product_set.product_id)
     else
       @product_set = ProductSet.new
       @product = Product.new
@@ -149,7 +151,7 @@ class Admin::ProductSetsController < Admin::BaseController
     if !params[:product_status_ids].blank?
       params[:product_status_ids].each do | id |
         @product_statuses << ProductStatus.new(:product_id => @product.id, :status_id => id.to_i)
-    end
+      end
     end
   end
 
@@ -171,15 +173,14 @@ class Admin::ProductSetsController < Admin::BaseController
     @product.product_statuses = @product_statuses
     @product_statuses.each {|status| status.save}
     unless @product_set.new_record?
-      ProductSet.find(@product_set.id).get_product_style_ids.each do |id|
-        ps = ProductStyle.find(id)
+      ProductSet.find_by_id(@product_set.id).get_product_style_ids.each do |id|
+        ps = ProductStyle.find_by_id(id)
         ids = ps.get_set_ids
         ids.delete(@product_set.id)
         ps.set_ids = ids.size > 0 ? ids.join(",") : nil
         ps.save
       end
     end
-
     @product_set.product_id = @product.id
     @product_set.product_style_ids = @sets.map{|set| set.product_style_id}.join(",") 
     @product_set.ps_counts = @sets.map{|set| set.quantity}.join(",")
@@ -191,7 +192,7 @@ class Admin::ProductSetsController < Admin::BaseController
     @order_unit.product_set_id = @product_set.id
     @order_unit.save
     @sets.each do |set|
-      ps = ProductStyle.find(set.product_style_id)
+      ps = ProductStyle.find_by_id(set.product_style_id)
       ids = ps.get_set_ids
       ids ||= []
       ids << @product_set.id
@@ -199,10 +200,12 @@ class Admin::ProductSetsController < Admin::BaseController
       ps.save
     end
 
+    redirect_to :action => "show", :id => @product_set.id
     session.delete(:sets)
     session.delete(:product_set_id)
+    @show_id = @product_set.id
+    @product_set = nil
     @sets = []
-    redirect_to :action => "show", :id => @product_set.id
   end
 
   def add_product
@@ -272,26 +275,21 @@ class Admin::ProductSetsController < Admin::BaseController
     @sets = []
     redirect_to :action => :edit_items
   end
-
   def destroy
-#エンドユーザーから注文があった後に商品が一緒に削除されると問題なので未使用
     product_set = ProductSet.find(params[:id])
     ps_ids = product_set.get_product_style_ids
     ps_ids.each do |ps_id|
-      ps = ProductStyle.find(ps_id)
-      ids = ps.get_set_ids
-      ids.delete(product_set.id)
-      ps.set_ids = ids.join(",")
-      ps.save
+      if ProductStyle.find_by_id(ps_id).present?
+        ps = ProductStyle.find_by_id(ps_id)
+        ids = ps.get_set_ids
+        ids.delete(product_set.id)
+        ps.set_ids = ids.join(",")
+        ps.save
+      end
     end
-    product = Product.find(product_set.product_id)
-    product_order_unit = ProductOrderUnit.find_by_product_set_id(product_set.id)
     product_set.destroy
-    product.destroy
-    product_order_unit.destroy
     redirect_to :action => "index"
   end
-
   protected
 
    def set_resource_old

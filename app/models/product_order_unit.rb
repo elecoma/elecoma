@@ -1,8 +1,8 @@
 class ProductOrderUnit < ActiveRecord::Base
   acts_as_paranoid
 
-  belongs_to :product_style
-  belongs_to :product_set
+  belongs_to :product_style, :dependent => :destroy
+  belongs_to :product_set, :dependent => :destroy
   belongs_to :order_delivery
   validates_presence_of :sell_price
   validates_presence_of :product_style_id, :unless => :is_set?
