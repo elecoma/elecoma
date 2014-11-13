@@ -6,9 +6,9 @@ function fnSearchSubWindow(Winname,Wwidth,Wheight){
 }
 
 //検索ウィンドウで決定した商品をメインウィンドウに反映
-function fnProductSubmit(product_id, product_name){
+function fnProductSubmit(pou_id, product_name){
   window.opener.document.getElementById("product_name").innerHTML = product_name;
-  window.opener.document.getElementById("recommend_product_product_id").value = product_id;
+  window.opener.document.getElementById("recommend_product_product_order_unit_id").value = pou_id;
   window.close();
   return false;
 }

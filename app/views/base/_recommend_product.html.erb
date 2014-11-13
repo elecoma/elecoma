@@ -4,9 +4,9 @@
   <ul class="clearfix">
     <%- @recommend_products.each do | recommend_product | -%>
       <li class="clearfix">
-      <%= link_to((product_image_tag(recommend_product.product, :small)), {:controller => "/products", :action => "show", :id => (recommend_product.product_id),:category_id => recommend_product.product.category_id}) %>
+      <%= link_to((product_image_tag(recommend_product.product_order_unit.ps.product, :small)), {:controller => "/products", :action => "show", :id => (recommend_product.product_order_unit.ps.product_id),:category_id => recommend_product.product_order_unit.ps.product.category_id}) %>
       <dl>
-        <dt><%= link_to_product recommend_product.product -%></dt>
+        <dt><%= link_to_product recommend_product.product_order_unit.ps.product -%></dt>
         <dd><%=h recommend_product.description -%></dd>
       </dl>
       </li>

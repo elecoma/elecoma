@@ -4,6 +4,8 @@ class ProductOrderUnit < ActiveRecord::Base
   belongs_to :product_style, :dependent => :destroy
   belongs_to :product_set, :dependent => :destroy
   belongs_to :order_delivery
+  has_many :recommend_products
+
   validates_presence_of :sell_price
   validates_presence_of :product_style_id, :unless => :is_set?
   validates_presence_of :product_set_id, :if => :is_set?

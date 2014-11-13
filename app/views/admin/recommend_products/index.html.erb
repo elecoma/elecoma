@@ -22,11 +22,11 @@
     <th>編集/削除</th>
   </tr>
   <% @recommend_products.each do |recommend_product| %>
-    <% if recommend_product.product %>
+    <% if recommend_product.product_order_unit.ps.product %>
       <tr>
         <td class="t_center"><%=h recommend_product.id %></td>
-        <td class="t_center"><%= product_image_tag(recommend_product.product, :small) %></td>
-        <td class="t_center"><%=h recommend_product.product.name %></td>
+        <td class="t_center"><%= product_image_tag(recommend_product.product_order_unit.ps.product, :small) %></td>
+        <td class="t_center"><%=h recommend_product.product_order_unit.ps.product.name %></td>
         <td><%=h_br recommend_product.description %></td>
         <td class="t_center">
           <%= link_to "編集", edit_admin_recommend_product_path(recommend_product.id) %>/

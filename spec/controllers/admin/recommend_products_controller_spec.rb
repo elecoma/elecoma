@@ -56,26 +56,26 @@ describe Admin::RecommendProductsController do
 
   describe "GET 'update'" do
     it "データの更新に成功した場合" do
-      recommend_product = {:product_id=>3, :description=>"データを更新しました"}
+      recommend_product = {:product_order_unit_id=>3, :description=>"データを更新しました"}
       get 'update', :id=>1, :recommend_product => recommend_product
       record = RecommendProduct.find(1)
-      record.product_id.should == 3
+      record.product_order_unit_id.should == 3
       flash[:notice] = "保存しました"
       response.should redirect_to(:action=>"index")
     end
 
     it "データの更新に成功した場合（登録されていなかったところに登録）" do
-      recommend_product = {:product_id=>3, :description=>"データを更新しました"}
+      recommend_product = {:product_order_unit_id=>3, :description=>"データを更新しました"}
       get 'update', :id=>3, :recommend_product => recommend_product
       record = RecommendProduct.find(3)
-      record.product_id.should == 3
+      record.product_order_unit_id.should == 3
       record.description.should == "データを更新しました"
       flash[:notice] = "保存しました"
       response.should redirect_to(:action=>"index")
     end
 
     it "データの更新に失敗した場合" do
-      recommend_product = {:product_id=>3, :description=> "a" * 1000}
+      recommend_product = {:product_order_unit_id=>3, :description=> "a" * 1000}
       get 'update', :id=>6, :recommend_product => recommend_product
       RecommendProduct.find_by_id(6).description.should_not == "a" * 1000
       response.should render_template("admin/recommend_products/edit.html.erb")

@@ -29,23 +29,19 @@ class Admin::RecommendProductsController < Admin::BaseController
 
     cond = ""
     value = {}
-    unless @condition.keyword.blank?
-      cond += "products.name like :product_name"
-      value[:product_name] = "%" + @condition.keyword + "%"
-    end
-    unless @condition.category_id.blank?
-      cond += " and " unless @condition.keyword.blank?
-      cond += "categories.id = :category_id"
-      value[:category_id] = @condition.category_id
-    end
-    conditions = [cond, value]
 
     #結果表示
-    @products = ProductStyle.paginate(:page=>params[:page],
-                                 :conditions=>conditions,
-                                 :order=>"products.id",
-                                 :include => [:product, {:product => :category}],
-                                 :per_page=>10)
+    @pous = ProductOrderUnit.all
+    unless @condition.keyword.blank?
+      @pous.select! {|pou| pou.ps.product.name.include?(@condition.keyword) }
+    end
+    unless @condition.category_id.blank?
+      @pous.select! {|pou| pou.ps.product.category_id == @condition.category_id.to_i}
+    end
+    @products = @pous.paginate(:page=>params[:page],
+        :order=>"product_order_units.id",
+        :per_page=>10)
+
     render :layout=> false
   end
 

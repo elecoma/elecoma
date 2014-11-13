@@ -3,7 +3,7 @@
 <% (2..3).each do | idx | %>
 test<%= idx %>:
   id: <%= idx - 1 %>
-  product_id: <%= idx %>
+  product_order_unit_id: <%= idx %>
   description: test<%= idx - 1 %>
   position: <%= idx %>
 <% end %>
@@ -27,13 +27,13 @@ not_select_product3:
 longer_description:
   id: 6
   description: testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-  product_id: 1
+  product_order_unit_id: 1
   position: 6
 
 <% (7..8).each do | idx | %>
 test<%= idx %>:
   id: <%= idx %>
-  product_id: 1
+  product_order_unit_id: 1
   description: test<%= idx %>
   position: <%= idx %>
 <% end %>

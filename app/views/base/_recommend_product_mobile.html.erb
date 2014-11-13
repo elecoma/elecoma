@@ -10,9 +10,9 @@
   <div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
 
   <%- @recommend_products.each do |recommend_product| -%>
-    <%= product_image_tag recommend_product.product,
+    <%= product_image_tag recommend_product.product_order_unit.ps.product,
       :small, {:width => "70", :height => "70", :alt => "", :align => "left", :style => "vertical-align:middle; float:left; margin:4px; border:1px solid #666666"} %>
-      <%= link_to_product recommend_product.product -%><br />
+      <%= link_to_product recommend_product.product_order_unit.ps.product -%><br />
       <%= simple_format h recommend_product.description -%>
       <br clear="all" />
       <div style="clear:both; background-color:#F3F3EC; text-align:center;"><%= image_tag("mobile/border.gif", :width => "226", :height => "2") %><br /></div>

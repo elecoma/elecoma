@@ -17,7 +17,6 @@ class Product < ActiveRecord::Base
   belongs_to :large_resource,
              :class_name => "ImageResource",
              :foreign_key => "large_resource_id"
-  has_many :recommend_products
   has_one :delivery_date
   has_many :styles
   has_many :product_styles, :dependent => :destroy, :order => 'position'

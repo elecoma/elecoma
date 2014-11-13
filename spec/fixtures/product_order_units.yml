@@ -1,0 +1,138 @@
+can_incriment:
+  id: 1
+  set_flag: false
+  product_style_id: 1
+  sell_price: 200
+
+can_not_incriment:
+  id: 2
+  set_flag: false
+  product_style_id: 2
+  sell_price: 200
+
+can_decriment:
+  id: 3
+  set_flag: false
+  product_style_id: 3
+  sell_price: 200
+
+can_not_decriment:
+  id: 4
+  set_flag: false
+  product_style_id: 4
+  sell_price: 200
+
+have_not_classcategory:
+  id: 5
+  set_flag: false
+  product_style_id: 5
+  sell_price: 200
+
+have_classcategory2:
+  id: 6
+  set_flag: false
+  product_style_id: 6
+  sell_price: 200
+
+trying_sell_limit:
+  id: 7
+  set_flag: false
+  product_style_id: 7
+  sell_price: 200
+
+trying_no_limit_flag:
+  id: 8
+  set_flag: false
+  product_style_id: 8
+  sell_price: 200
+
+have_classcategory1:
+  id: 9
+  set_flag: false
+  product_style_id: 9
+  sell_price: 200
+
+zaiko:
+  id: 10
+  set_flag: false
+  product_style_id: 10
+  sell_price: 200
+
+product_style_id_11:
+  id: 11
+  set_flag: false
+  product_style_id: 11
+  sell_price: 200
+
+cart_by_have_cart_user_two:
+  id: 12
+  set_flag: false
+  product_style_id: 12
+  sell_price: 200
+
+cart_by_have_cart_user_three:
+  id: 13
+  set_flag: false
+  product_style_id: 13
+  sell_price: 200
+
+valid_product:
+  id: 14
+  set_flag: false
+  product_style_id: 14
+  sell_price: 200
+
+not_permit_product:
+  id: 15
+  set_flag: false
+  product_style_id: 15
+  sell_price: 200
+
+campaign_product:
+  id: 16
+  set_flag: false
+  product_style_id: 16
+  sell_price: 200
+
+sell_stop_product:
+  id: 17
+  set_flag: false
+  product_style_id: 17
+  sell_price: 200
+
+multi_styles_product_1:
+  id: 18
+  set_flag: false
+  product_style_id: 18
+  sell_price: 200
+
+multi_styles_product_2:
+  id: 19
+  set_flag: false
+  product_style_id: 19
+  sell_price: 200
+
+multi_styles_product_3:
+  id: 20
+  set_flag: false
+  product_style_id: 20
+  sell_price: 200
+
+valid_product_product_id_15:
+  id: 21
+  set_flag: false
+  product_style_id: 21
+  sell_price: 200
+
+valid_product_other_shop:
+  id: 22
+  set_flag: false
+  product_style_id: 22
+  sell_price: 200
+
+valid_product_set:
+  id: 25
+  set_flag: true
+  product_set_id: 1
+  sell_price: 10000 
+

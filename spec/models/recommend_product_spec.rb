@@ -4,7 +4,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe RecommendProduct do
   
   before(:each) do
-    @recommend_product = RecommendProduct.new(:product_id=>18,:description=>"オススメ商品のテストコードです")
+    @recommend_product = RecommendProduct.new(:product_order_unit_id=>18,:description=>"オススメ商品のテストコードです")
   end
   describe "validateチェック" do
     it "データが正しい" do
@@ -17,7 +17,7 @@ describe RecommendProduct do
     end
     it "オススメコメント" do
       #必須チェック
-      recommend_product = RecommendProduct.new(:product_id=>18)
+      recommend_product = RecommendProduct.new(:product_order_unit_id=>18)
       recommend_product.should_not be_valid
       
       #文字数チェック(300文字以下)
@@ -35,7 +35,7 @@ describe RecommendProduct do
       @recommend_product.position_up
       @recommend_product.save!
       @recommend_product.position.should == 1
-      recommend_product = RecommendProduct.new(:product_id=>16,:description=>"オススメ商品のテストコードです")
+      recommend_product = RecommendProduct.new(:product_order_unit_id=>16,:description=>"オススメ商品のテストコードです")
       recommend_product.position_up
       recommend_product.save!
       recommend_product.position.should == 2

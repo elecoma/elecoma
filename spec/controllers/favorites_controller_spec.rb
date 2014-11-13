@@ -197,4 +197,4 @@ describe FavoritesController do
       end
     end
   end
-ene
+end
