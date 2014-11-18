@@ -96,6 +96,13 @@
     <hr />
   
   <div id='comment'>
+  <% if @product.is_set? %>
+   【セット内容】<br />
+    <% @sets.each do |item| %>
+     ・<%= ProductStyle.find_by_id(item.product_style_id).product.name %>(<%= item.quantity %>個) <%= link_to "詳細", action: "show",id: item.product_id %><br/>
+    <% end %>
+  <% end %>
+  <br/>
 	<%=h_br @product.description %>
   </div>
   <br />

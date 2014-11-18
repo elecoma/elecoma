@@ -64,7 +64,15 @@
 
 
 <div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
-<div id="details_comments"><%=h_br @product.description %></div>
+<div id="details_comments">
+  <% if @product.is_set? %>
+   【セット内容】<br />
+    <% @sets.each do |item| %>
+     ・<%= ProductStyle.find_by_id(item.product_style_id).product.name %>(<%= item.quantity %>個) <%= link_to "詳細", action: "show",id: item.product_id %><br/>
+    <% end %>
+  <% end %>
+  <br/>
+<%=h_br @product.description %></div>
 <div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
 
 <!-- 仕様 -->
