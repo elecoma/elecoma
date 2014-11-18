@@ -79,9 +79,12 @@ class Product < ActiveRecord::Base
       @product_styles.each do |ps|
         unless ps.set_ids.blank?
           ps.get_set_ids.each do |id|
-            @sets << "『" + ProductSet.find_by_id(id).product.name + "』\n"
+            @line = "『#{ProductSet.find_by_id(id).product.name}』\n"
+            unless @sets.include?(@line)
+              @sets << @line
+            end
           end
-          msg = "この商品を削除するとこの商品をリストに含む以下のセット商品も削除されます。\n" + @sets + "\n本当に削除しますか？"
+          msg = "この商品を削除するとこの商品をリストに含む以下のセット商品も削除されます。\n#{@sets} \n本当に削除しますか？"
         end
       end
     end
