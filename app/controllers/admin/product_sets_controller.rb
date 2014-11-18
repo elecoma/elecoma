@@ -17,7 +17,10 @@ class Admin::ProductSetsController < Admin::BaseController
 
   def product_form
 #セット商品の商品情報を入力するフォーム
-    redirect_to :action => "edit_items" if @sets.blank?
+    if @sets.blank?
+      redirect_to :action => "edit_items"
+      flash[:error] = 'リストに商品が登録されていません。最低でも一つ以上の商品が必要です。'
+    end
     get_product_status_by_params
     get_sub_product_by_params
   end
@@ -215,12 +218,12 @@ class Admin::ProductSetsController < Admin::BaseController
       set.quantity += 1
     else
       if @sets.size >= SET_MAX_SIZE
-        flash[:set_add_product] = '一つのセットに登録できる商品は' + "#{SET_MAX_SIZE}" + '種類までです。'
+        flash.now[:error] = '一つのセットに登録できる商品は' + "#{SET_MAX_SIZE}" + '種類までです。'
       else
         set = ProductSetStyle.new(:product_style => ProductStyle.find(params[:id]),  :quantity => 1)
         @sets ||= []
         @sets << set
-        flash[:set_add_product] = "商品を追加しました"
+        flash.now[:notice] = "商品を追加しました"
       end
     end
     render "edit_items"
@@ -272,8 +275,13 @@ class Admin::ProductSetsController < Admin::BaseController
   end
 
   def reset
-    @sets = []
-    redirect_to :action => :edit_items
+    if @sets.blank?
+      redirect_to :action => :edit_items
+      flash[:error] = 'リストに商品が登録されていません。'
+    else
+      @sets = []
+      redirect_to :action => :edit_items
+    end
   end
   def destroy
     product_set = ProductSet.find(params[:id])
