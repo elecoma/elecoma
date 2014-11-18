@@ -5,7 +5,7 @@
 			<%= product_image_tag(cart.ps.product, :small ,{:width=>"70",:height=>"70",:align=>"left",:style=>"vertical-align:middle; float:left; margin:4px;"}) %>
 		</div>
 		<div class="productDetails">
-			<%= h(cart.product_name) %> <br />
+			<%= h(cart.ps.product.name) %> <br />
 			<%= h(cart.classcategory_name1) %> <br />
 			<%= h(cart.classcategory_name2) %>
 		

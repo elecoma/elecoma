@@ -15,7 +15,7 @@
 <div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "4" %><br /></div>
   <% @carts.each_with_index do |cart, i| %>
 
-        商品名:<%= h(cart.product_name) %>
+        商品名:<%= h(cart.ps.product.name) %>
         <%= h(cart.classcategory_name1) %>
         <%= h(cart.classcategory_name2) %>
         <%- unless cart.ps.product.master_shop? %>
