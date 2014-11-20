@@ -36,7 +36,7 @@
         <tr>
           <td><%= link_to_product_image(cart.ps.product, :small) %></td>
           <td>
-            <p><%= h(cart.product_name) %><br />
+            <p><%= h(cart.ps.product.name) %><br />
                <%- unless cart.classcategory_name1.blank? %>
                <%= h(cart.classcategory_name1)%><br />
                <%- end %>
