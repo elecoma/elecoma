@@ -7,7 +7,7 @@
   <span class="pnt"><%= flash[:error] %></span>
   <%= error_messages_for :return_item %>
   <% form_for [:admin, @return_item] do |f| %>
-    <%= render :partial => "admin/stock_in/info" %>
+    <%= render :partial => "admin/stock_in/info_return" %>
     <%= render :partial => "form", :locals => {:f => f} %>
     <div class="btn_box">
       <%= submit_tag "この内容で登録する", :onclick => "return #{confirm_javascript_function("登録しても宜しいですか")}", :class=>"btn" %>

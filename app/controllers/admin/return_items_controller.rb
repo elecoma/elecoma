@@ -77,19 +77,40 @@ class Admin::ReturnItemsController < Admin::BaseController
       render :action => :index
       return
     end
-    @condition, @search_list = Product.get_conditions(@condition, params, true)
-    @products = Product.find(:all,:conditions => flatten_conditions(@search_list),:joins => "LEFT JOIN product_styles ON product_styles.product_id = products.id ")
-    @pous = []
-    @products.each do |product|
-      if product.is_set?
-        @pous << ProductOrderUnit.find(:first, :conditions => {:product_set_id => product.product_set.id})
-      else
-        @product_styles = product.product_styles
-        @product_styles.each do |ps|
-          @pous << ProductOrderUnit.find(:first, :conditions => {:product_style_id => ps.id})
-        end
-      end
+
+    @search_list = []
+    unless @condition[:code].blank?
+      @search_list << ["code like ? ", "%#{@condition[:code]}%"]
     end
+    unless @condition[:updated_at_from].blank?
+      @search_list << ["created_at >= ? ", @condition[:updated_at_from]]
+    end
+    unless @condition[:updated_at_to].blank?
+      @search_list << ["created_at < ? ", @condition[:updated_at_to]]
+    end
+
+    @product_conditions = []
+    @product_conditions << ["retailer_id = ? ", @condition[:retailer_id]]
+    unless @condition[:product_id].blank?
+      @product_conditions << ["id = ? ", @condition[:product_id]]
+    end
+    unless @condition[:name].blank?
+      @product_conditions << ["name like ? ", "%#{@condition[:name]}%"]
+    end
+    unless @condition[:category].blank?
+      @product_conditions << ["category_id = ? ", @condition[:category]]
+    end
+    @products = Product.find(:all,:conditions => flatten_conditions(@product_conditions) )
+    @pous = []
+    product_styles = ProductStyle.find(:all, :conditions => flatten_conditions(@search_list))
+    product_sets = ProductSet.find(:all, :conditions => flatten_conditions(@search_list))
+    product_styles.each do |ps|
+      @pous << ProductOrderUnit.find(:first,:conditions => {:product_style_id => ps.id})
+    end
+    product_sets.each do |set|
+      @pous << ProductOrderUnit.find(:first,:conditions => {:product_set_id => set.id})
+    end
+    @pous.select! {|pou| @products.include?(pou.ps.product)}
     order_options = {
       :page => params[:page],
       :per_page => @condition.per_page || 10,
