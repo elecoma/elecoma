@@ -4,7 +4,7 @@ class Admin::ProductSetsController < Admin::BaseController
   require 'nkf'
   before_filter :admin_permission_check_product
   before_filter :load_sets, :except => [:edit, :index, :destroy]
-  before_filter :get_product, :only => [:search_ps,:product_form,:search,:edit_items,:new, :show, :edit, :confirm, :regist, :reset]
+  before_filter :get_product, :only => [:search_ps,:product_form,:search,:edit_items,:new, :show, :edit, :confirm, :regist]
   after_filter :save_sets
   before_filter :load_search_form
   after_filter :save_search_form
@@ -185,6 +185,7 @@ class Admin::ProductSetsController < Admin::BaseController
       end
     end
     @product_set.product_id = @product.id
+    @product_set.code = ""
     @product_set.product_style_ids = @sets.map{|set| set.product_style_id}.join(",") 
     @product_set.ps_counts = @sets.map{|set| set.quantity}.join(",")
     @product_set.save
@@ -212,13 +213,12 @@ class Admin::ProductSetsController < Admin::BaseController
   end
 
   def add_product
-
     set = @sets.find {|set| set.product_style_id == params[:id].to_i}
     if set.present?
       set.quantity += 1
     else
       if @sets.size >= SET_MAX_SIZE
-        flash.now[:error] = '一つのセットに登録できる商品は' + "#{SET_MAX_SIZE}" + '種類までです。'
+        flash.now[:error] = "一つのセットに登録できる商品は#{SET_MAX_SIZE}種類までです。"
       else
         set = ProductSetStyle.new(:product_style => ProductStyle.find(params[:id]),  :quantity => 1)
         @sets ||= []
@@ -227,7 +227,6 @@ class Admin::ProductSetsController < Admin::BaseController
       end
     end
     render "edit_items"
-
   end
 
 

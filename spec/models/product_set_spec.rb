@@ -53,5 +53,17 @@ fixtures :product_set_styles, :product_sets, :product_styles
       @product_set.ps_counts = '1,2'
       @product_set.save.should be_false
     end    
+    it "受注により在庫数が変わる" do
+      @product_style = product_styles(:valid_product)
+      @valid_set = product_sets(:valid_set)
+      #在庫数1000、販売可能数100
+      #購入後、在庫数と販売可能数とも引く
+      cnt_b = @product_style.actual_count
+      orderable_cnt_b = @product_style.orderable_count
+      @valid_set.order(2)
+      @product_style = ProductStyle.find_by_id(@product_style.id)
+      @product_style.actual_count.should == cnt_b-2
+      @product_style.orderable_count.should == orderable_cnt_b - 2
+    end  
   end
 end

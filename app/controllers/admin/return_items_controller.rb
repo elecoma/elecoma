@@ -128,10 +128,10 @@ class Admin::ReturnItemsController < Admin::BaseController
     rows = @return_items.map do |ri|
       a = []
       a << ri.path_product.product.id
-      a << ri.path_product.code unless ri.is_set?
+      ri.is_set? ? a << "" : a << ri.path_product.code
       a << ri.path_product.product.name
-      a << ri.path_product.style_name unless ri.is_set?
-      a << ri.path_product.manufacturer_id unless ri.is_set?
+      ri.is_set? ? a << "" : a << ri.path_product.style_name
+      ri.is_set? ? a << "" : a << ri.path_product.manufacturer_id
       a << ri.returned_count
       a << ri.returned_at
       a

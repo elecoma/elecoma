@@ -346,7 +346,7 @@ class ProductTotalizer < Totalizer
     end
     return g.to_blob
   end
-def search conditions
+  def search conditions
 
     @ods = OrderDetail.find_by_sql([<<-EOS, conditions])
       select
@@ -373,13 +373,11 @@ def search conditions
       group by product_code, product_name, unit_price ,product_order_unit_id
       order by price desc
     EOS
-
-  if conditions[:sale_start_from].present? or conditions[:sale_start_to].present? 
-    @ods.select! {|od| (conditions[:sale_start_from].to_date..conditions[:sale_start_to].to_date).include? od.ps.product.sale_start_at.to_date }
-  end
+    @ods.select! {|od| ProductOrderUnit.find_by_id(od.product_order_unit_id).present?}
+    @ods.select! {|od| (conditions[:sale_start_from].nil? || conditions[:sale_start_to].nil?) || (od.ps.product.sale_start_at.to_date).between?(conditions[:sale_start_from].to_date, conditions[:sale_start_to].to_date)}
   record_odps = []
   @ods.each do |r|
-    record_odps << RecProduct.new(r.position,r.product_code,r.product_name,r.count,r.items,r.unit_price,r.price,ProductOrderUnit.find_by_id(r.product_order_unit_id).ps.product.sale_start_at.to_date)
+    record_odps << RecProduct.new(r.position,r.product_code,r.product_name,r.count,r.items,r.unit_price,r.price,ProductOrderUnit.find_by_id(r.product_order_unit_id).ps.product.sale_start_at.to_date) unless ProductOrderUnit.find_by_id(r.product_order_unit_id).nil?
   end
 
   # position の振り直し & 販売開始日を Date に

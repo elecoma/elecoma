@@ -110,6 +110,13 @@ describe Admin::RecommendProductsController do
       response.should render_template("admin/recommend_products/product_search.html.erb")
     end
 
+    it "セット商品：商品が検索できる（商品名とカテゴリーで検索）" do
+      condition = {:keyword => "靴下セット", :category_id => '16', :searched => "true"}
+      get 'product_search', :condition => condition
+      assigns[:products].length == 1
+      response.should render_template("admin/recommend_products/product_search.html.erb")
+    end
+
     it "商品が検索できる（条件なしで検索）" do
       condition = {:searched => "true"}
       get 'product_search', :id=>'1', :condition => condition
