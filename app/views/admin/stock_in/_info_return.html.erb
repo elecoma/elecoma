@@ -34,37 +34,37 @@
   <tr>
     <th>規格名称</th>
     <td>
-      <%= h(@pou.ps.style_name) %>
+      <%= h(@pou.product_style.style_name) unless @pou.is_set? %>
     </td>
   </tr>
   <tr>
     <th>商品型番</th>
     <td>
-      <%= h(@pou.ps.manufacturer_id) %>
+      <%= h(@pou.product_style.manufacturer_id) unless @pou.is_set? %>
     </td>
   </tr>  
   <tr>
     <th>価格</th>
     <td>
-      <%= number_with_delimiter(@pou.ps.sell_price) %>
+      <%= number_with_delimiter(@pou.sell_price) %>
     </td>
   </tr>
   <tr>
     <th>現在実在庫数</th>
     <td>
-      <%= number_with_delimiter(@pou.ps.actual_count.to_i) %>
+      <%= number_with_delimiter(@pou.product_style.actual_count.to_i) unless @pou.is_set? %>
     </td>
   </tr>
   <tr>
     <th>現在受注可能数</th>
     <td>
-      <%= number_with_delimiter(@pou.ps.orderable_count.to_i) %>
+      <%= number_with_delimiter(@pou.product_style.orderable_count.to_i) unless @pou.is_set? %>
     </td>
   </tr>
   <tr>
     <th>現在不良在庫数</th>
     <td>
-      <%= number_with_delimiter(@pou.ps.broken_count.to_i) %>
+      <%= number_with_delimiter(@pou.product_style.broken_count.to_i) unless @pou.is_set? %>
     </td>
   </tr>
 </table>
