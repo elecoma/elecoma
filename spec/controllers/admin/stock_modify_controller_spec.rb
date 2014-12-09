@@ -69,4 +69,100 @@ describe Admin::StockModifyController do
       response.should render_template("admin/stock_modify/edit.html.erb")
     end
   end 
+
+  describe "POST 'edit_now'" do
+    it "単一商品在庫保存：成功パターン" do
+      before = ProductStyle.find_by_id(@ps.id)
+      max_id = StockHistory.maximum(:id)
+      xhr :post, :edit_now, :id => @ps.id, :product_style => {:actual_count => "100"}
+      #更新後
+      assigns[:e_id].should == 0
+      #商品規格  
+      check = ProductStyle.find_by_id(@ps.id)
+      check.actual_count.should == 100
+      check.orderable_count.should == 100 - check.broken_count.to_i
+      #操作履歴
+      nmax_id = StockHistory.maximum(:id)
+      nmax_id.should > max_id
+      sh = StockHistory.find_by_id(nmax_id)
+      sh.actual_count.should == 100
+      sh.actual_adjustment.should == 100 - @ps.actual_count
+      sh.orderable_count.should == 100 - @ps.broken_count unless @ps.broken_count.blank?
+      sh.orderable_adjustment.should == 100 - @ps.broken_count - @ps.actual_count unless @ps.broken_count.blank?
+      response.should_not be_redirect
+      response.should render_template("admin/stock_modify/edit_now.js.erb")
+    end
+
+    #入力在庫数 == @ps.actual_count
+    it "単一商品在庫保存：変更なしパターン" do
+      before = ProductStyle.find_by_id(@ps.id)
+      max_id = StockHistory.maximum(:id)
+      xhr :post, :edit_now, :id => @ps.id, :product_style => {:actual_count => "1000"}
+      #更新されない
+      assigns[:e_id].should == -1
+      check = ProductStyle.find_by_id(@ps.id)
+      check.attributes.should == @ps.attributes
+      StockHistory.maximum(:id).should == max_id
+      response.should_not be_redirect
+      response.should render_template("admin/stock_modify/edit_now.js.erb")
+    end
+
+    #半角数値以外入力エラー(小数点)
+    it "単一商品在庫保存：入力不正パターン(小数点)" do
+      before = ProductStyle.find_by_id(@ps.id)
+      max_id = StockHistory.maximum(:id)
+      xhr :post, :edit_now, :id => @ps.id, :product_style => {:actual_count => "33.3"}
+      #更新されない
+      assigns[:e_id].should == 1
+      check = ProductStyle.find_by_id(@ps.id)
+      check.attributes.should == @ps.attributes
+      StockHistory.maximum(:id).should == max_id
+      response.should_not be_redirect
+      response.should render_template("admin/stock_modify/edit_now.js.erb")
+    end
+
+    #半角数値以外入力エラー(全角数字)
+    it "単一商品在庫保存：入力不正パターン(全角数字)" do
+      before = ProductStyle.find_by_id(@ps.id)
+      max_id = StockHistory.maximum(:id)
+      xhr :post, :edit_now, :id => @ps.id, :product_style => {:actual_count => "５５"}
+      #更新されない
+      assigns[:e_id].should == 1
+      check = ProductStyle.find_by_id(@ps.id)
+      check.attributes.should == @ps.attributes
+      StockHistory.maximum(:id).should == max_id
+      response.should_not be_redirect
+      response.should render_template("admin/stock_modify/edit_now.js.erb")
+    end
+
+    #在庫最大値オーバーエラー(入力実在庫:2^31)
+    it "単一商品在庫保存：入力過剰パターン(入力実在庫:2^31)" do
+      before = ProductStyle.find_by_id(@ps.id)
+      max_id = StockHistory.maximum(:id)
+      xhr :post, :edit_now, :id => @ps.id, :product_style => {:actual_count => "2147483648"}
+      #更新されない
+      assigns[:e_id].should == 2
+      check = ProductStyle.find_by_id(@ps.id)
+      check.attributes.should == @ps.attributes
+      StockHistory.maximum(:id).should == max_id
+      response.should_not be_redirect
+      response.should render_template("admin/stock_modify/edit_now.js.erb")
+   end
+
+    #入力実在庫数 < 不良在庫数エラー(不良在庫:50,入力実在庫:30)
+    it "単一商品在庫保存：在庫不正パターン(不良在庫:50,入力実在庫:30)" do
+      zaiko = product_styles(:zaiko);
+      max_id = StockHistory.maximum(:id)
+      before = ProductStyle.find_by_id(zaiko.id)
+      xhr :post, :edit_now, :id => zaiko.id, :product_style => {:actual_count => "30"}
+      #更新されない
+      assigns[:e_id].should == 3
+      check = ProductStyle.find_by_id(zaiko.id)
+      check.attributes.should == zaiko.attributes
+      StockHistory.maximum(:id).should == max_id
+      response.should_not be_redirect
+      response.should render_template("admin/stock_modify/edit_now.js.erb")
+    end
+
+  end
 end

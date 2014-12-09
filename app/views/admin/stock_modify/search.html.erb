@@ -5,6 +5,7 @@
 <h2>在庫管理</h2>
 <%=h flash[:notice] %>
 <%=h flash[:error] %>
+<span id="stock_update_now" style="display: none; position: absolute; margin-top: -1.25em;">更新しました</span>
 <%= error_messages_for :condition %>
 <% form_for :condition, :url => {:action => 'search'}, :html => {:method => :get} do |f| %>
   <%= render :partial => "search", :locals=>{:f => f}%>
@@ -12,6 +13,12 @@
 <br />
 
 <p>&gt;&gt;検索結果一覧&nbsp;<%=@product_styles.total_entries %>件&nbsp;が該当しました。</p><br/>
+<div id="errorExplanation" style="display:none"><h2>実在庫数にエラーが発生しました。</h2><p>次の項目を確認してください。</p><ul>
+  <li><div id="msg1" style="display:none">実在庫数は半角数字のみで入力してください。</div></li>
+  <li><div id="msg2" style="display:none">入力が扱える数値の範囲を超えています。</div></li>
+  <li><div id="msg3" style="display:none">実在庫数が不良在庫より少ないです。</div></li>
+  <li><div id="msg4" style="display:none">在庫にアクセスできません。</div></li>
+</ul></div>
   <table class="data2 clear" cellspacing="1">
     <tr>
       <th>商品ID</th>
@@ -30,14 +37,28 @@
         <td><%= h ps.product_name %></td>
         <td><%= h ps.style_name %></td>
         <td><%= h ps.manufacturer_id %></td>
-        <td><%= number_with_delimiter(ps.actual_count.to_i) %></td>
+
+        <td width="114" height="26">
+          <span id=<%="act"+ps.id.to_s%> style="float: left;"><%= number_with_delimiter ps.actual_count.to_i %></span>
+          <span id=<%="ebutton"+ps.id.to_s%> style="float: right;"><a href="#" onClick="show_edit(<%=ps.id%>);return false;" ><%= image_tag "edit.gif"%></a></span>
+          <% form_for ps, :url => {:action => "edit_now", :id => ps.id}, :html => {:onsubmit => "submit_one(#{ps.id},#{@product_styles.map {|ps| ps.id}});return false;", :style => "display: none;"} do |f| %>
+            <%= f.text_field :actual_count, {:id => "ac"+ps.id.to_s, :class => "data_s", :style => "ime-mode:inactive", :autocomplete => 'off'} %>
+            <%= f.submit "保存" %>
+          <%end%>
+        </td>
         <td class="t_center">
 	    <%= link_to "在庫調整", :action=>"edit" ,:id=>ps.id %>
         </td>
       </tr>
     <% end %>
-<%end%>
+  <%end%>
 </table>
-<%= will_paginate @product_styles %>
-
+<span style="float: left;"><%= will_paginate @product_styles %></span>
+<span style="float: right;"><%= button_to_function "一括更新", "submit_all(#{@product_styles.map {|ps| ps.id}}); return false" %></span>
+<table cellspacing="1" cellpadding="0" class="data clear" style="margin-top: 5em;">
+  <tr>
+    <th>在庫編集方法</th>
+    <td><div style="margin: 3px;"><%= image_tag "edit.gif"%>ボタンをクリックするとテキストボックスが開くので、実在庫数を編集して保存できます。複数の商品の実在庫数を編集して、一括更新ボタンで同時に保存もできます。</div></td>
+  </tr>
+</table>
 </div><!-- /メイン -->
