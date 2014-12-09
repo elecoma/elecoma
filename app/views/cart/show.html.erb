@@ -34,17 +34,17 @@
       </tr>
       <% @carts.each_with_index do |cart, i| %>
         <tr>
-          <td><%= link_to_product_image(cart.product, :small) %></td>
+          <td><%= link_to_product_image(cart.ps.product, :small) %></td>
           <td>
-            <p><%= h(cart.product_name) %><br />
+            <p><%= h(cart.ps.product.name) %><br />
                <%- unless cart.classcategory_name1.blank? %>
                <%= h(cart.classcategory_name1)%><br />
                <%- end %>
                <%- unless cart.classcategory_name2.blank? %>
                <%= h(cart.classcategory_name2)%>
                <%- end %>
-               <%- unless cart.product_style.product.master_shop? %>
-               <br />販売元: <%= show_retailer_shop(cart.product_style.product) %>
+               <%- unless cart.ps.product.master_shop? %>
+               <br />販売元: <%= show_retailer_shop(cart.product_order_unit.product_style.product) %>
                <%- end %>
             </p>
           </td>
@@ -55,18 +55,20 @@
             <%= decriment_tag(cart) %>
           </td>
           <td><%= number_with_delimiter cart.subtotal %>円</td>
-          <td><%= link_to '削除する', {:controller => 'cart', :action => 'delete', :id => cart.product_style_id}, {:confirm=>'本当に削除しますか？'} %></td>
+          <td><%= link_to '削除する', {:controller => 'cart', :action => 'delete', :id => cart.product_order_unit.id}, {:confirm=>'本当に削除しますか？'} %></td>
         </tr>
       <% end %>
       <tr>
         <td colspan="6">合計 <%=h(number_with_delimiter(@cart_price)) %>円</td>
       </tr>
     </table>
-    <%= render :partial => '/base/recommend_asp', :locals=>{:size=>4} %>
-
     <div class="cart_btn">
       <%= link_to image_tag('/images/cart/cart_btn01.gif', :width=>"135", :height=>"28", :alt=>"買い物を続ける"), {:controller => :portal, :action => :show} %>
       <%= link_to image_tag('/images/cart/cart_btn02.gif', :width=>"135", :height=>"28", :alt=>"購入手続き"), {:controller => 'cart', :action => 'shipping'} %>
     </div>
   <%- end -%>
+  <div id="under_line"></div>
+  <% @reco_no = 0 %>
+  <%= render :partial => 'recommend_set', :locals => {:size=>4} %>
 </div><!-- /cart -->
+

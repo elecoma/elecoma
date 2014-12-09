@@ -2,7 +2,8 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe Admin::RecommendProductsController do
-  fixtures :admin_users , :recommend_products, :products, :product_styles
+  fixtures :admin_users , :recommend_products, :products, :product_styles, :product_order_units
+  fixtures :product_sets
   before(:each) do
     session[:admin_user] = admin_users(:admin10)
     @controller.class.skip_before_filter @controller.class.before_filter
@@ -55,26 +56,26 @@ describe Admin::RecommendProductsController do
 
   describe "GET 'update'" do
     it "データの更新に成功した場合" do
-      recommend_product = {:product_id=>3, :description=>"データを更新しました"}
+      recommend_product = {:product_order_unit_id=>3, :description=>"データを更新しました"}
       get 'update', :id=>1, :recommend_product => recommend_product
       record = RecommendProduct.find(1)
-      record.product_id.should == 3
+      record.product_order_unit_id.should == 3
       flash[:notice] = "保存しました"
       response.should redirect_to(:action=>"index")
     end
 
     it "データの更新に成功した場合（登録されていなかったところに登録）" do
-      recommend_product = {:product_id=>3, :description=>"データを更新しました"}
+      recommend_product = {:product_order_unit_id=>3, :description=>"データを更新しました"}
       get 'update', :id=>3, :recommend_product => recommend_product
       record = RecommendProduct.find(3)
-      record.product_id.should == 3
+      record.product_order_unit_id.should == 3
       record.description.should == "データを更新しました"
       flash[:notice] = "保存しました"
       response.should redirect_to(:action=>"index")
     end
 
     it "データの更新に失敗した場合" do
-      recommend_product = {:product_id=>3, :description=> "a" * 1000}
+      recommend_product = {:product_order_unit_id=>3, :description=> "a" * 1000}
       get 'update', :id=>6, :recommend_product => recommend_product
       RecommendProduct.find_by_id(6).description.should_not == "a" * 1000
       response.should render_template("admin/recommend_products/edit.html.erb")
@@ -106,6 +107,13 @@ describe Admin::RecommendProductsController do
       condition = {:keyword => "商品", :category_id => '1', :searched => "true"}
       get 'product_search', :id=>'1', :condition => condition
       assigns[:products].should_not be_nil
+      response.should render_template("admin/recommend_products/product_search.html.erb")
+    end
+
+    it "セット商品：商品が検索できる（商品名とカテゴリーで検索）" do
+      condition = {:keyword => "靴下セット", :category_id => '16', :searched => "true"}
+      get 'product_search', :condition => condition
+      assigns[:products].length == 1
       response.should render_template("admin/recommend_products/product_search.html.erb")
     end
 

@@ -15,17 +15,17 @@
       <% if @favorites.present? %>
         <% product_ids = [] %>
         <% @favorites.each do |favorite| %>
-          <% product_ids << favorite.product_style_id %>
+          <% product_ids << favorite.product_order_unit_id %>
         <% end %>
-	<%= link_to image_tag("/images/item/favorite_delete_all.gif", :width=>"140", :alt=>"お気に入りから削除", :class => "submit"), {:controller => :favorites, :action => :delete_favorite, :product_style_ids => product_ids }, :confirm => "お気に入りを全て削除します。よろしいですか？"  %>
+	<%= link_to image_tag("/images/item/favorite_delete_all.gif", :width=>"140", :alt=>"お気に入りから削除", :class => "submit"), {:controller => :favorites, :action => :delete_favorite, :product_order_unit_ids => product_ids }, :confirm => "お気に入りを全て削除します。よろしいですか？"  %>
 	<ul>
 	  <% @favorites.each do |favorite| %>
-	    <% product = favorite.product_style.product %>
-	    <% style = favorite.product_style %>
+	    <% product = favorite.ps_path.product %>
+	    <% pou = favorite.product_order_unit %>
 	    <li style="display:inline">
 	      <p><%= link_to((product_image_tag(product, :small)), {:controller => "products", :action => "show", :id => product.id, :category_id => product.category_id}) %></p>
 	      <p><%= link_to_product product %></p>
-	      <p><%= link_to image_tag("/images/item/favorite_delete.gif", :width=>"120", :alt=>"お気に入りから削除", :class => "submit"), {:controller => :favorites, :action => :delete_favorite, :product_style_ids => [style.id] }, :confirm => "お気に入りを削除します。よろしいですか？"  %></p>
+	      <p><%= link_to image_tag("/images/item/favorite_delete.gif", :width=>"120", :alt=>"お気に入りから削除", :class => "submit"), {:controller => :favorites, :action => :delete_favorite, :product_order_unit_ids => [pou.id] }, :confirm => "お気に入りを削除します。よろしいですか？"  %></p>
 	    </li>
 	  <% end %>
 	</ul>

@@ -17,7 +17,6 @@ class Product < ActiveRecord::Base
   belongs_to :large_resource,
              :class_name => "ImageResource",
              :foreign_key => "large_resource_id"
-  has_many :recommend_products
   has_one :delivery_date
   has_many :styles
   has_many :product_styles, :dependent => :destroy, :order => 'position'
@@ -25,6 +24,7 @@ class Product < ActiveRecord::Base
   has_one :campaign
   belongs_to :supplier
   belongs_to :retailer
+  has_one :product_set, :dependent => :destroy
 
   validates_length_of :name , :maximum => 50
   validates_length_of :name , :minimum => 1
@@ -39,6 +39,8 @@ class Product < ActiveRecord::Base
   validates_presence_of :retailer
   validates_associated :sub_products
   validates_numericality_of :price, :allow_nil => true, :greater_than_or_equal_to => 0
+  validates_presence_of :price, :if => :is_set?
+
   attr_accessor :small_resource_path
   attr_accessor :medium_resource_path
   attr_accessor :large_resource_path
@@ -62,6 +64,38 @@ class Product < ActiveRecord::Base
       unless public_start_at < public_end_at
         errors.add :public_end_at, "は公開開始日以降の日付を設定してください。"
       end
+    end
+  end
+
+  def is_set?
+	  return false if self.set_flag.nil?
+    self.set_flag
+  end
+  def confirm_msg_del
+    msg = "本当に削除しますか？"
+    unless is_set?
+      @product_styles = self.product_styles
+      @sets = "" 
+      @product_styles.each do |ps|
+        unless ps.set_ids.blank?
+          ps.get_set_ids.each do |id|
+            @line = "『#{ProductSet.find_by_id(id).product.name}』\n"
+            unless @sets.include?(@line)
+              @sets << @line
+            end
+          end
+          msg = "この商品を削除するとこの商品をリストに含む以下のセット商品も削除されます。\n#{@sets} \n本当に削除しますか？"
+        end
+      end
+    end
+    return msg
+  end
+
+  def pou_path
+    if is_set?
+      product_set.product_order_unit
+    else
+      first_product_style.product_order_unit
     end
   end
 
@@ -99,8 +133,7 @@ class Product < ActiveRecord::Base
     end
   end
 
-  # 規格
-  def first_product_style
+def first_product_style
     product_styles.empty? and return nil
     product_styles[0]
   end
@@ -109,18 +142,46 @@ class Product < ActiveRecord::Base
   delegate_to :first_product_style, :style_category1, :style_id, :as => :style_id1
   delegate_to :first_product_style, :style_category2, :style_id, :as => :style_id2
 
+=begin
+  # 規格
+  def first_product_order_unit
+    if is_set?
+      product_set = ProductSet.find_by_product_id(id)
+      product_order_unit = ProductOrderUnit.find_by_product_set_id(product_set.id)
+      product_order_unit.blank? and return nil
+      product_order_unit
+    else
+      product_styles.empty? and return nil
+      product_order_unit = ProductOrderUnit.find_by_product_style_id(product_styles[0].id)
+      product_order_unit.blank? and return nil
+      product_order_unit
+    end
+  end
+  delegate_to :first_product_order_unit, :ps, :style_category1, :style, :as => :style1
+  delegate_to :first_product_order_unit, :ps, :style_category2, :style, :as => :style2
+  delegate_to :first_product_order_unit, :ps, :style_category1, :style_id, :as => :style_id1
+  delegate_to :first_product_order_unit, :ps, :style_category2, :style_id, :as => :style_id2
+=end
+
   # 最安値と最高値の 2 要素配列
   def price_range
-    [product_styles.minimum(:sell_price), product_styles.maximum(:sell_price)]
+#　後ですべてPOUに価格参照元を差し替える
+    	[product_styles.minimum(:sell_price), product_styles.maximum(:sell_price)]
   end
 
   def price_label
-    p_range = price_range
+	if set_flag?
+	  product_set = ProductSet.find_by_product_id(self.id)
+    product_order_unit = ProductOrderUnit.find_by_product_set_id(product_set.id)
+		number_with_delimiter(product_order_unit.sell_price)
+ 	else
+	  p_range = price_range
     if p_range[0] == p_range[1]
-      number_with_delimiter(p_range[0])
+     return number_with_delimiter(p_range[0])
     else
-      p_range.map{|p| number_with_delimiter(p)}.join("～")
+     return p_range.map{|p| number_with_delimiter(p)}.join("～")
     end
+	end
   end
 
   def category_name
@@ -164,10 +225,19 @@ class Product < ActiveRecord::Base
     end
   end
 
+  # セット在庫がある
+  def have_set_zaiko?
+    product_set or return false
+    return false if self.sell_limit == 0
+    product_set.get_product_style_ids.zip(product_set.get_ps_counts).all? do |ps_id, ps_count|
+      ProductStyle.find(ps_id).orderable_count.to_i >= ps_count
+    end
+  end
+
   def self.default_condition
     conditions = [["products.permit = ?", true]]
     conditions << ["? between products.public_start_at and products.public_end_at", today_utc(Date.today)]
-    conditions << ["have_product_style = ?", true]
+    conditions << ["have_product_style = ? or set_flag = ?", true, true]
     conditions
   end
 
@@ -182,9 +252,10 @@ class Product < ActiveRecord::Base
             search_list << ["products.id = ?", 0]
           end
         else
-          search.errors.add "商品IDは数字で入力して下さい。", ""
+        search.errors.add "","商品IDは数字で入力して下さい。"
         end
       end
+
       unless search.code.blank?
         code_condition = ["product_styles.code like ? ", "%#{search.code}%"]
         if actual_count_list_flg
@@ -209,6 +280,7 @@ class Product < ActiveRecord::Base
           search_list << ["products.id in (?) ", ids]
         end
       end      
+
       unless search.style.blank?
         product_styles = ProductStyle.find(:all, :select => "product_styles.product_id",
                                            :joins => "left join style_categories  on product_styles.style_category_id1 = style_categories.id left join style_categories as style_categories2 on style_category_id2 = style_categories2.id ",
@@ -501,6 +573,16 @@ class Product < ActiveRecord::Base
     end
   end
 
+  def get_set_list
+    return unless set_flag
+    ProductSet.find_by_product_id(id).get_set_list
+  end
+
+  def get_set_id
+    return unless set_flag
+    ProductSet.find_by_product_id(id).id
+  end
+
   private
   def self.csv_columns_name
     [
@@ -644,5 +726,5 @@ class Product < ActiveRecord::Base
   def self.today_utc(today)
     ud = Time.local(today.year,today.month,today.day)
     DateTime.new(ud.year, ud.month, ud.day, ud.hour, ud.min, ud.sec)
-  end
+  end  
 end

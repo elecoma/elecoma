@@ -63,8 +63,8 @@ class PortalController < BaseController
 
   def load_recommend_product
     @recommend_products = RecommendProduct.find(:all,
-                                                :conditions=>["products.id >= ? and recommend_products.description <> ? and products.deleted_at is null", 1, ""],
-                                                :include=>"product",
+                                                :conditions=>["product_order_units.id >= ? and recommend_products.description <> ? and product_order_units.deleted_at is null", 1, ""],
+                                                :include=>"product_order_unit",
                                                 :order => "recommend_products.position")
   end
 

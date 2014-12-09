@@ -286,4 +286,53 @@ border:  none;
   padding: 10px;
 }
 
+/*------レコメンド-------*/
+#reco_box {
+  background: url(../../images/item/reco_bg.gif) repeat-y;
+  padding: 7px 0 5px;
+}
 
+#reco_box ul {
+  background: url(../../images/item/reco_hr.gif) repeat-y 147px top;
+}
+
+#reco_box li {
+  float: left;
+  width: 110px;
+  padding: 0 3px;
+}
+
+#reco_box li img {
+  display: block;
+  width: 90px;
+  margin: 0 auto 5px;
+  border: 1px solid #aaaaaa;
+}
+
+#reco_box dt {
+  line-height: 110%;
+}
+
+#reco_box dd {
+  text-align: right;
+}
+
+#reco_box .move {
+  width: 32px;
+  padding: 0;
+}
+
+#reco_box .move img {
+  display: block;
+  width: 19px;
+  border: 0;
+  margin-top: 45px;
+}
+
+#reco_box .lt img {
+  margin-left: 12px;
+}
+
+#reco_box .gt img {
+  margin-right: 12px;
+}

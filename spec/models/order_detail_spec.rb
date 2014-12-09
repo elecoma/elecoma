@@ -2,7 +2,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe OrderDetail do
-  fixtures :order_details, :styles, :product_styles,:products,:style_categories
+  fixtures :order_details, :styles, :product_styles,:products,:style_categories,:product_order_units
   before(:each) do
     #会員
     @order_detail = order_details(:customer_buy_one)

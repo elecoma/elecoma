@@ -2,13 +2,13 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Admin::ReturnItemsController do
-  fixtures :products, :product_styles, :admin_users
+  fixtures :products,:product_sets,:product_order_units, :admin_users,:product_styles
   fixtures :return_items
 
   before do
     @controller.class.skip_before_filter @controller.class.before_filters
     @controller.class.skip_after_filter @controller.class.after_filters
-    @ps = product_styles(:have_classcategory2)
+    @pou = product_order_units(:have_classcategory2)
     @ri = return_items(:return_items_1)
     session[:admin_user] = admin_users(:admin10)
   end
@@ -30,35 +30,35 @@ describe Admin::ReturnItemsController do
       search = {:name => ""}
       get "search", :condition => search
       response.should be_success
-      assigns[:product_styles].size.should > 0
+      assigns[:pous].size.should > 0
     end
 
     it "with name" do
-      search = {:name => @ps.product_name}
+      search = {:name => @pou.ps.product.name}
       get "search", :condition => search
       response.should be_success
-      assigns[:product_styles][0].product_name.should == @ps.product_name
+      assigns[:pous][0].ps.product.name.should == @pou.ps.product.name
     end
 
     it "with product_id" do
-      search = {:product_id => @ps.product_id}
+      search = {:product_id => @pou.ps.product.id}
       get "search", :condition => search
       response.should be_success
-      assigns[:product_styles][0].product_id.should == @ps.product_id
+      assigns[:pous][0].ps.product.id.should == @pou.ps.product.id
     end
 
     it "with code" do
-      search = {:code => @ps.code}
+      search = {:code => @pou.product_style.code}
       get "search", :condition => search
       response.should be_success
-      assigns[:product_styles][0].code.should == @ps.code
+      assigns[:pous][0].product_style.code.should == @pou.product_style.code
     end
 
     it "with manufacturer" do
-      search = {:manufacturer => @ps.manufacturer_id}
+      search = {:manufacturer => @pou.product_style.manufacturer_id}
       get "search", :condition => search
       response.should be_success
-      assigns[:product_styles][0].manufacturer_id.should == @ps.manufacturer_id
+      assigns[:pous][0].product_style.manufacturer_id.should == @pou.product_style.manufacturer_id
     end
 
     it "with fail_retailer" do
@@ -66,7 +66,7 @@ describe Admin::ReturnItemsController do
       search = {}
       get "search", :condition => search
       response.should be_success
-      assigns[:product_styles].should == []
+      assigns[:pous].should == []
     end
 
   end
@@ -74,7 +74,7 @@ describe Admin::ReturnItemsController do
   describe "GET 'new'" do
 
     it "should ok" do
-      get "new", :id => @ps.id
+      get "new", :id => @pou.id
       response.should be_success
     end
 
@@ -87,8 +87,8 @@ describe Admin::ReturnItemsController do
 
   describe "POST 'create'" do
     it "should ok" do
-      return_item = {:product_id => @ps.product_id,
-        :product_style_id => @ps.id,
+      return_item = {:product_id => @pou.ps.product_id,
+        :product_order_unit_id => @pou.id,
         :returned_count => 2,
         "returned_at(1i)" => "2010",
         "returned_at(2i)" => "1",
@@ -99,7 +99,7 @@ describe Admin::ReturnItemsController do
     end
 
     it "without product_id is error" do
-      return_item = {:product_style_id => @ps.id,
+      return_item = {:product_order_unit_id => @pou.id,
         :returned_count => 2,
         "returned_at(1i)" => "2010",
         "returned_at(2i)" => "1",
@@ -110,8 +110,8 @@ describe Admin::ReturnItemsController do
     end
 
     it "without returned_at is error" do
-      return_item = {:product_id => @ps.product_id,
-        :product_style_id => @ps.id,
+      return_item = {:product_id => @pou.ps.product.id,
+        :product_order_unit_id => @pou.id,
         :returned_count => 2,
         "returned_at(1i)" => "",
         "returned_at(2i)" => "",
@@ -122,8 +122,8 @@ describe Admin::ReturnItemsController do
     end
 
     it "returned_count < 0 is error" do
-      return_item = {:product_id => @ps.product_id,
-        :product_style_id => @ps.id,
+      return_item = {:product_id => @pou.ps.product_id,
+        :product_order_unit_id => @pou.id,
         :returned_count => "-3",
         "returned_at(1i)" => "2010",
         "returned_at(2i)" => "1",
@@ -151,30 +151,30 @@ describe Admin::ReturnItemsController do
     end
 
     it "with name" do
-      condition = {:name => @ri.product.name}
+      condition = {:name => @ri.path_product.product.name}
       get 'history_search', :condition => condition
-      assigns[:return_items][0].product.name.should == @ri.product.name
+      assigns[:return_items][0].path_product.product.name.should == @ri.path_product.product.name
       response.should be_success
     end
 
     it "with code" do
-      condition = {:code => @ri.product_style.code}
+      condition = {:code => @ri.product_order_unit.product_style.code}
       get 'history_search', :condition => condition
-      assigns[:return_items][0].product_style.code.should == @ri.product_style.code
+      assigns[:return_items][0].product_order_unit.product_style.code.should == @ri.product_order_unit.product_style.code
       response.should be_success
     end
 
     it "with product_id" do
-      condition = {:product_id => @ri.product_id}
+      condition = {:product_id => @ri.path_product.product.id}
       get 'history_search', :condition => condition
-      assigns[:return_items][0].product_id.should == @ri.product_id
+      assigns[:return_items][0].path_product.product.id.should == @ri.path_product.product.id
       response.should be_success
     end
 
     it "with manufacturer" do
-      condition = {:manufacturer => @ri.product_style.manufacturer_id}
+      condition = {:manufacturer => @ri.product_order_unit.product_style.manufacturer_id}
       get 'history_search', :condition => condition
-      assigns[:return_items][0].product_style.manufacturer_id.should == @ri.product_style.manufacturer_id
+      assigns[:return_items][0].product_order_unit.product_style.manufacturer_id.should == @ri.product_order_unit.product_style.manufacturer_id
       response.should be_success
     end
 
@@ -205,8 +205,8 @@ describe Admin::ReturnItemsController do
     it "should ok" do
       get 'edit', :id => @ri.id
       return_item = {:id => @ri.id,
-        :product_id => @ri.product_id,
-        :product_style_id => @ri.product_style_id,
+        :product_id => @ri.path_product.product.id,
+        :product_order_unit_id => @ri.product_order_unit_id,
         :returned_count => 3,
         "returned_at(1i)" => "2010",
         "returned_at(2i)" => "2",
@@ -219,8 +219,8 @@ describe Admin::ReturnItemsController do
     it "without comment is error" do
       get 'edit', :id => @ri.id
       return_item = {:id => @ri.id,
-        :product_id => @ri.product_id,
-        :product_style_id => @ri.product_style_id,
+        :product_id => @ri.path_product.product.id,
+        :product_order_unit_id => @ri.product_order_unit_id,
         :returned_count => 3,
         "returned_at(1i)" => "2010",
         "returned_at(2i)" => "2",
@@ -269,8 +269,8 @@ describe Admin::ReturnItemsController do
       csv_line_count = ReturnItem.find(:all).size + 1
       get 'csv', :id => id
       response.body.count("\n").should == csv_line_count
-      return_item = {:product_id => @ps.product_id,
-        :product_style_id => @ps.id,
+      return_item = {:product_id => @pou.ps.product_id,
+        :product_order_unit_id => @pou.id,
         :returned_count => 2,
         "returned_at(1i)" => "2010",
         "returned_at(2i)" => "1",

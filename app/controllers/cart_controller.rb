@@ -18,6 +18,23 @@ class CartController < BaseController
 
   # カートの中を見る。Loginの可否、カート内容の有無で動的に変動。カート操作全般はここから行う。
   def show
+#カートに入っている単品商品を含むセット商品があればリコメンドリストに追加する
+    @recommend_set_list = []
+    @carts.each do |cart|
+      unless cart.product_order_unit.is_set?
+        ids = cart.product_order_unit.product_style.set_ids
+        ids = '' if ids.nil?
+        ids = ids.split(",")
+        ids = ids.collect {|num| num.to_i }
+
+        ids.each do |id|
+          @recommend_set_list << ProductSet.find_by_id(id).product
+        end
+      end
+    end
+
+    @recommend_set_list = @recommend_set_list.uniq
+
     unless @carts.all?(&:valid?)
       if flash.now[:error]
         flash.now[:error] = flash.now[:error] + cart_errors(@carts)
@@ -50,13 +67,14 @@ class CartController < BaseController
   def inc
     # TODO キーはインデックスにしたい: そのほうがユーザ視点で自然なので。
     value = params[:value] || 1
-    cart = find_cart(:product_style_id => params[:id].to_i)
-    if cart.nil? || cart.product_style.nil?
+    cart = find_cart(:product_order_unit_id => params[:id].to_i)
+    if cart.nil? || cart.product_order_unit.nil?
       redirect_to :action => :show
       return
     end
     new_quantity = cart.quantity + value
-    cart.quantity = cart.product_style.available?(new_quantity)
+    load_cart
+    cart.quantity = cart.product_order_unit.available?(@carts,new_quantity)
     if cart.quantity < new_quantity
       flash[:notice] = '購入できる上限を超えています'
     end
@@ -76,8 +94,8 @@ class CartController < BaseController
 =end
   def dec
     value = params[:value] || 1
-    cart = find_cart(:product_style_id => params[:id].to_i)
-    if cart.nil? || cart.product_style.nil?
+    cart = find_cart(:product_order_unit_id => params[:id].to_i)
+    if cart.nil? || cart.product_order_unit.nil?
       redirect_to :action => :show
       return
     end
@@ -100,7 +118,7 @@ class CartController < BaseController
 =end
   def delete
     # セッションから消す
-    cart = find_cart(:product_style_id => params[:id].to_i)
+    cart = find_cart(:product_order_unit_id => params[:id].to_i)
     if cart.nil?
       redirect_to :action => :show
       return
@@ -199,16 +217,20 @@ class CartController < BaseController
       end
     end
     if @order_deliveries.empty?
-      @carts.map(&:product_style).map(&:product).map(&:retailer).each do |retailer|
+      @carts.map(&:product_order_unit).each do |pou|
         od = OrderDelivery.new
         od.set_delivery_address(@delivery_address)
-        @order_deliveries[retailer.id] = od
+        @retailer = pou.ps.product.retailer
+        @order_deliveries[@retailer.id] = od
       end
     end
+
     @delivery_traders = Hash.new
-    @carts.map(&:product_style).map(&:product).map(&:retailer).each do |retailer|
-      @delivery_traders[retailer.id] = select_delivery_trader_with_retailer_id(retailer.id)
+    @carts.map(&:product_order_unit).each do |pou|
+      retailer_id = pou.ps.product.retailer_id
+      @delivery_traders[retailer_id] = select_delivery_trader_with_retailer_id(retailer_id)
     end
+
     if @not_login_customer
       @order_deliveries.each do |key, order_delivery|
         order_delivery.set_customer(@temporary_customer)
@@ -427,7 +449,7 @@ class CartController < BaseController
       @order_details[key] = od.details_build_from_carts(cart)
       od.calculate_charge!
       od.calculate_total!
-      @ids << @order_details[key].map{|o_d| o_d.product_style.product_id}
+      @ids << @order_details[key].map{|o_d| o_d.ps.product.id}
     end  
 
     @order_deliveries.each do |key, od|
@@ -441,7 +463,6 @@ class CartController < BaseController
       render :action => 'purchase'
       return
     end
-
     # paymentロジックをプラグイン化するため、予めセッションに保存しておき画面遷移で引き回さないようにする
     save_transaction_items_before_payment
     payment_id =  @order_deliveries.first[1].payment_id
@@ -507,11 +528,11 @@ class CartController < BaseController
   def add_product
     build_cart_add_product_form
     return if @add_product.invalid?
-
+    @product = Product.find_by_id(@add_product.product_id)
     product_style = find_product_style_by_params
-    return redirect_for_product_cannot_sale if product_style.nil?
-
-    redirect_to :action => :show if add_to_cart(product_style, params[:size].to_i)
+    product_order_unit = find_pou_by_params
+	  return redirect_for_product_cannot_sale if product_order_unit.nil?
+    redirect_to :action => :show if add_to_cart(product_order_unit, params[:size].to_i)
   end
 
   def repeat_order
@@ -549,6 +570,20 @@ class CartController < BaseController
     @add_product
   end
 
+  def find_pou_by_params
+    if params[:product_style_id]
+      ps = ProductStyle.find_by_id(params[:product_style_id].to_i)
+	    ps.product_order_unit
+    else
+      if @product.is_set?
+        @product.product_set.product_order_unit
+      else
+        ps = ProductStyle.find_by_product_id_and_style_category_id1_and_style_category_id2(params[:product_id], params[:style_category_id1], params[:style_category_id2])
+        ps.product_order_unit unless ps.blank?
+      end
+    end
+  end
+
   def find_product_style_by_params
     if params[:product_style_id]
       ProductStyle.find_by_id(params[:product_style_id].to_i)
@@ -573,45 +608,51 @@ class CartController < BaseController
   #   false の場合はredirect_toを実施済みなので
   #   呼び出しもとは直ちにメソッドを終了すべき
   #
-  def add_to_cart(product_style, quantity=1)
+  def add_to_cart(product_order_unit, quantity=1)
     return false if quantity <= 0
-    cart = find_or_build_cart_by(product_style)
+
+    cart = find_or_build_cart_by(product_order_unit)
     return false if cart.nil?
 
     # キャンペ
     cart.campaign_id = params[:campaign_id] if params[:campaign_id].present?
 
     # 購入可能であれば、カートに商品を追加する
-    insert_quantity = product_style.available?(cart.quantity + quantity)
+    load_cart 
+    insert_quantity = product_order_unit.available?(@carts,cart.quantity + quantity)
     insert_quantity_diff = insert_quantity - cart.quantity
     if insert_quantity.zero?
       # 購入可能な件数が 0 ならカートを追加しない
       @carts.delete(cart)
-      flash[:cart_add_product] = "「#{product_style.full_name}」は購入できません。"
+      flash[:cart_add_product] = "「#{product_order_unit.sell_name}」は購入できません。"
     elsif insert_quantity_diff < quantity
       # 指定数の在庫が無かった
-      flash[:cart_add_product] = "「#{product_style.full_name}」は販売制限しております。一度にこれ以上の購入はできません。"
+      flash[:cart_add_product] = "「#{product_order_unit.sell_name}」は販売制限しております。一度にこれ以上の購入はできません。"
     end
     cart.quantity = insert_quantity
-    session[:cart_last_product_id] = product_style.product_id
+    if product_order_unit.is_set?
+      session[:cart_last_product_id] = product_order_unit.product_set.product_id
+    else
+      session[:cart_last_product_id] = product_order_unit.product_style.product_id
+    end
     true
   end
 
   def add_carts_by_order_details(order_details)
     order_details.all? do |order_detail|
-      add_to_cart(order_detail.product_style, order_detail.quantity)
+      add_to_cart(order_detail.product_order_unit, order_detail.quantity)
     end
   end
 
-  def find_or_build_cart_by(product_style)
-    cart = find_cart(:product_style_id => product_style.id)
+  def find_or_build_cart_by(product_order_unit)
+    cart = find_cart(:product_order_unit_id => product_order_unit.id)
     return cart if cart.present?
-    build_cart_by(product_style)
+    build_cart_by(product_order_unit)
   end
 
-  def build_cart_by(product_style)
+  def build_cart_by(product_order_unit)
     return redirect_for_carts_was_full if @carts.size >= CARTS_MAX_SIZE
-    cart = Cart.new(:product_style => product_style, :customer => @login_customer, :quantity => 0)
+    cart = Cart.new(:product_order_unit => product_order_unit, :customer => @login_customer, :quantity => 0)
     @carts ||= []
     @carts << cart
     cart
@@ -621,16 +662,16 @@ class CartController < BaseController
     Order.transaction do
       @carts.each do | cart |
         if request.mobile?
-          ProductAccessLog.create(:product_id => cart.product_style.product_id,
+          ProductAccessLog.create(:product_id => cart.ps.product_id,
                                   :session_id => session.session_id,
                                   :customer_id => @login_customer && @login_customer.id,
                                   :docomo_flg => request.mobile == Jpmobile::Mobile::Docomo,
                                   :ident => request.mobile.ident,
                                   :complete_flg => true)
         end
-        product_style = ProductStyle.find(cart.product_style_id, :lock=>true)
-        product_style.order(cart.quantity)
-        product_style.save!
+        product_order_unit = ProductOrderUnit.find(cart.product_order_unit_id, :lock=>true)
+        product_order_unit.order(cart.quantity)
+        product_order_unit.save!
         #会員のみキャンペーン処理
         if @login_customer
           cart.campaign_id and process_campaign(cart, @login_customer)  
@@ -665,8 +706,8 @@ class CartController < BaseController
 =end
   def total_points
     @carts.inject(0) do | result, cart |
-      cart.product or next
-      point_rate_product = cart.product.point_granted_rate
+      cart.ps.product or next
+      point_rate_product = cart.ps.product.point_granted_rate
       point_rate_shop = Shop.find(:first).point_granted_rate
       point_granted_rate = 0
       unless point_rate_product.blank?
@@ -682,8 +723,8 @@ class CartController < BaseController
 
   def total_points_each_cart(carts)
     carts.inject(0) do | result, cart |
-      cart.product or next
-      point_rate_product = cart.product.point_granted_rate
+      cart.ps.product or next
+      point_rate_product = cart.ps.product.point_granted_rate
       point_rate_shop = Shop.find(:first).point_granted_rate
       point_granted_rate = 0
       unless point_rate_product.blank?
@@ -743,7 +784,7 @@ class CartController < BaseController
     end.map do |c,i|
       c.errors.full_messages.map do |message|
         if c.product_style
-          name = c.product_style.full_name
+          name = c.ps.full_name
         else
           name = '%d 番目の商品' % (i+1)
         end
@@ -788,7 +829,7 @@ class CartController < BaseController
 
   def process_campaign(cart, customer)
     cp = Campaign.find_by_id(cart.campaign_id)
-    return if cp.product_id != cart.product_style.product_id
+    return if cp.product_id != cart.ps.product_id
     return if cp.duplicated?(customer)
     cp.customers << customer
     cp.application_count ||= 0
@@ -871,7 +912,7 @@ class CartController < BaseController
       item.product_name = detail.product_name
       item.price = detail.price.to_s
       item.quantity = detail.quantity.to_s
-      item.sku = detail.product_style.manufacturer_id
+      item.sku = detail.product_order_unit.is_set? ? "" : detail.ps.manufacturer_id
       ecommerce.add_item(item)
     end
 

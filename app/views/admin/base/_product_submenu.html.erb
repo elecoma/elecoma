@@ -11,6 +11,8 @@
     <ul id="display1" style="display:block">
       <li><%= link_to '商品マスタ管理', {:controller => 'products', :action => 'index'} %></li>
       <li><%= link_to '商品登録', {:controller => 'products', :action => 'new'} %></li>
+      <li><%= link_to 'セット商品管理', {:controller => 'product_sets', :action => 'index'} %></li>
+      <li><%= link_to 'セット商品登録', {:controller => 'product_sets', :action => 'new'} %></li>
       <li><%= link_to '規格管理', {:controller => 'styles', :action => 'index'} %></li>
       <% if session[:admin_user].master_shop? %>
         <li><%= link_to 'カテゴリ管理', {:controller => 'categories', :action => 'index'} %></li>

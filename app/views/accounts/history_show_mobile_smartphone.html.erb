@@ -25,7 +25,7 @@
       <div class="sectionSubheader">ご注文内容</div>
       <div class="historyDetail">
 	      <% @order_delivery.order_details.each do | detail | %>
-	     <%= link_to_product detail.product_style.product, detail.product_style_name %><br />
+	     <%= link_to_product detail.ps.product, detail.product_style_name %><br />
 	     単価: <%= number_with_delimiter(detail.price) %>円<br />
 	     個数: <%= number_with_delimiter(detail.quantity) %><br />
 	     小計: <%= number_with_delimiter(detail.subtotal) %>円<br />

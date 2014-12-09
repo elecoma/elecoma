@@ -38,18 +38,41 @@
 <% end %>
 <div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
 
-<% if @product.have_zaiko? -%>
-  <%= render :partial  => "base/add_cart", :locals => {:product => @product} %>
-   <%have_style = @product.product_styles.any?(&:style_category1)%>
-   <%if have_style%>
-     <br /><%= link_to '在庫一覧を見る', :action => 'stock_table', :id=>@product.id %>
-   <%end%>
-<%else -%>
-  <span style="color:#ff0000;"><br />申し訳ありませんが、只今品切れ中です。</span>
-<%end -%>
+<% if @product.is_set? %>
+  <%- if @product.have_set_zaiko? -%>
+    <%= render :partial => "base/add_cart", :locals => {:product => @product} %>
+  <%- else -%>
+    <div class="leftMargin">品切れ中</div>
+  <%- end -%>
+<% else %>
+  <%- if @product.have_zaiko? -%>
+    <%= render :partial => "base/add_cart", :locals => {:product => @product} %>
+    <%- have_style = @product.product_styles.any?(&:style_category1) -%>
+    <%- if have_style -%>
+      <div>
+        <div class="centerCart">
+          <div id="stock_table" >
+            <%= render :partial => 'stock_table' %>
+          </div>
+        </div>
+      </div>
+    <%- end -%>
+  <%- else -%>
+    <div class="leftMargin">品切れ中</div>
+  <%- end -%>
+<% end %>
+
 
 <div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
-<div id="details_comments"><%=h_br @product.description %></div>
+<div id="details_comments">
+  <% if @product.is_set? %>
+   【セット内容】<br />
+    <% @sets.each do |item| %>
+     ・<%= ProductStyle.find_by_id(item.product_style_id).product.name %>(<%= item.quantity %>個) <%= link_to "詳細", action: "show",id: item.product_id %><br/>
+    <% end %>
+  <% end %>
+  <br/>
+<%=h_br @product.description %></div>
 <div style="background-color:#F3F3EC;"><%= image_tag_mobile "spacer", :width => "1", :height => "2" %><br /></div>
 
 <!-- 仕様 -->

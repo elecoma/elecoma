@@ -1,0 +1,19 @@
+<%= render :partial => "submenu" %>
+
+<div id="main"><!-- メイン -->
+
+<h2>商品情報の編集</h2>
+<% form_for :product, :url => {:action => "confirm"}, :html => {:multipart => true } do |f| %>
+  <%= render :partial => "form", :locals => {:f => f} %>
+  <%= render :partial => "items" %>
+  <%= link_to "アイテムを追加する",:action => "edit_items"%>
+
+  <div class="btn_box">
+    <%= submit_tag "確認する", :class=>"btn" %>
+    <%= image_tag("btn_side.gif", :width => "6", :height => "34", :class => "btn_side") %>
+  </div>
+<% end %>
+
+
+</div><!-- /メイン -->
+

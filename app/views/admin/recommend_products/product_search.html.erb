@@ -48,12 +48,12 @@
             <th>商品名</th>
             <th>決定</th>
           </tr>
-          <% @products.each do |style| %>
+          <% @products.each do |pou| %>
 	      <tr>
-	        <td><%= product_image_tag(style.product, :small) %></td>
-	        <td><%=h style.code %></td>
-	        <td><span id=<%=h style.code %> ><%=h style.product.name  %></span></td>
-	        <td><input type="button" class="btn_s" name="decide" value="決定" onClick="fnProductSubmit(<%=h style.product_id %>, '<%=h style.product.name.gsub(/\'/, '&#39;') %>'); return false;"></td>
+	        <td><%= product_image_tag(pou.ps.product, :small) %></td>
+	        <td><%=h pou.ps.code %></td>
+	        <td><span id=<%=h pou.ps.code %> ><%=h pou.ps.product.name  %></span></td>
+	        <td><input type="button" class="btn_s" name="decide" value="決定" onClick="fnProductSubmit(<%=h pou.id %>, '<%=h pou.ps.product.name.gsub(/\'/, '&#39;') %>'); return false;"></td>
 	      </tr>
           <% end %>
         </table>

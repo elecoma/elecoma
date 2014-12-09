@@ -8,6 +8,10 @@ class ProductsController < BaseController
   def show
     stock_table
     load_seo_products_detail
+	if @product.set_flag
+		@product_set = ProductSet.find(:first, :conditions => { :product_id => @product.id })
+	  load_sets
+	end
     @recommend_buys = Recommend.recommend_get(@product.id, Recommend::TYPE_BUY) || []
     @recommend_views = Recommend.recommend_get(@product.id, Recommend::TYPE_VIEW) || []
     @shop = Shop.find(:first)
@@ -22,6 +26,48 @@ class ProductsController < BaseController
     end
   end
 
+  def load_sets
+#セット商品、リストの読み込み
+    @product = Product.find(@product_set.product_id)
+    @product_statuses = ProductStatus.find(:all, :conditions=>["product_id=?", @product.id])
+    get_product_status_by_params
+    get_sub_product_by_params
+    product_style_ids = @product_set.get_product_style_ids
+    ps_counts = @product_set.get_ps_counts
+    @sets = []
+    product_style_ids.zip(ps_counts).each do |ps_id, ps_count|
+      set = ProductSetStyle.new(:product_style => ProductStyle.find(ps_id),  :quantity => ps_count)
+      @sets << set
+    end
+  end
+  def get_sub_product_by_params
+    @sub_products = []
+    @sub_products = SubProduct.find(:all, :conditions => ["product_id = ?",@product.id], :order => "no") unless @product.id.blank?
+    unless @sub_products.size == 5
+      5.times do |idx|
+        @sub_products << SubProduct.new(:no => idx )
+      end
+    end
+    if params[:sub_product]
+      params[:sub_product].each do |idx,  sub_products |
+        sub_product = @sub_products[idx.to_i]
+        sub_products.delete(:medium_resource_id) if sub_products && !sub_products[:medium_resource].blank?
+        sub_products.delete(:large_resource_id) if sub_products && !sub_products[:large_resource].blank?
+        sub_product.attributes = sub_products
+        @product.sub_products << sub_product
+        @sub_products[idx.to_i] =  sub_product
+      end
+    end
+  end
+
+  def get_product_status_by_params
+    @product_statuses ||= []
+    if !params[:product_status_ids].blank?
+      params[:product_status_ids].each do | id |
+        @product_statuses << ProductStatus.new(:product_id => @product.id, :status_id => id.to_i)
+      end
+    end
+  end
   def search
     index
 
@@ -106,7 +152,7 @@ class ProductsController < BaseController
 
   def load_recommend_products
     @recommend_products = RecommendProduct.find(:all, :order => "position")
- end
+  end
 
   def load_seo_products_list
     @seo= Seo.find(:first, :conditions=>{ :page_type => Seo::PRODUCTS_LIST})

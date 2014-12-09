@@ -26,7 +26,6 @@ class Admin::ProductsController < Admin::BaseController
   end
 
   new_action.before do
-    get_product
 
     get_product_status_by_params
     get_sub_product_by_params
@@ -75,7 +74,39 @@ class Admin::ProductsController < Admin::BaseController
     @product.product_statuses = @product_statuses
     @product.sub_products = @sub_products
   end
+  def destroy_set(id)
+    product_set = ProductSet.find_by_id(id)
+    ps_ids = product_set.get_product_style_ids
+    ps_ids.each do |ps_id|
+      if ProductStyle.find_by_id(ps_id).present?
+        ps = ProductStyle.find_by_id(ps_id)
+        ids = ps.get_set_ids
+        ids.delete(product_set.id)
+        ps.set_ids = ids.join(",")
+        ps.save
+      end
+    end
+    product_set.destroy
+  end
 
+  def destroy
+    @product = Product.find_by_id(params[:id])
+    unless @product.set_flag == true
+      @product.product_styles.each do |ps|
+        unless ps.set_ids.blank?
+          @set_ids = ps.get_set_ids
+          @set_ids.each do |set_id|
+            destroy_set(set_id)
+          end
+        end
+      end
+      @product.destroy
+    else
+      destroy_set(@product.product_set.id)
+      @product.destroy
+    end
+    redirect_to :action => "index"
+  end
 
   #在庫切れ一覧
   def actual_count_index

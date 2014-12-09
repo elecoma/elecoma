@@ -62,7 +62,7 @@ describe PortalController do
     response.should be_success
     assigns[:recommend_products].size.should > 0
     #assigns[:recommend_products].should == RecommendProduct.find(:all, :order => "position") 
-    assigns[:recommend_products].should == RecommendProduct.find(:all, :conditions => ["product_id>=? or description<>?", 1, ""], :order => "position") 
+    assigns[:recommend_products].should == RecommendProduct.find(:all, :conditions => ["product_order_unit_id>=? or description<>?", 1, ""], :order => "position") 
   end
 
   it "新着商品をロードする" do

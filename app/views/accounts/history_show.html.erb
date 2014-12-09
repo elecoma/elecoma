@@ -40,7 +40,7 @@
         <% @order_delivery.order_details.each do | detail | %>
         <tr>
           <td class="t_left">
-            <%= link_to_product detail.product_style.product, detail.product_style_name %><br />
+            <%= link_to_product detail.ps.product, detail.product_style_name %><br />
             <%=h detail.product_code %>
           </td>
           <td><%= number_with_delimiter(detail.price) %>円</td>

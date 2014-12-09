@@ -19,9 +19,76 @@ class ProductStyle < ActiveRecord::Base
              :class_name => "Style",
              :foreign_key => "style_id2"
   has_many :stock_histories
+  has_one :product_order_unit,:dependent => :destroy
              
   validates_format_of :code, :with => /^[a-zA-Z0-9]*$/
   validates_format_of :manufacturer_id, :with => /^[a-zA-Z0-9]*$/, :allow_blank=>true
+  validates_format_of :set_ids, :with => /(\d+,)*\d*/  
+
+  def self.get_conditions(search,params,actual_count_list_flg = false)
+    search_list = []
+   if search
+      unless search.style_id.blank?
+        if search.style_id.to_s =~ /^\d*$/
+          if search.style_id.to_i < 2147483647
+            search_list << ["product_styles.id = ?", search.style_id.to_i]
+          else
+            search_list << ["product_styles.id = ?", 0]
+          end
+        else
+          search.errors.add :id, "は数字で入力して下さい。"
+        end
+      end
+
+      unless search.style_name.blank?
+        search_list << ["product_styles.name like ?", "%#{search.style_name}%"]
+      end
+
+      unless search.product_name.blank?
+        search_list << ["products.name like ?", "%#{search.product_name}%"]
+      end
+
+      unless search.code.blank?
+        search_list << ["product_styles.code like ?", "%#{search.code}%"]
+      end
+
+      unless search.category.blank?
+        category = Category.find_by_id search.category.to_i
+        unless category.blank?
+          ids = category.get_child_category_ids
+          search_list << ["products.category_id in (?)", ids] unless ids.empty?
+        end
+      end
+      unless search.permit.blank?
+        search_list << ["products.permit = ?", search.permit]
+      end
+
+      unless search.created_at_from.blank?
+        search_list << ["product_styles.created_at >= ?", search.created_at_from]
+      end
+      unless search.created_at_to.blank?
+        search_list << ["product_styles.created_at < ?", search.created_at_to + 1 * 60 * 60 * 24]
+      end
+      unless search.updated_at_from.blank?
+        search_list << ["product_styles.updated_at >= ?", search.updated_at_from]
+      end
+      unless search.updated_at_to.blank?
+        search_list << ["product_styles.updated_at <= ?", search.updated_at_to ]
+      end
+      unless search.sale_start_at_start.blank?
+        search_list << ["products.sale_start_at >= ?", search.sale_start_at_start]
+      end
+      unless search.sale_start_at_end.blank?
+        search_list << ["products.sale_start_at <= ?", search.sale_start_at_end + 1.day]
+      end
+      unless search.retailer_id.blank?
+        search_list << ["products.retailer_id = ?", search.retailer_id]
+      end
+
+   [search, search_list]
+   end
+
+  end
 
 =begin rdoc
   * INFO
@@ -73,6 +140,7 @@ class ProductStyle < ActiveRecord::Base
     else
       raise '在庫不足です。'
     end
+    self.save
   end
 
   # 規格分類込みの名称
@@ -92,5 +160,23 @@ class ProductStyle < ActiveRecord::Base
       x.blank? and break xs
       xs << x
     end.join(delimiter)
+  end
+
+  def get_set_ids
+    unless set_ids.blank?
+      set_ids.split(",").map{|set_id| set_id.to_i }
+    end
+  end
+
+  def is_included?(carts)
+    carts.any? do |cart|
+      if cart.is_set?
+        cart.product_order_unit.ps.get_product_style_ids.any? do |id|
+          self.id == id
+        end
+      else
+        self == cart.product_order_unit.ps
+      end
+    end
   end
 end

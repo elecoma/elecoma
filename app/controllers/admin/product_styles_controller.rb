@@ -2,11 +2,17 @@
 class Admin::ProductStylesController < Admin::BaseController
   before_filter :admin_permission_check_product,
     :only => [:create, :new]
+
   
   def new
     @product = Product.find_by_id(params[:id].to_i)
-    set_product_styles(params[:id].to_i)
-    set_style_category
+	  if @product.is_set? 
+		  redirect_to :controller => 'products', :action => 'index'
+		  flash.now[:error] = "セット商品には規格を登録できません"
+    else
+      set_product_styles(params[:id].to_i)
+      set_style_category
+    end
   end
 
   def create_form
@@ -20,6 +26,7 @@ class Admin::ProductStylesController < Admin::BaseController
     end
     render :layout => false
   end
+
 
   def confirm
     set_product_styles
@@ -35,17 +42,26 @@ class Admin::ProductStylesController < Admin::BaseController
       @product.product_styles = @product_styles if @product.product_styles.empty?
       @product.have_product_style = true
       @product.save
+
       # has_manyが正常に動かない時の対策
       @product_styles.each do |ps|
         ps.save
+        unless ProductOrderUnit.exists?(:product_style_id => ps.id)
+          @pou = ProductOrderUnit.new
+          @pou.set_flag = false
+          @pou.product_style_id = ps.id
+          @pou.sell_price = ps.sell_price
+          @pou.save
+        end
       end
+
       flash.now[:notice] = "保存しました"
     else
       flash.now[:error] = "保存に失敗しました"
     end
     redirect_to :controller => "products", :action => "index"
   end
-  
+
   #在庫管理履歴プレビュー
   def stock_histories
     product_style_id = params[:id].to_i
@@ -59,6 +75,17 @@ class Admin::ProductStylesController < Admin::BaseController
     end
   end
   
+  def destroy
+    @product_style = ProductStyle.find_by_id(params[:id])
+    if @product_style.set_ids.blank?
+      @set_ids = @product_style.get_set_ids
+      @set_ids.each do |set_id|
+        ProductSet.find_by_id(set_id).destroy
+      end
+    end
+    @product_style.destroy
+  end
+
   protected
 
   def set_style_category

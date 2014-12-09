@@ -6,7 +6,7 @@ require 'timeout'
 #以下はKBMJのASPサービスであるパーソナライズド・レコメンダー用のロジックです
 class Recommend < ActiveRecord::Base
 
-  TYPE_BUY, TYPE_VIEW = 0, 1
+  TYPE_BUY, TYPE_VIEW, TYPE_SET = 0, 1,2
 
   #XML連携用レコメンドURL
   RECOMMEND_URLS = {

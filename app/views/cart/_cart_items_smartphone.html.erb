@@ -1,16 +1,16 @@
 <% @carts.each_with_index do |cart, i| %>
 	<div class="cartItem">
 		<div class="productImage">
-			<%= link_to( "<span class='link'></span>", {:controller => "/products", :action => "show", :id => (cart.product_style.product.id),:category_id => cart.product_style.product.category_id}) %>
-			<%= product_image_tag(cart.product_style.product, :small ,{:width=>"70",:height=>"70",:align=>"left",:style=>"vertical-align:middle; float:left; margin:4px;"}) %>
+			<%= link_to( "<span class='link'></span>", {:controller => "/products", :action => "show", :id => (cart.ps.product.id),:category_id => cart.ps.product.category_id}) %>
+			<%= product_image_tag(cart.ps.product, :small ,{:width=>"70",:height=>"70",:align=>"left",:style=>"vertical-align:middle; float:left; margin:4px;"}) %>
 		</div>
 		<div class="productDetails">
-			<%= h(cart.product_name) %> <br />
+			<%= h(cart.ps.product.name) %> <br />
 			<%= h(cart.classcategory_name1) %> <br />
 			<%= h(cart.classcategory_name2) %>
 		
-			<%- unless cart.product_style.product.master_shop? %>
-			<br />販売元: <%= show_retailer_shop(cart.product_style.product) %>
+			<%- unless cart.ps.product.master_shop? %>
+			<br />販売元: <%= show_retailer_shop(cart.ps.product) %>
 			<% end %>
 		</div>
 		
@@ -31,7 +31,7 @@
 				<%= incriment_tag(cart) %>
 				<%= decriment_tag(cart) %>
 				<%= link_to '削除',
-				  {:controller => 'cart', :action => 'delete', :id => cart.product_style_id},
+				  {:controller => 'cart', :action => 'delete', :id => cart.product_order_unit_id},
 				  {:class => 'rosy small_button', :confirm=>'本当に削除しますか？'}
 				 %>
 			</div>

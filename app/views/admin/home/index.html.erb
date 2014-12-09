@@ -65,8 +65,11 @@
         <td><%=h date(new_order.created_at) %></td>
         <td><%=h new_order.family_name %> <%=h new_order.first_name %></td>
         <td>
-          <% if new_order.order_details.find(:first) %>
-            <%=h new_order.order_details.find(:first).product_name %>
+   
+           
+           <% if new_order.product_order_units.find(:first) %>
+             <%=h new_order.product_order_units.find(:first).sell_name %>
+
           <% end %>
         </td>
         <td><%=h new_order.payment_name %></td>

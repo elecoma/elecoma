@@ -2,7 +2,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Product do
-  fixtures :products, :image_resources, :product_statuses,:categories,:product_styles,:statuses,:suppliers,:retailers
+  fixtures :products,:product_order_units,:product_sets, :image_resources, :product_statuses,:categories,:product_styles,:statuses,:suppliers,:retailers
   
   include ActionView::Helpers::NumberHelper
   
@@ -133,6 +133,13 @@ describe Product do
       product.have_zaiko?.should be_false
       product = products(:multi_styles_product)
       product.have_zaiko?.should be_true
+    end
+    it "在庫がある判断（セット）" do
+      product = products(:valid_product)
+      product.have_set_zaiko?.should be_false
+
+      product = products(:valid_set_product)
+      product.have_set_zaiko?.should be_true
     end
     it "CSVダウンロード" do
       search_list = [["products.name like ?", "%スカート%"]]

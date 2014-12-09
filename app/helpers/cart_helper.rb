@@ -5,7 +5,7 @@ module CartHelper
   def incriment_tag(cart)
     uri = {:controller => 'cart',
            :action => 'inc',
-           :id => cart.product_style_id}
+           :id => cart.product_order_unit_id}
     str = request.mobile? ? "増やす" : " ＋ "
     if request.mobile.respond_to?('smartphone?')
 	link_to str, url_for(uri), {:class => 'rosy small_button'}
@@ -18,7 +18,7 @@ module CartHelper
   def decriment_tag(cart)
     uri = {:controller => 'cart',
            :action => 'dec',
-           :id => cart.product_style_id}
+           :id => cart.product_order_unit_id}
     str = request.mobile? ? "減らす" : " － "
       if request.mobile.respond_to?('smartphone?')
 	link_to str, url_for(uri), {:class => 'rosy small_button'}

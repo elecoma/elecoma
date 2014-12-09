@@ -1,5 +1,5 @@
 <% carts.each do |cart| %>
-  <%= cart.product_style.product.name %><br />
+  <%= cart.ps.product.name %><br />
 <% end %>
 <p>発送方法をお選びください</p>
 <% @delivery_traders[retailer_id].each do |delivery_trader| %>

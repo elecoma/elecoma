@@ -1,0 +1,31 @@
+<% form_tag :controller => :cart, :action => :add_product do %>
+
+<div id="cart_in">
+ <% if product.in_sale_term? && !(@login_customer && @login_customer.black) %>
+  <%= flash['error_%d' % product.id] %>
+  <%= @add_product && error_messages_for(:add_product) %>
+  <table id="style_set">
+   <tr>
+    <th>個数</th>
+    <td><%= text_field_tag 'size', 1 , :size => "3"%></td>
+   </tr>
+   <tr>
+    <td colspan="2">
+     <%= hidden_field_tag 'style_category_id1', 0 %>
+     <%= hidden_field_tag 'campaign_id', campaign_id if local_variables.include?('campaign_id') %>
+     <%= hidden_field_tag 'product_id', product.id %>
+    <% if @admin_preview %>
+       <%= image_tag '/images/item/cart_btn.gif', :alt=>'カートに入れる' %>
+    <% else %>
+       <%= image_submit_tag('/images/item/cart_btn.gif', :alt=>'カートに入れる', :class=>'cart_btn') %>
+    <% end %>
+    </td>
+   </tr>
+  </table>
+ <% elsif product.sale_start_at > Time.now # 販売終了商品 %>
+  <p><%= product.sale_start_at.strftime("%Y年%m月%d日") %>発売予定</p>
+ <% else # 販売終了商品 %>
+  <p>この商品は販売を終了しております。</p>
+ <% end %>
+</div>
+<% end %>

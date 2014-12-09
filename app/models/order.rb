@@ -100,9 +100,11 @@ class Order < ActiveRecord::Base
           search.errors.add "購入金額は数字で入力してください。", ""
         end
       end
+
       unless search.product_code.blank?
         search_list << ["order_details.product_code like ? ", "%#{search.product_code}%"]
       end
+
       unless search.shipped_at_from.blank?
         search_list << ["order_deliveries.shipped_at >= ?", search.shipped_at_from]
       end

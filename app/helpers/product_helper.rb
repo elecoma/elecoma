@@ -56,6 +56,12 @@ module ProductHelper
   end
 
   def already_favorite?
-    Favorite.exists?(customer_id: @login_customer.id, product_style_id: @product.first_product_style.try(:id))
+    if @product.set_flag
+      @set = ProductSet.find(:first, :conditions => {:product_id => @product.id})
+      @pou = ProductOrderUnit.find(:first, :conditions => {:product_set_id => @set.id})
+      Favorite.exists?(customer_id: @login_customer.id, product_order_unit_id: @pou.id)
+    else
+      Favorite.exists?(customer_id: @login_customer.id, product_order_unit_id: @product.first_product_style.product_order_unit.try(:id))
+    end
   end
 end

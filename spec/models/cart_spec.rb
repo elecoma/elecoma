@@ -2,7 +2,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Cart do
-  fixtures :customers, :products, :carts, :product_styles, :styles, :style_categories,:campaigns
+  fixtures :product_sets,:customers, :products, :carts, :product_styles, :styles, :style_categories,:campaigns,:product_order_units
 
   before(:each) do
     @cart = carts(:valid_cart)
@@ -22,9 +22,9 @@ describe Cart do
       @cart.quantity = 0
       @cart.should_not be_valid
     end
-    #product_styleが空
-    it "プロダクトスタイルが存在しない場合" do
-      @cart.product_style_id = nil
+    #product_order_unitが空
+    it "注文単位が存在しない場合" do
+      @cart.product_order_unit_id = nil
       @cart.should_not be_valid
     end
     #購入可能な数量を超過しています
@@ -35,33 +35,34 @@ describe Cart do
     #キャンペーン商品
     it "キャンペーン商品" do
       #キャンペーン期間以内
-      @cart.product_style = product_styles(:campaign_product)
+      @cart.product_order_unit = product_order_units(:campaign_product)
       @cart.should be_valid
       #キャンペーン期間以外
-      campaign = @cart.product_style.product.campaign
+      campaign = @cart.ps.product.campaign
       campaign.opened_at = DateTime.new(2008, 1, 1)
       campaign.closed_at = DateTime.new(2008, 12, 1)
       @cart.should_not be_valid      
     end
     #未公開商品
     it "未公開商品" do
-      @cart.product_style = product_styles(:not_permit_product)
+      @cart.product_order_unit = product_order_units(:not_permit_product)
       @cart.should_not be_valid
     end
     #販売期間外商品
     it "販売期間商品" do
-      @cart.product_style = product_styles(:sell_stop_product)
+      @cart.product_order_unit = product_order_units(:sell_stop_product)
       @cart.should_not be_valid
     end
   end
   describe "金額計算系" do
     it "小計" do
-      @cart.subtotal.should == product_styles(:valid_product).sell_price * 1
-      cart = Cart.new(:product_style_id => 20,:quantity =>2)
-      cart.subtotal.should == product_styles(:multi_styles_product_3).sell_price * 2
+      @cart.subtotal.should == product_order_units(:valid_product).sell_price * 1
+
+      cart = Cart.new(:product_order_unit_id => 20,:quantity =>2)
+      cart.subtotal.should == product_order_units(:multi_styles_product_3).sell_price * 2
+
       cart = Cart.new
       cart.subtotal.should be_nil
     end
   end
-  
 end

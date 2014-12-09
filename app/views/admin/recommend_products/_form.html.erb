@@ -7,8 +7,8 @@
     <th>商品名<span class="pnt">※</span></th>
     <td>
       <span id="product_name">
-        <% if @recommend_product.product %>
-          <%= @recommend_product.product.name %>
+        <% if @recommend_product.product_order_unit %>
+          <%= @recommend_product.product_order_unit.ps.product.name %>
         <% else %>
           未登録
         <% end %>
@@ -22,7 +22,7 @@
     <td><%= f.text_area :description, :class=>"data_l", :rows=>"6", :cols=>"50" %></td>
   </tr>
 </table>
-<%= f.hidden_field :product_id %>
+<%= f.hidden_field :product_order_unit_id %>
 <%= f.hidden_field :id %>
 <div class="btn_box">
   <%= f.submit "この内容で登録する", :class=>"btn" %>

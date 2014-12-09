@@ -11,7 +11,7 @@ can_incriment:
   orderable_count: 3
   broken_count: 50
   sell_price: 200
-
+  set_ids: 1
 can_not_incriment:
   code: cannotincriment
   id: 2
@@ -135,6 +135,7 @@ cart_by_have_cart_user_three:
 #通常商品  
 valid_product:  
   id: 14
+  name: validproduct
   product_id: 16
   code: AC001
   style_category_id1: 70
@@ -144,6 +145,7 @@ valid_product:
   orderable_count: 100
   created_at: <%= Date.new(2009, 10, 1) %>
   updated_at: <%= Date.new(2009, 10, 1) %>
+  set_ids: 1
 
 #未公開商品  
 not_permit_product:  
