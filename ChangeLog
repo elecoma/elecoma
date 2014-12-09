@@ -1,3 +1,10 @@
+2014-12-10  Nakanishi Keita  <nakanishi _at_ appirits.com>
+
+        * 3.3.0 Release
+        * [全般] 在庫一括管理機能を実装
+        * [全般] セット商品販売・管理機能を実装
+
+
 2014-05-29  Matsumoto Yasuhito  <ymatsumoto _at_ appirits.com>
 
 	* 3.2.0 Release
