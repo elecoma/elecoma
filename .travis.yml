@@ -1,0 +1,13 @@
+language: ruby
+rvm:
+  - 2.1.5
+  - 2.2.0
+  - ruby-head
+env:
+  - DB=postgresql
+  - DB=mysql
+  - DB=sqlite
+before_script:
+  - cp config/database.$DB.yml config/database.yml
+  - bundle exec rake db:create RAILS_ENV=test
+  - bundle exec rake db:migrate RAILS_ENV=test
