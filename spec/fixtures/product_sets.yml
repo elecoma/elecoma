@@ -1,9 +1,0 @@
-#通常商品  
-valid_set:
-  id: 1
-  created_at: <%= DateTime.now - 3.years %>
-  updated_at: <%= DateTime.now - 3.years %>
-  product_style_ids: "1,14"
-  ps_counts: "1,1"
-  product_id: 25
-

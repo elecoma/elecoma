@@ -1,99 +1,63 @@
-ActionController::Routing::Routes.draw do |map|
-
-  map.namespace :admin do |admin|
-    admin.resources :admin_users
-    admin.resources :authorities
-    admin.resources :new_informations
-    admin.resources :recommend_products, :collection => {:product_search => [:get]}
-    admin.resources :questionnaires
-    admin.resources :campaigns, :member => {:campaign_design => [:get]}
-    admin.resources :shops, :only => [:destroy, :index]
-    admin.resources :mail_magazines, :collection => {:history => [:get], :search => [:get]}
-    admin.resources :mail_magazine_templates
-    admin.resources :features
-    admin.resources :feature_products, :collection => {:product_search => [:get]}
-    admin.resources :mobile_devices, :collection => {:search => [:get]}
-    admin.resources :customers, :collection => {:get_address => [:get], :search => [:get]}
-    admin.resources :orders, :collection => {:get_address => [:get], :search => [:get],:picking_list =>[:get]}, :member => {:edit => [:get, :put],:statement =>[:get]}
-    admin.resources :order_statuses
-    admin.resources :products, :collection => {:search => [:get], :actual_count_index => [:get], :actual_count_search => [:get]}
-    admin.resources :product_styles
-    admin.resources :product_sets, :collection => {:reset => [:get],:edit_items => [:get],:search_ps => [:get],:product_form => [:get],:confirm => [:get],:regist => [:post] ,:search => [:get]},:member =>{:del =>[:get],:delete_ps_ids => [:get]}
-    admin.resources :categories
-    admin.resources :styles
-    admin.resources :style_categories
-    admin.resources :return_items, :collection => {:search => [:get], :history => [:get], :history_search => [:get], :new_csv => [:get], :csv_index => [:get], :csv => [:get]}
-    admin.resources :retailers
-    admin.resources :plugins, :collection => {:new_payment_plugin => [:get], :edit_payment_plugin => [:get]}
-    admin.resources :socials, :only => [:update, :index]
-  end
-
-  map.resources :accounts, :collection => {:favorite => [:get]}, :only => [:favorite]
+Rails.application.routes.draw do
+  # This line mounts Comable's routes at the root of your application.
+  # This means, any requests to URLs such as /products, will go to Comable::ProductsController.
+  # If you would like to change where this engine is mounted, simply change the :at option to something different.
+  #
+  # We ask that you don't use the :as option here, as Comable relies on it being the default of "comable"
+  mount Comable::Core::Engine, at: '/'
 
   # The priority is based upon order of creation: first created -> highest priority.
+  # See how all your routes lay out with "rake routes".
 
-  # Sample of regular route:
-  #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
-  # Keep in mind you can assign values other than :controller and :action
+  # You can have the root of your site routed with "root"
+  # root 'welcome#index'
 
-  # Sample of named route:
-  #   map.purchase 'products/:id/purchase', :controller => 'catalog', :action => 'purchase'
-  # This route can be invoked with purchase_url(:id => product.id)
+  # Example of regular route:
+  #   get 'products/:id' => 'catalog#view'
 
-  # Sample resource route (maps HTTP verbs to controller actions automatically):
-  #   map.resources :products
+  # Example of named route that can be invoked with purchase_url(id: product.id)
+  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
 
-  # Sample resource route with options:
-  #   map.resources :products, :member => { :short => :get, :toggle => :post }, :collection => { :sold => :get }
+  # Example resource route (maps HTTP verbs to controller actions automatically):
+  #   resources :products
 
-  # Sample resource route with sub-resources:
-  #   map.resources :products, :has_many => [ :comments, :sales ], :has_one => :seller
-
-  # Sample resource route with more complex sub-resources
-  #   map.resources :products do |products|
-  #     products.resources :comments
-  #     products.resources :sales, :collection => { :recent => :get }
+  # Example resource route with options:
+  #   resources :products do
+  #     member do
+  #       get 'short'
+  #       post 'toggle'
+  #     end
+  #
+  #     collection do
+  #       get 'sold'
+  #     end
   #   end
 
-  # Sample resource route within a namespace:
-  #   map.namespace :admin do |admin|
-  #     # Directs /admin/products/* to Admin::ProductsController (app/controllers/admin/products_controller.rb)
-  #     admin.resources :products
+  # Example resource route with sub-resources:
+  #   resources :products do
+  #     resources :comments, :sales
+  #     resource :seller
   #   end
 
-  # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
-  # map.root :controller => "welcome"
-  map.root :controller => 'portal', :action => 'show'
+  # Example resource route with more complex sub-resources:
+  #   resources :products do
+  #     resources :comments
+  #     resources :sales do
+  #       get 'recent', on: :collection
+  #     end
+  #   end
 
-  # See how all your routes lay out with "rake routes"
+  # Example resource route with concerns:
+  #   concern :toggleable do
+  #     post 'toggle'
+  #   end
+  #   resources :posts, concerns: :toggleable
+  #   resources :photos, concerns: :toggleable
 
-  # ServiceCooperations
-  map.connect 'service_cooperations/export/:url_file_name', :controller => 'service_cooperations', :action => 'export'
-
-  # Install the default routes as the lowest priority.
-  map.connect 'products/category/:category_id', :controller => 'products', :action => 'index'
-  map.connect 'products/category/:category_id/order/:order', :controller => 'products', :action => 'index'
-  map.connect 'products/retailer/:retailer_id', :controller => 'products', :action => 'index'
-  map.connect 'products/retailer/:retailer_id/order/:order', :controller => 'products', :action => 'index'
-  map.connect 'products/show/:id/category/:category_id', :controller => 'products', :action => 'show'
-  map.connect 'image_resource/:action/:id/image.jpg', :controller => 'image_resource'
-
-  map.connect 'admin/', :controller => '/admin/home', :action => 'index'
-
-  map.connect 'campaigns/complete/:id', :controller => 'campaigns', :action => 'complete'
-  map.connect 'campaigns/:dir_name', :controller => 'campaigns', :action => 'show', :requirements => {:dir_name => /.*/ }
-  map.connect 'accounts/activate/:activation_key', :controller => 'accounts', :action => 'activate'
-  map.connect 'features/:dir_name', :controller => 'features', :action => 'show', :requirements => {:dir_name => /.*/ }
-
-  # cart
-  map.connect 'cart', :controller => 'cart', :action => 'show'
-
-  # my page
-  map.connect 'accounts', :controller => 'accounts', :action => 'history'
-
-  # javascript
-  map.js 'js/:action.js', :controller => 'javascript'
-
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
+  # Example resource route within a namespace:
+  #   namespace :admin do
+  #     # Directs /admin/products/* to Admin::ProductsController
+  #     # (app/controllers/admin/products_controller.rb)
+  #     resources :products
+  #   end
 end

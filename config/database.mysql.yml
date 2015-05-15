@@ -1,0 +1,21 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
+  username: root
+  password:
+  host: localhost
+
+development:
+  <<: *default
+  database: elecoma_development
+
+test:
+  <<: *default
+  database: elecoma_test
+
+production:
+  <<: *default
+  database: elecoma_production
+  username: elecoma
+  password: <%= ENV['ELECOMA_DATABASE_PASSWORD'] %>

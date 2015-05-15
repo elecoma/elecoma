@@ -1,9 +1,0 @@
-#!/bin/sh
-
-cd "$(dirname $0)/.."
-
-# specファイルを単体で実行
-# (ファイル毎にDBをリセットして依存性のないテストを実施)
-for file in `find ./spec -name '*_spec.rb' | xargs`; do
-  ruby script/spec $file
-done

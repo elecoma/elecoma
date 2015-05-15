@@ -1,9 +1,0 @@
-以下の問合せを受付ました。
-
-■番号      <%= h @inquiry.id %>
-■お名前　 <%=h @inquiry.name %>様
-■電話番号　：<%=h @inquiry.tel %>
-■受注番号　：<%=h @inquiry.order_number %>
-■お問い合わせ種別　：<%=h Inquiry::KIND_NAMES[@inquiry.kind] %>
-■お問い合わせの内容
-<%=h @inquiry.body %>

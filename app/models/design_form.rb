@@ -1,3 +1,0 @@
-class DesignForm < SearchForm
-  
-end

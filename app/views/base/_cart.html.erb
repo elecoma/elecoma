@@ -1,6 +1,0 @@
-<div id="cart_box" class="side_box_r">
-  <%= link_to image_tag("/images/common/cart_btn.gif", :width=>"143", :height=>"28", :alt=>"カートの中身を見る", :class=>"hoverImg"), {:controller => 'cart', :action => 'show'} %>
-  <div id="cart_info"><p>商品計 <%= @carts && @carts.size %>点</p>&yen;<%= number_with_delimiter(@cart_price) %></div>
-  <div class="side_hr"><hr /></div>
-  <%= link_to image_tag("/images/common/purchase_btn.gif", :width=>"143", :height=>"30", :alt=>"購入手続きへ", :class=>"hoverImg"), {:controller => 'cart', :action => 'shipping'} %>
-</div>

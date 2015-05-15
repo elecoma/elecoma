@@ -1,9 +1,0 @@
-<% content_for :head do %>
-  <%= stylesheet_link_tag "front/questionnaire" %>
-<% end %>
-
-<div id="complete_area">
-  <ol id="bread_list" class="m_btm"><li class="bread_top"><%= link_to "トップページ", :controller => 'portal', :action => 'show' %></li><li>アンケート</li></ol>
-  <h2 class="main_t">アンケート</h2>
-  <p class="tb_t"><%= flash[:notice] %></p>
-</div>

@@ -1,9 +1,0 @@
-<% carts.each do |cart| %>
-  <%= cart.ps.product.name %><br />
-<% end %>
-<p>発送方法をお選びください</p>
-<% @delivery_traders[retailer_id].each do |delivery_trader| %>
-  <%= radio_button "order_deliveries[#{retailer_id}]", "delivery_trader_id", delivery_trader.id, :class => 'radio_trader' %>
-  <%= label "order_deliveries[#{retailer_id}]", "delivery_trader_id", delivery_trader.name %><br />
-<% end %>
-

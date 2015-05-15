@@ -1,7 +1,0 @@
-#!/usr/bin/env ruby
-require File.expand_path(File.dirname(__FILE__) + '/../config/boot')
-
-# デフォルトのコンソールを pry にする
-ARGV.push('--irb=pry') unless ARGV.grep(/^--irb=.+$/).any?
-
-require 'commands/console'

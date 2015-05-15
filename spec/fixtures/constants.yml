@@ -1,5 +1,0 @@
-<%=
-open("#{RAILS_ROOT}/db/migrate/fixed_data/constants.yml") do |f|
-  ERB.new(f.read).result
-end
-%>

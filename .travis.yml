@@ -1,12 +1,13 @@
 language: ruby
 rvm:
-  - 1.9.3
+  - 2.1.5
+  - 2.2.0
+  - ruby-head
 env:
   - DB=postgresql
   - DB=mysql
-before_install:
-  - gem update --system 1.8.25 
-  - gem install bundler
+  - DB=sqlite
 before_script:
-  - cp config/database.yml.$DB config/database.yml
-  - bundle exec rake db:create db:migrate
+  - cp config/database.$DB.yml config/database.yml
+  - bundle exec rake db:create RAILS_ENV=test
+  - bundle exec rake db:migrate RAILS_ENV=test
