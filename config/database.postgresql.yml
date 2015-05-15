@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
+development:
+  <<: *default
+  database: elecoma_development
+
+test:
+  <<: *default
+  database: elecoma_test
+
+production:
+  <<: *default
+  database: elecoma_production
+  username: elecoma
+  password: <%= ENV['ELECOMA_DATABASE_PASSWORD'] %>
