@@ -1,9 +1,0 @@
-<%= render :partial => "base/title", :locals => {:title => "退会手続き"} %>
-
-<p>会員を退会された場合には、現在保存されている購入履歴や、お届け先などの情報は、すべて削除されますがよろしいでしょうか？</p>
-
-<div style="text-align:center;">
-<% form_tag :action => 'withdraw_confirm' do %>
- <%= submit_tag '会員退会手続きへ' %>
-<% end %>
-</div>

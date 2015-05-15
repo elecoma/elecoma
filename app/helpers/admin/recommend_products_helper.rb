@@ -1,2 +1,0 @@
-module Admin::RecommendProductsHelper
-end

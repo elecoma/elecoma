@@ -1,1 +1,0 @@
-page.replace_html 'order_delivery_delivery_time_id', options_for_select(@delivery_time_options)

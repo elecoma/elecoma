@@ -1,5 +1,0 @@
-# 通常商品のレコメンド(購入用)
-recommend_valid_product:
-  id: 1
-  product_id: 16
-  request_type: 0

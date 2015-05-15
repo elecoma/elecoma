@@ -1,7 +1,0 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-one:
-  id: 1
-  content_collect: "個人情報収集（PC）"
-  content_collect_mobile: "個人情報収集（MB）"
-  content_privacy: "個人情報保護方針（PC）"
-  content_privacy_mobile: "個人情報保護方針（MB）"
